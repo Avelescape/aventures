@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<script src="coi-serviceworker.js"></script>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
 		<title>mecanismehautpharestmathieu</title>
+		<script src="coi-serviceworker.js"></script>
 		<style>
 html, body, #canvas {
 	margin: 0;
@@ -63,57 +63,58 @@ body {
 	object-fit: contain;
 }
 
-#status-splash.use-filter--false {
-	image-rendering: pixelated;
-}
-
-#status-progress, #status-notice {
-	display: none;
-}
-
 #status-progress {
-	bottom: 10%;
-	width: 50%;
+	height: 8px;
+	display: block;
+	max-width: 400px;
 	margin: 0 auto;
+	padding: 0;
+	border: 0;
+	border-radius: 4px;
+	background-color: #515151;
+	color: #2fa1ff;
+}
+
+#status-progress::-webkit-progress-bar {
+	background-color: #515151;
+	border-radius: 4px;
+}
+
+#status-progress::-webkit-progress-value {
+	background-color: #2fa1ff;
+	border-radius: 4px;
+}
+
+#status-progress::-moz-progress-bar {
+	background-color: #2fa1ff;
+	border-radius: 4px;
 }
 
 #status-notice {
-	background-color: #5b3943;
-	border-radius: 0.5rem;
-	border: 1px solid #9b3943;
-	color: #e0e0e0;
-	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
-	line-height: 1.3;
-	margin: 0 2rem;
-	overflow: hidden;
-	padding: 1rem;
-	text-align: center;
-	z-index: 1;
+	background-color: #3b3b3b;
+	border-radius: 4px;
+	padding: 4px 8px;
+	visibility: hidden;
 }
 		</style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="stmathieumecanismephare.icon.png" />
-<link rel="apple-touch-icon" href="stmathieumecanismephare.apple-touch-icon.png"/>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="stmathieumecanismephare.icon.png">
+<link rel="apple-touch-icon" href="stmathieumecanismephare.apple-touch-icon.png">
 
 	</head>
 	<body>
 		<canvas id="canvas">
-			Your browser does not support the canvas tag.
+			Your browser does not support the canvas element.
 		</canvas>
 
-		<noscript>
-			Your browser does not support JavaScript.
-		</noscript>
-
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="stmathieumecanismephare.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true" src="stmathieumecanismephare.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
 
 		<script src="stmathieumecanismephare.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"stmathieumecanismephare","experimentalVK":false,"fileSizes":{"stmathieumecanismephare.pck":9609312,"stmathieumecanismephare.wasm":35754592},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
-const GODOT_THREADS_ENABLED = false;
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"executable":"stmathieumecanismephare","experimentalVK":false,"fileSizes":{"stmathieumecanismephare.pck":1350848,"stmathieumecanismephare.wasm":42171221},"gdextensionLibs":[]};
 const engine = new Engine(GODOT_CONFIG);
 
 (function () {
@@ -128,14 +129,14 @@ const engine = new Engine(GODOT_CONFIG);
 		if (statusMode === mode || !initializing) {
 			return;
 		}
-		if (mode === 'hidden') {
-			statusOverlay.remove();
-			initializing = false;
-			return;
+		[statusProgress, statusNotice].forEach((elem) => {
+			elem.style.visibility = 'hidden';
+		});
+		if (mode === 'progress') {
+			statusProgress.style.visibility = 'visible';
+		} else if (mode === 'notice') {
+			statusNotice.style.visibility = 'visible';
 		}
-		statusOverlay.style.visibility = 'visible';
-		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
-		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
 		statusMode = mode;
 	}
 
@@ -151,53 +152,17 @@ const engine = new Engine(GODOT_CONFIG);
 	}
 
 	function displayFailureNotice(err) {
-		console.error(err);
-		if (err instanceof Error) {
-			setStatusNotice(err.message);
-		} else if (typeof err === 'string') {
-			setStatusNotice(err);
-		} else {
-			setStatusNotice('An unknown error occurred.');
-		}
+		const msg = err.message || err;
+		console.error(msg);
+		setStatusNotice(msg);
 		setStatusMode('notice');
 		initializing = false;
 	}
 
-	const missing = Engine.getMissingFeatures({
-		threads: GODOT_THREADS_ENABLED,
-	});
-
-	if (missing.length !== 0) {
-		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
-			let serviceWorkerRegistrationPromise;
-			try {
-				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
-			} catch (err) {
-				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
-			}
-			// There's a chance that installing the service worker would fix the issue
-			Promise.race([
-				serviceWorkerRegistrationPromise.then((registration) => {
-					if (registration != null) {
-						return Promise.reject(new Error('Service worker already exists.'));
-					}
-					return registration;
-				}).then(() => engine.installServiceWorker()),
-				// For some reason, `getRegistration()` can stall
-				new Promise((resolve) => {
-					setTimeout(() => resolve(), 2000);
-				}),
-			]).then(() => {
-				// Reload if there was no error.
-				window.location.reload();
-			}).catch((err) => {
-				console.error('Error while registering service worker:', err);
-			});
-		} else {
-			// Display the message as usual
-			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
-			displayFailureNotice(missingMsg + missing.join('\n'));
-		}
+	const missing = Engine.getMissingFeatures();
+	if (missing.length > 0) {
+		const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+		displayFailureNotice(missingMsg + missing.join('\n'));
 	} else {
 		setStatusMode('progress');
 		engine.startGame({
@@ -212,10 +177,11 @@ const engine = new Engine(GODOT_CONFIG);
 			},
 		}).then(() => {
 			setStatusMode('hidden');
+			initializing = false;
+			statusOverlay.style.visibility = 'hidden';
 		}, displayFailureNotice);
 	}
 }());
 		</script>
 	</body>
 </html>
-
