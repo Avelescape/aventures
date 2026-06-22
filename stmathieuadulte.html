@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2a0a10">
+<title>Le Mystère du Phare</title>
+
+<style>
+* { box-sizing: border-box; }
+
+:root {
+  --rouge-cardinal: #0f0001;
+  --cramoisi: #380508;
+  --or: #D4AF37;
+  --ivoire: #F5E8D0;
+  --nuit-rouge: #231619;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, serif;
+  background: var(--nuit-rouge);
+  color: var(--ivoire);
+  overflow-x: hidden;
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, var(--rouge-cardinal) 0%, var(--nuit-rouge) 70%);
+  z-index: -1;
+}
+
+.progress-bar {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 0;
+  height: 5px;
+  background: var(--or);
+  transition: width 0.4s ease;
+  z-index: 10;
+}
+
+.screen {
+  display: none;
+  min-height: 100vh;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.screen.active {
+  display: block;
+}
+
+.nav-back {
+  position: fixed;
+  top: max(15px, env(safe-area-inset-top));
+  left: max(15px, env(safe-area-inset-left));
+  display: none;
+  z-index: 20;
+  background: rgba(42, 10, 16, 0.85);
+  color: var(--ivoire);
+  border: 1px solid var(--or);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.nav-back.visible {
+  display: block;
+}
+
+.btn-primary,
+button {
+  margin: 12px;
+  padding: 14px 22px;
+  background: var(--rouge-cardinal);
+  color: var(--ivoire);
+  border: 1px solid var(--or);
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: Georgia, serif;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+}
+
+.btn-primary:hover,
+button:hover {
+  background: var(--cramoisi);
+}
+
+.intro-img,
+.lettre-img,
+.missive1-image,
+.missive2-image,
+.chapter-img,
+.abbaye-img,
+.moineloin-img,
+.puzzle-result-img {
+  max-width: 90%;
+  max-height: 60vh;
+  cursor: pointer;
+}
+
+.puzzle-result-img {
+  display: block;
+  margin: 20px auto;
+  cursor: default;
+}
+
+.intro-title {
+  font-size: clamp(26px, 10vw, 48px);
+  margin: 20px 0;
+  color: var(--ivoire);
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
+}
+
+.intro-date,
+.intro-location {
+  color: var(--or);
+}
+
+.intro-sep {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.intro-sep-line {
+  width: 70px;
+  height: 1px;
+  background: var(--or);
+}
+
+.intro-sep-diamond {
+  width: 10px;
+  height: 10px;
+  background: var(--or);
+  transform: rotate(45deg);
+}
+
+.lettre-container,
+.abbaye-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lettre-img,
+.abbaye-img {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.missive1-label,
+.missive2-label,
+.puits-label,
+.locmaze-label,
+.so-label,
+.puzzle-label,
+.instructions-label,
+.instructionschap2-label,
+.porte-label {
+  max-width: 700px;
+  margin: 80px auto 20px;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--ivoire);
+}
+
+h1, h2, h3 {
+  color: var(--or);
+}
+
+input {
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 6px;
+  border: 1px solid var(--or);
+  text-align: center;
+  background: var(--ivoire);
+  color: var(--nuit-rouge);
+  font-family: Georgia, serif;
+}
+
+#message,
+#puzzle-message,
+#code-message,
+#mot-phare-message,
+#code-ancien-phare-message,
+#message-sommet {
+  color: var(--or);
+}
+
+.dialogue-box {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 25px;
+  border: 1px solid var(--or);
+  border-radius: 12px;
+  background: rgba(15, 0, 1, 0.85);
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.25);
+}
+
+#dialogue-text,
+#dialogue-text-phare,
+#dialogue-text-naufrageurs,
+#texte-fin {
+  font-size: 16px;
+  line-height: 1.4;
+  min-height: 40px;
+}
+
+.fade-line {
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#puzzle-board {
+  width: min(320px, 90vw);
+  height: min(320px, 90vw);
+  margin: 25px auto;
+  display: grid;
+  gap: 2px;
+  border: 3px solid var(--or);
+  background: var(--nuit-rouge);
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.35);
+}
+
+.puzzle-piece {
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp");
+  background-size: 320px 320px;
+  cursor: grab;
+  border: 1px solid rgba(245, 232, 208, 0.35);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.puzzle-piece.dragging {
+  opacity: 0.5;
+}
+
+.puzzle-piece.selected {
+  box-shadow: 0 0 14px rgba(212,175,55,0.9);
+  border: 2px solid var(--or);
+  opacity: 0.75;
+  transform: scale(1.05);
+}
+
+#enigme-phare {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 25px;
+  border: 1px solid var(--or);
+  border-radius: 12px;
+  background: rgba(15, 0, 1, 0.75);
+}
+
+/* Intégration du mécanisme Godot */
+.godot-wrapper {
+  width: min(800px, 95vw);
+  margin: 20px auto;
+  border: 2px solid var(--or);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
+}
+
+.godot-wrapper iframe {
+  display: block;
+  width: 100%;
+  height: 600px;
+  border: 0;
+}
+
+@media (max-width: 480px) {
+  .intro-title {
+    font-size: 36px;
+  }
+
+  #puzzle-board {
+    width: 280px;
+    height: 280px;
+  }
+
+  .puzzle-piece {
+    background-size: 280px 280px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="progress-bar" id="progress" style="width:0%"></div>
+<button class="nav-back" id="nav-back" onclick="goBack()">←</button>
+
+<div class="screen active" id="screen-intro">
+  <img class="intro-img"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/intro1stmath-webp.webp"
+       alt="intro"
+       onclick="showScreen('missive1')">
+
+  <p class="intro-date">17 Février · Anno Domini 1840</p>
+
+  <div class="intro-sep">
+    <div class="intro-sep-line"></div>
+    <div class="intro-sep-diamond"></div>
+    <div class="intro-sep-line"></div>
+  </div>
+
+  <h1 class="intro-title">Le Mystère<br>du Phare</h1>
+
+  <p class="intro-location">Pointe de Saint-Mathieu, Bretagne</p>
+  <button class="btn-primary" onclick="showScreen('missive1')">Commencer l'enquête</button>
+</div>
+
+<div class="screen" id="screen-missive1">
+  <div class="missive1-label">
+    <p>Un inconnu vous tend une enveloppe</p>
+    <p>Cliquez pour l'ouvrir</p>
+  </div>
+
+  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/enveloppe-webp.webp"
+       alt="missive1 scellée"
+       class="missive1-image"
+       onclick="showScreen('missive2')">
+</div>
+
+<div class="screen" id="screen-missive2">
+  <div class="missive2-label">
+    <p>Le cachet de cire est brisé...</p>
+    <p>Cliquez pour lire la lettre</p>
+  </div>
+
+  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cachet-de-cire-brise-sur-enveloppe-webp.webp"
+       alt="missive2 ouverte"
+       class="missive2-image"
+       onclick="showScreen('lettre')">
+</div>
+
+<div class="screen" id="screen-lettre">
+  <div class="lettre-container">
+    <img class="lettre-img"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/lettre-webp.webp"
+         alt="lettre"
+         onclick="showScreen('puits')">
+
+    <button class="btn-primary" onclick="showScreen('puits')">
+      Cliquez lorsque vous êtes au puits
+    </button>
+  </div>
+</div>
+
+<div class="screen" id="screen-puits">
+  <div class="puits-label">
+    <p>Vous êtes devant le puits de Saint Mathieu</p>
+    <p>Personne...</p>
+    <p>Isabelle A. Kermannec vous a pourtant demandé de l'y rejoindre</p>
+    <p>Peut-être vous a-t-elle laissé un indice ?</p>
+
+    <button class="btn-primary" onclick="showScreen('locmaze')">Continuer</button>
+    <button class="btn-primary" onclick="showScreen('lettre')">Retour</button>
+  </div>
+</div>
+
+<div class="screen" id="screen-locmaze">
+  <div class="locmaze-label">
+    <h2>Entre le mot :</h2>
+    <input type="text" id="reponse">
+    <br><br>
+    <button class="btn-primary" onclick="verifier()">Valider</button>
+    <p id="message"></p>
+    <button class="btn-primary" onclick="showScreen('so')">Indice</button>
+  </div>
+</div>
+
+<div class="screen" id="screen-so">
+  <div class="so-label">
+    <p>Face à la fontaine, tout semble inutile</p>
+    <p>pas de seau pour l'eau</p>
+    <p>pas de saut pour passer</p>
+    <p>pas de sot pour comprendre</p>
+    <p>seul compte celui qui scelle</p>
+
+    <button class="btn-primary" onclick="showScreen('locmaze')">Retour</button>
+  </div>
+</div>
+
+<div class="screen" id="screen-puzzle">
+  <div class="puzzle-label">
+    <h2>Reconstituez le sceau</h2>
+    <p>Déplacez les pièces pour reformer l’image.</p>
+
+    <div id="puzzle-board"></div>
+    <div id="puzzle-message"></div>
+
+    <button id="btn-puzzle"
+            class="btn-primary"
+            style="display:none;"
+            onclick="showScreen('instructionschap2')">
+      Continuer
+    </button>
+  </div>
+</div>
+
+<div class="screen" id="screen-instructionschap2">
+  <div class="instructionschap2-label">
+    <p>Il est temps d'aller au phare</p>
+    <p>Vous y êtes ?</p>
+    <button class="btn-primary" onclick="nextScreen()">Cliquez si vous y êtes</button>
+  </div>
+</div>
+
+<div id="screen-porteloin" class="screen">
+  <div class="porte-label">
+    <img class="chapter-img"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/porte-phare-loin-webp.webp"
+         alt="Porte du phare">
+
+    <p>Il semble que le phare soit fermé...</p>
+
+    <button class="btn-primary" onclick="essayerOuvrir()">
+      Essayer de l’ouvrir
+    </button>
+  </div>
+</div>
+
+<div id="screen-portecadenas" class="screen">
+  <div class="porte-label">
+    <img class="chapter-img"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cadenas-porte-pharewebp.webp"
+         alt="Cadenas du phare">
+
+    <p>Entrez le code à 4 chiffres</p>
+    <input id="codeInput" type="text" maxlength="4" inputmode="numeric" pattern="[0-9]*">
+    <br>
+    <button class="btn-primary" onclick="verifierCode()">Valider</button>
+    <p id="code-message"></p>
+  </div>
+</div>
+
+<div id="screen-boncode" class="screen">
+  <div class="porte-label">
+    <p>
+      Quelle chance !!! Vous avez trouvé le code.<br>
+      Mais les korrigans, gardiens de ce jeu,<br>
+      n'ouvriront pas le cadenas pour le moment !
+    </p>
+  </div>
+</div>
+
+<div id="screen-mauvaiscode" class="screen">
+  <div class="porte-label">
+    <p>Ce n'est pas le bon code</p>
+
+    <h3>
+      Écoutez...<br>
+      D'où provient ce chant ?<br>
+      Il semblerait qu'il provienne de l'abbaye.
+    </h3>
+
+    <h3>Vous devriez peut-être y aller.</h3>
+
+    <audio id="chant-audio" src="https://github.com/Avelescape/escapes-games-touristiques/blob/main/sons/grego.mp3" preload="auto"></audio>
+
+    <button class="btn-primary" onclick="showScreen('abbaye')">
+      Cliquez lorsque vous serez à l'abbaye
+    </button>
+  </div>
+</div>
+
+<div class="screen" id="screen-abbaye">
+  <div class="abbaye-container">
+    <img class="abbaye-img"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/moine-loin-webp.webp"
+         alt="Abbaye"
+         onclick="showScreen('moineloin')">
+
+    <button class="btn-primary" onclick="showScreen('moineloin')">
+      Suite
+    </button>
+  </div>
+</div>
+
+<div class="screen" id="screen-moineloin">
+  <img class="moineloin-img"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/moine-pres-webp.webp"
+       alt="Moine au loin">
+
+  <div class="dialogue-box">
+    <p id="dialogue-text"></p>
+  </div>
+
+  <button id="after-dialogue-btn"
+          class="btn-primary"
+          style="display:none;"
+          onclick="showScreen('sceneabbaye')">
+    Continuer vers le petit phare
+  </button>
+</div>
+
+<div class="screen" id="screen-sceneabbaye">
+  <img class="chapter-img"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/naufrageurs-webp.webp"
+       alt="Passage secret de l'abbaye">
+
+  <div class="dialogue-box">
+    <p id="dialogue-text-naufrageurs"></p>
+  </div>
+
+  <button id="after-naufrageurs-btn"
+          class="btn-primary"
+          style="display:none;"
+          onclick="showScreen('petitphare')">
+    Continuer
+  </button>
+</div>
+
+<div class="screen" id="screen-petitphare">
+  <img class="chapter-img"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/kidnapping-webp.webp"
+       alt="Petit phare">
+
+  <div class="dialogue-box">
+    <p id="dialogue-text-phare"></p>
+  </div>
+
+  <div id="enigme-phare" style="display:none;">
+    <p>Entrez le mot en 6 lettres :</p>
+
+    <input id="motPhareInput" type="text" maxlength="6">
+    <br>
+
+    <button class="btn-primary" onclick="verifierMotPhare()">Valider</button>
+    <button class="btn-primary" onclick="afficherIndicePhare()">Indice</button>
+
+    <p id="mot-phare-message"></p>
+    <p id="indice-phare" style="margin-top:15px; color: var(--or);"></p>
+  </div>
+</div>
+
+<div class="screen" id="screen-suiteaventure">
+  <img class="chapter-img"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/yannick-hurle-webp.webp"
+       alt="Yannick">
+
+  <div class="dialogue-box">
+    <div id="texte-fin"></div>
+  </div>
+
+  <button id="btn-suite" class="btn-primary" style="display:none;" onclick="showScreen('codeancienphare')">
+    Continuer
+  </button>
+</div>
+
+<div class="screen" id="screen-codeancienphare">
+  <img class="chapter-img"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cadenas-porte-pharewebp.webp"
+       alt="Ancien phare">
+
+  <div class="texte-sommet" style="opacity:1;">
+    <p>Entrez le code à 4 chiffres :</p>
+
+    <input id="codeAncienPhareInput"
+           type="text"
+           maxlength="4"
+           inputmode="numeric"
+           pattern="[0-9]*">
+
+    <br>
+
+    <button class="btn-primary" onclick="verifierCodeAncienPhare()">Valider</button>
+    <p id="code-ancien-phare-message"></p>
+  </div>
+</div>
+
+<div class="screen" id="screen-hautphare">
+  <img class="chapter-img"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/porte-ouverte-webp.webp"
+       alt="Phare ouvert">
+
+  <div class="texte-sommet" style="opacity:1;">
+    <p>Le cadenas s’ouvre !</p>
+  </div>
+
+  <button class="btn-primary" onclick="showScreen('mecanismephare')">
+    Monter en haut du phare
+  </button>
+</div>
+
+<div class="screen" id="screen-mecanismephare">
+  <p>Utilisez le mécanisme du phare. Lorsque le phare est rallumé, poursuivez l’aventure.</p>
+
+  <div class="godot-wrapper">
+
+<iframe 
+    src="godot/mecanismephare/stmathieumecanismephare.html" 
+    width="100%" 
+    height="540"
+    style="border: none; max-width: 960px; aspect-ratio: 1152 / 648;"
+    allow="autoplay; fullscreen" 
+    sandbox="allow-scripts allow-same-origin allow-pointer-lock">
+</iframe>
+
+  </div>
+  
+  <button class="btn-primary" onclick="showScreen('finaventure')">
+    Continuer lorsque le phare est rallumé
+  </button>
+</div>
+
+<div class="screen" id="screen-finaventure">
+  <img class="chapter-img"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/fin-webp.webp"
+       alt="Fin de l'aventure">
+
+  <div class="texte-sommet" style="opacity:1; margin-top:20px;">
+    <p>Vous avez réussi l'aventure !</p>
+    <p>Grâce à vous, Yannick est sauvé <br>et les marins ne feront pas naufrage.</p>
+  </div>
+
+  <button class="btn-primary" onclick="retourSite()">
+    Fin
+  </button>
+</div>
+
+<script>
+let currentScreen = 'intro';
+let navHistory = [];
+
+const screens = {
+  intro: document.getElementById('screen-intro'),
+  missive1: document.getElementById('screen-missive1'),
+  missive2: document.getElementById('screen-missive2'),
+  lettre: document.getElementById('screen-lettre'),
+  puits: document.getElementById('screen-puits'),
+  locmaze: document.getElementById('screen-locmaze'),
+  mecanismephare: document.getElementById('screen-mecanismephare'),
+  finaventure: document.getElementById('screen-finaventure'),
+  so: document.getElementById('screen-so'),
+  puzzle: document.getElementById('screen-puzzle'),
+  instructionschap2: document.getElementById('screen-instructionschap2'),
+  porteloin: document.getElementById('screen-porteloin'),
+  portecadenas: document.getElementById('screen-portecadenas'),
+  boncode: document.getElementById('screen-boncode'),
+  mauvaiscode: document.getElementById('screen-mauvaiscode'),
+  abbaye: document.getElementById('screen-abbaye'),
+  moineloin: document.getElementById('screen-moineloin'),
+  sceneabbaye: document.getElementById('screen-sceneabbaye'),
+  petitphare: document.getElementById('screen-petitphare'),
+  suiteaventure: document.getElementById('screen-suiteaventure'),
+  codeancienphare: document.getElementById('screen-codeancienphare'),
+  hautphare: document.getElementById('screen-hautphare'),
+  finaventure: document.getElementById('screen-finaventure')
+};
+
+const progressMap = {
+  intro: 0,
+  missive1: 15,
+  missive2: 25,
+  lettre: 35,
+  puits: 45,
+  locmaze: 55,
+  so: 55,
+  puzzle: 65,
+  instructionschap2: 80,
+  porteloin: 85,
+  portecadenas: 90,
+  boncode: 100,
+  mauvaiscode: 100,
+  abbaye: 100,
+  moineloin: 100,
+  sceneabbaye: 100,
+  petitphare: 100,
+  suiteaventure: 100,
+  codeancienphare: 100,
+  hautphare: 100,
+  mecanismephare: 100,
+  finaventure: 100
+};
+
+function showScreen(name, addHist = true) {
+  if (!screens[name]) {
+    console.error("Écran introuvable :", name);
+    return;
+  }
+
+  if (addHist && name !== currentScreen) {
+    navHistory.push(currentScreen);
+  }
+
+  Object.values(screens).forEach(screen => {
+    if (screen) screen.classList.remove('active');
+  });
+
+  screens[name].classList.add('active');
+  currentScreen = name;
+
+  const chantAudio = document.getElementById('chant-audio');
+
+  if (chantAudio) {
+    if (name === 'mauvaiscode') {
+      chantAudio.currentTime = 0;
+      chantAudio.play().catch(() => {
+        console.log("Lecture audio bloquée par le navigateur.");
+      });
+    } else {
+      chantAudio.pause();
+      chantAudio.currentTime = 0;
+    }
+  }
+
+  const progress = document.getElementById('progress');
+  if (progress) {
+    progress.style.width = (progressMap[name] || 0) + '%';
+  }
+
+  const navBack = document.getElementById('nav-back');
+  if (navBack) {
+    if (navHistory.length > 0 && name !== 'intro') {
+      navBack.classList.add('visible');
+    } else {
+      navBack.classList.remove('visible');
+    }
+  }
+
+  if (name === 'puzzle') { initPuzzle(); }
+  if (name === 'moineloin') { startDialogueMoine(); }
+  if (name === 'sceneabbaye') { startDialogueNaufrageurs(); }
+  if (name === 'petitphare') { startDialoguePhare(); }
+  if (name === 'suiteaventure') { lancerTexteFin(); }
+}
+
+function goBack() {
+  if (navHistory.length > 0) {
+    const previousScreen = navHistory.pop();
+    showScreen(previousScreen, false);
+  }
+}
+
+function verifier() {
+  const input = document.getElementById('reponse');
+  const message = document.getElementById('message');
+  if (!input || !message) return;
+  const mot = input.value.toLowerCase().trim();
+  if (mot === 'sceau') {
+    showScreen('puzzle');
+  } else {
+    message.innerText = "Ce n'est pas la bonne réponse, essaye encore !";
+  }
+}
+
+const reponseInput = document.getElementById('reponse');
+if (reponseInput) {
+  reponseInput.addEventListener('input', function() {
+    const message = document.getElementById('message');
+    if (message) message.innerText = '';
+  });
+  reponseInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { verifier(); }
+  });
+}
+
+/* PUZZLE */
+const PUZZLE_SIZE = 3;
+let draggedPiece = null;
+let puzzleSolved = false;
+let selectedPiece = null;
+
+function handlePieceClick(e) {
+  if (puzzleSolved) return;
+  const piece = e.currentTarget;
+
+  if (!selectedPiece) {
+    selectedPiece = piece;
+    piece.classList.add('selected');
+  } else if (selectedPiece === piece) {
+    selectedPiece.classList.remove('selected');
+    selectedPiece = null;
+  } else {
+    const tempBg = piece.style.backgroundPosition;
+    const tempCorrect = piece.dataset.correct;
+    piece.style.backgroundPosition = selectedPiece.style.backgroundPosition;
+    piece.dataset.correct = selectedPiece.dataset.correct;
+    selectedPiece.style.backgroundPosition = tempBg;
+    selectedPiece.dataset.correct = tempCorrect;
+    selectedPiece.classList.remove('selected');
+    selectedPiece = null;
+    checkPuzzle();
+  }
+}
+
+function handlePiecePointerDown(e) {
+  if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+    e.preventDefault();
+    handlePieceClick(e);
+  }
+}
+
+function initPuzzle() {
+  const board = document.getElementById('puzzle-board');
+  const message = document.getElementById('puzzle-message');
+  const btn = document.getElementById('btn-puzzle');
+
+  puzzleSolved = false;
+  selectedPiece = null;
+
+  if (btn) btn.style.display = 'none';
+  if (!board) return;
+
+  board.innerHTML = '';
+  if (message) message.innerHTML = '';
+
+  board.style.gridTemplateColumns = `repeat(${PUZZLE_SIZE}, 1fr)`;
+  board.style.gridTemplateRows = `repeat(${PUZZLE_SIZE}, 1fr)`;
+
+  const totalPieces = PUZZLE_SIZE * PUZZLE_SIZE;
+  const pieces = [];
+
+  for (let i = 0; i < totalPieces; i++) { pieces.push(i); }
+
+  do {
+    pieces.sort(() => Math.random() - 0.5);
+  } while (pieces.every((piece, index) => piece === index));
+
+  pieces.forEach((pieceIndex) => {
+    const piece = document.createElement('div');
+    piece.className = 'puzzle-piece';
+    piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
+    piece.dataset.correct = pieceIndex;
+
+    const x = pieceIndex % PUZZLE_SIZE;
+    const y = Math.floor(pieceIndex / PUZZLE_SIZE);
+    const boardSize = board.clientWidth || 320;
+    const pieceSize = boardSize / PUZZLE_SIZE;
+
+    piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
+    piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
+
+    piece.addEventListener('dragstart', dragStart);
+    piece.addEventListener('dragover', dragOver);
+    piece.addEventListener('drop', dropPiece);
+    piece.addEventListener('dragend', dragEnd);
+    piece.addEventListener('click', handlePieceClick);
+    piece.addEventListener('pointerdown', handlePiecePointerDown);
+
+    board.appendChild(piece);
+  });
+}
+
+function dragStart() { if (!puzzleSolved) { draggedPiece = this; this.classList.add('dragging'); } }
+function dragOver(e) { e.preventDefault(); }
+function dropPiece(e) {
+  e.preventDefault();
+  if (puzzleSolved || !draggedPiece || draggedPiece === this) return;
+  const tempBg = this.style.backgroundPosition;
+  const tempCorrect = this.dataset.correct;
+  this.style.backgroundPosition = draggedPiece.style.backgroundPosition;
+  this.dataset.correct = draggedPiece.dataset.correct;
+  draggedPiece.style.backgroundPosition = tempBg;
+  draggedPiece.dataset.correct = tempCorrect;
+  checkPuzzle();
+}
+function dragEnd() { this.classList.remove('dragging'); draggedPiece = null; }
+
+function checkPuzzle() {
+  const pieces = document.querySelectorAll('.puzzle-piece');
+  let solved = true;
+  pieces.forEach((piece, index) => {
+    if (Number(piece.dataset.correct) !== index) { solved = false; }
+  });
+
+  if (solved) {
+    puzzleSolved = true;
+    const message = document.getElementById('puzzle-message');
+    const btn = document.getElementById('btn-puzzle');
+    if (message) {
+      message.innerHTML = `<p>Le sceau est reconstitué !</p><img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp" class="puzzle-result-img">`;
+    }
+    if (btn) btn.style.display = 'inline-block';
+  }
+}
+
+function essayerOuvrir() { showScreen('portecadenas'); }
+const bonCode = '5381';
+
+function nextScreen() {
+  showScreen('porteloin');
+  setTimeout(() => { if (currentScreen === 'porteloin') { showScreen('portecadenas'); } }, 3000);
+}
+
+function verifierCode() {
+  const input = document.getElementById('codeInput');
+  if (!input) return;
+  if (input.value.trim() === bonCode) { showScreen('boncode'); } else { showScreen('mauvaiscode'); }
+}
+
+/* DIALOGUES */
+const dialogueMoine = [
+  "Vous voilà, enfin...",
+  "Je suis Gwenhaël, un des premiers moines de l'abbaye.",
+  "J'ai été désigné par Saint Tanguy, le fondateur de l'abbaye,",
+  "pour que mon âme veille sur ce lieu.",
+  "Yannick, le gardien, a disparu.",
+  "Sortez par la porte latérale nord, et allez près du petit phare."
+];
+let dialogueIndex = 0; let dialogueTimeout = null;
+
+function startDialogueMoine() {
+  const textElement = document.getElementById('dialogue-text');
+  const btn = document.getElementById('after-dialogue-btn');
+  if (dialogueTimeout) clearTimeout(dialogueTimeout);
+  dialogueIndex = 0;
+  if (textElement) textElement.innerHTML = '';
+  if (btn) btn.style.display = 'none';
+  afficherDialogueMoine();
+}
+
+function afficherDialogueMoine() {
+  const textElement = document.getElementById('dialogue-text');
+  if (!textElement || dialogueIndex >= dialogueMoine.length) return;
+  const line = document.createElement('p');
+  line.classList.add('fade-line');
+  line.innerText = dialogueMoine[dialogueIndex];
+  textElement.appendChild(line);
+  dialogueTimeout = setTimeout(() => {
+    dialogueIndex++;
+    if (dialogueIndex < dialogueMoine.length) { afficherDialogueMoine(); } 
+    else { const btn = document.getElementById('after-dialogue-btn'); if (btn) btn.style.display = 'inline-block'; }
+  }, 1000);
+}
+
+const dialogueNaufrageurs = [
+  "La nuit, les navigateurs se repèrent grâce aux phares ou aux lumières des ports.",
+  "Les naufrageurs allument des feux sur la côte",
+  "et les marins croient voir un port sûr ou l'indication d'une route maritime.",
+  "Mais ils dirigent leur navire vers les récifs.",
+  "Cela provoque un échouement ou un naufrage.",
+  "Puis les naufrageurs pillent l’épave..."
+];
+let dialogueIndexNaufrageurs = 0; let dialogueTimeoutNaufrageurs = null;
+
+function startDialogueNaufrageurs() {
+  const textElement = document.getElementById('dialogue-text-naufrageurs');
+  const btn = document.getElementById('after-naufrageurs-btn');
+  if (dialogueTimeoutNaufrageurs) clearTimeout(dialogueTimeoutNaufrageurs);
+  dialogueIndexNaufrageurs = 0;
+  if (textElement) textElement.innerHTML = '';
+  if (btn) btn.style.display = 'none';
+  afficherDialogueNaufrageurs();
+}
+
+function afficherDialogueNaufrageurs() {
+  const textElement = document.getElementById('dialogue-text-naufrageurs');
+  if (!textElement || dialogueIndexNaufrageurs >= dialogueNaufrageurs.length) return;
+  const line = document.createElement('p');
+  line.classList.add('fade-line');
+  line.innerText = dialogueNaufrageurs[dialogueIndexNaufrageurs];
+  textElement.appendChild(line);
+  dialogueTimeoutNaufrageurs = setTimeout(() => {
+    dialogueIndexNaufrageurs++;
+    if (dialogueIndexNaufrageurs < dialogueNaufrageurs.length) { afficherDialogueNaufrageurs(); } 
+    else { const btn = document.getElementById('after-naufrageurs-btn'); if (btn) btn.style.display = 'inline-block'; }
+  }, 1200);
+}
+
+const dialoguePhare = [
+  "Regardez à l'ouest, en contrebas !",
+  "Les naufrageurs ont kidnappé Yannick !!!",
+  "Trouvez une solution pour à la fois :",
+  "faire fuir les brigands",
+  "et prévenir le bateau qui approche les récifs."
+];
+let dialogueIndexPhare = 0; let dialogueTimeoutPhare = null;
+
+function startDialoguePhare() {
+  const textElement = document.getElementById('dialogue-text-phare');
+  const enigme = document.getElementById('enigme-phare');
+  if (dialogueTimeoutPhare) clearTimeout(dialogueTimeoutPhare);
+  dialogueIndexPhare = 0;
+  if (textElement) textElement.innerHTML = '';
+  if (enigme) enigme.style.display = 'none';
+  afficherDialoguePhare();
+}
+
+function afficherDialoguePhare() {
+  const textElement = document.getElementById('dialogue-text-phare');
+  if (!textElement || dialogueIndexPhare >= dialoguePhare.length) return;
+  const line = document.createElement('p');
+  line.classList.add('fade-line');
+  line.innerText = dialoguePhare[dialogueIndexPhare];
+  textElement.appendChild(line);
+  dialogueTimeoutPhare = setTimeout(() => {
+    dialogueIndexPhare++;
+    if (dialogueIndexPhare < dialoguePhare.length) { afficherDialoguePhare(); } 
+    else { const enigme = document.getElementById('enigme-phare'); if (enigme) enigme.style.display = 'block'; }
+  }, 1000);
+}
+
+function verifierMotPhare() {
+  const input = document.getElementById('motPhareInput');
+  const message = document.getElementById('mot-phare-message');
+  if (!input || !message) return;
+  if (input.value.trim().toLowerCase() === 'cloche') { showScreen('suiteaventure'); } else { message.innerText = 'Réessayez'; }
+}
+
+const motPhareInput = document.getElementById('motPhareInput');
+if (motPhareInput) {
+  motPhareInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { verifierMotPhare(); } });
+}
+
+function afficherIndicePhare() {
+  const indice = document.getElementById('indice-phare');
+  if (indice) { indice.innerText = "Je veille au-dessus des toits. Ma voix descend sur la place, appelle les fidèles..."; }
+}
+
+const texteFin = [
+  "Vous avez réussi à faire fuir les naufrageurs !",
+  "Yannick vous dit :",
+  "Le code du cadenas...",
+  "c'est l'année de construction de l'ancien phare,",
+  "mais à l'envers!",
+  "Dépêchez-vous..."
+];
+let indexFin = 0; let timerFin = null;
+
+function lancerTexteFin() {
+  const container = document.getElementById('texte-fin');
+  const btn = document.getElementById('btn-suite');
+  if (!container || !btn) return;
+  if (timerFin) clearTimeout(timerFin);
+  container.innerHTML = ''; indexFin = 0; btn.style.display = 'none';
+  afficherTexteFin();
+}
+
+function afficherTexteFin() {
+  const container = document.getElementById('texte-fin');
+  if (!container || indexFin >= texteFin.length) return;
+  const p = document.createElement('p');
+  p.classList.add('fade-line');
+  p.innerText = texteFin[indexFin];
+  container.appendChild(p);
+  timerFin = setTimeout(() => {
+    indexFin++;
+    if (indexFin < texteFin.length) { afficherTexteFin(); } 
+    else { const btn = document.getElementById('btn-suite'); if (btn) btn.style.display = 'inline-block'; }
+  }, 1200);
+}
+
+function verifierCodeAncienPhare() {
+  const input = document.getElementById('codeAncienPhareInput');
+  const msg = document.getElementById('code-ancien-phare-message');
+  if (input && input.value.trim() === '5381') { showScreen('hautphare'); } else if (msg) { msg.innerText = "Ce n'est pas le bon code."; }
+}
+
+function retourSite() { alert("Fin de la démo !"); }
+</script>
+</body>
+</html>
