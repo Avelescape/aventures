@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#071B34" />
+  <title>Passeport Aventures — Avel Escape</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Cormorant+Garamond:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy:#071B34;--navy-2:#102847;--navy-3:#071B34;
+      --gold:#C89A4A;--gold-light:#d9ac5e;
+      --orange:#F63D0E;--orange-light:#ec6a2d;
+      --cream:#FCE7C9;--parchment:#EAD9BC;--card:#FFF8EE;
+      --sand:#D9C3A0;--border:#D9C3A0;
+      --teal:#1a4040;--text:#1D1A16;--muted:#6D6253;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;background:#FCE7C9}
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      background:var(--cream);
+      color:var(--text);
+      padding-bottom:0;
+      max-width:480px;margin:0 auto;
+      box-shadow:0 0 0 1px rgba(201,162,39,.12), 0 0 40px rgba(0,0,0,.15);
+      min-height:100vh;
+    }
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    .container{width:100%;padding:0 16px}
+
+    /* HEADER */
+    header{background:var(--navy);color:white;border-bottom:1px solid rgba(201,162,39,.3);position:sticky;top:0;z-index:200;overflow:visible;padding-top:env(safe-area-inset-top,0px)}
+    .nav{height:56px;display:flex;align-items:center;justify-content:space-between;position:relative}
+    .nav-center{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center}
+    .nav-logo-img{width:400px;height:120px;object-fit:contain}
+    .nav-logo-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#ec6a2d;white-space:nowrap}
+    .nav-left{display:flex;align-items:center;gap:12px}
+    .nav-burger{display:flex;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:10px;flex-shrink:0;min-width:44px;min-height:44px}
+    .nav-burger span{display:block;width:22px;height:1.5px;background:white}
+    .brand{display:flex;align-items:center;gap:10px}
+    .feather{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.3))}
+    .brand-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--orange);letter-spacing:1.5px;white-space:nowrap}
+    .nav-connexion{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:8px 14px;color:white;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+    /* HERO */
+    .hero{
+      position:relative;
+      min-height:160px;
+      background:
+        url('https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpheropasseport.webp') center/cover no-repeat;
+      display:flex;
+      align-items:flex-start;
+    }
+    .hero::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 25% 20%, rgba(200,154,74,.15), transparent 38%);
+      pointer-events:none;
+    }
+    .hero-content{position:relative;z-index:2;padding:40px 0 48px;padding-left:24px}
+    .hero h2{font-family:'Playfair Display',serif;font-size:clamp(26px,8vw,38px);line-height:.9;color:var(--navy);text-shadow:0 1px 4px rgba(255,255,255,.5);font-weight:800}
+    .hero h2 em{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:clamp(32px,10vw,46px);color:var(--orange);line-height:.95}
+    .hero-buttons{display:flex;flex-direction:column;gap:10px;align-items:flex-start;margin-top:16px}
+    .nav-gratuit{font-size:18px;font-weight:900;color:#DFFF00;letter-spacing:2px}
+    .hero-btn{min-width:220px}
+    .hero-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;border-radius:12px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;border:none;min-height:48px}
+    .hero-btn-primary{background:var(--navy);color:white;border:2px solid #f11d06}
+    .hero-btn-primary.touching{border-color:var(--orange);box-shadow:0 0 0 2px var(--orange)}
+    .hero-btn-secondary{background:var(--card);color:var(--text);border:1.5px solid var(--border)}
+    .btn-left{display:flex;align-items:center;gap:10px}
+
+    /* FEATURES BAR */
+    .features-bar{background:transparent;padding:0 16px;position:relative;z-index:10;margin-top:-28px;margin-bottom:4px}
+    .features-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:22px;
+      box-shadow:0 8px 28px rgba(7,27,52,.12);
+      display:grid;
+      grid-template-columns:1fr 1px 1fr 1px 1fr;
+      align-items:stretch;
+      padding:16px 0;
+    }
+    .feat-div{background:var(--sand);margin:4px 0}
+    .feat-item{display:flex;align-items:center;gap:8px;padding:4px 10px}
+    .feat-icon-wrap{width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--orange)}
+    .feat-icon-wrap svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .feat-label{font-size:11px;font-weight:700;color:var(--navy);line-height:1.4}
+    .feat-item-kids{padding:4px 6px;justify-content:center}
+    .feat-kids-img{width:100%;height:auto;transform:rotate(-2deg)}
+
+    /* INTRO TEXT */
+    .intro-text{padding:14px 16px;background:var(--cream)}
+    .intro-text p{font-size:13px;color:var(--text);line-height:1.6}
+    .intro-brand{font-family:'Playfair Display',serif;font-size:24px;font-weight:800;color:var(--orange);margin-bottom:8px;text-align:center}
+    .intro-gratuit{font-size:20px;font-weight:900;color:var(--orange);vertical-align:middle;line-height:1}
+
+    /* BAR CATÉGORIES */
+    .bar{background:var(--navy);display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:none;position:relative;border-top:1px solid rgba(201,162,39,.16);border-bottom:1px solid rgba(201,162,39,.16)}
+    .bar::-webkit-scrollbar{display:none}
+    .bar-tab{flex:none;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:13px 16px;color:rgba(245,239,224,.7);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:5px;text-decoration:none;min-height:44px}
+    .bar-tab.active{color:#F5EFE0;border-bottom-color:var(--gold)}
+    .bar-drop-wrap{position:static;display:flex}
+    .bar-drop{display:none;position:absolute;top:100%;left:0;right:0;background:var(--parchment);border:.5px solid var(--sand);z-index:500;box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:0 0 12px 12px}
+    .bar-drop.open{display:block}
+    .bar-drop-item{display:block;padding:12px 18px;font-size:14px;color:var(--navy);cursor:pointer;border-top:.5px solid rgba(201,184,138,.4);min-height:44px;display:flex;align-items:center}
+    .bar-drop-item:first-child{border-top:none}
+    .bar-drop-item:active{background:var(--sand);color:var(--orange)}
+    .bar-drop-parent-item{display:flex;align-items:center;justify-content:space-between}
+    .bar-subdrop{display:none}
+    .bar-subdrop.open{display:block}
+    .bar-subdrop-item{display:flex;align-items:center;padding:11px 18px 11px 30px;font-size:13px;color:var(--navy);text-decoration:none;border-top:.5px solid rgba(201,184,138,.25);min-height:44px}
+    .bar-subdrop-item:active{background:var(--sand);color:var(--orange)}
+
+    /* MAP */
+    .map-section{background:var(--cream);padding:20px 0}
+    .map-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 28px rgba(7,27,52,.12)}
+    .map-gps-col{padding:20px 16px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--border)}
+    .map-gps-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--navy);line-height:1.3}
+    .gps-btn{display:flex;align-items:center;justify-content:center;gap:9px;background:var(--navy);color:var(--gold-light);border:none;border-radius:10px;padding:14px 16px;font-size:11px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;cursor:pointer;width:100%;min-height:44px}
+    .gps-btn.locating{background:var(--teal)}
+    .gps-btn svg{flex-shrink:0}
+    .nearby-list{overflow-y:auto;max-height:160px}
+    .nearby-empty{font-size:12px;color:var(--muted);font-style:italic;line-height:1.6}
+    .nearby-item{padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;min-height:44px;display:flex;flex-direction:column;justify-content:center}
+    .nearby-item:last-child{border-bottom:none}
+    .nearby-item:active{opacity:.7}
+    .nearby-item-name{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:2px;line-height:1.3}
+    .nearby-item-dist{font-size:11px;color:var(--muted)}
+    .map-visual-col{min-height:220px}
+    #map{width:100%;height:220px;filter:sepia(.3) saturate(.9) brightness(1.05)}
+
+    /* ADVENTURES */
+    .adventures{background:var(--cream);padding:28px 0}
+    .section-heading-line{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:22px}
+    .section-heading-line::before,.section-heading-line::after{content:'';flex:1;height:1px;background:rgba(201,162,39,.4)}
+    .section-heading-line span{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:white;white-space:nowrap}
+    .carousel-outer{position:relative}
+    .carousel-mask{overflow:hidden}
+    .carousel-track{display:flex;gap:14px;transition:transform .4s cubic-bezier(.4,0,.2,1)}
+    .carousel-nav-btn{display:none}
+    .adv-block{background:var(--card);border-radius:16px;margin-top:20px;padding:18px 14px;border:1px solid var(--border)}
+    .how-title{font-size:12px;font-weight:800;color:var(--orange);letter-spacing:1.5px;text-align:center;margin-bottom:16px}
+    .how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+    .how-step{display:flex;flex-direction:column;align-items:center;gap:7px}
+    .how-icon-wrap{position:relative;width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+    .how-icon-wrap svg{width:40px;height:40px;stroke:var(--orange);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .how-num{position:absolute;bottom:-2px;left:-2px;width:17px;height:17px;background:var(--orange);color:white;border-radius:50%;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif}
+    .how-label{font-size:10px;font-weight:600;color:var(--navy);text-align:center;line-height:1.35}
+    .carousel-dots{display:flex;justify-content:center;align-items:center;gap:5px;margin-top:10px}
+    .carousel-dot{width:6px;height:6px;border-radius:50%;background:var(--sand);cursor:pointer;transition:all .2s;flex-shrink:0}
+    .carousel-dot.active{background:var(--gold);width:18px;border-radius:3px}
+    .carousel-dot.nearby{width:4px;height:4px;background:var(--border)}
+    /* CARTES aventures */
+    .adv-card{flex:0 0 calc(50% - 7px);background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(7,27,52,.15);cursor:pointer}
+    .adv-card:active{transform:scale(.99)}
+    .adv-card-img{height:170px;position:relative;overflow:hidden}
+    .adv-card-img img{width:100%;height:100%;object-fit:cover;display:block}
+    .adv-card-img-ph{width:100%;height:100%;background:linear-gradient(135deg,var(--parchment),var(--cream));display:flex;align-items:center;justify-content:center}
+    .adv-badge-type{position:absolute;top:10px;left:10px;background:var(--orange);color:white;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:5px}
+    .adv-badge-time{position:absolute;top:10px;right:10px;background:rgba(7,20,40,.75);color:white;font-size:9px;font-weight:700;padding:3px 9px;border-radius:5px;display:flex;align-items:center;gap:4px}
+    .adv-card-body{padding:14px 16px}
+    .adv-card-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.25}
+    .adv-card-loc{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:500}
+    .adv-card-info{display:flex;align-items:center;gap:9px;font-size:11px;color:var(--muted);margin-bottom:14px;font-weight:500}
+    .adv-diff{background:var(--parchment);border:1px solid var(--border);border-radius:4px;padding:2px 8px;font-size:10px;font-weight:600;color:var(--text)}
+    .adv-card-actions{display:flex;gap:9px}
+    .adv-btn-voir{flex:1;background:var(--orange);color:white;border:none;border-radius:9px;padding:12px 14px;font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;cursor:pointer;min-height:44px}
+    .adv-btn-fav{width:44px;height:44px;border-radius:9px;border:1.5px solid var(--border);background:var(--parchment);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--muted)}
+    .adv-btn-fav.fav-active{color:var(--orange);border-color:var(--orange)}
+    .adv-btn-fav.fav-active svg{fill:var(--orange)}
+
+    /* PROGRESSION */
+    .progress-section{background:white;padding:20px 0}
+    .progress-card{background:var(--cream);border-radius:16px;overflow:hidden;border:1px solid var(--sand);box-shadow:0 4px 20px rgba(7,20,40,.07)}
+    .prog-top{display:flex;flex-direction:column;border-bottom:1px solid var(--sand)}
+    .prog-top-left{padding:18px 16px;border-bottom:1px solid var(--sand)}
+    .prog-label{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--navy);margin-bottom:12px}
+    .prog-stars{display:flex;gap:8px;margin-bottom:8px}
+    .prog-star{width:32px;height:32px;border-radius:50%;border:2px solid var(--sand);display:flex;align-items:center;justify-content:center;font-size:14px}
+    .prog-star.done{background:var(--navy);border-color:var(--navy);color:var(--gold)}
+    .prog-star.empty{color:var(--sand)}
+    .prog-text{font-size:13px;font-weight:600;color:var(--navy)}
+    .prog-top-right{padding:16px;display:flex;align-items:flex-start;gap:14px}
+    .prog-lock{width:44px;height:44px;border-radius:50%;background:var(--parchment);border:2px solid var(--sand);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .prog-mission-title{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);margin-bottom:4px}
+    .prog-mission-desc{font-size:12px;color:var(--muted);line-height:1.5}
+    .prog-bottom{display:flex;flex-direction:column;background:var(--parchment)}
+    .prog-stat{padding:14px 16px;border-bottom:1px solid var(--sand);display:flex;align-items:center;gap:14px}
+    .prog-stat:last-child{border-bottom:none;position:relative;overflow:hidden}
+    .prog-stat-ico{font-size:26px;flex-shrink:0}
+    .prog-stat-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);line-height:1}
+    .prog-stat-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-top:2px}
+    .prog-auteur-body{flex:1;min-width:0}
+    .prog-auteur-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px;line-height:1.25}
+    .prog-auteur-desc{font-size:11px;color:var(--muted);line-height:1.5}
+    .prog-rose-deco{position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:80px;height:80px;opacity:.15;pointer-events:none}
+
+    /* AVIS */
+    .reviews-section{background:var(--cream);padding:20px 0}
+    .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .review-photo-card{border-radius:12px;overflow:hidden;background:var(--navy);min-height:100px}
+    .review-photo-card img{width:100%;height:100%;object-fit:cover;display:block}
+    .review-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:5px;min-height:100px}
+    .review-stars{color:var(--orange);font-size:13px;letter-spacing:1px}
+    .review-text{font-size:12px;color:var(--text);line-height:1.5;flex:1;font-style:italic}
+    .review-author{font-size:11px;font-weight:700;color:var(--navy)}
+    .review-source{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--muted);margin-top:auto}
+
+    /* CTA */
+    .cta-section{background:var(--navy);overflow:hidden;border:1px solid rgba(201,162,39,.16);border-radius:16px;margin:0 12px 12px}
+    .cta-inner{display:grid;grid-template-columns:1fr 2fr;gap:8px;padding:2px 10px;align-items:center}
+    .cta-col-left{display:flex;flex-direction:column;gap:14px}
+    .cta-col-right{display:flex;align-items:center;justify-content:center}
+    .cta-title{font-family:'Playfair Display',serif;font-size:14px;color:white;line-height:1.55}
+    .cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--navy);border-radius:10px;padding:12px 14px;border:none;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;min-height:44px}
+    .cta-btn-cgv{display:inline-flex;align-items:center;justify-content:center;background:var(--cream);color:var(--navy);border-radius:10px;padding:12px 18px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-decoration:none;min-height:44px}
+
+    /* BOTTOM NAV */
+    .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:200;background:white;border-top:1px solid var(--border);display:flex;height:52px;padding-bottom:env(safe-area-inset-bottom)}
+    .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;color:var(--muted);font-size:10px;font-weight:500;text-decoration:none;padding:8px 4px}
+    .bnav-item.active{color:var(--orange)}
+    .bnav-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+    /* MODALE */
+    .modal-bg{display:none;position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(7,20,40,.65);z-index:2000;overflow-y:auto;padding:20px 16px}
+    .modal-bg.open{display:flex;align-items:flex-start;justify-content:center}
+    .modal{background:var(--card);max-width:100%;width:100%;border-radius:22px;padding:20px;position:relative;border:1px solid var(--border);box-shadow:0 16px 50px rgba(0,0,0,.25)}
+    .modal-img{margin:-20px -20px 16px;height:180px;overflow:hidden;border-radius:22px 22px 0 0;background:var(--parchment)}
+    .modal-img img{width:100%;height:100%;object-fit:cover;display:block}
+    .modal-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+    .modal-close{float:right;background:transparent;border:1px solid var(--border);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);min-height:36px}
+    .modal-type{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-top:14px}
+    .modal h2{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin:6px 0 5px}
+    .modal p{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:14px;font-style:italic;font-family:Georgia,serif}
+    .modal-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+    .modal-tag{font-size:11px;background:var(--parchment);border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px}
+    .modal-actions{display:flex;flex-direction:column;gap:10px}
+    .btn-fiche-primary{padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;background:var(--navy);color:white;border:none;border-radius:9px;cursor:pointer;min-height:44px;display:block;width:100%;text-align:center}
+    .modal-btn-kids{background:var(--orange)!important}
+    .modal-btn-kids em{font-style:italic;font-family:Georgia,serif;font-size:12px}
+    .btn-itinerary{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--orange);border:1.5px solid var(--orange);padding:12px 14px;border-radius:9px;background:transparent;cursor:pointer;min-height:44px;text-decoration:none}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="container nav">
+    <button class="nav-burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-center">
+      <img class="nav-logo-img" src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webproseaveltransparent.webp" alt="Rose des vents">
+    </div>
+    <button class="nav-connexion">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-4 3.1-7 7-7s7 3 7 7"/></svg>
+      Connexion
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h2>Visitez <em>autrement</em></h2>
+      <div class="hero-buttons">
+        <a class="hero-btn hero-btn-secondary" href="#carte">
+          Trouver un lieu
+          <span>→</span>
+        </a>
+        <a class="hero-btn hero-btn-primary" href="#">
+          Mon passeport
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES BAR/ bars de fonctionnalités -->
+  <div class="features-bar">
+    <div class="features-card">
+      <div class="feat-item">
+        <div class="feat-icon-wrap">
+          <svg viewBox="0 0 40 40"><circle cx="17" cy="17" r="9"/><line x1="23" y1="23" x2="33" y2="33"/></svg>
+        </div>
+        <p class="feat-label">Transformer vos escapades touristiques en véritables aventures</p>
+      </div>
+      <div class="feat-div"></div>
+      <div class="feat-item">
+        <div class="feat-icon-wrap">
+          <svg viewBox="0 0 40 40"><circle cx="13" cy="13" r="4.5"/><circle cx="27" cy="13" r="4.5"/><path d="M5 34c0-7 4-11 8-11M35 34c0-7-4-11-8-11M12 34c0-7 3.6-11 8-11s8 4 8 11"/></svg>
+        </div>
+        <p class="feat-label">Seul, en famille ou entre amis</p>
+      </div>
+      <div class="feat-div"></div>
+      <div class="feat-item feat-item-kids">
+        <img class="feat-kids-img" src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/parecheminkids.png" alt="Aventures Kids">
+      </div>
+    </div>
+  </div>
+
+  <!-- TEXTE INTRO -->
+  <div class="intro-text">
+    <h3 class="intro-brand">Avel Escape</h3>
+    <p>Vous propose de découvrir ou de redécouvrir des lieux touristiques (sites historiques, vieux centres-villes...) de façon ludique.<br><br>Basés sur l'histoire, vous l'explorerez le lieu choisi de façon ludique à travers une enquête ou un escape game <span class="intro-gratuit">GRATUIT</span><br><br></p>
+  </div>
+
+  <!-- BAR CATÉGORIES -->
+  <div class="bar">
+    <div class="bar-drop-wrap">
+      <a class="bar-tab active" href="#fiches" onclick="toggleBarDrop(event)">
+        Trouver un lieu
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </a>
+      <div class="bar-drop" id="barDrop">
+        <span class="bar-drop-item bar-drop-parent-item" onclick="toggleBarSubdrop(event,'finistereDrop')">
+          Finistère (29)
+          <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </span>
+        <div class="bar-subdrop" id="finistereDrop">
+          <a class="bar-subdrop-item" href="Leconquet.html">Le Conquet</a>
+          <a class="bar-subdrop-item" href="Stmathieuadulte.html">Plougonvelin</a>
+          <a class="bar-subdrop-item" href="Stmathieukids.html">Saint-Mathieu Kids</a>
+        </div>
+        <span class="bar-drop-item" onclick="filterDept('Morbihan')">Morbihan (56)</span>
+        <span class="bar-drop-item" onclick="filterDept('Ille-et-Vilaine')">Ille-et-Vilaine (35)</span>
+      </div>
+    </div>
+    <a class="bar-tab" href="#fiches" onclick="filterType('escape');return false;">Escape games</a>
+    <a class="bar-tab" href="#fiches" onclick="filterType('enquête');return false;">Enquêtes</a>
+    <a class="bar-tab" href="#carte">Carte GPS</a>
+  </div>
+
+  <!-- MAP — carte arrondie sur fond sombre -->
+  <section id="carte" class="map-section">
+    <div class="container">
+    <div class="map-card">
+      <div class="map-gps-col">
+        <p class="map-gps-title">Ma position<br>&amp; jeux à proximité</p>
+        <button class="gps-btn" id="gpsBtn" onclick="locateUser()">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><circle cx="10" cy="10" r="7"/><line x1="10" y1="1" x2="10" y2="3"/><line x1="10" y1="17" x2="10" y2="19"/><line x1="1" y1="10" x2="3" y2="10"/><line x1="17" y1="10" x2="19" y2="10"/></svg>
+          Localiser ma position
+        </button>
+        <div id="nearbyList" class="nearby-list">
+          <p class="nearby-empty">Activez la géolocalisation pour voir les aventures les plus proches de vous.</p>
+        </div>
+      </div>
+      <div class="map-visual-col">
+        <div id="map"></div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ADVENTURES — carrousel -->
+  <section id="fiches" class="adventures">
+    <div class="container">
+      <div class="section-heading-line">
+        <span>Choisissez votre prochaine aventure</span>
+      </div>
+      <div class="carousel-outer">
+        <button class="carousel-nav-btn prev" onclick="carouselPrev()" aria-label="Précédent">&#8249;</button>
+        <div class="carousel-mask">
+          <div class="carousel-track" id="carouselTrack"></div>
+        </div>
+        <button class="carousel-nav-btn next" onclick="carouselNext()" aria-label="Suivant">&#8250;</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+      </div>
+      <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpcollectionnerlesaventures.webp" alt="Missions secrètes" style="width:100%;border-radius:16px;margin-top:12px;display:block">
+    </div>
+  </section>
+
+  <!-- PROGRESSION — carte arrondie sur fond parchemin -->
+
+  <!-- AVIS -->
+  <section class="reviews-section">
+    <div class="container">
+      <div class="reviews-grid">
+        <div class="review-photo-card">
+          <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpgroupesacados.webp" alt="Aventure Avel Escape">
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">« Parfait pour une balade culturelle originale et en famille. Nous avons adoré! »</p>
+          <p class="review-author">Sandra.</p>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">« Hâte de valider de nouvelles aventures dans mon passeport et de débloquer une aventure secrète »</p>
+          <p class="review-author">Nathan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <div class="cta-col-left">
+        <a class="cta-btn-cgv" href="#" target="_blank">CGV</a>
+      </div>
+      <div class="cta-col-right">
+        <a href="#" target="_blank">
+          <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpdevenezauteur.webp" alt="Devenez auteur" style="width:100%;display:block;border-radius:10px">
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+<!-- MODALE Fenêtre qui s'ouvre-->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-img" id="modal-img"></div>
+    <button class="modal-close" onclick="closeModal()">✕ Fermer</button>
+    <div class="modal-type" id="modal-type"></div>
+    <h2 id="modal-title"></h2>
+    <p id="modal-desc"></p>
+    <div class="modal-meta" id="modal-meta"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
+
+<script>
+const sites=[
+  {id:1,title:"Le Mystère du Phare de St-Mathieu",type:"enquête",city:"Plougonvelin",dept:"Finistère",kids:true,desc:"1834 — Le gardien du phare de Saint-Mathieu a disparu, mettant en danger les bateaux navigant en mer d'Iroise.",lat:48.3327,lng:-4.7754,gmaps:"https://maps.google.com/?q=48.3327,-4.7754",img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpsaintmathieu.webp",url:""C:\Users\salio\Documents\1-avelescape\saintmathieu\adulte\stmathieuadulte.html",urlKids:"Stmathieukids.html"},
+  {id:2,title:"Les irrépressibles Conquetois",type:"enquête",city:"Le Conquet",dept:"Finistère",duration:"90 MIN",players:"2–6 joueurs",difficulty:"Facile",kids:false,desc:"1874 — Visitez Le Conquet à travers une enquête humouristique.",lat:48.3594,lng:-4.7739,gmaps:"https://maps.google.com/?q=48.3594,-4.7739",img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpleconquet.webp",url:"leconquet.html"},
+];
+
+let currentFilter={type:null,dept:null};
+let carouselPos=0;
+let mapInst,userMarker;
+
+/* ── CAROUSEL ── */
+function getCardsPerView(){return 2;}
+
+function renderCarousel(){
+  const track=document.getElementById('carouselTrack');
+  const dots=document.getElementById('carouselDots');
+  track.innerHTML='';dots.innerHTML='';
+  const filtered=sites.filter(s=>{
+    if(currentFilter.type&&s.type!==currentFilter.type)return false;
+    if(currentFilter.dept&&!s.dept.includes(currentFilter.dept))return false;
+    return true;
+  });
+  if(!filtered.length){
+    track.innerHTML='<p style="color:rgba(255,255,255,.6);font-style:italic;padding:20px 0">Aucune aventure trouvée.</p>';
+    return;
+  }
+  filtered.forEach(s=>{
+    const imgHtml=s.img
+      ?`<img src="${s.img}" alt="${s.title}" loading="lazy">`
+      :`<div class="adv-card-img-ph"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" opacity="0.2"><rect x="4" y="10" width="40" height="28" rx="3" stroke="#C8B89A" stroke-width="2"/><circle cx="17" cy="22" r="6" stroke="#C8B89A" stroke-width="2"/><path d="M4 34l12-10 10 8 7-6 11 8" stroke="#C8B89A" stroke-width="2"/></svg></div>`;
+    track.innerHTML+=`
+    <div class="adv-card" onclick="openModal(${s.id})">
+      <div class="adv-card-img">
+        ${imgHtml}
+      </div>
+      <div class="adv-card-body">
+        <h3 class="adv-card-title">${s.title}</h3>
+        <div class="adv-card-loc">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="7" r="2.5"/><path d="M8 1.5C5 1.5 3 4 3 6.5c0 4 5 9 5 9s5-5 5-9c0-2.5-2-5-5-5z"/></svg>
+          ${s.city}&nbsp;•&nbsp;${s.dept}
+        </div>
+        <div class="adv-card-actions">
+          <button class="adv-btn-voir" onclick="event.stopPropagation();openModal(${s.id})">
+            Voir l'aventure
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><line x1="4" y1="10" x2="16" y2="10"/><path d="M11 5l5 5-5 5"/></svg>
+          </button>
+          <button class="adv-btn-fav" onclick="event.stopPropagation();this.classList.toggle('fav-active')" aria-label="Favoris">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 000-7.8z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`;
+  });
+  const cpv=getCardsPerView();
+  const pages=Math.ceil(filtered.length/cpv);
+  for(let i=0;i<pages;i++){
+    const d=document.createElement('button');
+    d.className='carousel-dot';
+    d.setAttribute('data-page',i);
+    d.onclick=(p=>()=>goToPage(p))(i);
+    dots.appendChild(d);
+  }
+  carouselPos=0;updateCarouselPos();
+}
+
+function updateCarouselPos(){
+  const track=document.getElementById('carouselTrack');if(!track)return;
+  const cpv=getCardsPerView();const gap=14;
+  const cardW=(track.parentElement.offsetWidth-(cpv-1)*gap)/cpv;
+  track.style.transform=`translateX(-${carouselPos*(cardW+gap)}px)`;
+  const cur=Math.floor(carouselPos/cpv);
+  document.querySelectorAll('.carousel-dot').forEach(d=>{
+    const i=parseInt(d.getAttribute('data-page'));
+    const dist=Math.abs(i-cur);
+    d.className='carousel-dot'+(i===cur?' active':dist<=2?' nearby':'');
+    d.style.display=dist<=3?'block':'none';
+  });
+}
+function carouselPrev(){if(carouselPos>0){carouselPos--;updateCarouselPos();}}
+function carouselNext(){
+  const max=document.querySelectorAll('.adv-card').length-getCardsPerView();
+  if(carouselPos<max){carouselPos++;updateCarouselPos();}
+}
+function goToPage(p){
+  const max=document.querySelectorAll('.adv-card').length-getCardsPerView();
+  carouselPos=Math.min(p*getCardsPerView(),Math.max(0,max));
+  updateCarouselPos();
+}
+window.addEventListener('resize',()=>{carouselPos=0;updateCarouselPos();});
+
+/* ── SWIPE ── */
+(function(){
+  const mask = document.querySelector('.carousel-mask');
+  if(!mask) return;
+  let startX = 0, startY = 0, isHoriz = null;
+
+  mask.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isHoriz = null;
+  }, {passive: true});
+
+  mask.addEventListener('touchmove', e => {
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if(isHoriz === null) isHoriz = Math.abs(dx) > Math.abs(dy);
+    if(isHoriz) e.preventDefault();
+  }, {passive: false});
+
+  mask.addEventListener('touchend', e => {
+    if(!isHoriz) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if(Math.abs(dx) > 40){
+      dx < 0 ? carouselNext() : carouselPrev();
+    }
+  });
+})();
+
+/* ── FILTRES ── */
+function filterType(t){
+  currentFilter.type=currentFilter.type===t?null:t;
+  currentFilter.dept=null;
+  document.querySelector('#fiches').scrollIntoView({behavior:'smooth'});
+  renderCarousel();
+}
+function filterDept(d){
+  currentFilter.dept=currentFilter.dept===d?null:d;
+  currentFilter.type=null;
+  document.getElementById('barDrop').classList.remove('open');
+  document.querySelector('#fiches').scrollIntoView({behavior:'smooth'});
+  renderCarousel();
+}
+function toggleBarDrop(e){e.preventDefault();document.getElementById('barDrop').classList.toggle('open');}
+function toggleBarSubdrop(e,id){e.stopPropagation();document.getElementById(id).classList.toggle('open');}
+
+/* ── MODAL ── */
+function openModal(id){
+  const s=sites.find(x=>x.id===id);if(!s)return;
+  document.getElementById('modal-img').innerHTML=s.img
+    ?`<img src="${s.img}" alt="${s.title}" loading="lazy">`
+    :`<div class="modal-img-ph"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" opacity="0.18"><rect x="4" y="10" width="40" height="28" rx="3" stroke="#C8B89A" stroke-width="2"/><circle cx="17" cy="22" r="6" stroke="#C8B89A" stroke-width="2"/><path d="M4 34l12-10 10 8 7-6 11 8" stroke="#C8B89A" stroke-width="2"/></svg></div>`;
+  document.getElementById('modal-type').textContent=s.type==='escape'?'Escape game':'Enquête';
+  document.getElementById('modal-title').textContent=s.title;
+  document.getElementById('modal-desc').textContent=s.desc;
+  document.getElementById('modal-meta').innerHTML=
+    `<span class="modal-tag">${s.duration}</span><span class="modal-tag">${s.players}</span><span class="modal-tag">${s.city}</span><span class="modal-tag">${s.dept}</span>`;
+  document.getElementById('modal-actions').innerHTML=
+    `${s.url?`<a class="btn-fiche-primary" href="${s.url}" style="text-align:center;text-decoration:none">Commencer</a>`:`<button class="btn-fiche-primary" onclick="alert('Aventure à venir !')">Commencer</button>`}
+     ${s.kids&&s.urlKids?`<a class="btn-fiche-primary modal-btn-kids" href="${s.urlKids}" style="text-align:center;text-decoration:none">Commencer <em>— kids —</em></a>`:s.kids?`<button class="btn-fiche-primary modal-btn-kids" onclick="alert('Aventure Kids à venir !')">Commencer <em>— kids —</em></button>`:''}
+     <a class="btn-itinerary" href="${s.gmaps}" target="_blank">
+       <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="6" r="2.5"/><path d="M7 1.5C4.5 1.5 2.5 3.5 2.5 6c0 3.5 4.5 7 4.5 7S12 9.5 12 6c0-2.5-2-4.5-4.5-4.5z"/></svg>
+       Google Maps
+     </a>`;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
+
+/* ── GÉOLOCALISATION ── */
+function haversine(lat1,lng1,lat2,lng2){
+  const R=6371,dL=(lat2-lat1)*Math.PI/180,dG=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dL/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dG/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+function locateUser(){
+  if(!navigator.geolocation){alert('Géolocalisation non supportée par votre navigateur.');return;}
+  const btn=document.getElementById('gpsBtn');
+  btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><circle cx="10" cy="10" r="7"/><line x1="10" y1="1" x2="10" y2="3"/><line x1="10" y1="17" x2="10" y2="19"/><line x1="1" y1="10" x2="3" y2="10"/><line x1="17" y1="10" x2="19" y2="10"/></svg> Localisation…`;
+  btn.classList.add('locating');
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const{latitude:lat,longitude:lng}=pos.coords;
+    btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4 10 8 14 16 6"/></svg> Position trouvée`;
+    if(mapInst){
+      if(userMarker)userMarker.remove();
+      userMarker=L.circleMarker([lat,lng],{radius:9,fillColor:'#1a4040',fillOpacity:1,color:'white',weight:2.5}).addTo(mapInst)
+        .bindPopup('<b>Vous êtes ici</b>').openPopup();
+      mapInst.flyTo([lat,lng],10);
+    }
+    const sorted=[...sites].map(s=>({...s,dist:haversine(lat,lng,s.lat,s.lng)})).sort((a,b)=>a.dist-b.dist);
+    document.getElementById('nearbyList').innerHTML=sorted.map(s=>`
+      <div class="nearby-item" onclick="openModal(${s.id})">
+        <div class="nearby-item-name">${s.title}</div>
+        <div class="nearby-item-dist">${s.city} — ${s.dist<1?Math.round(s.dist*1000)+' km':Math.round(s.dist)+' km'}</div>
+      </div>`).join('');
+  },()=>{
+    btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><circle cx="10" cy="10" r="7"/><line x1="10" y1="1" x2="10" y2="3"/><line x1="10" y1="17" x2="10" y2="19"/><line x1="1" y1="10" x2="3" y2="10"/><line x1="17" y1="10" x2="19" y2="10"/></svg> Localiser ma position`;
+    btn.classList.remove('locating');
+    alert('Localisation refusée ou impossible.');
+  });
+}
+
+/* ── MAP ── */
+function initMap(){
+  mapInst=L.map('map').setView([48.2,-2.9],8);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:18}).addTo(mapInst);
+  sites.forEach(s=>{
+    const icon=L.divIcon({className:'',
+      html:`<div style="background:${s.type==='escape'?'#d4530a':'#071428'};color:white;font-family:Inter,sans-serif;font-size:9px;font-weight:700;letter-spacing:.08em;padding:4px 10px;white-space:nowrap;border-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,.3)">${s.type==='escape'?'ESCAPE':'ENQUÊTE'}</div>`,
+      iconAnchor:[28,14]
+    });
+    L.marker([s.lat,s.lng],{icon}).addTo(mapInst)
+     .bindPopup(`<b style="font-family:'Playfair Display',serif">${s.title}</b><br><small>${s.city}</small><br><a href="${s.gmaps}" target="_blank" style="color:#d4530a;font-size:11px">Itinéraire →</a>`);
+  });
+}
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.bar-drop-wrap')){
+    document.getElementById('barDrop').classList.remove('open');
+    document.getElementById('finistereDrop').classList.remove('open');
+  }
+});
+
+renderCarousel();
+if(typeof L!=='undefined'){initMap();}
+else{window.addEventListener('load',()=>{if(typeof L!=='undefined')initMap();});}
+
+document.querySelectorAll('.hero-btn-primary').forEach(btn=>{
+  btn.addEventListener('touchstart',()=>btn.classList.add('touching'),{passive:true});
+  btn.addEventListener('touchend',()=>btn.classList.remove('touching'));
+  btn.addEventListener('touchcancel',()=>btn.classList.remove('touching'));
+});
+</script>
+</body>
+</html>
