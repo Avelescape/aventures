@@ -1,174 +1,245 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>Mécanisme du phare</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AvelEscape - Mécanisme</title>
 
 <style>
-
-html,
-body{
-    margin:0;
-    padding:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#000;
-    font-family:Arial,sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    touch-action: manipulation;
+    font-family: Arial, sans-serif;
 }
 
-/* Le conteneur respecte le ratio exact de ton image 3D (environ 2:1 ou 16:9 étiré) */
-.scene{
-    position:relative;
-    aspect-ratio: 16 / 8; 
-    width: 100vw;
-    max-height: 100vh;
-
-    background-image:url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppahreeteint.webp");
-    background-size:100% 100%;
-    background-repeat:no-repeat;
-    background-position:center;
+.scene {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
 }
 
-@media (orientation: portrait) {
-    .scene {
-        width: auto;
-        height: 100vh;
-        max-width: 100vw;
-    }
+/* CADRE TOUJOURS EN 1152 x 2048 */
+.game {
+    position: relative;
+    width: min(100vw, calc(100vh * 1152 / 2048));
+    aspect-ratio: 1152 / 2048;
+    background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppahreeteint.webp");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
 }
 
-/* ---------------- ZONES CLIQUABLES ---------------- */
-
-.zone{
-    position:absolute;
-    background:rgba(0,170,255,0.25); /* Bleu semi-transparent pour ajuster */
-    border:2px solid rgba(255,255,255,0.5);
-    border-radius:4px;
-    cursor:pointer;
-    transition:.15s;
-    touch-action:manipulation;
-    z-index: 10;
+/* SVG DES ZONES */
+.zones {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
-.zone:active{
-    background:rgba(89, 55, 14, 0.45);
-    transform:scale(.96);
+/* ZONES CLIQUABLES */
+.zone {
+    fill: rgba(0, 170, 255, 0.18);
+    stroke: rgba(255, 255, 255, 0.55);
+    stroke-width: 4;
+    cursor: pointer;
 }
 
-/* ---------- NOUVELLES POSITIONS ALIGNÉES SUR LES LETTRES ET LES POIDS ---------- */
-
-#zoneA{ left:31.5%; top:42%; width:6.5%; height:13%; } /* Lettre A */
-#zoneB{ left:42.5%; top:42%; width:6.5%; height:13%; } /* Lettre B */
-#zoneC{ left:53.5%; top:42%; width:6.5%; height:13%; } /* Lettre C */
-#zoneD{ left:64.5%; top:42%; width:6.5%; height:13%; } /* Lettre D */
-
-#zoneE{ left:36.5%; top:67%; width:9%; height:17%; }  /* Poids 10Kg */
-#zoneF{ left:47.5%; top:64%; width:10%; height:20%; } /* Poids 20Kg */
-#zoneG{ left:59.5%; top:61%; width:12%; height:23%; } /* Poids 30Kg */
-
-/* ---------------- ENGRENAGES ---------------- */
-
-.engrenage{
-    position:absolute;
-    width:4.5%; 
-    height:auto;
-    display:block;
-    user-select:none;
-    pointer-events:none;
-    transform-origin:center center;
+.zone:active {
+    fill: rgba(255, 255, 255, 0.35);
 }
 
-/* Alignés pile sous les lettres B et C comme sur ton modèle */
-#engrenageA{ left:41.2%; top:49.5%; width:4.2%; }
-#engrenageB{ left:43.7%; top:53.5%; width:5.5%; } 
-#engrenageC{ left:48.2%; top:49.5%; width:5.5%; }
-#engrenageD{ left:50.8%; top:53.0%; width:3.8%; }
-
-.tourneDroite{ animation:rotationDroite 4s linear infinite; }
-.tourneGauche{ animation:rotationGauche 4s linear infinite; }
-
-@keyframes rotationDroite{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
-@keyframes rotationGauche{ from{transform:rotate(360deg);} to{transform:rotate(0deg);} }
-
-/* ---------- Message ---------- */
-
-#message{
-    position:absolute;
-    bottom:3%;
-    width:100%;
-    text-align:center;
-    color:white;
-    font-size:20px;
-    text-shadow:0 0 10px black;
-    z-index: 20;
+/* LETTRES */
+.zone-text {
+    fill: white;
+    font-size: 52px;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
 }
 
-@media (max-width: 600px) {
-    #message { font-size: 14px; }
+/* MESSAGE */
+.message {
+    position: absolute;
+    left: 50%;
+    bottom: 5%;
+    transform: translateX(-50%);
+    width: 80%;
+    padding: 14px;
+    background: rgba(0,0,0,0.75);
+    color: white;
+    text-align: center;
+    border-radius: 12px;
+    font-size: 18px;
+    display: none;
 }
 
+/* ENGRENAGES */
+.gear {
+    position: absolute;
+    width: 13%;
+    aspect-ratio: 1 / 1;
+    background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/engrenage.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: none;
+}
+
+#gear1 {
+    left: 38%;
+    top: 56%;
+}
+
+#gear2 {
+    left: 50%;
+    top: 56%;
+}
+
+.active #gear1 {
+    display: block;
+    animation: rotateRight 2s linear infinite;
+}
+
+.active #gear2 {
+    display: block;
+    animation: rotateLeft 2s linear infinite;
+}
+
+@keyframes rotateRight {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotateLeft {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+
+/* BOUTON RESET */
+.reset {
+    position: absolute;
+    top: 2%;
+    right: 4%;
+    z-index: 5;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.65);
+    color: white;
+    font-size: 14px;
+}
 </style>
-
 </head>
+
 <body>
 
 <div class="scene">
+    <div class="game" id="game">
 
-    <div class="zone" id="zoneA" onclick="clicZone('A')"></div>
-    <div class="zone" id="zoneB" onclick="clicZone('B')"></div>
-    <div class="zone" id="zoneC" onclick="clicZone('C')"></div>
-    <div class="zone" id="zoneD" onclick="clicZone('D')"></div>
-    <div class="zone" id="zoneE" onclick="clicZone('E')"></div>
-    <div class="zone" id="zoneF" onclick="clicZone('F')"></div>
-    <div class="zone" id="zoneG" onclick="clicZone('G')"></div>
+        <button class="reset" onclick="resetGame()">Réinitialiser</button>
 
-    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageA" class="engrenage">
-    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageB" class="engrenage">
-    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageC" class="engrenage">
-    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageD" class="engrenage">
+        <!--  
+        IMPORTANT :
+        Toutes les coordonnées sont basées sur l'image 1152 x 2048.
+        x = gauche/droite
+        y = haut/bas
+        width = largeur
+        height = hauteur
+        -->
 
-    <div id="message">Touchez les éléments du mécanisme.</div>
+        <svg class="zones" viewBox="0 0 1152 2048" preserveAspectRatio="none">
 
+            <!-- A -->
+            <rect class="zone" x="370" y="800" width="130" height="120" rx="15" onclick="clickZone('A')" />
+            <text class="zone-text" x="365" y="840">A</text>
+
+            <!-- B -->
+            <rect class="zone" x="520" y="800" width="130" height="120" rx="15" onclick="clickZone('B')" />
+            <text class="zone-text" x="525" y="840">B</text>
+
+            <!-- C -->
+            <rect class="zone" x="680" y="800" width="130" height="120" rx="15" onclick="clickZone('C')" />
+            <text class="zone-text" x="685" y="840">C</text>
+
+            <!-- D -->
+            <rect class="zone" x="850" y="800" width="130" height="120" rx="15" onclick="clickZone('D')" />
+            <text class="zone-text" x="845" y="840">D</text>
+
+            <!-- E -->
+            <rect class="zone" x="530" y="1050" width="130" height="120" rx="15" onclick="clickZone('E')" />
+            <text class="zone-text" x="365" y="1010">E</text>
+
+            <!-- F -->
+            <rect class="zone" x="460" y="1050" width="130" height="120" rx="15" onclick="clickZone('F')" />
+            <text class="zone-text" x="525" y="1010">F</text>
+
+            <!-- G -->
+            <rect class="zone" x="620" y="1050" width="130" height="120" rx="15" onclick="clickZone('G')" />
+            <text class="zone-text" x="685" y="1010">G</text>
+
+        </svg>
+
+        <div id="gear1" class="gear"></div>
+        <div id="gear2" class="gear"></div>
+
+        <div id="message" class="message"></div>
+
+    </div>
 </div>
 
 <script>
+const codeCorrect = ["D", "A", "B", "C", "G"];
+let sequence = [];
+let solved = false;
 
-const bonCode = "DABCG";
-let saisie = "";
-let mecanismeLance = false;
+function clickZone(letter) {
+    if (solved) return;
 
-function clicZone(valeur){
-    if(mecanismeLance) return;
-    saisie += valeur;
-    document.getElementById("message").innerHTML = "Séquence : " + saisie;
+    sequence.push(letter);
 
-    if(!bonCode.startsWith(saisie)){
-        document.getElementById("message").innerHTML = "❌ Mauvais ordre";
-        saisie = "";
-        return;
+    showMessage("Séquence : " + sequence.join(" "));
+
+    for (let i = 0; i < sequence.length; i++) {
+        if (sequence[i] !== codeCorrect[i]) {
+            showMessage("Mauvais ordre. Le mécanisme se bloque.");
+            sequence = [];
+            return;
+        }
     }
 
-    if(saisie === bonCode){
-        lancerMecanisme();
+    if (sequence.length === codeCorrect.length) {
+        success();
     }
 }
 
-function lancerMecanisme(){
-    mecanismeLance = true;
-    document.getElementById("engrenageA").classList.add("tourneDroite");
-    document.getElementById("engrenageB").classList.add("tourneGauche");
-    document.getElementById("engrenageC").classList.add("tourneDroite");
-    document.getElementById("engrenageD").classList.add("tourneGauche");
-    document.getElementById("message").innerHTML = "✅ Les engrenages du phare s'enclenchent";
+function success() {
+    solved = true;
+    document.getElementById("game").classList.add("active");
+    showMessage("Code correct. Le mécanisme s'enclenche.");
 }
 
+function resetGame() {
+    sequence = [];
+    solved = false;
+    document.getElementById("game").classList.remove("active");
+    showMessage("Mécanisme réinitialisé.");
+}
+
+function showMessage(text) {
+    const message = document.getElementById("message");
+    message.textContent = text;
+    message.style.display = "block";
+}
 </script>
 
 </body>
