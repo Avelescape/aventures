@@ -10,7 +10,7 @@
 html, body {
   margin: 0;
   width: 100%;
-  height: 100%;
+  height: 100dvh;
   background: black;
   overflow: hidden;
   font-family: Arial, sans-serif;
@@ -18,7 +18,7 @@ html, body {
 
 .page {
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,10 +26,9 @@ html, body {
 
 .scene {
   position: relative;
-  height: 100vh;
-  aspect-ratio: 1152 / 2048;
-  max-width: 100vw;
-  max-height: 100vh;
+  width: min(100vw, calc(100dvh * 1152 / 2048));
+  height: min(100dvh, calc(100vw * 2048 / 1152));
+  overflow: hidden;
 }
 
 .fond {
@@ -37,6 +36,7 @@ html, body {
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: fill;
   display: block;
 }
 
@@ -66,69 +66,31 @@ html, body {
 
 /* BOUTONS A B C D */
 
-#zoneA {
-  left: 29%;
-  top: 41%;
-  width: 8%;
-  height: 11%;
-}
-
-#zoneB {
-  left: 40%;
-  top: 41%;
-  width: 8%;
-  height: 11%;
-}
-
-#zoneC {
-  left: 51%;
-  top: 41%;
-  width: 8%;
-  height: 11%;
-}
-
-#zoneD {
-  left: 62%;
-  top: 41%;
-  width: 8%;
-  height: 11%;
-}
+#zoneA { left:29%; top:39%; width:8%; height:8%; }
+#zoneB { left:40%; top:39%; width:8%; height:8%; }
+#zoneC { left:51%; top:39%; width:8%; height:8%; }
+#zoneD { left:62%; top:39%; width:8%; height:8%; }
 
 /* POIDS E F G */
 
-#zoneE {
-  left: 38%;
-  top: 76%;
-  width: 10%;
-  height: 18%;
-}
+#zoneE { left:38%; top:73%; width:10%; height:18%; }
+#zoneF { left:48%; top:70%; width:10%; height:21%; }
+#zoneG { left:59%; top:67%; width:12%; height:24%; }
 
-#zoneF {
-  left: 48%;
-  top: 72%;
-  width: 10%;
-  height: 22%;
-}
-
-#zoneG {
-  left: 59%;
-  top: 68%;
-  width: 12%;
-  height: 26%;
-}
-
-/* ENGRENAGE ANIMÉ TEST */
+/* ENGRENAGE ANIMÉ */
 
 #mecanisme {
   position: absolute;
-  left: 44%;
-  top: 52%;
-  width: 18%;
+  left: 42%;
+  top: 51%;
+  width: 22%;
   aspect-ratio: 1 / 1;
 
   border: 10px dashed #d6b56d;
   border-radius: 50%;
+
   display: none;
+  pointer-events: none;
 }
 
 #mecanisme.active {
