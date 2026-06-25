@@ -1,252 +1,178 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>Mécanisme du phare</title>
 
 <style>
-
-html,
-body{
-    margin:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#000;
-    font-family:Arial,sans-serif;
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.scene{
-    position:relative;
-    width:100vw;
-    height:100vh;
+/* Le conteneur .scene s'adapte désormais dynamiquement 
+  pour garder le ratio d'une image standard (ex: 16/9)
+*/
+.scene {
+    position: relative;
+    /* Ajustez ces proportions si votre image a un autre ratio (ex: aspect-ratio: 4/3) */
+    aspect-ratio: 16 / 9; 
+    width: 100vw;
+    max-height: 100vh;
+    
+    background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppahreeteint.webp");
+    background-size: 100% 100%; /* Force le fond à coller parfaitement au conteneur */
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
-    background-image:url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppahreeteint.webp");
-    background-size:contain;
-    background-repeat:no-repeat;
-    background-position:center;
+/* Si l'écran est très vertical (mobile), on cale la largeur sur la hauteur */
+@media (orientation: portrait) {
+    .scene {
+        width: auto;
+        height: 100vh;
+        max-width: 100vw;
+    }
 }
 
 /* ---------------- ZONES CLIQUABLES ---------------- */
-
-.zone{
-    position:absolute;
-    background:rgba(0,170,255,0.20);
-    border:2px solid rgba(255,255,255,0.45);
-    border-radius:8px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    color:white;
-    font-size:28px;
-    font-weight:bold;
-
-    cursor:pointer;
-    transition:.15s;
-    touch-action:manipulation;
+.zone {
+    position: absolute;
+    background: rgba(0, 170, 255, 0.20);
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: .15s;
+    touch-action: manipulation;
+    z-index: 10; /* Passe au-dessus des engrenages */
 }
 
-.zone:active{
-    background:rgba(89, 55, 14, 0.45);
-    transform:scale(.96);
+.zone:active {
+    background: rgba(89, 55, 14, 0.45);
+    transform: scale(.96);
 }
 
-/* ---------- Position des zones : conservées ---------- */
-
-#zoneA{
-    left:45%;
-    top:39%;
-    width:2.9%;
-    height:8%;
-}
-
-#zoneB{
-    left:49%;
-    top:39%;
-    width:2.8%;
-    height:8%;
-}
-
-#zoneC{
-    left:52.5%;
-    top:39%;
-    width:2.8%;
-    height:8%;
-}
-
-#zoneD{
-    left:56%;
-    top:39%;
-    width:2.8%;
-    height:8%;
-}
-
-#zoneE{
-    left:47%;
-    top:72%;
-    width:3%;
-    height:15%;
-}
-
-#zoneF{
-    left:50.5%;
-    top:72%;
-    width:3%;
-    height:15%;
-}
-
-#zoneG{
-    left:54%;
-    top:68%;
-    width:3%;
-    height:20%;
-}
+/* Positions absolues par rapport au conteneur parent */
+#zoneA { left: 45%; top: 39%; width: 2.9%; height: 8%; }
+#zoneB { left: 49%; top: 39%; width: 2.8%; height: 8%; }
+#zoneC { left: 52.5%; top: 39%; width: 2.8%; height: 8%; }
+#zoneD { left: 56%; top: 39%; width: 2.8%; height: 8%; }
+#zoneE { left: 47%; top: 72%; width: 3%; height: 15%; }
+#zoneF { left: 50.5%; top: 72%; width: 3%; height: 15%; }
+#zoneG { left: 54%; top: 68%; width: 3%; height: 20%; }
 
 /* ---------------- ENGRENAGES ---------------- */
-
-.engrenage{
-    position:absolute;
-
-    width:90px;
-    height:90px;
-
-    display:block;
-
-    user-select:none;
-    pointer-events:none;
-
-    transform-origin:center center;
+.engrenage {
+    position: absolute;
+    /* Rendu adaptatif : la taille dépend de la largeur de la scène */
+    width: 6%; 
+    height: auto;
+    display: block;
+    user-select: none;
+    pointer-events: none;
 }
 
-/* Position des engrenages */
+/* Positions adaptées en % */
+#engrenageA { left: 43.5%; top: 45%; }
+#engrenageB { left: 46.5%; top: 49%; width: 8%; } /* Légèrement plus grand si c'est le grand */
+#engrenageC { left: 50.5%; top: 45%; width: 8%; }
+#engrenageD { left: 54%; top: 49%; }
 
-#engrenageA{
-    left:45%;
-    top:46%;
+/* ANIMATIONS */
+.tourneDroite {
+    animation: rotationDroite 4s linear infinite;
 }
 
-#engrenageB{
-    left:47.75%;
-    top: 51.35%;
+.tourneGauche {
+    animation: rotationGauche 4s linear infinite;
 }
 
-#engrenageC{
-    left:51%;
-    top:46%;
+@keyframes rotationDroite {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-#engrenageD{
-    left:54.25%;
-    top:50%;
-}
-
-.tourneDroite{
-    animation:rotationDroite 4s linear infinite;
-}
-
-.tourneGauche{
-    animation:rotationGauche 4s linear infinite;
-}
-
-@keyframes rotationDroite{
-    from{transform:rotate(0deg);}
-    to{transform:rotate(360deg);}
-}
-
-@keyframes rotationGauche{
-    from{transform:rotate(360deg);}
-    to{transform:rotate(0deg);}
+@keyframes rotationGauche {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
 }
 
 /* ---------- Message ---------- */
-
-#message{
-    position:absolute;
-    bottom:20px;
-    width:100%;
-    text-align:center;
-
-    color:white;
-    font-size:22px;
-    text-shadow:0 0 10px black;
+#message {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 4vw; /* Taille adaptative pour mobile */
+    max-font-size: 22px;
+    text-shadow: 0 0 10px black;
+    z-index: 20;
 }
 
+/* Ajustement texte pour grands écrans */
+@media (min-width: 768px) {
+    #message { font-size: 22px; }
+}
 </style>
-
 </head>
-
 <body>
 
 <div class="scene">
+    <div class="zone" id="zoneA" onclick="clicZone('A')"></div>
+    <div class="zone" id="zoneB" onclick="clicZone('B')"></div>
+    <div class="zone" id="zoneC" onclick="clicZone('C')"></div>
+    <div class="zone" id="zoneD" onclick="clicZone('D')"></div>
+    <div class="zone" id="zoneE" onclick="clicZone('E')"></div>
+    <div class="zone" id="zoneF" onclick="clicZone('F')"></div>
+    <div class="zone" id="zoneG" onclick="clicZone('G')"></div>
 
-    <div class="zone" id="zoneA" onclick="clicZone('A')"> </div>
-    <div class="zone" id="zoneB" onclick="clicZone('B')"> </div>
-    <div class="zone" id="zoneC" onclick="clicZone('C')"> </div>
-    <div class="zone" id="zoneD" onclick="clicZone('D')"> </div>
-    <div class="zone" id="zoneE" onclick="clicZone('E')"> </div>
-    <div class="zone" id="zoneF" onclick="clicZone('F')"> </div>
-    <div class="zone" id="zoneG" onclick="clicZone('G')"> </div>
-
-    <!-- Engrenages visibles dès le début -->
     <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageA" class="engrenage">
     <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageB" class="engrenage">
     <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageC" class="engrenage">
     <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageD" class="engrenage">
 
-    <div id="message">
-        Touchez les éléments du mécanisme.
-    </div>
-
+    <div id="message">Touchez les éléments du mécanisme.</div>
 </div>
 
 <script>
-
 const bonCode = "DABCG";
-
 let saisie = "";
 let mecanismeLance = false;
 
 function clicZone(valeur){
-
     if(mecanismeLance) return;
-
     saisie += valeur;
-
     document.getElementById("message").innerHTML = "Séquence : " + saisie;
 
     if(!bonCode.startsWith(saisie)){
-
         document.getElementById("message").innerHTML = "❌ Mauvais ordre";
-
         saisie = "";
-
         return;
     }
 
     if(saisie === bonCode){
-
         lancerMecanisme();
     }
 }
 
 function lancerMecanisme(){
-
     mecanismeLance = true;
-
     document.getElementById("engrenageA").classList.add("tourneDroite");
     document.getElementById("engrenageB").classList.add("tourneGauche");
     document.getElementById("engrenageC").classList.add("tourneDroite");
     document.getElementById("engrenageD").classList.add("tourneGauche");
-
     document.getElementById("message").innerHTML = "✅ Les engrenages du phare s'enclenchent";
 }
-
 </script>
 
 </body>
