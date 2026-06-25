@@ -1,168 +1,145 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>Mécanisme du phare</title>
 
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #000;
-    font-family: Arial, sans-serif;
-    /* Centre le jeu verticalement et horizontalement sur tous les écrans */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+html,
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    font-family:Arial,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-/* Le conteneur s'adapte à l'image sans jamais la déformer ni dépasser de l'écran */
-.game-container {
-    position: relative;
+/* Le conteneur respecte le ratio exact de ton image 3D (environ 2:1 ou 16:9 étiré) */
+.scene{
+    position:relative;
+    aspect-ratio: 16 / 8; 
     width: 100vw;
-    height: 100vh;
-    max-width: 100%;
-    max-height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    max-height: 100vh;
+
+    background-image:url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppahreeteint.webp");
+    background-size:100% 100%;
+    background-repeat:no-repeat;
+    background-position:center;
 }
 
-/* L'image de fond sert de référence absolue pour la taille du jeu */
-.bg-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: block;
-    user-select: none;
-    pointer-events: none;
-}
-
-/* La scène invisible se superpose PILE sur l'image affichée */
-.scene {
-    position: absolute;
-    /* Ces dimensions magiques s'alignent sur l'image à l'intérieur du conteneur */
-    width: 100%;
-    height: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    /* On force la scène à faire exactement la taille de l'image contenue */
-    max-width: max-content;
-}
-
-/* Si l'écran est en mode portrait (mobile vertical) */
 @media (orientation: portrait) {
     .scene {
-        width: 100vw;
-        height: calc(100vw * (9 / 16)); /* Remplacez 9/16 par le ratio de votre image si besoin (Hauteur/Largeur) */
-    }
-}
-/* Si l'écran est en mode paysage */
-@media (orientation: landscape) {
-    .scene {
+        width: auto;
         height: 100vh;
-        width: calc(100vh * (16 / 9)); /* Remplacez 16/9 par le ratio de votre image si besoin (Largeur/Hauteur) */
+        max-width: 100vw;
     }
 }
 
 /* ---------------- ZONES CLIQUABLES ---------------- */
-.zone {
-    position: absolute;
-    background: rgba(0, 170, 255, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 4px;
-    cursor: pointer;
-    transition: .15s;
-    touch-action: manipulation;
+
+.zone{
+    position:absolute;
+    background:rgba(0,170,255,0.25); /* Bleu semi-transparent pour ajuster */
+    border:2px solid rgba(255,255,255,0.5);
+    border-radius:4px;
+    cursor:pointer;
+    transition:.15s;
+    touch-action:manipulation;
     z-index: 10;
 }
 
-.zone:active {
-    background: rgba(89, 55, 14, 0.6);
-    transform: scale(.95);
+.zone:active{
+    background:rgba(89, 55, 14, 0.45);
+    transform:scale(.96);
 }
 
-/* Positions d'origine conservées */
-#zoneA { left: 45%; top: 39%; width: 2.9%; height: 8%; }
-#zoneB { left: 49%; top: 39%; width: 2.8%; height: 8%; }
-#zoneC { left: 52.5%; top: 39%; width: 2.8%; height: 8%; }
-#zoneD { left: 56%; top: 39%; width: 2.8%; height: 8%; }
-#zoneE { left: 47%; top: 72%; width: 3%; height: 15%; }
-#zoneF { left: 50.5%; top: 72%; width: 3%; height: 15%; }
-#zoneG { left: 54%; top: 68%; width: 3%; height: 20%; }
+/* ---------- NOUVELLES POSITIONS ALIGNÉES SUR LES LETTRES ET LES POIDS ---------- */
+
+#zoneA{ left:31.5%; top:42%; width:6.5%; height:13%; } /* Lettre A */
+#zoneB{ left:42.5%; top:42%; width:6.5%; height:13%; } /* Lettre B */
+#zoneC{ left:53.5%; top:42%; width:6.5%; height:13%; } /* Lettre C */
+#zoneD{ left:64.5%; top:42%; width:6.5%; height:13%; } /* Lettre D */
+
+#zoneE{ left:36.5%; top:67%; width:9%; height:17%; }  /* Poids 10Kg */
+#zoneF{ left:47.5%; top:64%; width:10%; height:20%; } /* Poids 20Kg */
+#zoneG{ left:59.5%; top:61%; width:12%; height:23%; } /* Poids 30Kg */
 
 /* ---------------- ENGRENAGES ---------------- */
-.engrenage {
-    position: absolute;
-    width: 6%; /* Taille relative à la largeur du jeu */
-    height: auto;
-    display: block;
-    user-select: none;
-    pointer-events: none;
-    transform-origin: center center;
+
+.engrenage{
+    position:absolute;
+    width:4.5%; 
+    height:auto;
+    display:block;
+    user-select:none;
+    pointer-events:none;
+    transform-origin:center center;
 }
 
-/* Positions ajustées en % pour coller au décor */
-#engrenageA { left: 43.5%; top: 45%; }
-#engrenageB { left: 46.5%; top: 49%; width: 8%; } 
-#engrenageC { left: 50.5%; top: 45%; width: 8%; }
-#engrenageD { left: 54%; top: 49%; }
+/* Alignés pile sous les lettres B et C comme sur ton modèle */
+#engrenageA{ left:41.2%; top:49.5%; width:4.2%; }
+#engrenageB{ left:43.7%; top:53.5%; width:5.5%; } 
+#engrenageC{ left:48.2%; top:49.5%; width:5.5%; }
+#engrenageD{ left:50.8%; top:53.0%; width:3.8%; }
 
-/* ANIMATIONS */
-.tourneDroite { animation: rotationDroite 4s linear infinite; }
-.tourneGauche { animation: rotationGauche 4s linear infinite; }
+.tourneDroite{ animation:rotationDroite 4s linear infinite; }
+.tourneGauche{ animation:rotationGauche 4s linear infinite; }
 
-@keyframes rotationDroite {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-@keyframes rotationGauche {
-    from { transform: rotate(360deg); }
-    to { transform: rotate(0deg); }
-}
+@keyframes rotationDroite{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+@keyframes rotationGauche{ from{transform:rotate(360deg);} to{transform:rotate(0deg);} }
 
 /* ---------- Message ---------- */
-#message {
-    position: absolute;
-    bottom: 5%;
-    width: 100%;
-    text-align: center;
-    color: white;
-    font-size: 18px;
-    text-shadow: 0 0 8px black;
+
+#message{
+    position:absolute;
+    bottom:3%;
+    width:100%;
+    text-align:center;
+    color:white;
+    font-size:20px;
+    text-shadow:0 0 10px black;
     z-index: 20;
 }
+
+@media (max-width: 600px) {
+    #message { font-size: 14px; }
+}
+
 </style>
+
 </head>
 <body>
 
-<div class="game-container">
-    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppahreeteint.webp" class="bg-image" alt="Phare">
-    
-    <div class="scene">
-        <div class="zone" id="zoneA" onclick="clicZone('A')"></div>
-        <div class="zone" id="zoneB" onclick="clicZone('B')"></div>
-        <div class="zone" id="zoneC" onclick="clicZone('C')"></div>
-        <div class="zone" id="zoneD" onclick="clicZone('D')"></div>
-        <div class="zone" id="zoneE" onclick="clicZone('E')"></div>
-        <div class="zone" id="zoneF" onclick="clicZone('F')"></div>
-        <div class="zone" id="zoneG" onclick="clicZone('G')"></div>
+<div class="scene">
 
-        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageA" class="engrenage">
-        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageB" class="engrenage">
-        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageC" class="engrenage">
-        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageD" class="engrenage">
+    <div class="zone" id="zoneA" onclick="clicZone('A')"></div>
+    <div class="zone" id="zoneB" onclick="clicZone('B')"></div>
+    <div class="zone" id="zoneC" onclick="clicZone('C')"></div>
+    <div class="zone" id="zoneD" onclick="clicZone('D')"></div>
+    <div class="zone" id="zoneE" onclick="clicZone('E')"></div>
+    <div class="zone" id="zoneF" onclick="clicZone('F')"></div>
+    <div class="zone" id="zoneG" onclick="clicZone('G')"></div>
 
-        <div id="message">Touchez les éléments du mécanisme.</div>
-    </div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageA" class="engrenage">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageB" class="engrenage">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageC" class="engrenage">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageD" class="engrenage">
+
+    <div id="message">Touchez les éléments du mécanisme.</div>
+
 </div>
 
 <script>
+
 const bonCode = "DABCG";
 let saisie = "";
 let mecanismeLance = false;
@@ -191,6 +168,7 @@ function lancerMecanisme(){
     document.getElementById("engrenageD").classList.add("tourneGauche");
     document.getElementById("message").innerHTML = "✅ Les engrenages du phare s'enclenchent";
 }
+
 </script>
 
 </body>
