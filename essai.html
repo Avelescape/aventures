@@ -1,182 +1,252 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Mécanisme du phare</title>
 
 <style>
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100dvh;
-  background: black;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
+
+html,
+body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    font-family:Arial,sans-serif;
 }
 
-.page {
-  width: 100vw;
-  height: 100dvh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.scene{
+    position:relative;
+    width:100vw;
+    height:100vh;
+
+    background-image:url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppahreeteint.webp");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
 }
 
-.scene {
-  position: relative;
-  width: min(100vw, calc(100dvh * 1152 / 2048));
-  height: min(100dvh, calc(100vw * 2048 / 1152));
-  overflow: hidden;
+/* ---------------- ZONES CLIQUABLES ---------------- */
+
+.zone{
+    position:absolute;
+    background:rgba(0,170,255,0.20);
+    border:2px solid rgba(255,255,255,0.45);
+    border-radius:8px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+    font-size:28px;
+    font-weight:bold;
+
+    cursor:pointer;
+    transition:.15s;
+    touch-action:manipulation;
 }
 
-.fond {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  display: block;
+.zone:active{
+    background:rgba(89, 55, 14, 0.45);
+    transform:scale(.96);
 }
 
-.zone {
-  position: absolute;
-  background: rgba(0,180,255,0.22);
-  border: 2px solid rgba(255,255,255,0.55);
-  border-radius: 8px;
+/* ---------- Position des zones : conservées ---------- */
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-
-  cursor: pointer;
-  touch-action: manipulation;
-  user-select: none;
+#zoneA{
+    left:45%;
+    top:39%;
+    width:2.9%;
+    height:8%;
 }
 
-.zone:active {
-  background: rgba(0,255,0,0.45);
-  transform: scale(0.96);
+#zoneB{
+    left:49%;
+    top:39%;
+    width:2.8%;
+    height:8%;
 }
 
-/* BOUTONS A B C D */
-
-#zoneA { left:29%; top:39%; width:8%; height:8%; }
-#zoneB { left:40%; top:39%; width:8%; height:8%; }
-#zoneC { left:51%; top:39%; width:8%; height:8%; }
-#zoneD { left:62%; top:39%; width:8%; height:8%; }
-
-/* POIDS E F G */
-
-#zoneE { left:38%; top:73%; width:10%; height:18%; }
-#zoneF { left:48%; top:70%; width:10%; height:21%; }
-#zoneG { left:59%; top:67%; width:12%; height:24%; }
-
-/* ENGRENAGE ANIMÉ */
-
-#mecanisme {
-  position: absolute;
-  left: 42%;
-  top: 51%;
-  width: 22%;
-  aspect-ratio: 1 / 1;
-
-  border: 10px dashed #d6b56d;
-  border-radius: 50%;
-
-  display: none;
-  pointer-events: none;
+#zoneC{
+    left:52.5%;
+    top:39%;
+    width:2.8%;
+    height:8%;
 }
 
-#mecanisme.active {
-  display: block;
-  animation: rotation 2s linear infinite;
+#zoneD{
+    left:56%;
+    top:39%;
+    width:2.8%;
+    height:8%;
 }
 
-@keyframes rotation {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+#zoneE{
+    left:47%;
+    top:72%;
+    width:3%;
+    height:15%;
 }
 
-/* MESSAGE */
-
-#message {
-  position: absolute;
-  bottom: 2%;
-  left: 5%;
-  width: 90%;
-  padding: 8px 10px;
-
-  text-align: center;
-  color: white;
-  font-size: 18px;
-
-  background: rgba(0,0,0,0.55);
-  border-radius: 8px;
+#zoneF{
+    left:50.5%;
+    top:72%;
+    width:3%;
+    height:15%;
 }
+
+#zoneG{
+    left:54%;
+    top:68%;
+    width:3%;
+    height:20%;
+}
+
+/* ---------------- ENGRENAGES ---------------- */
+
+.engrenage{
+    position:absolute;
+
+    width:90px;
+    height:90px;
+
+    display:block;
+
+    user-select:none;
+    pointer-events:none;
+
+    transform-origin:center center;
+}
+
+/* Position des engrenages */
+
+#engrenageA{
+    left:45%;
+    top:46%;
+}
+
+#engrenageB{
+    left:47.75%;
+    top: 51.35%;
+}
+
+#engrenageC{
+    left:51%;
+    top:46%;
+}
+
+#engrenageD{
+    left:54.25%;
+    top:50%;
+}
+
+.tourneDroite{
+    animation:rotationDroite 4s linear infinite;
+}
+
+.tourneGauche{
+    animation:rotationGauche 4s linear infinite;
+}
+
+@keyframes rotationDroite{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+@keyframes rotationGauche{
+    from{transform:rotate(360deg);}
+    to{transform:rotate(0deg);}
+}
+
+/* ---------- Message ---------- */
+
+#message{
+    position:absolute;
+    bottom:20px;
+    width:100%;
+    text-align:center;
+
+    color:white;
+    font-size:22px;
+    text-shadow:0 0 10px black;
+}
+
 </style>
+
 </head>
 
 <body>
 
-<div class="page">
-  <div class="scene">
+<div class="scene">
 
-    <img 
-      class="fond" 
-      src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppahreeteint.webp"
-      alt="Mécanisme du phare"
-    >
+    <div class="zone" id="zoneA" onclick="clicZone('A')"> </div>
+    <div class="zone" id="zoneB" onclick="clicZone('B')"> </div>
+    <div class="zone" id="zoneC" onclick="clicZone('C')"> </div>
+    <div class="zone" id="zoneD" onclick="clicZone('D')"> </div>
+    <div class="zone" id="zoneE" onclick="clicZone('E')"> </div>
+    <div class="zone" id="zoneF" onclick="clicZone('F')"> </div>
+    <div class="zone" id="zoneG" onclick="clicZone('G')"> </div>
 
-    <div class="zone" id="zoneA" onclick="clicZone('A')">A</div>
-    <div class="zone" id="zoneB" onclick="clicZone('B')">B</div>
-    <div class="zone" id="zoneC" onclick="clicZone('C')">C</div>
-    <div class="zone" id="zoneD" onclick="clicZone('D')">D</div>
+    <!-- Engrenages visibles dès le début -->
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageA" class="engrenage">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageB" class="engrenage">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageC" class="engrenage">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageD" class="engrenage">
 
-    <div class="zone" id="zoneE" onclick="clicZone('E')">E</div>
-    <div class="zone" id="zoneF" onclick="clicZone('F')">F</div>
-    <div class="zone" id="zoneG" onclick="clicZone('G')">G</div>
+    <div id="message">
+        Touchez les éléments du mécanisme.
+    </div>
 
-    <div id="mecanisme"></div>
-
-    <div id="message">Touchez les éléments du mécanisme.</div>
-
-  </div>
 </div>
 
 <script>
+
 const bonCode = "DABCG";
+
 let saisie = "";
 let mecanismeLance = false;
 
-function clicZone(lettre) {
-  if (mecanismeLance) return;
+function clicZone(valeur){
 
-  saisie += lettre;
+    if(mecanismeLance) return;
 
-  document.getElementById("message").textContent = "Séquence : " + saisie;
+    saisie += valeur;
 
-  if (!bonCode.startsWith(saisie)) {
-    document.getElementById("message").textContent = "Mauvais ordre.";
-    saisie = "";
-    return;
-  }
+    document.getElementById("message").innerHTML = "Séquence : " + saisie;
 
-  if (saisie === bonCode) {
-    lancerMecanisme();
-  }
+    if(!bonCode.startsWith(saisie)){
+
+        document.getElementById("message").innerHTML = "❌ Mauvais ordre";
+
+        saisie = "";
+
+        return;
+    }
+
+    if(saisie === bonCode){
+
+        lancerMecanisme();
+    }
 }
 
-function lancerMecanisme() {
-  mecanismeLance = true;
-  document.getElementById("mecanisme").classList.add("active");
-  document.getElementById("message").textContent = "Le mécanisme s’enclenche.";
+function lancerMecanisme(){
+
+    mecanismeLance = true;
+
+    document.getElementById("engrenageA").classList.add("tourneDroite");
+    document.getElementById("engrenageB").classList.add("tourneGauche");
+    document.getElementById("engrenageC").classList.add("tourneDroite");
+    document.getElementById("engrenageD").classList.add("tourneGauche");
+
+    document.getElementById("message").innerHTML = "✅ Les engrenages du phare s'enclenchent";
 }
+
 </script>
 
 </body>
