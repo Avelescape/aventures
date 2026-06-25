@@ -25,27 +25,34 @@ html, body {
     background: #000;
 }
 
-/* CADRE TOUJOURS EN 1152 x 2048 */
+/* CADRE FIXE EN RATIO 1152 x 2048 */
 .game {
     position: relative;
     width: min(100vw, calc(100vh * 1152 / 2048));
     aspect-ratio: 1152 / 2048;
-    background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppahreeteint.webp");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
     overflow: hidden;
 }
 
-/* SVG DES ZONES */
+/* IMAGE DE FOND CHANGEANTE */
+.fond {
+    position: absolute;
+    inset: 0;
+    background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareeteint.webp");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 0;
+}
+
+/* ZONES CLIQUABLES */
 .zones {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
+    z-index: 5;
 }
 
-/* ZONES CLIQUABLES */
 .zone {
     fill: rgba(0, 170, 255, 0.18);
     stroke: rgba(255, 255, 255, 0.55);
@@ -57,14 +64,54 @@ html, body {
     fill: rgba(255, 255, 255, 0.35);
 }
 
-/* LETTRES */
-.zone-text {
-    fill: white;
-    font-size: 52px;
-    font-weight: bold;
-    text-anchor: middle;
-    dominant-baseline: middle;
+/* ENGRENAGES */
+.gear {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 6;
+    transform-origin: center center;
     pointer-events: none;
+}
+
+.gear-small {
+    width: 13%;
+    aspect-ratio: 1 / 1;
+    background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp");
+}
+
+.gear-big {
+    width: 16%;
+    aspect-ratio: 1 / 1;
+    background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp");
+}
+
+/* POSITIONS DES ENGRENAGES */
+#gearA { left: 36%; top: 50%; }
+#gearB { left: 43%; top: 52%; }
+#gearC { left: 54%; top: 50%; }
+#gearD { left: 62%; top: 50%; }
+
+/* ROTATION SI CODE BON */
+.active #gearA,
+.active #gearC {
+    animation: rotateRight 6s linear infinite;
+}
+
+.active #gearB,
+.active #gearD {
+    animation: rotateLeft 6s linear infinite;
+}
+
+@keyframes rotateRight {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotateLeft {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
 }
 
 /* MESSAGE */
@@ -81,48 +128,7 @@ html, body {
     border-radius: 12px;
     font-size: 18px;
     display: none;
-}
-
-/* ENGRENAGES */
-.gear {
-    position: absolute;
-    width: 13%;
-    aspect-ratio: 1 / 1;
-    background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/engrenage.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    display: none;
-}
-
-#gear1 {
-    left: 38%;
-    top: 56%;
-}
-
-#gear2 {
-    left: 50%;
-    top: 56%;
-}
-
-.active #gear1 {
-    display: block;
-    animation: rotateRight 2s linear infinite;
-}
-
-.active #gear2 {
-    display: block;
-    animation: rotateLeft 2s linear infinite;
-}
-
-@keyframes rotateRight {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-@keyframes rotateLeft {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(-360deg); }
+    z-index: 10;
 }
 
 /* BOUTON RESET */
@@ -130,7 +136,7 @@ html, body {
     position: absolute;
     top: 2%;
     right: 4%;
-    z-index: 5;
+    z-index: 10;
     padding: 8px 12px;
     border: none;
     border-radius: 8px;
@@ -146,67 +152,65 @@ html, body {
 <div class="scene">
     <div class="game" id="game">
 
+        <div id="fond" class="fond"></div>
+
         <button class="reset" onclick="resetGame()">Réinitialiser</button>
 
-        <!--  
-        IMPORTANT :
-        Toutes les coordonnées sont basées sur l'image 1152 x 2048.
-        x = gauche/droite
-        y = haut/bas
-        width = largeur
-        height = hauteur
-        -->
+        <div id="gearA" class="gear gear-small"></div>
+        <div id="gearB" class="gear gear-big"></div>
+        <div id="gearC" class="gear gear-small"></div>
+        <div id="gearD" class="gear gear-big"></div>
 
         <svg class="zones" viewBox="0 0 1152 2048" preserveAspectRatio="none">
 
-            <!-- A -->
-            <rect class="zone" x="370" y="800" width="130" height="120" rx="15" onclick="clickZone('A')" />
-            <text class="zone-text" x="365" y="840">A</text>
+            <rect class="zone" x="370" y="800" width="130" height="150" rx="15" onclick="clickZone('A')" />
+            <rect class="zone" x="520" y="800" width="130" height="150" rx="15" onclick="clickZone('B')" />
+            <rect class="zone" x="680" y="800" width="130" height="150" rx="15" onclick="clickZone('C')" />
+            <rect class="zone" x="850" y="800" width="130" height="150" rx="15" onclick="clickZone('D')" />
 
-            <!-- B -->
-            <rect class="zone" x="520" y="800" width="130" height="120" rx="15" onclick="clickZone('B')" />
-            <text class="zone-text" x="525" y="840">B</text>
-
-            <!-- C -->
-            <rect class="zone" x="680" y="800" width="130" height="120" rx="15" onclick="clickZone('C')" />
-            <text class="zone-text" x="685" y="840">C</text>
-
-            <!-- D -->
-            <rect class="zone" x="850" y="800" width="130" height="120" rx="15" onclick="clickZone('D')" />
-            <text class="zone-text" x="845" y="840">D</text>
-
-            <!-- E -->
-            <rect class="zone" x="530" y="1050" width="130" height="120" rx="15" onclick="clickZone('E')" />
-            <text class="zone-text" x="365" y="1010">E</text>
-
-            <!-- F -->
-            <rect class="zone" x="460" y="1050" width="130" height="120" rx="15" onclick="clickZone('F')" />
-            <text class="zone-text" x="525" y="1010">F</text>
-
-            <!-- G -->
-            <rect class="zone" x="620" y="1050" width="130" height="120" rx="15" onclick="clickZone('G')" />
-            <text class="zone-text" x="685" y="1010">G</text>
+            <rect class="zone" x="450" y="1500" width="130" height="250" rx="15" onclick="clickZone('E')" />
+            <rect class="zone" x="610" y="1400" width="130" height="380" rx="15" onclick="clickZone('F')" />
+            <rect class="zone" x="770" y="1400" width="130" height="380" rx="15" onclick="clickZone('G')" />
 
         </svg>
-
-        <div id="gear1" class="gear"></div>
-        <div id="gear2" class="gear"></div>
 
         <div id="message" class="message"></div>
 
     </div>
 </div>
 
+<audio id="sonClic" preload="auto">
+    <source src="https://avelescape.github.io/Audio/Stmathieu/ABCDEFG.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 const codeCorrect = ["D", "A", "B", "C", "G"];
+
+const imageEteinte = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareeteint.webp";
+const imageAllumee = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareallume.webp";
+const imageFaisceau = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppharefaisceau.webp";
+
 let sequence = [];
 let solved = false;
+let phareInterval = null;
+let faisceauTimeout = null;
+
+function jouerClic() {
+    const son = document.getElementById("sonClic");
+
+    if (!son) return;
+
+    son.pause();
+    son.currentTime = 0;
+    son.play().catch(() => {});
+}
 
 function clickZone(letter) {
+    jouerClic();
+
     if (solved) return;
 
     sequence.push(letter);
-
     showMessage("Séquence : " + sequence.join(" "));
 
     for (let i = 0; i < sequence.length; i++) {
@@ -224,14 +228,51 @@ function clickZone(letter) {
 
 function success() {
     solved = true;
+
     document.getElementById("game").classList.add("active");
-    showMessage("Code correct. Le mécanisme s'enclenche.");
+
+    document.getElementById("fond").style.backgroundImage =
+        `url("${imageAllumee}")`;
+
+    showMessage("Code correct. Le phare s'allume.");
+
+    clearInterval(phareInterval);
+    clearTimeout(faisceauTimeout);
+
+    // Faisceau toutes les 15 secondes
+    phareInterval = setInterval(lancerFaisceau, 15000);
+}
+
+function lancerFaisceau() {
+    if (!solved) return;
+
+    document.getElementById("fond").style.backgroundImage =
+        `url("${imageFaisceau}")`;
+
+    clearTimeout(faisceauTimeout);
+
+    faisceauTimeout = setTimeout(() => {
+        if (solved) {
+            document.getElementById("fond").style.backgroundImage =
+                `url("${imageAllumee}")`;
+        }
+    }, 1000);
 }
 
 function resetGame() {
     sequence = [];
     solved = false;
+
     document.getElementById("game").classList.remove("active");
+
+    clearInterval(phareInterval);
+    clearTimeout(faisceauTimeout);
+    phareInterval = null;
+    faisceauTimeout = null;
+
+    document.getElementById("fond").style.backgroundImage =
+        `url("${imageEteinte}")`;
+
     showMessage("Mécanisme réinitialisé.");
 }
 
