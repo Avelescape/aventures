@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Mécanisme du phare</title>
+
+<style>
+
+html,
+body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    font-family:Arial,sans-serif;
+}
+
+.scene{
+    position:relative;
+    width:100vw;
+    height:100vh;
+
+    background-image:url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppahreeteint.webp");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
+/* ---------------- ZONES CLIQUABLES ---------------- */
+
+.zone{
+    position:absolute;
+    background:rgba(0,170,255,0.20);
+    border:2px solid rgba(255,255,255,0.45);
+    border-radius:8px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+    font-size:28px;
+    font-weight:bold;
+
+    cursor:pointer;
+    transition:.15s;
+    touch-action:manipulation;
+}
+
+.zone:active{
+    background:rgba(89, 55, 14, 0.45);
+    transform:scale(.96);
+}
+
+/* ---------- Position des zones : conservées ---------- */
+
+#zoneA{
+    left:45%;
+    top:39%;
+    width:2.9%;
+    height:8%;
+}
+
+#zoneB{
+    left:49%;
+    top:39%;
+    width:2.8%;
+    height:8%;
+}
+
+#zoneC{
+    left:52.5%;
+    top:39%;
+    width:2.8%;
+    height:8%;
+}
+
+#zoneD{
+    left:56%;
+    top:39%;
+    width:2.8%;
+    height:8%;
+}
+
+#zoneE{
+    left:47%;
+    top:72%;
+    width:3%;
+    height:15%;
+}
+
+#zoneF{
+    left:50.5%;
+    top:72%;
+    width:3%;
+    height:15%;
+}
+
+#zoneG{
+    left:54%;
+    top:68%;
+    width:3%;
+    height:20%;
+}
+
+/* ---------------- ENGRENAGES ---------------- */
+
+.engrenage{
+    position:absolute;
+
+    width:90px;
+    height:90px;
+
+    display:block;
+
+    user-select:none;
+    pointer-events:none;
+
+    transform-origin:center center;
+}
+
+/* Position des engrenages */
+
+#engrenageA{
+    left:45%;
+    top:46%;
+}
+
+#engrenageB{
+    left:47.75%;
+    top: 51.35%;
+}
+
+#engrenageC{
+    left:51%;
+    top:46%;
+}
+
+#engrenageD{
+    left:54.25%;
+    top:50%;
+}
+
+.tourneDroite{
+    animation:rotationDroite 4s linear infinite;
+}
+
+.tourneGauche{
+    animation:rotationGauche 4s linear infinite;
+}
+
+@keyframes rotationDroite{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+@keyframes rotationGauche{
+    from{transform:rotate(360deg);}
+    to{transform:rotate(0deg);}
+}
+
+/* ---------- Message ---------- */
+
+#message{
+    position:absolute;
+    bottom:20px;
+    width:100%;
+    text-align:center;
+
+    color:white;
+    font-size:22px;
+    text-shadow:0 0 10px black;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="scene">
+
+    <div class="zone" id="zoneA" onclick="clicZone('A')"> </div>
+    <div class="zone" id="zoneB" onclick="clicZone('B')"> </div>
+    <div class="zone" id="zoneC" onclick="clicZone('C')"> </div>
+    <div class="zone" id="zoneD" onclick="clicZone('D')"> </div>
+    <div class="zone" id="zoneE" onclick="clicZone('E')"> </div>
+    <div class="zone" id="zoneF" onclick="clicZone('F')"> </div>
+    <div class="zone" id="zoneG" onclick="clicZone('G')"> </div>
+
+    <!-- Engrenages visibles dès le début -->
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageA" class="engrenage">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageB" class="engrenage">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp" id="engrenageC" class="engrenage">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp" id="engrenageD" class="engrenage">
+
+    <div id="message">
+        Touchez les éléments du mécanisme.
+    </div>
+
+</div>
+
+<script>
+
+const bonCode = "DABCG";
+
+let saisie = "";
+let mecanismeLance = false;
+
+function clicZone(valeur){
+
+    if(mecanismeLance) return;
+
+    saisie += valeur;
+
+    document.getElementById("message").innerHTML = "Séquence : " + saisie;
+
+    if(!bonCode.startsWith(saisie)){
+
+        document.getElementById("message").innerHTML = "❌ Mauvais ordre";
+
+        saisie = "";
+
+        return;
+    }
+
+    if(saisie === bonCode){
+
+        lancerMecanisme();
+    }
+}
+
+function lancerMecanisme(){
+
+    mecanismeLance = true;
+
+    document.getElementById("engrenageA").classList.add("tourneDroite");
+    document.getElementById("engrenageB").classList.add("tourneGauche");
+    document.getElementById("engrenageC").classList.add("tourneDroite");
+    document.getElementById("engrenageD").classList.add("tourneGauche");
+
+    document.getElementById("message").innerHTML = "✅ Les engrenages du phare s'enclenchent";
+}
+
+</script>
+
+</body>
+</html>
