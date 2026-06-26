@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -240,6 +241,9 @@ input {
   border: 3px solid var(--or);
   background: var(--nuit-rouge);
   box-shadow: 0 0 18px rgba(212, 175, 55, 0.35);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .puzzle-piece {
@@ -247,7 +251,7 @@ input {
   background-size: 320px 320px;
   cursor: grab;
   border: 1px solid rgba(245, 232, 208, 0.35);
-  touch-action: manipulation;
+  touch-action: none;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -604,7 +608,7 @@ input {
 <div class="screen" id="screen-puzzle">
   <div class="puzzle-label">
     <h2>Reconstituez le sceau</h2>
-    <p>Déplacez les pièces pour reformer l’image.</p>
+    <p>Glissez les pièces avec le doigt pour reformer l’image.</p>
 
     <div id="puzzle-board"></div>
     <div id="puzzle-message"></div>
@@ -1020,6 +1024,10 @@ const PUZZLE_SIZE = 3;
 let draggedPiece = null;
 let puzzleSolved = false;
 let selectedPiece = null;
+let pointerPuzzlePiece = null;
+let pointerStartX = 0;
+let pointerStartY = 0;
+let pointerIsDragging = false;
 
 function handlePieceClick(e) {
   if (puzzleSolved) return;
@@ -1045,12 +1053,64 @@ function handlePieceClick(e) {
 }
 
 function handlePiecePointerDown(e) {
-  // Sur mobile, le dragstart/drop natif ne se déclenche souvent pas.
-  // On force donc le mode « toucher une pièce puis toucher une autre ».
-  if (e.pointerType === 'touch' || e.pointerType === 'pen') {
-    e.preventDefault();
-    handlePieceClick(e);
-  }
+  if (puzzleSolved) return;
+
+  e.preventDefault();
+
+  pointerPuzzlePiece = e.currentTarget;
+  pointerStartX = e.clientX;
+  pointerStartY = e.clientY;
+  pointerIsDragging = true;
+
+  pointerPuzzlePiece.classList.add('dragging');
+  pointerPuzzlePiece.style.zIndex = '50';
+  pointerPuzzlePiece.setPointerCapture(e.pointerId);
+}
+
+function handlePiecePointerMove(e) {
+  if (!pointerIsDragging || !pointerPuzzlePiece) return;
+
+  e.preventDefault();
+
+  const dx = e.clientX - pointerStartX;
+  const dy = e.clientY - pointerStartY;
+
+  pointerPuzzlePiece.style.transform = `translate(${dx}px, ${dy}px) scale(1.04)`;
+}
+
+function handlePiecePointerUp(e) {
+  if (!pointerIsDragging || !pointerPuzzlePiece) return;
+
+  e.preventDefault();
+
+  const pieceDepart = pointerPuzzlePiece;
+
+  pieceDepart.releasePointerCapture(e.pointerId);
+  pieceDepart.classList.remove('dragging');
+  pieceDepart.style.transform = '';
+  pieceDepart.style.zIndex = '';
+
+  pointerPuzzlePiece = null;
+  pointerIsDragging = false;
+
+  const cible = document.elementFromPoint(e.clientX, e.clientY);
+  const pieceArrivee = cible ? cible.closest('.puzzle-piece') : null;
+
+  if (!pieceArrivee || pieceArrivee === pieceDepart) return;
+
+  echangerPieces(pieceDepart, pieceArrivee);
+  checkPuzzle();
+}
+
+function echangerPieces(piece1, piece2) {
+  const tempBg = piece2.style.backgroundPosition;
+  const tempCorrect = piece2.dataset.correct;
+
+  piece2.style.backgroundPosition = piece1.style.backgroundPosition;
+  piece2.dataset.correct = piece1.dataset.correct;
+
+  piece1.style.backgroundPosition = tempBg;
+  piece1.dataset.correct = tempCorrect;
 }
 
 function initPuzzle() {
@@ -1086,7 +1146,7 @@ function initPuzzle() {
     piece.className = 'puzzle-piece';
     // Le drag & drop HTML fonctionne mal sur mobile.
     // Sur écran tactile, on désactive le drag natif et on utilise le tap/tap.
-    piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
+    piece.draggable = false;
     piece.dataset.correct = pieceIndex;
 
     const x = pieceIndex % PUZZLE_SIZE;
@@ -1097,16 +1157,12 @@ function initPuzzle() {
     piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
     piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
 
-    piece.addEventListener('dragstart', dragStart);
-    piece.addEventListener('dragover', dragOver);
-    piece.addEventListener('drop', dropPiece);
-    piece.addEventListener('dragend', dragEnd);
-
-    // Ordinateur : clic possible en plus du glisser-déposer.
-    piece.addEventListener('click', handlePieceClick);
-
-    // Mobile/tablette : toucher une pièce puis une autre pour les échanger.
+    // Fonctionne sur ordinateur et mobile :
+    // on garde le doigt ou la souris appuyé(e), on glisse, puis on relâche sur une autre pièce.
     piece.addEventListener('pointerdown', handlePiecePointerDown);
+    piece.addEventListener('pointermove', handlePiecePointerMove);
+    piece.addEventListener('pointerup', handlePiecePointerUp);
+    piece.addEventListener('pointercancel', handlePiecePointerUp);
 
     board.appendChild(piece);
   });
