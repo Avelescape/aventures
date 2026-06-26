@@ -166,7 +166,7 @@ button:hover {
 .instructionschap2-label,
 .porte-label {
   max-width: 700px;
-  margin: 40px auto 20px;
+  margin: 80px auto 20px;
   font-size: 20px;
   line-height: 1.5;
   color: var(--ivoire);
@@ -194,8 +194,6 @@ input {
 #code-ancien-phare-message,
 #message-sommet {
   color: var(--or);
-  font-weight: bold;
-  margin-top: 15px;
 }
 
 .dialogue-box {
@@ -247,7 +245,7 @@ input {
 .puzzle-piece {
   background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp");
   background-size: 320px 320px;
-  cursor: pointer;
+  cursor: grab;
   border: 1px solid rgba(245, 232, 208, 0.35);
   touch-action: manipulation;
   user-select: none;
@@ -275,21 +273,217 @@ input {
   background: rgba(15, 0, 1, 0.75);
 }
 
-.godot-wrapper {
-  width: min(800px, 95vw);
-  margin: 20px auto;
-  border: 2px solid var(--or);
-  border-radius: 12px;
-  overflow: hidden;
-  background: #000;
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
+.fondu-images {
+  position: relative;
+  max-width: 90%;
+  height: 60vh;
+  margin: 0 auto;
 }
 
-.godot-wrapper iframe {
+.image-fondu {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 60vh;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+.image-fondu.active-fondu {
+  opacity: 1;
+}
+
+.texte-sommet {
+  margin-top: 40px;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--ivoire);
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+#image-apres-engrenages {
+  position: relative;
+  max-width: 90%;
+  max-height: 60vh;
+  margin: 20px auto;
   display: block;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+#image-apres-engrenages.active-fondu {
+  opacity: 1;
+}
+
+#texte-apres-engrenages {
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+.texte-sommet-haut {
+  margin-top: 10px;
+}
+
+.enigme-haut {
+  margin-top: 5px;
+}
+
+
+
+
+/* ---------------- SOMMET DU PHARE - MÉCANISME HTML ---------------- */
+.meca-scene {
+  position: relative;
   width: 100%;
-  height: 540px;
-  border: 0;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.meca-game {
+  position: relative;
+  width: min(100vw, calc((100vh - 80px) * 1152 / 2048));
+  aspect-ratio: 1152 / 2048;
+  overflow: hidden;
+  background: #000;
+  border: 2px solid var(--or);
+  border-radius: 18px;
+  box-shadow: 0 0 28px rgba(212, 175, 55, 0.35);
+}
+
+.meca-fond {
+  position: absolute;
+  inset: 0;
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareeteint.webp");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 0;
+}
+
+.meca-zone {
+  position: absolute;
+  z-index: 15;
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  border-radius: 12px;
+  background: rgba(0, 170, 255, 0.18);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.meca-zone:active {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+#meca-zone-A { left: 32.12%; top: 39.06%; width: 11.28%; height: 7.32%; }
+#meca-zone-B { left: 45.14%; top: 39.06%; width: 11.28%; height: 7.32%; }
+#meca-zone-C { left: 59.03%; top: 39.06%; width: 11.28%; height: 7.32%; }
+#meca-zone-D { left: 73.78%; top: 39.06%; width: 11.28%; height: 7.32%; }
+#meca-zone-E { left: 39.06%; top: 73.24%; width: 11.28%; height: 12.21%; }
+#meca-zone-F { left: 52.95%; top: 68.36%; width: 11.28%; height: 18.55%; }
+#meca-zone-G { left: 66.84%; top: 68.36%; width: 11.28%; height: 18.55%; }
+
+.meca-gear {
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 6;
+  transform-origin: center center;
+  pointer-events: none;
+}
+
+.meca-gear-small {
+  width: 13%;
+  aspect-ratio: 1 / 1;
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp");
+}
+
+.meca-gear-big {
+  width: 16%;
+  aspect-ratio: 1 / 1;
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp");
+}
+
+#meca-gearA { left: 36%; top: 50%; }
+#meca-gearB { left: 43%; top: 52%; }
+#meca-gearC { left: 54%; top: 50%; }
+#meca-gearD { left: 62%; top: 50%; }
+
+.meca-active #meca-gearA,
+.meca-active #meca-gearC {
+  animation: mecaRotateRight 6s linear infinite;
+}
+
+.meca-active #meca-gearB,
+.meca-active #meca-gearD {
+  animation: mecaRotateLeft 6s linear infinite;
+}
+
+@keyframes mecaRotateRight {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes mecaRotateLeft {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.meca-message {
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  transform: translateX(-50%);
+  width: 80%;
+  padding: 14px;
+  background: rgba(0,0,0,0.75);
+  color: white;
+  text-align: center;
+  border-radius: 12px;
+  font-size: 18px;
+  display: none;
+  z-index: 10;
+}
+
+.meca-reset {
+  position: absolute;
+  top: 2%;
+  right: 4%;
+  z-index: 10;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.65);
+  color: white;
+  font-size: 14px;
+}
+
+.meca-suite {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: none;
+  padding: 18px 40px;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  background: rgba(20,20,20,0.85);
+  border: 2px solid white;
+  border-radius: 14px;
+  cursor: pointer;
 }
 
 @media (max-width: 480px) {
@@ -482,11 +676,8 @@ input {
 
     <h3>Vous devriez peut-être y aller.</h3>
 
-    <audio
-    id="chant-audio"
-    src="https://avelescape.github.io/aventures/audio/stmathieu/grego.mp3"
-    preload="auto">
-</audio>
+    <!-- Remplace cette URL par l'adresse réelle de ton fichier MP3 sur WordPress -->
+    <audio id="chant-audio" src="" preload="auto"></audio>
 
     <button class="btn-primary" onclick="showScreen('abbaye')">
       Cliquez lorsque vous serez à l'abbaye
@@ -608,25 +799,45 @@ input {
     <p>Le cadenas s’ouvre !</p>
   </div>
 
-  <button class="btn-primary" onclick="showScreen('mecanismephare')">
+  <button class="btn-primary" onclick="showScreen('sommetphare')">
     Monter en haut du phare
   </button>
 </div>
 
-<div class="screen" id="screen-mecanismephare">
-  <p>Utilisez le mécanisme du phare. Lorsque le phare est rallumé, poursuivez l’aventure.</p>
+<div class="screen" id="screen-sommetphare">
+  <h1>Actionnez les engrenages et les poids pour rallumer le phare.</h1>
 
-  <div class="godot-wrapper">
-    <iframe 
-        src="mecanismephare/index.html" 
-        allow="autoplay; fullscreen" 
-        sandbox="allow-scripts allow-same-origin allow-pointer-lock">
-    </iframe>
+  <div class="meca-scene">
+    <div class="meca-game" id="meca-game">
+
+      <div id="meca-fond" class="meca-fond"></div>
+
+      <button class="meca-reset" onclick="resetMecanismePhare()">Réinitialiser</button>
+
+      <div id="meca-gearA" class="meca-gear meca-gear-small"></div>
+      <div id="meca-gearB" class="meca-gear meca-gear-big"></div>
+      <div id="meca-gearC" class="meca-gear meca-gear-small"></div>
+      <div id="meca-gearD" class="meca-gear meca-gear-big"></div>
+
+      <button type="button" id="meca-zone-A" class="meca-zone" data-letter="A" aria-label="A"></button>
+      <button type="button" id="meca-zone-B" class="meca-zone" data-letter="B" aria-label="B"></button>
+      <button type="button" id="meca-zone-C" class="meca-zone" data-letter="C" aria-label="C"></button>
+      <button type="button" id="meca-zone-D" class="meca-zone" data-letter="D" aria-label="D"></button>
+      <button type="button" id="meca-zone-E" class="meca-zone" data-letter="E" aria-label="E"></button>
+      <button type="button" id="meca-zone-F" class="meca-zone" data-letter="F" aria-label="F"></button>
+      <button type="button" id="meca-zone-G" class="meca-zone" data-letter="G" aria-label="G"></button>
+
+      <div id="meca-message" class="meca-message"></div>
+
+      <button id="meca-suite" class="meca-suite" onclick="suiteMecanismePhare()">
+        suivant
+      </button>
+
+    </div>
   </div>
-  
-  <button class="btn-primary" onclick="showScreen('finaventure')">
-    Continuer lorsque le phare est rallumé
-  </button>
+
+  <audio id="sonSuccesMecanisme" src="engrenages.mp3" preload="auto"></audio>
+  <audio id="sonClicMecanisme" src="ABCDEFG.mp3" preload="auto"></audio>
 </div>
 
 <div class="screen" id="screen-finaventure">
@@ -655,7 +866,6 @@ const screens = {
   lettre: document.getElementById('screen-lettre'),
   puits: document.getElementById('screen-puits'),
   locmaze: document.getElementById('screen-locmaze'),
-  mecanismephare: document.getElementById('screen-mecanismephare'),
   so: document.getElementById('screen-so'),
   puzzle: document.getElementById('screen-puzzle'),
   instructionschap2: document.getElementById('screen-instructionschap2'),
@@ -670,6 +880,7 @@ const screens = {
   suiteaventure: document.getElementById('screen-suiteaventure'),
   codeancienphare: document.getElementById('screen-codeancienphare'),
   hautphare: document.getElementById('screen-hautphare'),
+  sommetphare: document.getElementById('screen-sommetphare'),
   finaventure: document.getElementById('screen-finaventure')
 };
 
@@ -694,7 +905,7 @@ const progressMap = {
   suiteaventure: 100,
   codeancienphare: 100,
   hautphare: 100,
-  mecanismephare: 100,
+  sommetphare: 100,
   finaventure: 100
 };
 
@@ -743,11 +954,29 @@ function showScreen(name, addHist = true) {
     }
   }
 
-  if (name === 'puzzle') { initPuzzle(); }
-  if (name === 'moineloin') { startDialogueMoine(); }
-  if (name === 'sceneabbaye') { startDialogueNaufrageurs(); }
-  if (name === 'petitphare') { startDialoguePhare(); }
-  if (name === 'suiteaventure') { lancerTexteFin(); }
+  if (name === 'puzzle') {
+    initPuzzle();
+  }
+
+  if (name === 'moineloin') {
+    startDialogueMoine();
+  }
+
+  if (name === 'sceneabbaye') {
+    startDialogueNaufrageurs();
+  }
+
+  if (name === 'petitphare') {
+    startDialoguePhare();
+  }
+
+  if (name === 'suiteaventure') {
+    lancerTexteFin();
+  }
+
+  if (name === 'sommetphare') {
+    resetMecanismePhare();
+  }
 }
 
 function goBack() {
@@ -760,8 +989,11 @@ function goBack() {
 function verifier() {
   const input = document.getElementById('reponse');
   const message = document.getElementById('message');
+
   if (!input || !message) return;
+
   const mot = input.value.toLowerCase().trim();
+
   if (mot === 'sceau') {
     showScreen('puzzle');
   } else {
@@ -775,8 +1007,11 @@ if (reponseInput) {
     const message = document.getElementById('message');
     if (message) message.innerText = '';
   });
+
   reponseInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') { verifier(); }
+    if (e.key === 'Enter') {
+      verifier();
+    }
   });
 }
 
@@ -809,6 +1044,15 @@ function handlePieceClick(e) {
   }
 }
 
+function handlePiecePointerDown(e) {
+  // Sur mobile, le dragstart/drop natif ne se déclenche souvent pas.
+  // On force donc le mode « toucher une pièce puis toucher une autre ».
+  if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+    e.preventDefault();
+    handlePieceClick(e);
+  }
+}
+
 function initPuzzle() {
   const board = document.getElementById('puzzle-board');
   const message = document.getElementById('puzzle-message');
@@ -829,7 +1073,9 @@ function initPuzzle() {
   const totalPieces = PUZZLE_SIZE * PUZZLE_SIZE;
   const pieces = [];
 
-  for (let i = 0; i < totalPieces; i++) { pieces.push(i); }
+  for (let i = 0; i < totalPieces; i++) {
+    pieces.push(i);
+  }
 
   do {
     pieces.sort(() => Math.random() - 0.5);
@@ -838,10 +1084,9 @@ function initPuzzle() {
   pieces.forEach((pieceIndex) => {
     const piece = document.createElement('div');
     piece.className = 'puzzle-piece';
-    
-    // Désactive le drag natif sur mobile pour éviter les conflits
-    const isMobile = window.matchMedia('(pointer: coarse)').matches;
-    piece.draggable = !isMobile;
+    // Le drag & drop HTML fonctionne mal sur mobile.
+    // Sur écran tactile, on désactive le drag natif et on utilise le tap/tap.
+    piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
     piece.dataset.correct = pieceIndex;
 
     const x = pieceIndex % PUZZLE_SIZE;
@@ -852,72 +1097,117 @@ function initPuzzle() {
     piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
     piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
 
-    // Événements PC (Drag and Drop)
     piece.addEventListener('dragstart', dragStart);
     piece.addEventListener('dragover', dragOver);
     piece.addEventListener('drop', dropPiece);
     piece.addEventListener('dragend', dragEnd);
-    
-    // Événement Universel (Clic / Tap pour intervertir)
+
+    // Ordinateur : clic possible en plus du glisser-déposer.
     piece.addEventListener('click', handlePieceClick);
+
+    // Mobile/tablette : toucher une pièce puis une autre pour les échanger.
+    piece.addEventListener('pointerdown', handlePiecePointerDown);
 
     board.appendChild(piece);
   });
 }
 
-function dragStart() { if (!puzzleSolved) { draggedPiece = this; this.classList.add('dragging'); } }
-function dragOver(e) { e.preventDefault(); }
+function dragStart() {
+  if (puzzleSolved) return;
+
+  draggedPiece = this;
+  this.classList.add('dragging');
+}
+
+function dragOver(e) {
+  e.preventDefault();
+}
+
 function dropPiece(e) {
   e.preventDefault();
-  if (puzzleSolved || !draggedPiece || draggedPiece === this) return;
+
+  if (puzzleSolved) return;
+  if (!draggedPiece || draggedPiece === this) return;
+
   const tempBg = this.style.backgroundPosition;
   const tempCorrect = this.dataset.correct;
+
   this.style.backgroundPosition = draggedPiece.style.backgroundPosition;
   this.dataset.correct = draggedPiece.dataset.correct;
+
   draggedPiece.style.backgroundPosition = tempBg;
   draggedPiece.dataset.correct = tempCorrect;
+
   checkPuzzle();
 }
-function dragEnd() { this.classList.remove('dragging'); draggedPiece = null; }
+
+function dragEnd() {
+  this.classList.remove('dragging');
+  draggedPiece = null;
+}
 
 function checkPuzzle() {
   const pieces = document.querySelectorAll('.puzzle-piece');
   let solved = true;
+
   pieces.forEach((piece, index) => {
-    if (Number(piece.dataset.correct) !== index) { solved = false; }
+    if (Number(piece.dataset.correct) !== index) {
+      solved = false;
+    }
   });
 
   if (solved) {
     puzzleSolved = true;
+
     const message = document.getElementById('puzzle-message');
     const btn = document.getElementById('btn-puzzle');
+
     if (message) {
-      message.innerHTML = `<p>Le sceau est reconstitué !</p><img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp" class="puzzle-result-img">`;
+      message.innerHTML = `
+        <p>Le sceau est reconstitué !</p>
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp"
+             alt="Indice révélé"
+             class="puzzle-result-img">
+      `;
     }
-    if (btn) btn.style.display = 'inline-block';
+
+    if (btn) {
+      btn.style.display = 'inline-block';
+    }
   }
 }
 
-function essayerOuvrir() { showScreen('portecadenas'); }
+function essayerOuvrir() {
+  showScreen('portecadenas');
+}
+
+/* CODE PHARE */
 const bonCode = '5381';
 
 function nextScreen() {
   showScreen('porteloin');
-  setTimeout(() => { if (currentScreen === 'porteloin') { showScreen('portecadenas'); } }, 3000);
+
+  setTimeout(() => {
+    if (currentScreen === 'porteloin') {
+      showScreen('portecadenas');
+    }
+  }, 3000);
 }
 
 function verifierCode() {
   const input = document.getElementById('codeInput');
-  const msg = document.getElementById('code-message');
   if (!input) return;
-  if (input.value.trim() === bonCode) { 
-    showScreen('boncode'); 
-  } else { 
-    showScreen('mauvaiscode'); 
+
+  const codeEntre = input.value.trim();
+
+  if (codeEntre === bonCode) {
+    showScreen('boncode');
+  } else {
+    showScreen('mauvaiscode');
   }
 }
 
-/* DIALOGUES */
+/* DIALOGUE MOINE */
 const dialogueMoine = [
   "Vous voilà, enfin...",
   "Je suis Gwenhaël, un des premiers moines de l'abbaye.",
@@ -926,32 +1216,47 @@ const dialogueMoine = [
   "Yannick, le gardien, a disparu.",
   "Sortez par la porte latérale nord, et allez près du petit phare."
 ];
-let dialogueIndex = 0; let dialogueTimeout = null;
+
+let dialogueIndex = 0;
+let dialogueTimeout = null;
 
 function startDialogueMoine() {
   const textElement = document.getElementById('dialogue-text');
   const btn = document.getElementById('after-dialogue-btn');
+
   if (dialogueTimeout) clearTimeout(dialogueTimeout);
+
   dialogueIndex = 0;
+
   if (textElement) textElement.innerHTML = '';
   if (btn) btn.style.display = 'none';
+
   afficherDialogueMoine();
 }
 
 function afficherDialogueMoine() {
   const textElement = document.getElementById('dialogue-text');
   if (!textElement || dialogueIndex >= dialogueMoine.length) return;
+
   const line = document.createElement('p');
   line.classList.add('fade-line');
   line.innerText = dialogueMoine[dialogueIndex];
+
   textElement.appendChild(line);
+
   dialogueTimeout = setTimeout(() => {
     dialogueIndex++;
-    if (dialogueIndex < dialogueMoine.length) { afficherDialogueMoine(); } 
-    else { const btn = document.getElementById('after-dialogue-btn'); if (btn) btn.style.display = 'inline-block'; }
+
+    if (dialogueIndex < dialogueMoine.length) {
+      afficherDialogueMoine();
+    } else {
+      const btn = document.getElementById('after-dialogue-btn');
+      if (btn) btn.style.display = 'inline-block';
+    }
   }, 1000);
 }
 
+/* EXPLICATION NAUFRAGEURS */
 const dialogueNaufrageurs = [
   "La nuit, les navigateurs se repèrent grâce aux phares ou aux lumières des ports.",
   "Les naufrageurs allument des feux sur la côte",
@@ -960,32 +1265,47 @@ const dialogueNaufrageurs = [
   "Cela provoque un échouement ou un naufrage.",
   "Puis les naufrageurs pillent l’épave..."
 ];
-let dialogueIndexNaufrageurs = 0; let dialogueTimeoutNaufrageurs = null;
+
+let dialogueIndexNaufrageurs = 0;
+let dialogueTimeoutNaufrageurs = null;
 
 function startDialogueNaufrageurs() {
   const textElement = document.getElementById('dialogue-text-naufrageurs');
   const btn = document.getElementById('after-naufrageurs-btn');
+
   if (dialogueTimeoutNaufrageurs) clearTimeout(dialogueTimeoutNaufrageurs);
+
   dialogueIndexNaufrageurs = 0;
+
   if (textElement) textElement.innerHTML = '';
   if (btn) btn.style.display = 'none';
+
   afficherDialogueNaufrageurs();
 }
 
 function afficherDialogueNaufrageurs() {
   const textElement = document.getElementById('dialogue-text-naufrageurs');
   if (!textElement || dialogueIndexNaufrageurs >= dialogueNaufrageurs.length) return;
+
   const line = document.createElement('p');
   line.classList.add('fade-line');
   line.innerText = dialogueNaufrageurs[dialogueIndexNaufrageurs];
+
   textElement.appendChild(line);
+
   dialogueTimeoutNaufrageurs = setTimeout(() => {
     dialogueIndexNaufrageurs++;
-    if (dialogueIndexNaufrageurs < dialogueNaufrageurs.length) { afficherDialogueNaufrageurs(); } 
-    else { const btn = document.getElementById('after-naufrageurs-btn'); if (btn) btn.style.display = 'inline-block'; }
+
+    if (dialogueIndexNaufrageurs < dialogueNaufrageurs.length) {
+      afficherDialogueNaufrageurs();
+    } else {
+      const btn = document.getElementById('after-naufrageurs-btn');
+      if (btn) btn.style.display = 'inline-block';
+    }
   }, 1200);
 }
 
+/* DIALOGUE PETIT PHARE */
 const dialoguePhare = [
   "Regardez à l'ouest, en contrebas !",
   "Les naufrageurs ont kidnappé Yannick !!!",
@@ -993,49 +1313,91 @@ const dialoguePhare = [
   "faire fuir les brigands",
   "et prévenir le bateau qui approche les récifs."
 ];
-let dialogueIndexPhare = 0; let dialogueTimeoutPhare = null;
+
+let dialogueIndexPhare = 0;
+let dialogueTimeoutPhare = null;
 
 function startDialoguePhare() {
   const textElement = document.getElementById('dialogue-text-phare');
   const enigme = document.getElementById('enigme-phare');
+  const input = document.getElementById('motPhareInput');
+  const message = document.getElementById('mot-phare-message');
+  const indice = document.getElementById('indice-phare');
+
   if (dialogueTimeoutPhare) clearTimeout(dialogueTimeoutPhare);
+
   dialogueIndexPhare = 0;
+
   if (textElement) textElement.innerHTML = '';
   if (enigme) enigme.style.display = 'none';
+  if (input) input.value = '';
+  if (message) message.innerText = '';
+  if (indice) indice.innerText = '';
+
   afficherDialoguePhare();
 }
 
 function afficherDialoguePhare() {
   const textElement = document.getElementById('dialogue-text-phare');
   if (!textElement || dialogueIndexPhare >= dialoguePhare.length) return;
+
   const line = document.createElement('p');
   line.classList.add('fade-line');
   line.innerText = dialoguePhare[dialogueIndexPhare];
+
   textElement.appendChild(line);
+
   dialogueTimeoutPhare = setTimeout(() => {
     dialogueIndexPhare++;
-    if (dialogueIndexPhare < dialoguePhare.length) { afficherDialoguePhare(); } 
-    else { const enigme = document.getElementById('enigme-phare'); if (enigme) enigme.style.display = 'block'; }
+
+    if (dialogueIndexPhare < dialoguePhare.length) {
+      afficherDialoguePhare();
+    } else {
+      const enigme = document.getElementById('enigme-phare');
+      if (enigme) enigme.style.display = 'block';
+    }
   }, 1000);
 }
 
+/* ÉNIGME DU PETIT PHARE */
 function verifierMotPhare() {
   const input = document.getElementById('motPhareInput');
   const message = document.getElementById('mot-phare-message');
+
   if (!input || !message) return;
-  if (input.value.trim().toLowerCase() === 'cloche') { showScreen('suiteaventure'); } else { message.innerText = 'Réessayez'; }
+
+  const mot = input.value.trim().toLowerCase();
+
+  if (mot === 'cloche') {
+    showScreen('suiteaventure');
+  } else {
+    message.innerText = 'Réessayez';
+  }
 }
 
 const motPhareInput = document.getElementById('motPhareInput');
 if (motPhareInput) {
-  motPhareInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { verifierMotPhare(); } });
+  motPhareInput.addEventListener('input', function() {
+    const message = document.getElementById('mot-phare-message');
+    if (message) message.innerText = '';
+  });
+
+  motPhareInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      verifierMotPhare();
+    }
+  });
 }
 
 function afficherIndicePhare() {
   const indice = document.getElementById('indice-phare');
-  if (indice) { indice.innerText = "Je veille au-dessus des toits. Ma voix descend sur la place, appelle les fidèles..."; }
+
+  if (indice) {
+    indice.innerText = "Je veille au-dessus des toits. Ma voix descend sur la place, appelle les fidèles, annonce les heures, et parfois accompagne les adieux.";
+  }
 }
 
+/* TEXTE FINAL */
 const texteFin = [
   "Vous avez réussi à faire fuir les naufrageurs !",
   "Yannick vous dit :",
@@ -1044,38 +1406,245 @@ const texteFin = [
   "mais à l'envers!",
   "Dépêchez-vous..."
 ];
-let indexFin = 0; let timerFin = null;
+
+let indexFin = 0;
+let timerFin = null;
 
 function lancerTexteFin() {
   const container = document.getElementById('texte-fin');
   const btn = document.getElementById('btn-suite');
+
   if (!container || !btn) return;
+
   if (timerFin) clearTimeout(timerFin);
-  container.innerHTML = ''; indexFin = 0; btn.style.display = 'none';
-  afficherTexteFin();
+
+  container.innerHTML = '';
+  indexFin = 0;
+  btn.style.display = 'none';
+
+  afficherLigneFin();
 }
 
-function afficherTexteFin() {
+function afficherLigneFin() {
   const container = document.getElementById('texte-fin');
-  if (!container || indexFin >= texteFin.length) return;
-  const p = document.createElement('p');
-  p.classList.add('fade-line');
-  p.innerText = texteFin[indexFin];
-  container.appendChild(p);
-  timerFin = setTimeout(() => {
-    indexFin++;
-    if (indexFin < texteFin.length) { afficherTexteFin(); } 
-    else { const btn = document.getElementById('btn-suite'); if (btn) btn.style.display = 'inline-block'; }
-  }, 1200);
+  const btn = document.getElementById('btn-suite');
+
+  if (!container || !btn || indexFin >= texteFin.length) return;
+
+  const ligne = document.createElement('p');
+  ligne.classList.add('fade-line');
+  ligne.innerText = texteFin[indexFin];
+
+  container.appendChild(ligne);
+
+  indexFin++;
+
+  if (indexFin < texteFin.length) {
+    timerFin = setTimeout(afficherLigneFin, 1200);
+  } else {
+    btn.style.display = 'inline-block';
+  }
 }
 
+/* CODE ANCIEN PHARE */
 function verifierCodeAncienPhare() {
   const input = document.getElementById('codeAncienPhareInput');
-  const msg = document.getElementById('code-ancien-phare-message');
-  if (input && input.value.trim() === '5381') { showScreen('hautphare'); } else if (msg) { msg.innerText = "Ce n'est pas le bon code."; }
+  const message = document.getElementById('code-ancien-phare-message');
+
+  if (!input || !message) return;
+
+  const code = input.value.trim();
+
+  if (code === '5381') {
+    showScreen('hautphare');
+  } else {
+    message.innerText = 'Mauvais code...';
+  }
 }
 
-function retourSite() { alert("Fin de la démo !"); }
+const codeAncienPhareInput = document.getElementById('codeAncienPhareInput');
+if (codeAncienPhareInput) {
+  codeAncienPhareInput.addEventListener('input', function() {
+    const message = document.getElementById('code-ancien-phare-message');
+    if (message) message.innerText = '';
+  });
+
+  codeAncienPhareInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      verifierCodeAncienPhare();
+    }
+  });
+}
+
+
+
+/* SOMMET DU PHARE - MÉCANISME HTML */
+const codeCorrectMecanisme = ["D", "A", "B", "C", "G"];
+
+const imageMecanismeEteinte = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareeteint.webp";
+const imageMecanismeAllumee = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareallume.webp";
+const imageMecanismeFaisceau = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppharefaisceau.webp";
+
+let sequenceMecanisme = [];
+let mecanismeSolved = false;
+let phareIntervalMecanisme = null;
+let faisceauTimeoutMecanisme = null;
+let timerSuiteMecanisme = null;
+
+function jouerSuccesMecanisme() {
+  const son = document.getElementById("sonSuccesMecanisme");
+  if (!son) return;
+
+  son.pause();
+  son.currentTime = 0;
+
+  son.play().catch(error => {
+    console.log("Son succès bloqué :", error);
+  });
+}
+
+let dernierClicMecanisme = 0;
+
+function initZonesMecanisme() {
+  const zones = document.querySelectorAll('.meca-zone');
+
+  zones.forEach(zone => {
+    // On remplace proprement les zones pour éviter les doubles écouteurs
+    // si l'écran sommet est rouvert plusieurs fois.
+    const nouvelleZone = zone.cloneNode(true);
+    zone.parentNode.replaceChild(nouvelleZone, zone);
+
+    nouvelleZone.addEventListener('pointerdown', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      clickZoneMecanisme(this.dataset.letter);
+    }, { passive: false });
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initZonesMecanisme);
+} else {
+  initZonesMecanisme();
+}
+function jouerClicMecanisme() {
+    const son = document.getElementById("sonClicMecanisme");
+    if (!son) return;
+
+    son.pause();
+    son.currentTime = 0;
+
+    son.play().catch(() => {});
+}
+function clickZoneMecanisme(letter) {
+    if (mecanismeSolved || !letter) return;
+
+    jouerClicMecanisme();
+
+    hideMessageMecanisme();
+  sequenceMecanisme.push(letter);
+
+  for (let i = 0; i < sequenceMecanisme.length; i++) {
+    if (sequenceMecanisme[i] !== codeCorrectMecanisme[i]) {
+      showMessageMecanisme("Mauvais ordre. Le mécanisme se bloque.");
+      sequenceMecanisme = [];
+      return;
+    }
+  }
+
+  if (sequenceMecanisme.length === codeCorrectMecanisme.length) {
+    successMecanisme();
+  }
+}
+
+function successMecanisme() {
+  mecanismeSolved = true;
+
+  jouerSuccesMecanisme();
+
+  const game = document.getElementById("meca-game");
+  const fond = document.getElementById("meca-fond");
+
+  if (game) game.classList.add("meca-active");
+  if (fond) fond.style.backgroundImage = `url("${imageMecanismeAllumee}")`;
+
+  clearInterval(phareIntervalMecanisme);
+  clearTimeout(faisceauTimeoutMecanisme);
+  clearTimeout(timerSuiteMecanisme);
+
+  phareIntervalMecanisme = setInterval(lancerFaisceauMecanisme, 5000);
+
+  timerSuiteMecanisme = setTimeout(() => {
+    const suite = document.getElementById("meca-suite");
+    if (suite) suite.style.display = "block";
+  }, 5000);
+}
+
+function lancerFaisceauMecanisme() {
+  if (!mecanismeSolved) return;
+
+  const fond = document.getElementById("meca-fond");
+  if (!fond) return;
+
+  fond.style.backgroundImage = `url("${imageMecanismeFaisceau}")`;
+
+  clearTimeout(faisceauTimeoutMecanisme);
+
+  faisceauTimeoutMecanisme = setTimeout(() => {
+    if (mecanismeSolved) {
+      fond.style.backgroundImage = `url("${imageMecanismeAllumee}")`;
+    }
+  }, 1000);
+}
+
+function resetMecanismePhare() {
+  sequenceMecanisme = [];
+  mecanismeSolved = false;
+
+  const game = document.getElementById("meca-game");
+  const fond = document.getElementById("meca-fond");
+  const suite = document.getElementById("meca-suite");
+
+  if (game) game.classList.remove("meca-active");
+
+  clearInterval(phareIntervalMecanisme);
+  clearTimeout(faisceauTimeoutMecanisme);
+  clearTimeout(timerSuiteMecanisme);
+
+  phareIntervalMecanisme = null;
+  faisceauTimeoutMecanisme = null;
+  timerSuiteMecanisme = null;
+
+  if (fond) fond.style.backgroundImage = `url("${imageMecanismeEteinte}")`;
+  if (suite) suite.style.display = "none";
+
+  initZonesMecanisme();
+  hideMessageMecanisme();
+}
+
+function suiteMecanismePhare() {
+  showScreen("finaventure");
+}
+
+function showMessageMecanisme(text) {
+  const message = document.getElementById("meca-message");
+  if (!message) return;
+
+  message.textContent = text;
+  message.style.display = "block";
+}
+
+function hideMessageMecanisme() {
+  const message = document.getElementById("meca-message");
+  if (!message) return;
+
+  message.style.display = "none";
+}
+
+function retourSite() {
+  window.location.href = "URL_DE_TON_SITE";
+}
 </script>
+
 </body>
 </html>
