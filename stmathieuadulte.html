@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -241,17 +240,14 @@ input {
   border: 3px solid var(--or);
   background: var(--nuit-rouge);
   box-shadow: 0 0 18px rgba(212, 175, 55, 0.35);
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
 .puzzle-piece {
-  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp");
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp");
   background-size: 320px 320px;
   cursor: grab;
   border: 1px solid rgba(245, 232, 208, 0.35);
-  touch-action: none;
+  touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -364,39 +360,38 @@ input {
 .meca-fond {
   position: absolute;
   inset: 0;
-  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareeteint.webp");
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentilleeteinte.webp");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
   z-index: 0;
 }
 
-.meca-zone {
+.meca-zones {
   position: absolute;
-  z-index: 15;
-  display: block;
-  padding: 0;
-  margin: 0;
-  border: 2px solid rgba(255, 255, 255, 0.55);
-  border-radius: 12px;
-  background: rgba(0, 170, 255, 0.18);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.meca-zone {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 0;
   cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
+  pointer-events: all;
+}
+
+.meca-zone:hover {
+  fill: transparent;
+  stroke: transparent;
 }
 
 .meca-zone:active {
-  background: rgba(255, 255, 255, 0.35);
+  fill: transparent;
+  stroke: transparent;
 }
-
-#meca-zone-A { left: 32.12%; top: 39.06%; width: 11.28%; height: 7.32%; }
-#meca-zone-B { left: 45.14%; top: 39.06%; width: 11.28%; height: 7.32%; }
-#meca-zone-C { left: 59.03%; top: 39.06%; width: 11.28%; height: 7.32%; }
-#meca-zone-D { left: 73.78%; top: 39.06%; width: 11.28%; height: 7.32%; }
-#meca-zone-E { left: 39.06%; top: 73.24%; width: 11.28%; height: 12.21%; }
-#meca-zone-F { left: 52.95%; top: 68.36%; width: 11.28%; height: 18.55%; }
-#meca-zone-G { left: 66.84%; top: 68.36%; width: 11.28%; height: 18.55%; }
-
 .meca-gear {
   position: absolute;
   background-size: contain;
@@ -410,13 +405,13 @@ input {
 .meca-gear-small {
   width: 13%;
   aspect-ratio: 1 / 1;
-  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp");
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-2.webp");
 }
 
 .meca-gear-big {
   width: 16%;
   aspect-ratio: 1 / 1;
-  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp");
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand-1.webp");
 }
 
 #meca-gearA { left: 36%; top: 50%; }
@@ -473,20 +468,66 @@ input {
   font-size: 14px;
 }
 
+
+.meca-indices {
+  position: absolute;
+  left: 50%;
+  bottom: 15%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 90%;
+  pointer-events: auto;
+}
+
+.meca-indice-btn {
+  display: none;
+  margin: 0;
+  padding: 12px 18px;
+  background: rgba(15, 0, 1, 0.88);
+  color: var(--ivoire);
+  border: 1px solid var(--or);
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: Georgia, serif;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.35);
+}
+
+.indice-mecanisme-page {
+  max-width: 760px;
+  margin: 80px auto 20px;
+  padding: 28px;
+  border: 1px solid var(--or);
+  border-radius: 14px;
+  background: rgba(15, 0, 1, 0.82);
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.25);
+  font-size: 22px;
+  line-height: 1.5;
+}
+
 .meca-suite {
   position: absolute;
   left: 50%;
-  bottom: 4%;
+  bottom: 2%;
   transform: translateX(-50%);
   z-index: 20;
   display: none;
-  padding: 18px 40px;
-  font-size: 22px;
+
+  width: 100px;
+  height: 56px;
+  padding: 0;
+
+  font-size: 20px;
   font-weight: bold;
   color: white;
+
   background: rgba(20,20,20,0.85);
   border: 2px solid white;
-  border-radius: 14px;
+  border-radius: 12px;
   cursor: pointer;
 }
 
@@ -515,9 +556,9 @@ input {
 
 <div class="screen active" id="screen-intro">
   <img class="intro-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/intro1stmath-webp.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpaffiche.jpg"
        alt="intro"
-       onclick="showScreen('missive1')">
+       onclick="startAventure(event)">
 
   <p class="intro-date">17 Février · Anno Domini 1840</p>
 
@@ -530,7 +571,7 @@ input {
   <h1 class="intro-title">Le Mystère<br>du Phare</h1>
 
   <p class="intro-location">Pointe de Saint-Mathieu, Bretagne</p>
-  <button class="btn-primary" onclick="showScreen('missive1')">Commencer l'enquête</button>
+  <button class="btn-primary" onclick="startAventure(event)">Commencer l'enquête</button>
 </div>
 
 <div class="screen" id="screen-missive1">
@@ -539,7 +580,7 @@ input {
     <p>Cliquez pour l'ouvrir</p>
   </div>
 
-  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/enveloppe-webp.webp"
+  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpenveloppe1.webp"
        alt="missive1 scellée"
        class="missive1-image"
        onclick="showScreen('missive2')">
@@ -551,7 +592,7 @@ input {
     <p>Cliquez pour lire la lettre</p>
   </div>
 
-  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cachet-de-cire-brise-sur-enveloppe-webp.webp"
+  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpenveloppe2.webp"
        alt="missive2 ouverte"
        class="missive2-image"
        onclick="showScreen('lettre')">
@@ -560,7 +601,7 @@ input {
 <div class="screen" id="screen-lettre">
   <div class="lettre-container">
     <img class="lettre-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/lettre-webp.webp"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplettre.webp"
          alt="lettre"
          onclick="showScreen('puits')">
 
@@ -608,7 +649,7 @@ input {
 <div class="screen" id="screen-puzzle">
   <div class="puzzle-label">
     <h2>Reconstituez le sceau</h2>
-    <p>Glissez les pièces avec le doigt pour reformer l’image.</p>
+    <p>Déplacez les pièces pour reformer l’image.</p>
 
     <div id="puzzle-board"></div>
     <div id="puzzle-message"></div>
@@ -633,7 +674,7 @@ input {
 <div id="screen-porteloin" class="screen">
   <div class="porte-label">
     <img class="chapter-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/porte-phare-loin-webp.webp"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareloin.webp"
          alt="Porte du phare">
 
     <p>Il semble que le phare soit fermé...</p>
@@ -647,7 +688,7 @@ input {
 <div id="screen-portecadenas" class="screen">
   <div class="porte-label">
     <img class="chapter-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cadenas-porte-pharewebp.webp"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpportecadenasferme.webp"
          alt="Cadenas du phare">
 
     <p>Entrez le code à 4 chiffres</p>
@@ -692,7 +733,7 @@ input {
 <div class="screen" id="screen-abbaye">
   <div class="abbaye-container">
     <img class="abbaye-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/moine-loin-webp.webp"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-pngmoineloin.png"
          alt="Abbaye"
          onclick="showScreen('moineloin')">
 
@@ -704,7 +745,7 @@ input {
 
 <div class="screen" id="screen-moineloin">
   <img class="moineloin-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/moine-pres-webp.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpgwenhaelproche.webp"
        alt="Moine au loin">
 
   <div class="dialogue-box">
@@ -721,7 +762,7 @@ input {
 
 <div class="screen" id="screen-sceneabbaye">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/naufrageurs-webp.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webptroisnaufrageurs.webp"
        alt="Passage secret de l'abbaye">
 
   <div class="dialogue-box">
@@ -738,7 +779,7 @@ input {
 
 <div class="screen" id="screen-petitphare">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/kidnapping-webp.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpyannickkidnappe.webp"
        alt="Petit phare">
 
   <div class="dialogue-box">
@@ -761,7 +802,7 @@ input {
 
 <div class="screen" id="screen-suiteaventure">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/yannick-hurle-webp.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpyannick.webp"
        alt="Yannick">
 
   <div class="dialogue-box">
@@ -775,7 +816,7 @@ input {
 
 <div class="screen" id="screen-codeancienphare">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cadenas-porte-pharewebp.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpportecadenasferme.webp"
        alt="Ancien phare">
 
   <div class="texte-sommet" style="opacity:1;">
@@ -796,7 +837,7 @@ input {
 
 <div class="screen" id="screen-hautphare">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/porte-ouverte-webp.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpporteouverte.webp"
        alt="Phare ouvert">
 
   <div class="texte-sommet" style="opacity:1;">
@@ -823,15 +864,27 @@ input {
       <div id="meca-gearC" class="meca-gear meca-gear-small"></div>
       <div id="meca-gearD" class="meca-gear meca-gear-big"></div>
 
-      <button type="button" id="meca-zone-A" class="meca-zone" data-letter="A" aria-label="A"></button>
-      <button type="button" id="meca-zone-B" class="meca-zone" data-letter="B" aria-label="B"></button>
-      <button type="button" id="meca-zone-C" class="meca-zone" data-letter="C" aria-label="C"></button>
-      <button type="button" id="meca-zone-D" class="meca-zone" data-letter="D" aria-label="D"></button>
-      <button type="button" id="meca-zone-E" class="meca-zone" data-letter="E" aria-label="E"></button>
-      <button type="button" id="meca-zone-F" class="meca-zone" data-letter="F" aria-label="F"></button>
-      <button type="button" id="meca-zone-G" class="meca-zone" data-letter="G" aria-label="G"></button>
+      <svg class="meca-zones" viewBox="0 0 1152 2048" preserveAspectRatio="none">
+        <rect class="meca-zone" x="370" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('A')" />
+        <rect class="meca-zone" x="520" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('B')" />
+        <rect class="meca-zone" x="680" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('C')" />
+        <rect class="meca-zone" x="850" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('D')" />
+
+        <rect class="meca-zone" x="500" y="1500" width="130" height="280" rx="15" onclick="clickZoneMecanisme('E')" />
+        <rect class="meca-zone" x="680" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('F')" />
+        <rect class="meca-zone" x="820" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('G')" />
+      </svg>
 
       <div id="meca-message" class="meca-message"></div>
+
+      <div class="meca-indices">
+        <button id="meca-indice1-btn" class="meca-indice-btn" hidden onclick="showScreen('indicemecanisme1')">
+          1er indice
+        </button>
+        <button id="meca-indice2-btn" class="meca-indice-btn" hidden onclick="showScreen('indicemecanisme2')">
+          2ème indice
+        </button>
+      </div>
 
       <button id="meca-suite" class="meca-suite" onclick="suiteMecanismePhare()">
         suivant
@@ -840,18 +893,39 @@ input {
     </div>
   </div>
 
-  <audio id="sonSuccesMecanisme" src="engrenages.mp3" preload="auto"></audio>
-  <audio id="sonClicMecanisme" src="ABCDEFG.mp3" preload="auto"></audio>
+  <audio id="sonSuccesMecanisme" src="https://avelescape.github.io/Audio/Stmathieu/engrenages.mp3" preload="auto"></audio>
+</div>
+
+
+<div class="screen" id="screen-indicemecanisme1">
+  <div class="indice-mecanisme-page">
+    <h2>1er indice</h2>
+    <p>L'ordre des engrenages et du poids est l'identité certifiée du phare.</p>
+    <button class="btn-primary" onclick="showScreen('sommetphare')">
+      Retour au mécanisme
+    </button>
+  </div>
+</div>
+
+<div class="screen" id="screen-indicemecanisme2">
+  <div class="indice-mecanisme-page">
+    <h2>2ème indice</h2>
+    <p>Le sceau est l'identification officielle du phare.</p>
+    <button class="btn-primary" onclick="showScreen('sommetphare')">
+      Retour au mécanisme
+    </button>
+  </div>
 </div>
 
 <div class="screen" id="screen-finaventure">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/fin-webp.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webfin.webp"
        alt="Fin de l'aventure">
 
   <div class="texte-sommet" style="opacity:1; margin-top:20px;">
     <p>Vous avez réussi l'aventure !</p>
     <p>Grâce à vous, Yannick est sauvé <br>et les marins ne feront pas naufrage.</p>
+    <p>A très bientôt pour une nouvelle aventure!</p>
   </div>
 
   <button class="btn-primary" onclick="retourSite()">
@@ -860,6 +934,15 @@ input {
 </div>
 
 <script>
+
+function vibrerEchec() {
+  // Fonctionne surtout sur Android/Chrome.
+  // Sur iPhone/iOS, les navigateurs ignorent souvent la vibration.
+  if (navigator.vibrate) {
+    navigator.vibrate([120, 60, 120]);
+  }
+}
+
 let currentScreen = 'intro';
 let navHistory = [];
 
@@ -885,6 +968,8 @@ const screens = {
   codeancienphare: document.getElementById('screen-codeancienphare'),
   hautphare: document.getElementById('screen-hautphare'),
   sommetphare: document.getElementById('screen-sommetphare'),
+  indicemecanisme1: document.getElementById('screen-indicemecanisme1'),
+  indicemecanisme2: document.getElementById('screen-indicemecanisme2'),
   finaventure: document.getElementById('screen-finaventure')
 };
 
@@ -910,6 +995,8 @@ const progressMap = {
   codeancienphare: 100,
   hautphare: 100,
   sommetphare: 100,
+  indicemecanisme1: 100,
+  indicemecanisme2: 100,
   finaventure: 100
 };
 
@@ -979,7 +1066,7 @@ function showScreen(name, addHist = true) {
   }
 
   if (name === 'sommetphare') {
-    resetMecanismePhare();
+    mettreAJourBoutonsIndicesMecanisme();
   }
 }
 
@@ -1001,6 +1088,7 @@ function verifier() {
   if (mot === 'sceau') {
     showScreen('puzzle');
   } else {
+    vibrerEchec();
     message.innerText = "Ce n'est pas la bonne réponse, essaye encore !";
   }
 }
@@ -1024,10 +1112,6 @@ const PUZZLE_SIZE = 3;
 let draggedPiece = null;
 let puzzleSolved = false;
 let selectedPiece = null;
-let pointerPuzzlePiece = null;
-let pointerStartX = 0;
-let pointerStartY = 0;
-let pointerIsDragging = false;
 
 function handlePieceClick(e) {
   if (puzzleSolved) return;
@@ -1053,64 +1137,12 @@ function handlePieceClick(e) {
 }
 
 function handlePiecePointerDown(e) {
-  if (puzzleSolved) return;
-
-  e.preventDefault();
-
-  pointerPuzzlePiece = e.currentTarget;
-  pointerStartX = e.clientX;
-  pointerStartY = e.clientY;
-  pointerIsDragging = true;
-
-  pointerPuzzlePiece.classList.add('dragging');
-  pointerPuzzlePiece.style.zIndex = '50';
-  pointerPuzzlePiece.setPointerCapture(e.pointerId);
-}
-
-function handlePiecePointerMove(e) {
-  if (!pointerIsDragging || !pointerPuzzlePiece) return;
-
-  e.preventDefault();
-
-  const dx = e.clientX - pointerStartX;
-  const dy = e.clientY - pointerStartY;
-
-  pointerPuzzlePiece.style.transform = `translate(${dx}px, ${dy}px) scale(1.04)`;
-}
-
-function handlePiecePointerUp(e) {
-  if (!pointerIsDragging || !pointerPuzzlePiece) return;
-
-  e.preventDefault();
-
-  const pieceDepart = pointerPuzzlePiece;
-
-  pieceDepart.releasePointerCapture(e.pointerId);
-  pieceDepart.classList.remove('dragging');
-  pieceDepart.style.transform = '';
-  pieceDepart.style.zIndex = '';
-
-  pointerPuzzlePiece = null;
-  pointerIsDragging = false;
-
-  const cible = document.elementFromPoint(e.clientX, e.clientY);
-  const pieceArrivee = cible ? cible.closest('.puzzle-piece') : null;
-
-  if (!pieceArrivee || pieceArrivee === pieceDepart) return;
-
-  echangerPieces(pieceDepart, pieceArrivee);
-  checkPuzzle();
-}
-
-function echangerPieces(piece1, piece2) {
-  const tempBg = piece2.style.backgroundPosition;
-  const tempCorrect = piece2.dataset.correct;
-
-  piece2.style.backgroundPosition = piece1.style.backgroundPosition;
-  piece2.dataset.correct = piece1.dataset.correct;
-
-  piece1.style.backgroundPosition = tempBg;
-  piece1.dataset.correct = tempCorrect;
+  // Sur mobile, le dragstart/drop natif ne se déclenche souvent pas.
+  // On force donc le mode « toucher une pièce puis toucher une autre ».
+  if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+    e.preventDefault();
+    handlePieceClick(e);
+  }
 }
 
 function initPuzzle() {
@@ -1146,7 +1178,7 @@ function initPuzzle() {
     piece.className = 'puzzle-piece';
     // Le drag & drop HTML fonctionne mal sur mobile.
     // Sur écran tactile, on désactive le drag natif et on utilise le tap/tap.
-    piece.draggable = false;
+    piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
     piece.dataset.correct = pieceIndex;
 
     const x = pieceIndex % PUZZLE_SIZE;
@@ -1157,12 +1189,16 @@ function initPuzzle() {
     piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
     piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
 
-    // Fonctionne sur ordinateur et mobile :
-    // on garde le doigt ou la souris appuyé(e), on glisse, puis on relâche sur une autre pièce.
+    piece.addEventListener('dragstart', dragStart);
+    piece.addEventListener('dragover', dragOver);
+    piece.addEventListener('drop', dropPiece);
+    piece.addEventListener('dragend', dragEnd);
+
+    // Ordinateur : clic possible en plus du glisser-déposer.
+    piece.addEventListener('click', handlePieceClick);
+
+    // Mobile/tablette : toucher une pièce puis une autre pour les échanger.
     piece.addEventListener('pointerdown', handlePiecePointerDown);
-    piece.addEventListener('pointermove', handlePiecePointerMove);
-    piece.addEventListener('pointerup', handlePiecePointerUp);
-    piece.addEventListener('pointercancel', handlePiecePointerUp);
 
     board.appendChild(piece);
   });
@@ -1221,7 +1257,7 @@ function checkPuzzle() {
     if (message) {
       message.innerHTML = `
         <p>Le sceau est reconstitué !</p>
-        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp"
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp"
              alt="Indice révélé"
              class="puzzle-result-img">
       `;
@@ -1242,12 +1278,6 @@ const bonCode = '5381';
 
 function nextScreen() {
   showScreen('porteloin');
-
-  setTimeout(() => {
-    if (currentScreen === 'porteloin') {
-      showScreen('portecadenas');
-    }
-  }, 3000);
 }
 
 function verifierCode() {
@@ -1257,8 +1287,10 @@ function verifierCode() {
   const codeEntre = input.value.trim();
 
   if (codeEntre === bonCode) {
-    showScreen('boncode');
+    // Le premier cadenas ouvre maintenant directement l'accès au haut du phare.
+    showScreen('hautphare');
   } else {
+    vibrerEchec();
     showScreen('mauvaiscode');
   }
 }
@@ -1427,6 +1459,7 @@ function verifierMotPhare() {
   if (mot === 'cloche') {
     showScreen('suiteaventure');
   } else {
+    vibrerEchec();
     message.innerText = 'Réessayez';
   }
 }
@@ -1514,6 +1547,7 @@ function verifierCodeAncienPhare() {
   if (code === '5381') {
     showScreen('hautphare');
   } else {
+    vibrerEchec();
     message.innerText = 'Mauvais code...';
   }
 }
@@ -1533,15 +1567,15 @@ if (codeAncienPhareInput) {
 }
 
 
-
 /* SOMMET DU PHARE - MÉCANISME HTML */
 const codeCorrectMecanisme = ["D", "A", "B", "C", "G"];
 
-const imageMecanismeEteinte = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareeteint.webp";
-const imageMecanismeAllumee = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareallume.webp";
-const imageMecanismeFaisceau = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppharefaisceau.webp";
+const imageMecanismeEteinte = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentilleeteinte.webp";
+const imageMecanismeAllumee = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentilleallume.webp";
+const imageMecanismeFaisceau = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentillefaisceau.webp";
 
 let sequenceMecanisme = [];
+let nbErreursMecanisme = 0;
 let mecanismeSolved = false;
 let phareIntervalMecanisme = null;
 let faisceauTimeoutMecanisme = null;
@@ -1559,57 +1593,64 @@ function jouerSuccesMecanisme() {
   });
 }
 
-let dernierClicMecanisme = 0;
-
-function initZonesMecanisme() {
-  const zones = document.querySelectorAll('.meca-zone');
-
-  zones.forEach(zone => {
-    // On remplace proprement les zones pour éviter les doubles écouteurs
-    // si l'écran sommet est rouvert plusieurs fois.
-    const nouvelleZone = zone.cloneNode(true);
-    zone.parentNode.replaceChild(nouvelleZone, zone);
-
-    nouvelleZone.addEventListener('pointerdown', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      clickZoneMecanisme(this.dataset.letter);
-    }, { passive: false });
-  });
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initZonesMecanisme);
-} else {
-  initZonesMecanisme();
-}
-function jouerClicMecanisme() {
-    const son = document.getElementById("sonClicMecanisme");
-    if (!son) return;
-
-    son.pause();
-    son.currentTime = 0;
-
-    son.play().catch(() => {});
-}
 function clickZoneMecanisme(letter) {
-    if (mecanismeSolved || !letter) return;
+  if (mecanismeSolved) return;
 
-    jouerClicMecanisme();
-
-    hideMessageMecanisme();
+  hideMessageMecanisme();
   sequenceMecanisme.push(letter);
 
-  for (let i = 0; i < sequenceMecanisme.length; i++) {
-    if (sequenceMecanisme[i] !== codeCorrectMecanisme[i]) {
-      showMessageMecanisme("Mauvais ordre. Le mécanisme se bloque.");
-      sequenceMecanisme = [];
-      return;
-    }
+  // IMPORTANT : on ne vérifie pas le code à chaque clic.
+  // On laisse d'abord le joueur cliquer sur toutes les zones nécessaires.
+  if (sequenceMecanisme.length < codeCorrectMecanisme.length) {
+    return;
   }
 
-  if (sequenceMecanisme.length === codeCorrectMecanisme.length) {
+  const codeEntre = sequenceMecanisme.join("");
+  const codeAttendu = codeCorrectMecanisme.join("");
+
+  if (codeEntre === codeAttendu) {
     successMecanisme();
+    return;
+  }
+
+  // Ici seulement, après une séquence complète, on compte 1 échec.
+  nbErreursMecanisme++;
+  vibrerEchec();
+  sequenceMecanisme = [];
+
+  showMessageMecanisme("Mauvais ordre. Le mécanisme se bloque.");
+  mettreAJourBoutonsIndicesMecanisme();
+}
+
+function mettreAJourBoutonsIndicesMecanisme() {
+  const boutonIndice1 = document.getElementById("meca-indice1-btn");
+  const boutonIndice2 = document.getElementById("meca-indice2-btn");
+
+  // Après 3 échecs complets, le 1er indice devient disponible.
+  if (boutonIndice1 && nbErreursMecanisme >= 3) {
+    boutonIndice1.hidden = false;
+    boutonIndice1.style.setProperty("display", "inline-block", "important");
+  }
+
+  // Après 4 échecs complets, le 2ème indice devient disponible.
+  if (boutonIndice2 && nbErreursMecanisme >= 4) {
+    boutonIndice2.hidden = false;
+    boutonIndice2.style.setProperty("display", "inline-block", "important");
+  }
+}
+
+function cacherBoutonsIndicesMecanisme() {
+  const boutonIndice1 = document.getElementById("meca-indice1-btn");
+  const boutonIndice2 = document.getElementById("meca-indice2-btn");
+
+  if (boutonIndice1) {
+    boutonIndice1.hidden = true;
+    boutonIndice1.style.setProperty("display", "none", "important");
+  }
+
+  if (boutonIndice2) {
+    boutonIndice2.hidden = true;
+    boutonIndice2.style.setProperty("display", "none", "important");
   }
 }
 
@@ -1655,6 +1696,7 @@ function lancerFaisceauMecanisme() {
 
 function resetMecanismePhare() {
   sequenceMecanisme = [];
+  nbErreursMecanisme = 0;
   mecanismeSolved = false;
 
   const game = document.getElementById("meca-game");
@@ -1674,7 +1716,7 @@ function resetMecanismePhare() {
   if (fond) fond.style.backgroundImage = `url("${imageMecanismeEteinte}")`;
   if (suite) suite.style.display = "none";
 
-  initZonesMecanisme();
+  cacherBoutonsIndicesMecanisme();
   hideMessageMecanisme();
 }
 
@@ -1696,6 +1738,63 @@ function hideMessageMecanisme() {
 
   message.style.display = "none";
 }
+
+
+/* DÉMARRAGE ROBUSTE DE L'AVENTURE */
+let dernierDemarrageAventure = 0;
+
+function startAventure(event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const maintenant = Date.now();
+  if (maintenant - dernierDemarrageAventure < 400) return;
+  dernierDemarrageAventure = maintenant;
+
+  showScreen('missive1');
+}
+
+/* Sécurité : on expose explicitement les fonctions utilisées par les boutons HTML */
+window.vibrerEchec = vibrerEchec;
+window.startAventure = startAventure;
+window.showScreen = showScreen;
+window.goBack = goBack;
+window.verifier = verifier;
+window.nextScreen = nextScreen;
+window.essayerOuvrir = essayerOuvrir;
+window.verifierCode = verifierCode;
+window.verifierMotPhare = verifierMotPhare;
+window.afficherIndicePhare = afficherIndicePhare;
+window.verifierCodeAncienPhare = verifierCodeAncienPhare;
+window.clickZoneMecanisme = clickZoneMecanisme;
+window.resetMecanismePhare = resetMecanismePhare;
+window.suiteMecanismePhare = suiteMecanismePhare;
+window.mettreAJourBoutonsIndicesMecanisme = mettreAJourBoutonsIndicesMecanisme;
+window.retourSite = retourSite;
+
+/* Sécurité au chargement : on force l'écran de départ et on ajoute un déclenchement tactile */
+document.addEventListener('DOMContentLoaded', function() {
+  Object.values(screens).forEach(screen => {
+    if (screen) screen.classList.remove('active');
+  });
+
+  if (screens.intro) screens.intro.classList.add('active');
+  currentScreen = 'intro';
+  navHistory = [];
+
+  const progress = document.getElementById('progress');
+  if (progress) progress.style.width = '0%';
+
+  const navBack = document.getElementById('nav-back');
+  if (navBack) navBack.classList.remove('visible');
+
+  const introElements = document.querySelectorAll('#screen-intro .intro-img, #screen-intro .btn-primary');
+  introElements.forEach(element => {
+    element.addEventListener('pointerup', startAventure, { passive: false });
+  });
+});
 
 function retourSite() {
   window.location.href = "URL_DE_TON_SITE";
