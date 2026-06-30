@@ -1059,10 +1059,491 @@ input:focus {
   }
 }
 
+
+
+/* =========================================================
+   AVELESCAPE ADULTE - VERSION 100% MOBILE EXTERIEUR
+   Objectif : jeu lisible sur smartphone, même en plein soleil.
+   ========================================================= */
+
+:root {
+  --mobile-text: clamp(22px, 5.6vw, 28px);
+  --mobile-small: clamp(20px, 5vw, 24px);
+  --mobile-dialogue: clamp(23px, 5.8vw, 29px);
+  --mobile-button: clamp(22px, 5.8vw, 28px);
+  --mobile-h1: clamp(39px, 11vw, 54px);
+  --mobile-h2: clamp(31px, 8.6vw, 42px);
+}
+
+html {
+  background: #1b1512;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100svh;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: contain;
+}
+
+.screen {
+  min-height: 100svh;
+  padding:
+    max(42px, calc(env(safe-area-inset-top, 0px) + 28px))
+    max(14px, env(safe-area-inset-right, 0px))
+    max(42px, calc(env(safe-area-inset-bottom, 0px) + 30px))
+    max(14px, env(safe-area-inset-left, 0px));
+}
+
+.bg {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 190, 92, 0.20), transparent 28%),
+    radial-gradient(circle at 50% 42%, rgba(138, 30, 34, 0.35), transparent 38%),
+    linear-gradient(180deg, #2a1c18 0%, #1b1512 48%, #0e0c0b 100%);
+}
+
+.progress-bar {
+  height: 8px;
+  background: linear-gradient(90deg, #f3d47a, #c49a3a, #fff1b8);
+  box-shadow: 0 2px 12px rgba(255, 220, 140, 0.55);
+}
+
+h1 {
+  font-size: var(--mobile-h1);
+  line-height: 1.04;
+}
+
+h2 {
+  font-size: var(--mobile-h2);
+  line-height: 1.1;
+}
+
+h3 {
+  font-size: clamp(25px, 6.7vw, 34px);
+  line-height: 1.28;
+}
+
+.intro-title {
+  font-size: clamp(44px, 13vw, 64px);
+  line-height: 0.96;
+  margin: 20px auto 18px;
+  text-shadow:
+    0 0 12px rgba(255, 230, 160, 0.55),
+    0 3px 18px rgba(0,0,0,0.75);
+}
+
+.intro-date,
+.intro-location {
+  font-size: clamp(22px, 5.8vw, 28px);
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.intro-sep {
+  margin: 18px auto;
+}
+
+.intro-sep-line {
+  width: min(24vw, 95px);
+  height: 2px;
+}
+
+.intro-sep-diamond {
+  width: 13px;
+  height: 13px;
+}
+
+.intro-img,
+.lettre-img,
+.missive1-image,
+.missive2-image,
+.chapter-img,
+.abbaye-img,
+.moineloin-img,
+.puzzle-result-img {
+  width: auto;
+  max-width: min(94vw, 760px);
+  max-height: 56svh;
+  object-fit: contain;
+  filter: brightness(1.16) contrast(1.1) saturate(1.04);
+}
+
+.lettre-img {
+  max-height: 70svh;
+}
+
+.missive1-label,
+.missive2-label,
+.puits-label,
+.locmaze-label,
+.so-label,
+.puzzle-label,
+.instructions-label,
+.instructionschap2-label,
+.porte-label,
+.dialogue-box,
+#enigme-phare,
+.indice-mecanisme-page,
+.texte-sommet {
+  width: min(94vw, 760px);
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: var(--mobile-text);
+  line-height: 1.68;
+  background: rgba(24, 16, 13, 0.94);
+  border: 2px solid rgba(243, 212, 122, 0.92);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.08) inset,
+    0 18px 38px rgba(0,0,0,0.42),
+    0 0 28px rgba(196,154,58,0.22);
+}
+
+.missive1-label,
+.missive2-label,
+.puits-label,
+.locmaze-label,
+.so-label,
+.puzzle-label,
+.instructions-label,
+.instructionschap2-label,
+.porte-label {
+  margin-top: 34px;
+  padding: 24px 20px;
+}
+
+.dialogue-box,
+#enigme-phare,
+.indice-mecanisme-page {
+  padding: 28px 22px;
+}
+
+#dialogue-text,
+#dialogue-text-phare,
+#dialogue-text-naufrageurs,
+#texte-fin {
+  font-size: var(--mobile-dialogue);
+  line-height: 1.68;
+  min-height: 48px;
+}
+
+#dialogue-text p,
+#dialogue-text-phare p,
+#dialogue-text-naufrageurs p,
+#texte-fin p,
+.missive1-label p,
+.missive2-label p,
+.puits-label p,
+.locmaze-label p,
+.so-label p,
+.puzzle-label p,
+.instructionschap2-label p,
+.porte-label p,
+.texte-sommet p {
+  margin: 0.45em 0;
+}
+
+.btn-primary,
+button {
+  min-height: 64px;
+  width: min(92vw, 420px);
+  margin: 12px auto;
+  padding: 18px 24px;
+  font-size: var(--mobile-button);
+  line-height: 1.12;
+  font-weight: 700;
+  border-radius: 16px;
+  border-width: 2px;
+  touch-action: manipulation;
+}
+
+.nav-back {
+  width: 54px;
+  height: 54px;
+  min-height: 54px;
+  padding: 0;
+  font-size: 30px;
+  border-radius: 50%;
+}
+
+input {
+  width: min(88vw, 390px);
+  min-height: 64px;
+  padding: 16px 18px;
+  font-size: clamp(24px, 6.5vw, 31px) !important;
+  font-weight: 700;
+  border-radius: 14px;
+  border-width: 2px;
+}
+
+input:focus {
+  outline: 4px solid rgba(255, 230, 160, 0.5);
+  outline-offset: 2px;
+}
+
+#message,
+#puzzle-message,
+#code-message,
+#mot-phare-message,
+#code-ancien-phare-message,
+#message-sommet,
+#indice-phare {
+  font-size: clamp(21px, 5.6vw, 28px);
+  line-height: 1.55;
+  font-weight: 700;
+  color: #ffe6a1 !important;
+}
+
+#puzzle-board {
+  width: min(92vw, 430px);
+  height: min(92vw, 430px);
+  border-width: 4px;
+  border-radius: 18px;
+  margin: 28px auto;
+}
+
+.puzzle-piece {
+  background-size: min(92vw, 430px) min(92vw, 430px);
+  border: 1px solid rgba(255, 248, 230, 0.5);
+  touch-action: none;
+}
+
+.puzzle-piece.selected {
+  box-shadow: 0 0 0 4px #f3d47a, 0 0 18px rgba(255, 230, 160, 0.9);
+}
+
+.fondu-images {
+  width: 94vw;
+  max-width: 760px;
+  height: min(58svh, 720px);
+}
+
+.image-fondu {
+  max-height: min(58svh, 720px);
+}
+
+#screen-sommetphare {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+#screen-sommetphare h1 {
+  width: min(94vw, 760px);
+  margin: 10px auto 16px;
+  font-size: clamp(29px, 8vw, 42px);
+  line-height: 1.1;
+}
+
+.meca-scene {
+  width: 100%;
+  min-height: auto;
+  height: calc(100svh - 130px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  background: transparent;
+  align-items: center;
+}
+
+.meca-game {
+  width: min(100%, calc((100svh - 150px) * 1152 / 2048));
+  max-width: 470px;
+  max-height: calc(100svh - 150px);
+  border-width: 4px;
+  border-radius: 22px;
+}
+
+.meca-message {
+  width: 90%;
+  bottom: 7%;
+  padding: 14px 12px;
+  font-size: clamp(18px, 4.8vw, 23px);
+  line-height: 1.35;
+  background: rgba(18, 12, 10, 0.92);
+  border: 2px solid rgba(243, 212, 122, 0.9);
+}
+
+.meca-reset {
+  top: 1.5%;
+  right: 3%;
+  width: auto;
+  min-height: 46px;
+  padding: 8px 12px;
+  font-size: clamp(15px, 4vw, 18px);
+}
+
+.meca-indices {
+  bottom: 17%;
+  gap: 8px;
+}
+
+.meca-indice-btn {
+  width: auto;
+  min-height: 50px;
+  padding: 10px 14px;
+  font-size: clamp(17px, 4.8vw, 22px);
+}
+
+.meca-suite {
+  bottom: 2%;
+  width: min(48vw, 190px);
+  min-height: 58px;
+  font-size: clamp(20px, 5.6vw, 26px);
+}
+
+@media (max-width: 390px) {
+  :root {
+    --mobile-text: 21px;
+    --mobile-dialogue: 22px;
+    --mobile-button: 21px;
+  }
+
+  .screen {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .intro-title {
+    font-size: 42px;
+  }
+
+  .btn-primary,
+  button {
+    width: min(94vw, 360px);
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  .screen {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .intro-img,
+  .lettre-img,
+  .missive1-image,
+  .missive2-image,
+  .chapter-img,
+  .abbaye-img,
+  .moineloin-img {
+    max-height: 42svh;
+  }
+
+  .missive1-label,
+  .missive2-label,
+  .puits-label,
+  .locmaze-label,
+  .so-label,
+  .puzzle-label,
+  .instructionschap2-label,
+  .porte-label,
+  .dialogue-box {
+    font-size: 20px;
+    line-height: 1.45;
+    padding: 16px;
+  }
+
+  .btn-primary,
+  button {
+    min-height: 50px;
+    font-size: 20px;
+    padding: 12px 18px;
+  }
+
+  #screen-sommetphare h1 {
+    font-size: 22px;
+    margin: 4px auto 8px;
+  }
+
+  .meca-scene {
+    height: calc(100svh - 76px);
+  }
+
+  .meca-game {
+    max-height: calc(100svh - 86px);
+  }
+}
+
+@supports not (height: 100svh) {
+  body,
+  .screen { min-height: 100vh; }
+
+  .meca-scene { height: calc(100vh - 130px); }
+  .meca-game { max-height: calc(100vh - 150px); }
+}
+
+
+
+/* =========================================================
+   BOUTON RETOUR SITE AVELESCAPE - VERSION ADULTE MOBILE
+   Visible en haut à droite sur toutes les pages
+   ========================================================= */
+.site-retour {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 999999;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  min-height: 42px;
+  padding: 8px 14px;
+
+  background: rgba(18, 14, 12, 0.88);
+  color: #ff6a2a;
+
+  border: 2px solid #ff6a2a;
+  border-radius: 999px;
+
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.45),
+    inset 0 0 12px rgba(212,175,55,0.14);
+
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.site-retour:hover {
+  background: #ff6a2a;
+  color: #ffffff;
+}
+
+.site-retour:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 480px) {
+  .site-retour {
+    top: max(10px, env(safe-area-inset-top));
+    right: max(10px, env(safe-area-inset-right));
+    min-height: 38px;
+    padding: 7px 11px;
+    font-size: 13px;
+  }
+}
+
 </style>
 </head>
 
 <body>
+
+<a class="site-retour" href="https://avelescape.github.io/aventures/" aria-label="Retour au site AvelEscape">
+  <span>site AvelEscape</span>
+</a>
+
 
 <div class="bg"></div>
 <div class="progress-bar" id="progress" style="width:0%"></div>
