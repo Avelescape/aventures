@@ -2,14 +2,10 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090203">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0E3B4C">
 <title>Le Mystère du Phare</title>
 
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 * { box-sizing: border-box; }
@@ -248,11 +244,10 @@ input {
 }
 
 .puzzle-piece {
-  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp");
-  background-size: 320px 320px;
+  background-repeat: no-repeat;
   cursor: grab;
   border: 1px solid rgba(245, 232, 208, 0.35);
-  touch-action: none;
+  touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -335,6 +330,219 @@ input {
   margin-top: 5px;
 }
 
+
+/* ---------------- SOMMET DU PHARE - MÉCANISME HTML ---------------- */
+.meca-scene {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.meca-game {
+  position: relative;
+  width: min(100vw, calc((100vh - 80px) * 1152 / 2048));
+  aspect-ratio: 1152 / 2048;
+  overflow: hidden;
+  background: #000;
+  border: 2px solid var(--or);
+  border-radius: 18px;
+  box-shadow: 0 0 28px rgba(212, 175, 55, 0.35);
+}
+
+.meca-fond {
+  position: absolute;
+  inset: 0;
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentilleeteinte.webp");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 0;
+}
+
+.meca-zones {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.meca-zone {
+  fill: rgba(255, 255, 255, 0.08);   /* très léger voile blanc */
+  stroke: rgba(255, 255, 255, 0.18); /* contour discret */
+  stroke-width: 2;
+  cursor: pointer;
+  pointer-events: all;
+  transition: all 0.2s ease;
+}
+
+.meca-zone:hover {
+  fill: rgba(255, 255, 255, 0.15);
+  stroke: rgba(255, 255, 255, 0.35);
+}
+
+.meca-zone:active {
+  fill: rgba(245, 194, 75, 0.25);
+  stroke: rgba(245, 194, 75, 0.7);
+}
+
+.meca-zone-label {
+  font-family: Georgia, serif;
+  font-size: 64px;
+  font-weight: 900;
+  fill: #ffffff;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.75);
+  stroke-width: 8px;
+}
+.meca-gear {
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 6;
+  transform-origin: center center;
+  pointer-events: none;
+}
+
+.meca-gear-small {
+  width: 13%;
+  aspect-ratio: 1 / 1;
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-2.webp");
+}
+
+.meca-gear-big {
+  width: 16%;
+  aspect-ratio: 1 / 1;
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand-1.webp");
+}
+
+#meca-gearA { left: 36%; top: 50%; }
+#meca-gearB { left: 43%; top: 52%; }
+#meca-gearC { left: 54%; top: 50%; }
+#meca-gearD { left: 62%; top: 50%; }
+
+.meca-active #meca-gearA,
+.meca-active #meca-gearC {
+  animation: mecaRotateRight 6s linear infinite;
+}
+
+.meca-active #meca-gearB,
+.meca-active #meca-gearD {
+  animation: mecaRotateLeft 6s linear infinite;
+}
+
+@keyframes mecaRotateRight {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes mecaRotateLeft {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.meca-message {
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  transform: translateX(-50%);
+  width: 80%;
+  padding: 14px;
+  background: rgba(0,0,0,0.75);
+  color: white;
+  text-align: center;
+  border-radius: 12px;
+  font-size: 18px;
+  display: none;
+  z-index: 10;
+}
+
+.meca-reset {
+  position: absolute;
+  top: 2%;
+  right: 4%;
+  z-index: 10;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.65);
+  color: white;
+  font-size: 14px;
+}
+
+
+.meca-indices {
+  position: absolute;
+  left: 50%;
+  bottom: 15%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 90%;
+  pointer-events: auto;
+}
+
+.meca-indice-btn {
+  display: none;
+  margin: 0;
+  padding: 12px 18px;
+  background: rgba(15, 0, 1, 0.88);
+  color: var(--ivoire);
+  border: 1px solid var(--or);
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: Georgia, serif;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.35);
+}
+
+.indice-mecanisme-page {
+  max-width: 760px;
+  margin: 80px auto 20px;
+  padding: 28px;
+  border: 1px solid var(--or);
+  border-radius: 14px;
+  background: rgba(15, 0, 1, 0.82);
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.25);
+  font-size: 22px;
+  line-height: 1.5;
+}
+
+.meca-suite {
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: none;
+
+  width: 100px;
+  height: 56px;
+  padding: 0;
+
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+
+  background: rgba(20,20,20,0.85);
+  border: 2px solid white;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
 @media (max-width: 480px) {
   .intro-title {
     font-size: 36px;
@@ -350,112 +558,52 @@ input {
   }
 }
 
-
 /* =========================================================
-   AVELESCAPE ADULTE - STYLE PHARE CINÉMATOGRAPHIQUE
-   Direction : sombre, maritime, élégant, proche du style d'origine
-   Sans carnet d'enquête, sans Billig, sans ambiance enfant.
+   OPTIMISATION SMARTPHONES - AVELESCAPE ADULTE
+   Ajout : version mobile plus confortable Android / iPhone
    ========================================================= */
 
-:root {
-  --rouge-cardinal: #090203;
-  --cramoisi: #36070B;
-  --cramoisi-2: #5A1117;
-  --or: #D6AE4B;
-  --or-pale: #F1D28A;
-  --ivoire: #F6EBD5;
-  --nuit-rouge: #170B0E;
-  --noir-mer: #06070A;
-  --ardoise: #111820;
-  --brume: rgba(246,235,213,0.10);
-  --verre: rgba(10, 5, 7, 0.72);
-  --trait: rgba(214,174,75,0.50);
-}
-
 html {
-  background: var(--noir-mer);
+  width: 100%;
+  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
-
 body {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  background:
-    radial-gradient(circle at 50% -10%, rgba(214,174,75,0.18), transparent 28%),
-    radial-gradient(circle at 14% 18%, rgba(90,17,23,0.42), transparent 34%),
-    linear-gradient(180deg, #06070A 0%, #170B0E 44%, #090203 100%);
-  color: var(--ivoire);
-  letter-spacing: 0.01em;
+  width: 100%;
+  min-height: 100svh;
+  overscroll-behavior-y: contain;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.bg {
-  background:
-    linear-gradient(115deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 130px),
-    radial-gradient(circle at 50% 18%, rgba(241,210,138,0.15), transparent 18%),
-    radial-gradient(circle at 75% 10%, rgba(90,17,23,0.45), transparent 32%),
-    linear-gradient(180deg, #06070A 0%, #18090D 52%, #050304 100%);
+img,
+button,
+input {
+  max-width: 100%;
 }
 
-.bg::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse at center, transparent 0%, transparent 54%, rgba(0,0,0,0.64) 100%),
-    linear-gradient(90deg, transparent, rgba(214,174,75,0.035), transparent);
-  mix-blend-mode: screen;
+button,
+.btn-primary,
+.nav-back,
+.meca-zone,
+.puzzle-piece {
+  touch-action: manipulation;
 }
 
-.progress-bar {
-  height: 4px;
-  background: linear-gradient(90deg, #7E151B, var(--or), var(--or-pale));
-  box-shadow: 0 0 18px rgba(214,174,75,0.65);
+input,
+textarea,
+select {
+  font-size: 16px !important; /* évite le zoom automatique sur iPhone */
 }
 
 .screen {
   min-height: 100svh;
   padding:
-    max(38px, calc(env(safe-area-inset-top, 0px) + 28px))
-    max(16px, env(safe-area-inset-right, 0px))
+    max(36px, calc(env(safe-area-inset-top, 0px) + 24px))
+    max(14px, env(safe-area-inset-right, 0px))
     max(34px, calc(env(safe-area-inset-bottom, 0px) + 24px))
-    max(16px, env(safe-area-inset-left, 0px));
-}
-
-h1, h2, h3, .intro-title {
-  font-family: 'Cinzel', Georgia, serif;
-  color: var(--or-pale);
-  font-weight: 600;
-  letter-spacing: 0.055em;
-  text-transform: uppercase;
-  text-shadow:
-    0 0 16px rgba(214,174,75,0.25),
-    0 2px 10px rgba(0,0,0,0.8);
-}
-
-.intro-title {
-  font-size: clamp(34px, 9vw, 64px);
-  line-height: 0.95;
-  margin: 18px 0 14px;
-}
-
-.intro-date,
-.intro-location {
-  font-family: 'Inter', system-ui, sans-serif;
-  color: rgba(246,235,213,0.82);
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  font-size: clamp(12px, 3vw, 15px);
-}
-
-.intro-location { color: var(--or); }
-
-.intro-sep-line {
-  width: 82px;
-  background: linear-gradient(90deg, transparent, var(--or), transparent);
-}
-
-.intro-sep-diamond {
-  background: var(--or);
-  box-shadow: 0 0 14px rgba(214,174,75,0.75);
+    max(14px, env(safe-area-inset-left, 0px));
 }
 
 .intro-img,
@@ -466,20 +614,14 @@ h1, h2, h3, .intro-title {
 .abbaye-img,
 .moineloin-img,
 .puzzle-result-img {
-  max-width: min(92vw, 760px);
-  max-height: 62svh;
-  border-radius: 18px;
-  border: 1px solid rgba(214,174,75,0.45);
-  box-shadow:
-    0 18px 42px rgba(0,0,0,0.58),
-    0 0 0 1px rgba(255,255,255,0.06) inset,
-    0 0 32px rgba(214,174,75,0.12);
-  filter: contrast(1.04) saturate(0.94);
+  width: auto;
+  max-width: min(94vw, 760px);
+  max-height: 58svh;
+  object-fit: contain;
 }
 
-.intro-img {
-  border-radius: 22px;
-  max-height: 58svh;
+.lettre-img {
+  max-height: 72svh;
 }
 
 .missive1-label,
@@ -493,503 +635,96 @@ h1, h2, h3, .intro-title {
 .porte-label,
 .dialogue-box,
 #enigme-phare,
-.texte-sommet,
-.indice-mecanisme-page {
-  width: min(92vw, 780px);
+.indice-mecanisme-page,
+.texte-sommet {
+  width: min(94vw, 760px);
   margin-left: auto;
   margin-right: auto;
-  color: var(--ivoire);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025)),
-    linear-gradient(135deg, rgba(54,7,11,0.82), rgba(6,7,10,0.82));
-  border: 1px solid var(--trait);
-  border-radius: 20px;
-  box-shadow:
-    0 18px 42px rgba(0,0,0,0.45),
-    0 0 0 1px rgba(255,255,255,0.045) inset,
-    0 0 36px rgba(214,174,75,0.08);
-  backdrop-filter: blur(7px);
 }
 
-.missive1-label,
-.missive2-label,
-.puits-label,
-.locmaze-label,
-.so-label,
-.puzzle-label,
-.instructions-label,
-.instructionschap2-label,
-.porte-label {
-  margin-top: 64px;
-  padding: clamp(20px, 5vw, 32px);
-  font-size: clamp(20px, 4.8vw, 26px);
-  line-height: 1.35;
-}
-
-.dialogue-box,
-#enigme-phare,
-.indice-mecanisme-page {
-  padding: clamp(20px, 5vw, 30px);
-}
-
-.dialogue-box::before,
-#enigme-phare::before,
-.puzzle-label::before,
-.porte-label::before {
-  content: "";
-  display: block;
-  width: 92px;
-  height: 1px;
-  margin: 0 auto 16px;
-  background: linear-gradient(90deg, transparent, var(--or), transparent);
-  box-shadow: 0 0 12px rgba(214,174,75,0.55);
-}
-
-#dialogue-text,
-#dialogue-text-phare,
-#dialogue-text-naufrageurs,
-#texte-fin {
-  font-size: clamp(19px, 4.3vw, 24px);
-  line-height: 1.38;
+input[type="text"],
+input[type="number"] {
+  width: min(88vw, 360px);
+  min-height: 52px;
 }
 
 .btn-primary,
 button {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: clamp(15px, 4vw, 17px);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #12090A;
-  background:
-    linear-gradient(180deg, #F4D98E, #C79A36 48%, #91691F);
-  border: 1px solid rgba(255,235,173,0.78);
-  border-radius: 999px;
-  padding: 14px 24px;
-  box-shadow:
-    0 8px 0 rgba(72,42,10,0.72),
-    0 18px 28px rgba(0,0,0,0.34),
-    inset 0 1px 0 rgba(255,255,255,0.58);
-  text-shadow: 0 1px 0 rgba(255,255,255,0.25);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-}
-
-.btn-primary:hover,
-button:hover {
-  background: linear-gradient(180deg, #FFE9A9, #D6AE4B 48%, #9B7428);
-  filter: brightness(1.04);
-  transform: translateY(-1px);
-}
-
-.btn-primary:active,
-button:active {
-  transform: translateY(5px);
-  box-shadow:
-    0 3px 0 rgba(72,42,10,0.72),
-    0 10px 20px rgba(0,0,0,0.30),
-    inset 0 1px 0 rgba(255,255,255,0.58);
-}
-
-.nav-back {
-  background: rgba(6,7,10,0.78);
-  color: var(--or-pale);
-  border: 1px solid var(--or);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.42), 0 0 16px rgba(214,174,75,0.18);
-  backdrop-filter: blur(8px);
-}
-
-input {
-  width: min(86vw, 340px);
   min-height: 52px;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 18px !important;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--ivoire);
-  background: rgba(3,4,7,0.70);
-  border: 1px solid rgba(214,174,75,0.75);
-  border-radius: 999px;
-  box-shadow:
-    inset 0 2px 10px rgba(0,0,0,0.55),
-    0 0 18px rgba(214,174,75,0.10);
-}
-
-input:focus {
-  outline: none;
-  border-color: var(--or-pale);
-  box-shadow:
-    inset 0 2px 10px rgba(0,0,0,0.55),
-    0 0 0 3px rgba(214,174,75,0.16),
-    0 0 24px rgba(214,174,75,0.18);
-}
-
-#message,
-#puzzle-message,
-#code-message,
-#mot-phare-message,
-#code-ancien-phare-message,
-#message-sommet,
-#indice-phare {
-  color: var(--or-pale) !important;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-weight: 700;
+  line-height: 1.1;
 }
 
 #puzzle-board {
-  width: min(90vw, 430px);
-  height: min(90vw, 430px);
-  border: 1px solid rgba(214,174,75,0.70);
-  border-radius: 18px;
-  gap: 3px;
-  padding: 3px;
-  background: rgba(0,0,0,0.52);
-  box-shadow:
-    0 16px 36px rgba(0,0,0,0.5),
-    0 0 30px rgba(214,174,75,0.15);
-  overflow: hidden;
+  width: min(92vw, 420px);
+  height: min(92vw, 420px);
 }
 
 .puzzle-piece {
-  border: 1px solid rgba(246,235,213,0.16);
-  box-shadow: inset 0 0 12px rgba(0,0,0,0.24);
-}
-
-.puzzle-piece.selected {
-  box-shadow: 0 0 0 2px var(--or-pale), 0 0 24px rgba(214,174,75,0.95);
-  border: 1px solid var(--or-pale);
-  opacity: 0.88;
+  background-size: min(92vw, 420px) min(92vw, 420px);
 }
 
 .fondu-images {
-  width: min(92vw, 820px);
-  height: min(62svh, 680px);
+  width: 94vw;
+  height: min(62svh, 720px);
 }
 
 .image-fondu {
-  border-radius: 20px;
+  max-height: min(62svh, 720px);
 }
 
-.texte-sommet {
-  display: inline-block;
-  padding: 20px 26px;
+#screen-sommetphare {
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 #screen-sommetphare h1 {
-  font-size: clamp(23px, 6vw, 42px);
-  line-height: 1.15;
+  width: min(94vw, 760px);
+  margin: 12px auto 14px;
+  font-size: clamp(23px, 7vw, 38px);
+  line-height: 1.08;
 }
 
-@media (max-width: 480px) {
-  .screen {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  .intro-title {
-    font-size: clamp(34px, 12vw, 48px);
-  }
-
-  .missive1-label,
-  .missive2-label,
-  .puits-label,
-  .locmaze-label,
-  .so-label,
-  .puzzle-label,
-  .instructions-label,
-  .instructionschap2-label,
-  .porte-label {
-    margin-top: 44px;
-    border-radius: 18px;
-  }
-
-  .btn-primary,
-  button {
-    width: min(92vw, 360px);
-    margin: 10px auto;
-  }
-
-  .nav-back {
-    width: 44px;
-    min-height: 44px;
-    padding: 0;
-  }
-
-  #puzzle-board {
-    width: min(92vw, 360px);
-    height: min(92vw, 360px);
-  }
+.meca-scene {
+  width: 100%;
+  min-height: auto;
+  height: calc(100svh - 118px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  align-items: center;
 }
 
-
-
-/* =========================================================
-   OPTIMISATION MOBILE PLEIN SOLEIL - AVELESCAPE ADULTE
-   Garde le style cinéma maritime, mais améliore fortement
-   la lisibilité dehors sur smartphone.
-   ========================================================= */
-
-@media (max-width: 760px) {
-  :root {
-    --rouge-cardinal: #160405;
-    --cramoisi: #5A0D12;
-    --or: #F0C65A;
-    --ivoire: #FFF8ED;
-    --nuit-rouge: #2A1718;
-  }
-
-  html {
-    background: #211517;
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-  }
-
-  body {
-    min-height: 100svh;
-    background:
-      radial-gradient(circle at 50% 0%, rgba(240,198,90,0.18), transparent 34%),
-      linear-gradient(180deg, #362021 0%, #281719 48%, #1B1114 100%);
-    color: var(--ivoire);
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .bg {
-    background:
-      radial-gradient(circle at 20% 8%, rgba(255,235,180,0.18), transparent 28%),
-      radial-gradient(circle at 80% 15%, rgba(171,83,54,0.20), transparent 30%),
-      linear-gradient(180deg, #3A2021, #211416 64%, #130C0E);
-  }
-
-  .screen {
-    min-height: 100svh;
-    padding:
-      max(34px, calc(env(safe-area-inset-top, 0px) + 22px))
-      max(13px, env(safe-area-inset-right, 0px))
-      max(34px, calc(env(safe-area-inset-bottom, 0px) + 22px))
-      max(13px, env(safe-area-inset-left, 0px));
-  }
-
-  .progress-bar {
-    height: 8px;
-    background: linear-gradient(90deg, #FFF1B8, var(--or), #B9752E);
-    box-shadow: 0 2px 14px rgba(240,198,90,0.65);
-  }
-
-  .intro-title {
-    font-size: clamp(34px, 11vw, 52px);
-    color: #FFF8ED;
-    text-shadow:
-      0 2px 0 rgba(0,0,0,0.85),
-      0 0 14px rgba(240,198,90,0.55),
-      0 0 28px rgba(240,198,90,0.28);
-  }
-
-  .intro-date,
-  .intro-location,
-  h1, h2, h3 {
-    color: #F7D36B;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.75);
-  }
-
-  .missive1-label,
-  .missive2-label,
-  .puits-label,
-  .locmaze-label,
-  .so-label,
-  .puzzle-label,
-  .instructions-label,
-  .instructionschap2-label,
-  .porte-label,
-  .dialogue-box,
-  #enigme-phare,
-  .texte-sommet,
-  .indice-mecanisme-page {
-    width: min(94vw, 760px);
-    margin-left: auto;
-    margin-right: auto;
-    padding: 20px 18px;
-    color: #FFF8ED;
-    background: rgba(23, 10, 11, 0.93);
-    border: 2px solid rgba(240,198,90,0.95);
-    border-radius: 18px;
-    box-shadow:
-      0 0 0 1px rgba(255,248,237,0.12) inset,
-      0 12px 30px rgba(0,0,0,0.55),
-      0 0 24px rgba(240,198,90,0.22);
-    backdrop-filter: blur(3px);
-  }
-
-  .missive1-label,
-  .missive2-label,
-  .puits-label,
-  .locmaze-label,
-  .so-label,
-  .puzzle-label,
-  .instructions-label,
-  .instructionschap2-label,
-  .porte-label {
-    margin-top: 62px;
-    font-size: clamp(19px, 5vw, 23px);
-    line-height: 1.45;
-    font-weight: 600;
-  }
-
-  #dialogue-text,
-  #dialogue-text-phare,
-  #dialogue-text-naufrageurs,
-  #texte-fin {
-    font-size: clamp(18px, 4.8vw, 22px);
-    line-height: 1.48;
-    font-weight: 600;
-  }
-
-  .intro-img,
-  .lettre-img,
-  .missive1-image,
-  .missive2-image,
-  .chapter-img,
-  .abbaye-img,
-  .moineloin-img,
-  .puzzle-result-img {
-    width: auto;
-    max-width: min(94vw, 760px);
-    max-height: 58svh;
-    object-fit: contain;
-    filter: brightness(1.18) contrast(1.1) saturate(1.04);
-    border-radius: 18px;
-    box-shadow:
-      0 16px 34px rgba(0,0,0,0.58),
-      0 0 0 1px rgba(240,198,90,0.35);
-  }
-
-  .lettre-img {
-    max-height: 72svh;
-  }
-
-  .btn-primary,
-  button {
-    width: min(92vw, 360px);
-    min-height: 56px;
-    margin: 10px auto;
-    padding: 14px 18px;
-    font-size: clamp(18px, 4.8vw, 22px);
-    font-weight: 700;
-    color: #FFF8ED;
-    background:
-      linear-gradient(180deg, rgba(122,31,22,0.98), rgba(60,8,10,0.98));
-    border: 2px solid #F0C65A;
-    border-radius: 15px;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.18),
-      0 5px 0 rgba(79,36,14,0.95),
-      0 13px 24px rgba(0,0,0,0.46),
-      0 0 18px rgba(240,198,90,0.20);
-    text-shadow: 0 1px 4px rgba(0,0,0,0.75);
-    touch-action: manipulation;
-  }
-
-  .btn-primary:active,
-  button:active {
-    transform: translateY(3px);
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.16),
-      0 2px 0 rgba(79,36,14,0.95),
-      0 8px 18px rgba(0,0,0,0.42);
-  }
-
-  .nav-back {
-    width: 46px;
-    height: 46px;
-    min-height: 46px;
-    padding: 0;
-    border-radius: 50%;
-    background: rgba(24,9,10,0.96);
-    color: #FFF8ED;
-    border: 2px solid #F0C65A;
-    box-shadow: 0 8px 18px rgba(0,0,0,0.45);
-  }
-
-  input,
-  input[type="text"],
-  input[type="number"] {
-    width: min(88vw, 360px);
-    min-height: 54px;
-    padding: 13px 14px;
-    font-size: 18px !important;
-    font-weight: 700;
-    color: #160405;
-    background: #FFF8ED;
-    border: 3px solid #F0C65A;
-    border-radius: 13px;
-    box-shadow:
-      inset 0 2px 7px rgba(0,0,0,0.18),
-      0 6px 18px rgba(0,0,0,0.26);
-  }
-
-  input:focus {
-    outline: 3px solid rgba(255,248,237,0.6);
-  }
-
-  #message,
-  #puzzle-message,
-  #code-message,
-  #mot-phare-message,
-  #code-ancien-phare-message,
-  #message-sommet,
-  #indice-phare {
-    color: #FFE18A !important;
-    font-weight: 800;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.85);
-  }
-
-  #puzzle-board {
-    width: min(92vw, 420px);
-    height: min(92vw, 420px);
-    border: 4px solid #F0C65A;
-    border-radius: 16px;
-    background: #170A0B;
-    box-shadow:
-      0 14px 32px rgba(0,0,0,0.55),
-      0 0 22px rgba(240,198,90,0.28);
-    overflow: hidden;
-  }
-
-  .puzzle-piece {
-    background-size: min(92vw, 420px) min(92vw, 420px);
-    border: 1px solid rgba(255,248,237,0.55);
-  }
-
-  .puzzle-piece.selected {
-    box-shadow: 0 0 0 4px #F0C65A, 0 0 18px rgba(255,225,138,0.85);
-    border: 2px solid #FFF8ED;
-  }
-
-  .fondu-images {
-    width: 94vw;
-    height: min(62svh, 720px);
-  }
-
-  .image-fondu {
-    max-height: min(62svh, 720px);
-  }
-
-  .meca-game {
-    border: 3px solid #F0C65A;
-    border-radius: 18px;
-    box-shadow:
-      0 18px 38px rgba(0,0,0,0.6),
-      0 0 26px rgba(240,198,90,0.30);
-  }
-
-  .meca-message {
-    width: 88%;
-    color: #FFF8ED;
-    background: rgba(23,10,11,0.95);
-    border: 2px solid #F0C65A;
-    font-size: clamp(16px, 4.3vw, 19px);
-    font-weight: 700;
-  }
+.meca-game {
+  width: min(100%, calc((100svh - 130px) * 1152 / 2048));
+  max-width: 460px;
+  height: auto;
+  max-height: calc(100svh - 130px);
+  border-radius: 18px;
 }
 
+.meca-message {
+  width: 88%;
+  bottom: 7%;
+  font-size: clamp(15px, 4vw, 18px);
+  padding: 10px 12px;
+}
+
+.meca-indices {
+  bottom: 17%;
+  gap: 8px;
+}
+
+.meca-reset {
+  top: 1.5%;
+  right: 3%;
+  min-height: 40px;
+  padding: 7px 10px;
+  font-size: 14px;
+}
+
+.meca-suite {
+  bottom: 2%;
+  min-height: 50px;
+}
+
+/* Très petits téléphones */
 @media (max-width: 390px) {
   .screen {
     padding-left: 10px;
@@ -997,9 +732,13 @@ input:focus {
   }
 
   .intro-title {
-    font-size: clamp(32px, 12vw, 44px);
+    font-size: clamp(31px, 12vw, 42px);
   }
 
+  #dialogue-text,
+  #dialogue-text-phare,
+  #dialogue-text-naufrageurs,
+  #texte-fin,
   .missive1-label,
   .missive2-label,
   .puits-label,
@@ -1010,16 +749,24 @@ input:focus {
   .instructionschap2-label,
   .porte-label {
     font-size: 18px;
-    padding: 18px 14px;
   }
 
   .btn-primary,
   button {
     width: min(94vw, 340px);
-    font-size: 20px;
+    padding: 12px 14px;
+    font-size: 21px;
+  }
+
+  .nav-back {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
   }
 }
 
+/* Téléphones en paysage : on limite la hauteur des visuels pour éviter les boutons hors écran */
 @media (max-height: 520px) and (orientation: landscape) {
   .screen {
     padding-top: 18px;
@@ -1033,126 +780,245 @@ input:focus {
   .chapter-img,
   .abbaye-img,
   .moineloin-img {
-    max-height: 44svh;
+    max-height: 42svh;
+  }
+.meca-scene {
+    height: calc(100svh - 72px);
   }
 
-  .missive1-label,
-  .missive2-label,
-  .puits-label,
-  .locmaze-label,
-  .so-label,
-  .puzzle-label,
-  .instructions-label,
-  .instructionschap2-label,
-  .porte-label,
-  .dialogue-box {
-    margin-top: 20px;
+  #screen-sommetphare h1 {
+    font-size: 22px;
+    margin: 4px auto 8px;
+  }
+
+  .meca-game {
+    max-height: calc(100svh - 82px);
   }
 }
 
 @supports not (height: 100svh) {
-  @media (max-width: 760px) {
-    body,
-    .screen {
-      min-height: 100vh;
-    }
+  body,
+  .screen {
+    min-height: 100vh;
+  }
+
+  .meca-scene {
+    height: calc(100vh - 118px);
+  }
+
+  .meca-game {
+    max-height: calc(100vh - 130px);
   }
 }
 
 
+/* =========================================================
+   BOUTON RETOUR SITE AVELESCAPE - PETIT FORMAT
+   Visible sur toutes les pages / mobile et ordinateur
+   ========================================================= */
+.site-retour {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 999999;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  min-height: 34px;
+  padding: 6px 12px;
+
+  background: rgba(14, 59, 76, 0.92);
+  color: #ff5a1f;
+
+  border: 2px solid #ff5a1f;
+  border-radius: 999px;
+
+  font-family: Georgia, serif;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.site-retour:hover {
+  background: #ff5a1f;
+  color: #ffffff;
+}
+
+.site-retour:active {
+  transform: scale(0.96);
+}
+
+
+@media (max-width: 480px) {
+  .site-retour {
+    top: max(10px, env(safe-area-inset-top));
+    right: max(10px, env(safe-area-inset-right));
+    min-height: 30px;
+    padding: 5px 9px;
+    gap: 4px;
+    font-size: 12px;
+    border-width: 2px;
+  }
+
+}
+
 
 /* =========================================================
-   AVELESCAPE ADULTE - VERSION 100% MOBILE EXTERIEUR
-   Objectif : jeu lisible sur smartphone, même en plein soleil.
+   PUZZLE - VRAI GLISSÉ AU DOIGT
+   Les pièces suivent le doigt puis s'échangent au relâchement.
    ========================================================= */
+#puzzle-board {
+  position: relative !important;
+  display: block !important;
+  touch-action: none !important;
+  overflow: hidden !important;
+}
 
+#puzzle-board .puzzle-piece {
+  position: absolute !important;
+  background-repeat: no-repeat !important;
+  touch-action: none !important;
+  cursor: grab;
+  transition: transform 0.08s ease;
+  will-change: transform;
+}
+
+#puzzle-board .puzzle-piece.dragging {
+  opacity: 0.88;
+  cursor: grabbing;
+  transition: none;
+  box-shadow: 0 0 18px rgba(245,194,75,0.9);
+}
+
+
+/* Bouton couper le chant */
+#stop-audio-btn{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 10px auto;
+    display: block;
+}
+
+
+/* =========================================================
+   DESIGN ADULTE AVELESCAPE - CINÉMA MARITIME MOBILE
+   Optimisé portable et extérieur
+   ========================================================= */
 :root {
-  --mobile-text: clamp(22px, 5.6vw, 28px);
-  --mobile-small: clamp(20px, 5vw, 24px);
-  --mobile-dialogue: clamp(23px, 5.8vw, 29px);
-  --mobile-button: clamp(22px, 5.8vw, 28px);
-  --mobile-h1: clamp(39px, 11vw, 54px);
-  --mobile-h2: clamp(31px, 8.6vw, 42px);
+  --adult-black: #090607;
+  --adult-deep: #16090d;
+  --adult-red: #3A0710;
+  --adult-red-2: #6F1118;
+  --adult-gold: #D4AF37;
+  --adult-gold-light: #F0D47A;
+  --adult-cream: #FFF3D6;
+  --adult-ivory: #FFF8EA;
+  --adult-bronze: #8B5A26;
+  --adult-ink: #1b1110;
+  --rouge-cardinal: var(--adult-black);
+  --cramoisi: var(--adult-red-2);
+  --or: var(--adult-gold);
+  --ivoire: var(--adult-ivory);
+  --nuit-rouge: var(--adult-deep);
 }
 
 html {
-  background: #1b1512;
+  background: var(--adult-black);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
 body {
+  width: 100%;
   min-height: 100svh;
-  -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  overflow-x: hidden;
+  font-family: Georgia, serif;
+  color: var(--adult-ivory);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(212,175,55,0.18), transparent 30%),
+    radial-gradient(circle at 15% 20%, rgba(111,17,24,0.45), transparent 32%),
+    linear-gradient(180deg, #2a0a10 0%, #13080b 45%, #070506 100%);
   overscroll-behavior-y: contain;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bg {
+  background:
+    radial-gradient(circle at 50% 10%, rgba(255,224,150,0.16), transparent 28%),
+    radial-gradient(circle at 50% 88%, rgba(111,17,24,0.45), transparent 38%),
+    linear-gradient(180deg, rgba(40,8,14,0.96), rgba(5,4,5,0.98));
+}
+
+.bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(255,255,255,0.035), transparent),
+    radial-gradient(circle at center, transparent 45%, rgba(0,0,0,0.48) 100%);
+  opacity: .8;
+}
+
+.progress-bar {
+  height: 7px;
+  background: linear-gradient(90deg, #7a1118, var(--adult-gold), #fff1a8);
+  box-shadow: 0 2px 14px rgba(212,175,55,.55);
 }
 
 .screen {
   min-height: 100svh;
   padding:
-    max(42px, calc(env(safe-area-inset-top, 0px) + 28px))
+    max(72px, calc(env(safe-area-inset-top, 0px) + 62px))
     max(14px, env(safe-area-inset-right, 0px))
-    max(42px, calc(env(safe-area-inset-bottom, 0px) + 30px))
+    max(40px, calc(env(safe-area-inset-bottom, 0px) + 28px))
     max(14px, env(safe-area-inset-left, 0px));
+  text-align: center;
 }
 
-.bg {
-  background:
-    radial-gradient(circle at 50% 0%, rgba(255, 190, 92, 0.20), transparent 28%),
-    radial-gradient(circle at 50% 42%, rgba(138, 30, 34, 0.35), transparent 38%),
-    linear-gradient(180deg, #2a1c18 0%, #1b1512 48%, #0e0c0b 100%);
+h1, h2, h3, .intro-title {
+  font-family: Georgia, serif;
+  color: var(--adult-gold-light);
+  letter-spacing: .03em;
+  text-shadow: 0 2px 0 rgba(0,0,0,.75), 0 0 18px rgba(212,175,55,.35);
 }
 
-.progress-bar {
-  height: 8px;
-  background: linear-gradient(90deg, #f3d47a, #c49a3a, #fff1b8);
-  box-shadow: 0 2px 12px rgba(255, 220, 140, 0.55);
-}
-
-h1 {
-  font-size: var(--mobile-h1);
-  line-height: 1.04;
-}
-
-h2 {
-  font-size: var(--mobile-h2);
-  line-height: 1.1;
-}
-
-h3 {
-  font-size: clamp(25px, 6.7vw, 34px);
-  line-height: 1.28;
-}
+h1 { font-size: clamp(32px, 9.2vw, 48px); line-height: 1.08; }
+h2 { font-size: clamp(28px, 7.4vw, 38px); line-height: 1.12; }
+h3 { font-size: clamp(23px, 6.2vw, 31px); line-height: 1.28; }
 
 .intro-title {
-  font-size: clamp(44px, 13vw, 64px);
-  line-height: 0.96;
-  margin: 20px auto 18px;
-  text-shadow:
-    0 0 12px rgba(255, 230, 160, 0.55),
-    0 3px 18px rgba(0,0,0,0.75);
+  font-size: clamp(38px, 13vw, 62px);
+  margin: 22px 0 18px;
+  color: #fff3cf;
+  text-transform: uppercase;
 }
 
 .intro-date,
 .intro-location {
-  font-size: clamp(22px, 5.8vw, 28px);
-  line-height: 1.35;
-  font-weight: 700;
+  color: var(--adult-gold-light);
+  font-size: clamp(19px, 5.2vw, 25px);
+  letter-spacing: .07em;
+  text-transform: uppercase;
 }
 
-.intro-sep {
-  margin: 18px auto;
-}
-
-.intro-sep-line {
-  width: min(24vw, 95px);
-  height: 2px;
-}
-
-.intro-sep-diamond {
-  width: 13px;
-  height: 13px;
-}
+.intro-sep-line,
+.intro-sep-diamond { background: var(--adult-gold); }
 
 .intro-img,
 .lettre-img,
@@ -1164,14 +1030,18 @@ h3 {
 .puzzle-result-img {
   width: auto;
   max-width: min(94vw, 760px);
-  max-height: 56svh;
+  max-height: 57svh;
   object-fit: contain;
-  filter: brightness(1.16) contrast(1.1) saturate(1.04);
+  border-radius: 18px;
+  border: 2px solid rgba(212,175,55,.55);
+  box-shadow:
+    0 18px 38px rgba(0,0,0,.52),
+    0 0 0 1px rgba(255,244,210,.08),
+    0 0 26px rgba(212,175,55,.16);
+  filter: brightness(1.12) contrast(1.08) saturate(1.04);
 }
 
-.lettre-img {
-  max-height: 70svh;
-}
+.lettre-img { max-height: 70svh; }
 
 .missive1-label,
 .missive2-label,
@@ -1190,14 +1060,15 @@ h3 {
   max-width: 760px;
   margin-left: auto;
   margin-right: auto;
-  font-size: var(--mobile-text);
-  line-height: 1.68;
-  background: rgba(24, 16, 13, 0.94);
-  border: 2px solid rgba(243, 212, 122, 0.92);
+  color: var(--adult-ivory);
+  background:
+    linear-gradient(180deg, rgba(58,7,16,.96), rgba(17,8,10,.96));
+  border: 2px solid rgba(212,175,55,.82);
+  border-radius: 20px;
   box-shadow:
-    0 0 0 1px rgba(255,255,255,0.08) inset,
-    0 18px 38px rgba(0,0,0,0.42),
-    0 0 28px rgba(196,154,58,0.22);
+    inset 0 1px 0 rgba(255,255,255,.08),
+    inset 0 0 22px rgba(212,175,55,.08),
+    0 16px 34px rgba(0,0,0,.45);
 }
 
 .missive1-label,
@@ -1209,77 +1080,127 @@ h3 {
 .instructions-label,
 .instructionschap2-label,
 .porte-label {
-  margin-top: 34px;
+  margin-top: 26px;
+  margin-bottom: 24px;
   padding: 24px 20px;
+  font-size: clamp(22px, 6.1vw, 29px);
+  line-height: 1.52;
 }
 
 .dialogue-box,
 #enigme-phare,
 .indice-mecanisme-page {
-  padding: 28px 22px;
+  padding: 26px 20px;
 }
 
 #dialogue-text,
 #dialogue-text-phare,
 #dialogue-text-naufrageurs,
-#texte-fin {
-  font-size: var(--mobile-dialogue);
-  line-height: 1.68;
-  min-height: 48px;
+#texte-fin,
+.texte-sommet {
+  font-size: clamp(22px, 6vw, 29px);
+  line-height: 1.55;
 }
 
-#dialogue-text p,
-#dialogue-text-phare p,
-#dialogue-text-naufrageurs p,
-#texte-fin p,
-.missive1-label p,
-.missive2-label p,
-.puits-label p,
-.locmaze-label p,
-.so-label p,
-.puzzle-label p,
-.instructionschap2-label p,
-.porte-label p,
-.texte-sommet p {
-  margin: 0.45em 0;
+#texte-fin { color: var(--adult-ivory); }
+
+.dialogue-box::before,
+#enigme-phare::before,
+.porte-label::before,
+.puzzle-label::before {
+  content: "" !important;
+  display: none !important;
 }
 
 .btn-primary,
 button {
-  min-height: 64px;
-  width: min(92vw, 420px);
-  margin: 12px auto;
-  padding: 18px 24px;
-  font-size: var(--mobile-button);
-  line-height: 1.12;
-  font-weight: 700;
+  width: min(92vw, 390px);
+  min-height: 62px;
+  margin: 14px auto;
+  padding: 17px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #16090d;
+  background:
+    linear-gradient(180deg, #fff2b2 0%, var(--adult-gold) 52%, #9f6a20 100%);
+  border: 2px solid #ffe29a;
   border-radius: 16px;
-  border-width: 2px;
+  font-family: Georgia, serif;
+  font-size: clamp(21px, 5.9vw, 28px);
+  font-weight: 800;
+  line-height: 1.08;
+  text-shadow: 0 1px 0 rgba(255,255,255,.35);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.45),
+    0 6px 0 #5b3512,
+    0 18px 28px rgba(0,0,0,.42);
+  cursor: pointer;
   touch-action: manipulation;
 }
 
-.nav-back {
-  width: 54px;
-  height: 54px;
-  min-height: 54px;
-  padding: 0;
-  font-size: 30px;
-  border-radius: 50%;
+.btn-primary:active,
+button:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.35),
+    0 3px 0 #5b3512,
+    0 10px 18px rgba(0,0,0,.42);
 }
 
-input {
+.nav-back {
+  top: max(14px, env(safe-area-inset-top));
+  left: max(12px, env(safe-area-inset-left));
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  border-radius: 50%;
+  color: var(--adult-ivory);
+  background: rgba(20,8,10,.92);
+  border: 2px solid var(--adult-gold);
+  box-shadow: 0 8px 18px rgba(0,0,0,.45);
+}
+
+.site-retour {
+  position: fixed !important;
+  top: max(12px, env(safe-area-inset-top)) !important;
+  right: max(10px, env(safe-area-inset-right)) !important;
+  z-index: 999999 !important;
+  min-height: 38px;
+  padding: 7px 12px;
+  background: rgba(16,8,10,.90);
+  color: var(--adult-gold-light);
+  border: 2px solid var(--adult-gold);
+  border-radius: 999px;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(0,0,0,.45), inset 0 0 12px rgba(212,175,55,.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+input,
+input[type="text"],
+input[type="number"] {
   width: min(88vw, 390px);
   min-height: 64px;
   padding: 16px 18px;
-  font-size: clamp(24px, 6.5vw, 31px) !important;
-  font-weight: 700;
-  border-radius: 14px;
-  border-width: 2px;
+  border-radius: 16px;
+  border: 3px solid var(--adult-gold);
+  background: #fff8e8;
+  color: #17090b;
+  font-family: Georgia, serif;
+  font-size: 24px !important;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: inset 0 3px 12px rgba(0,0,0,.18), 0 8px 18px rgba(0,0,0,.28);
 }
 
 input:focus {
-  outline: 4px solid rgba(255, 230, 160, 0.5);
-  outline-offset: 2px;
+  outline: 3px solid rgba(255,232,160,.65);
 }
 
 #message,
@@ -1289,256 +1210,110 @@ input:focus {
 #code-ancien-phare-message,
 #message-sommet,
 #indice-phare {
-  font-size: clamp(21px, 5.6vw, 28px);
-  line-height: 1.55;
-  font-weight: 700;
-  color: #ffe6a1 !important;
+  color: #ffe08a !important;
+  font-size: clamp(20px, 5.5vw, 26px);
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0,0,0,.65);
 }
 
 #puzzle-board {
-  width: min(92vw, 430px);
-  height: min(92vw, 430px);
-  border-width: 4px;
+  width: min(92vw, 430px) !important;
+  height: min(92vw, 430px) !important;
+  margin: 26px auto;
+  border: 4px solid var(--adult-gold);
   border-radius: 18px;
-  margin: 28px auto;
+  background: rgba(0,0,0,.62);
+  box-shadow: 0 16px 34px rgba(0,0,0,.50), 0 0 22px rgba(212,175,55,.22);
 }
 
 .puzzle-piece {
-  background-size: min(92vw, 430px) min(92vw, 430px);
-  border: 1px solid rgba(255, 248, 230, 0.5);
-  touch-action: none;
+  border: 1px solid rgba(255,244,210,.55);
 }
 
-.puzzle-piece.selected {
-  box-shadow: 0 0 0 4px #f3d47a, 0 0 18px rgba(255, 230, 160, 0.9);
+.puzzle-piece.selected,
+#puzzle-board .puzzle-piece.dragging {
+  box-shadow: 0 0 0 4px var(--adult-gold), 0 0 22px rgba(255,220,130,.85);
 }
 
-.fondu-images {
-  width: 94vw;
-  max-width: 760px;
-  height: min(58svh, 720px);
-}
-
-.image-fondu {
-  max-height: min(58svh, 720px);
-}
-
-#screen-sommetphare {
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-#screen-sommetphare h1 {
-  width: min(94vw, 760px);
-  margin: 10px auto 16px;
-  font-size: clamp(29px, 8vw, 42px);
-  line-height: 1.1;
-}
-
-.meca-scene {
-  width: 100%;
-  min-height: auto;
-  height: calc(100svh - 130px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
-  background: transparent;
-  align-items: center;
-}
-
+.meca-scene { background: transparent; }
 .meca-game {
-  width: min(100%, calc((100svh - 150px) * 1152 / 2048));
-  max-width: 470px;
-  max-height: calc(100svh - 150px);
-  border-width: 4px;
+  border: 3px solid var(--adult-gold);
   border-radius: 22px;
+  box-shadow: 0 18px 38px rgba(0,0,0,.55), 0 0 30px rgba(212,175,55,.20);
 }
-
 .meca-message {
-  width: 90%;
-  bottom: 7%;
-  padding: 14px 12px;
-  font-size: clamp(18px, 4.8vw, 23px);
-  line-height: 1.35;
-  background: rgba(18, 12, 10, 0.92);
-  border: 2px solid rgba(243, 212, 122, 0.9);
+  background: rgba(28,10,12,.92);
+  color: var(--adult-ivory);
+  border: 2px solid var(--adult-gold);
+  font-size: clamp(16px, 4.7vw, 21px);
 }
-
-.meca-reset {
-  top: 1.5%;
-  right: 3%;
-  width: auto;
-  min-height: 46px;
-  padding: 8px 12px;
-  font-size: clamp(15px, 4vw, 18px);
-}
-
-.meca-indices {
-  bottom: 17%;
-  gap: 8px;
-}
-
-.meca-indice-btn {
-  width: auto;
-  min-height: 50px;
-  padding: 10px 14px;
-  font-size: clamp(17px, 4.8vw, 22px);
-}
-
+.meca-reset,
+.meca-indice-btn,
 .meca-suite {
-  bottom: 2%;
-  width: min(48vw, 190px);
-  min-height: 58px;
-  font-size: clamp(20px, 5.6vw, 26px);
+  color: #17090b;
+  background: linear-gradient(180deg, #fff2b2, var(--adult-gold));
+  border: 2px solid #ffe29a;
+  border-radius: 14px;
+  font-family: Georgia, serif;
+  font-weight: 800;
 }
 
 @media (max-width: 390px) {
-  :root {
-    --mobile-text: 21px;
-    --mobile-dialogue: 22px;
-    --mobile-button: 21px;
-  }
-
-  .screen {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .intro-title {
-    font-size: 42px;
-  }
-
-  .btn-primary,
-  button {
-    width: min(94vw, 360px);
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-}
-
-@media (max-height: 560px) and (orientation: landscape) {
-  .screen {
-    padding-top: 16px;
-    padding-bottom: 16px;
-  }
-
-  .intro-img,
-  .lettre-img,
-  .missive1-image,
-  .missive2-image,
-  .chapter-img,
-  .abbaye-img,
-  .moineloin-img {
-    max-height: 42svh;
-  }
-
+  .screen { padding-left: 10px; padding-right: 10px; }
   .missive1-label,
   .missive2-label,
   .puits-label,
   .locmaze-label,
   .so-label,
   .puzzle-label,
+  .instructions-label,
   .instructionschap2-label,
   .porte-label,
-  .dialogue-box {
-    font-size: 20px;
-    line-height: 1.45;
-    padding: 16px;
-  }
-
-  .btn-primary,
-  button {
-    min-height: 50px;
-    font-size: 20px;
-    padding: 12px 18px;
-  }
-
-  #screen-sommetphare h1 {
+  .dialogue-box,
+  #enigme-phare,
+  .indice-mecanisme-page {
     font-size: 22px;
-    margin: 4px auto 8px;
+    padding: 22px 16px;
   }
-
-  .meca-scene {
-    height: calc(100svh - 76px);
-  }
-
-  .meca-game {
-    max-height: calc(100svh - 86px);
-  }
+  .btn-primary,
+  button { font-size: 21px; min-height: 60px; }
+  .site-retour { font-size: 12px; padding: 6px 10px; min-height: 34px; }
 }
 
-@supports not (height: 100svh) {
-  body,
-  .screen { min-height: 100vh; }
-
-  .meca-scene { height: calc(100vh - 130px); }
-  .meca-game { max-height: calc(100vh - 150px); }
+@media (max-height: 520px) and (orientation: landscape) {
+  .screen { padding-top: 62px; padding-bottom: 20px; }
+  .intro-img,
+  .lettre-img,
+  .missive1-image,
+  .missive2-image,
+  .chapter-img,
+  .abbaye-img,
+  .moineloin-img { max-height: 42svh; }
 }
-
 
 
 /* =========================================================
-   BOUTON RETOUR SITE AVELESCAPE - VERSION ADULTE MOBILE
-   Visible en haut à droite sur toutes les pages
+   VERSION GEORGIA - AVELESCAPE ADULTE
+   Police unique : Georgia partout.
    ========================================================= */
-.site-retour {
-  position: fixed;
-  top: max(12px, env(safe-area-inset-top));
-  right: max(12px, env(safe-area-inset-right));
-  z-index: 999999;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-
-  min-height: 42px;
-  padding: 8px 14px;
-
-  background: rgba(18, 14, 12, 0.88);
-  color: #ff6a2a;
-
-  border: 2px solid #ff6a2a;
-  border-radius: 999px;
-
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1;
-  text-decoration: none;
-
-  box-shadow:
-    0 6px 18px rgba(0,0,0,0.45),
-    inset 0 0 12px rgba(212,175,55,0.14);
-
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
-
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
+html, body, body *, button, .btn-primary, input, textarea, select {
+  font-family: Georgia, serif !important;
 }
 
-.site-retour:hover {
-  background: #ff6a2a;
-  color: #ffffff;
-}
-
-.site-retour:active {
-  transform: scale(0.96);
-}
-
-@media (max-width: 480px) {
-  .site-retour {
-    top: max(10px, env(safe-area-inset-top));
-    right: max(10px, env(safe-area-inset-right));
-    min-height: 38px;
-    padding: 7px 11px;
-    font-size: 13px;
-  }
+.dialogue-box::before,
+#enigme-phare::before,
+.porte-label::before,
+.puzzle-label::before {
+  content: none !important;
+  display: none !important;
 }
 
 </style>
 </head>
 
 <body>
+
+<audio id="cloche-audio" src="cloche.mp3" preload="auto"></audio>
 
 <a class="site-retour" href="https://avelescape.github.io/aventures/" aria-label="Retour au site AvelEscape">
   <span>site AvelEscape</span>
@@ -1551,9 +1326,9 @@ input:focus {
 
 <div class="screen active" id="screen-intro">
   <img class="intro-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/intro1stmath-webp.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpaffiche.jpg"
        alt="intro"
-       onclick="showScreen('missive1')">
+       onclick="startAventure(event)">
 
   <p class="intro-date">17 Février · Anno Domini 1840</p>
 
@@ -1566,16 +1341,16 @@ input:focus {
   <h1 class="intro-title">Le Mystère<br>du Phare</h1>
 
   <p class="intro-location">Pointe de Saint-Mathieu, Bretagne</p>
-  <button class="btn-primary" onclick="showScreen('missive1')">Commencer l'aventure</button>
+  <button class="btn-primary" onclick="startAventure(event)">Commencer l'enquête</button>
 </div>
 
 <div class="screen" id="screen-missive1">
   <div class="missive1-label">
-    <p>Un inconnu vous tend une enveloppe</p>
-    <p>Cliquez pour l'ouvrir</p>
+    <p>Un inconnu vous tend une enveloppe scellée.</p>
+    <p>Cliquez pour l'ouvrir.</p>
   </div>
 
-  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/enveloppe-webp.webp"
+  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpenveloppe1.webp"
        alt="missive1 scellée"
        class="missive1-image"
        onclick="showScreen('missive2')">
@@ -1584,10 +1359,9 @@ input:focus {
 <div class="screen" id="screen-missive2">
   <div class="missive2-label">
     <p>Le cachet de cire est brisé...</p>
-    <p>Cliquez pour lire la lettre</p>
   </div>
 
-  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cachet-de-cire-brise-sur-enveloppe-webp.webp"
+  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpenveloppe2.webp"
        alt="missive2 ouverte"
        class="missive2-image"
        onclick="showScreen('lettre')">
@@ -1596,21 +1370,21 @@ input:focus {
 <div class="screen" id="screen-lettre">
   <div class="lettre-container">
     <img class="lettre-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/lettre-webp.webp"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplettre.webp"
          alt="lettre"
          onclick="showScreen('puits')">
 
     <button class="btn-primary" onclick="showScreen('puits')">
-      Cliquez lorsque vous êtes au puits
+      Clique lorsque vous êtes au puits
     </button>
   </div>
 </div>
 
 <div class="screen" id="screen-puits">
   <div class="puits-label">
-    <p>Vous êtes devant le puits de Saint Mathieu</p>
+    <p>Vous êtes devant le puits de Saint-Mathieu.</p>
     <p>Personne...</p>
-    <p>Isabelle A. Kermannec vous a pourtant demandé de l'y rejoindre</p>
+    <p>Isabelle vous a pourtant demandé de l'y rejoindre.</p>
     <p>Peut-être vous a-t-elle laissé un indice ?</p>
 
     <button class="btn-primary" onclick="showScreen('locmaze')">Continuer</button>
@@ -1620,10 +1394,15 @@ input:focus {
 
 <div class="screen" id="screen-locmaze">
   <div class="locmaze-label">
-    <h2>Entre le mot :</h2>
+    <h2>Entrez le mot :</h2>
+    <p>Première lettre de la 7eme ligne</p>
+    <p>Première lettre de la 12eme ligne</p>
+    <p>Dernière lettre de la 19eme ligne</p>
+    <p>Première lettre de la 21eme ligne</p>
+    <p>Première lettre de la 1ere ligne</p>
     <input type="text" id="reponse">
-    <br><br>
-    <button class="btn-primary" onclick="verifier()">Valider</button>
+
+     <button class="btn-primary" onclick="verifier()">Valider</button>
     <p id="message"></p>
     <button class="btn-primary" onclick="showScreen('so')">Indice</button>
   </div>
@@ -1631,20 +1410,18 @@ input:focus {
 
 <div class="screen" id="screen-so">
   <div class="so-label">
-    <p>Face à la fontaine, tout semble inutile</p>
-    <p>pas de seau pour l'eau</p>
-    <p>pas de saut pour passer</p>
-    <p>pas de sot pour comprendre</p>
-    <p>seul compte celui qui scelle</p>
+    <p>Cherche sur le panneau "Site de la pointe de Saint Mathieu"</p>
+    
 
     <button class="btn-primary" onclick="showScreen('locmaze')">Retour</button>
   </div>
 </div>
+    
 
 <div class="screen" id="screen-puzzle">
   <div class="puzzle-label">
     <h2>Reconstituez le sceau</h2>
-    <p>Déplacez les pièces pour reformer l’image.</p>
+    <p>Déplace les pièces pour reformer l’image.</p>
 
     <div id="puzzle-board"></div>
     <div id="puzzle-message"></div>
@@ -1661,7 +1438,6 @@ input:focus {
 <div class="screen" id="screen-instructionschap2">
   <div class="instructionschap2-label">
     <p>Il est temps d'aller au phare</p>
-    <p>Vous y êtes ?</p>
     <button class="btn-primary" onclick="nextScreen()">Cliquez si vous y êtes</button>
   </div>
 </div>
@@ -1669,13 +1445,11 @@ input:focus {
 <div id="screen-porteloin" class="screen">
   <div class="porte-label">
     <img class="chapter-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/porte-phare-loin-webp.webp"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareloin.webp"
          alt="Porte du phare">
-
-    <p>Il semble que le phare soit fermé...</p>
-
+    <p>Il semble fermé</p>
     <button class="btn-primary" onclick="essayerOuvrir()">
-      Essayer de l’ouvrir
+      Essayez de l’ouvrir
     </button>
   </div>
 </div>
@@ -1683,7 +1457,7 @@ input:focus {
 <div id="screen-portecadenas" class="screen">
   <div class="porte-label">
     <img class="chapter-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cadenas-porte-pharewebp.webp"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpportecadenasferme.webp"
          alt="Cadenas du phare">
 
     <p>Entrez le code à 4 chiffres</p>
@@ -1697,7 +1471,7 @@ input:focus {
 <div id="screen-boncode" class="screen">
   <div class="porte-label">
     <p>
-      Quelle chance !!! Vous avez trouvé le code.<br>
+      Vous avez trouvé le code.<br>
       Mais les korrigans, gardiens de ce jeu,<br>
       n'ouvriront pas le cadenas pour le moment !
     </p>
@@ -1708,19 +1482,25 @@ input:focus {
   <div class="porte-label">
     <p>Ce n'est pas le bon code</p>
 
-    <h3>
-      Écoutez...<br>
-      D'où provient ce chant ?<br>
-      Il semblerait qu'il provienne de l'abbaye.
-    </h3>
+   <h3>
+  Écoutez...<br>
+  D'où provient ce chant ?<br>
+  Il semblerait qu'il provienne de l'abbaye.
+</h3>
 
-    <h3>Vous devriez peut-être y aller.</h3>
+<h3>
+  Vous devriez peut-être y aller.
+</h3>
+<audio id="chant-audio" src="grego.mp3" preload="auto"></audio>
 
-    <!-- Remplace cette URL par l'adresse réelle de ton fichier MP3 sur WordPress -->
-    <audio id="chant-audio" src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/musique.mp3" preload="auto"></audio>
+<button id="stop-audio-btn" onclick="stopperChant()" title="Couper le chant">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
+        <path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v8.05A4.49 4.49 0 0 0 16.5 12zM19 12c0 2.53-1.17 4.78-3 6.24l1.42 1.42C19.61 17.8 21 15.05 21 12c0-3.06-1.39-5.81-3.58-7.66L16 5.76A8.96 8.96 0 0 1 19 12zM4.27 3 3 4.27l5 5H3v6h4l5 5V14.27l6.73 6.73L20 19.73 4.27 3z"/>
+    </svg>
+</button>
 
     <button class="btn-primary" onclick="showScreen('abbaye')">
-      Cliquez lorsque vous serez à l'abbaye
+      Cliquez lorsque vous êtes à l'abbaye
     </button>
   </div>
 </div>
@@ -1728,8 +1508,8 @@ input:focus {
 <div class="screen" id="screen-abbaye">
   <div class="abbaye-container">
     <img class="abbaye-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/moine-loin-webp.webp"
-         alt="Abbaye"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-pngmoineloin.png"
+         alt="Moine apparait dans l'abbaye"
          onclick="showScreen('moineloin')">
 
     <button class="btn-primary" onclick="showScreen('moineloin')">
@@ -1740,8 +1520,8 @@ input:focus {
 
 <div class="screen" id="screen-moineloin">
   <img class="moineloin-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/moine-pres-webp.webp"
-       alt="Moine au loin">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpgwenhaelproche.webp"
+       alt="Moine parle">
 
   <div class="dialogue-box">
     <p id="dialogue-text"></p>
@@ -1757,8 +1537,8 @@ input:focus {
 
 <div class="screen" id="screen-sceneabbaye">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/naufrageurs-webp.webp"
-       alt="Passage secret de l'abbaye">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webptroisnaufrageurs.webp"
+       alt="naufrageurs">
 
   <div class="dialogue-box">
     <p id="dialogue-text-naufrageurs"></p>
@@ -1774,8 +1554,8 @@ input:focus {
 
 <div class="screen" id="screen-petitphare">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/kidnapping-webp.webp"
-       alt="Petit phare">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpyannickkidnappe.webp"
+       alt="Yannick kidnappé">
 
   <div class="dialogue-box">
     <p id="dialogue-text-phare"></p>
@@ -1797,8 +1577,8 @@ input:focus {
 
 <div class="screen" id="screen-suiteaventure">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/yannick-hurle-webp.webp"
-       alt="Yannick">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpyannick.webp"
+       alt="Yannick hurle">
 
   <div class="dialogue-box">
     <div id="texte-fin"></div>
@@ -1811,8 +1591,8 @@ input:focus {
 
 <div class="screen" id="screen-codeancienphare">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cadenas-porte-pharewebp.webp"
-       alt="Ancien phare">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpportecadenasferme.webp"
+       alt="porte du phare">
 
   <div class="texte-sommet" style="opacity:1;">
     <p>Entrez le code à 4 chiffres :</p>
@@ -1832,69 +1612,93 @@ input:focus {
 
 <div class="screen" id="screen-hautphare">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/porte-ouverte-webp.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpporteouverte.webp"
        alt="Phare ouvert">
 
   <div class="texte-sommet" style="opacity:1;">
-    <p>Le cadenas s’ouvre !</p>
+    <p>Le cadenas s’ouvre.</p>
   </div>
 
   <button class="btn-primary" onclick="showScreen('sommetphare')">
-    Monter en haut du phare
+    Monter au sommet du phare
   </button>
 </div>
 
 <div class="screen" id="screen-sommetphare">
+  <h1>Actionnez les engrenages et les poids pour rallumer le phare.</h1>
 
-  <div class="fondu-images">
-    <img id="image-sommet-1"
-         class="chapter-img image-fondu active-fondu"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/haut-phare-eteint-webp.webp"
-         alt="Engrenages">
+  <div class="meca-scene">
+    <div class="meca-game" id="meca-game">
 
-    <img id="image-sommet-2"
-         class="chapter-img image-fondu"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/haut-phare-allume-adulte-webp.webp"
-         alt="Phare allumé">
+      <div id="meca-fond" class="meca-fond"></div>
+
+      <button class="meca-reset" onclick="resetMecanismePhare()">Réinitialiser</button>
+
+      <div id="meca-gearA" class="meca-gear meca-gear-small"></div>
+      <div id="meca-gearB" class="meca-gear meca-gear-big"></div>
+      <div id="meca-gearC" class="meca-gear meca-gear-small"></div>
+      <div id="meca-gearD" class="meca-gear meca-gear-big"></div>
+
+      <svg class="meca-zones" viewBox="0 0 1152 2048" preserveAspectRatio="none">
+        <rect class="meca-zone" x="370" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('A')" />
+        <rect class="meca-zone" x="520" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('B')" />
+        <rect class="meca-zone" x="680" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('C')" />
+        <rect class="meca-zone" x="850" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('D')" />
+
+        <rect class="meca-zone" x="500" y="1500" width="130" height="280" rx="15" onclick="clickZoneMecanisme('E')" />
+        <rect class="meca-zone" x="680" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('F')" />
+        <rect class="meca-zone" x="820" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('G')" />
+
+      </svg>
+
+      <div id="meca-message" class="meca-message"></div>
+
+      <div class="meca-indices">
+        <button id="meca-indice1-btn" class="meca-indice-btn" hidden onclick="showScreen('indicemecanisme1')">
+          1er indice
+        </button>
+        <button id="meca-indice2-btn" class="meca-indice-btn" hidden onclick="showScreen('indicemecanisme2')">
+          2ème indice
+        </button>
+      </div>
+
+      <button id="meca-suite" class="meca-suite" onclick="suiteMecanismePhare()">
+        suivant
+      </button>
+
+    </div>
   </div>
 
-  <button id="btn-finaventure"
-          class="btn-primary"
-          style="display:none;"
-          onclick="showScreen('finaventure')">
-    Continuer
-  </button>
+  <audio id="sonSuccesMecanisme" src="engrenages.mp3" preload="auto"></audio>
+</div>
 
-  <div id="enigme-engrenages" class="enigme-haut">
-    <h1>Entrez les deux parties du code<br>pour allumer le phare :</h1>
 
-    <p>Engrenages</p>
-    <input id="codeEngrenages" type="text" maxlength="4">
-
-    <p>Poids</p>
-    <input id="codePoids" type="text" maxlength="2">
-
-    <br><br>
-
-    <button class="btn-primary" onclick="verifierCodeSommet()">Valider</button>
-    <p id="message-sommet"></p>
+<div class="screen" id="screen-indicemecanisme1">
+  <div class="indice-mecanisme-page">
+    <h2>1er indice</h2>
+    <p>L'ordre des engrenages et du poids est l'identité certifiée du phare.</p>
+    <button class="btn-primary" onclick="showScreen('sommetphare')">
+      Retour au mécanisme
+    </button>
   </div>
+</div>
 
-  <div id="texte-apres-engrenages" class="texte-sommet texte-sommet-haut">
-    <p>Le mécanisme s’active...</p>
+<div class="screen" id="screen-indicemecanisme2">
+  <div class="indice-mecanisme-page">
+    <h2>2ème indice</h2>
+    <p>Le sceau est l'identification officielle du phare.</p>
+    <button class="btn-primary" onclick="showScreen('sommetphare')">
+      Retour au mécanisme
+    </button>
   </div>
-
 </div>
 
 <div class="screen" id="screen-finaventure">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/fin-webp.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webfin.webp"
        alt="Fin de l'aventure">
 
-  <div class="texte-sommet" style="opacity:1; margin-top:20px;">
-    <p>Vous avez réussi l'aventure !</p>
-    <p>Grâce à vous, Yannick est sauvé <br>et les marins ne feront pas naufrage.</p>
-  </div>
+ <div style="height:220px;"></div>
 
   <button class="btn-primary" onclick="retourSite()">
     Fin
@@ -1902,6 +1706,15 @@ input:focus {
 </div>
 
 <script>
+
+function vibrerEchec() {
+  // Fonctionne surtout sur Android/Chrome.
+  // Sur iPhone/iOS, les navigateurs ignorent souvent la vibration.
+  if (navigator.vibrate) {
+    navigator.vibrate([120, 60, 120]);
+  }
+}
+
 let currentScreen = 'intro';
 let navHistory = [];
 
@@ -1927,31 +1740,35 @@ const screens = {
   codeancienphare: document.getElementById('screen-codeancienphare'),
   hautphare: document.getElementById('screen-hautphare'),
   sommetphare: document.getElementById('screen-sommetphare'),
+  indicemecanisme1: document.getElementById('screen-indicemecanisme1'),
+  indicemecanisme2: document.getElementById('screen-indicemecanisme2'),
   finaventure: document.getElementById('screen-finaventure')
 };
 
 const progressMap = {
   intro: 0,
-  missive1: 15,
-  missive2: 25,
-  lettre: 35,
-  puits: 45,
-  locmaze: 55,
-  so: 55,
-  puzzle: 65,
-  instructionschap2: 80,
-  porteloin: 85,
-  portecadenas: 90,
-  boncode: 100,
-  mauvaiscode: 100,
-  abbaye: 100,
-  moineloin: 100,
-  sceneabbaye: 100,
-  petitphare: 100,
-  suiteaventure: 100,
-  codeancienphare: 100,
-  hautphare: 100,
-  sommetphare: 100,
+  missive1: 0,
+  missive2: 0,
+  lettre: 0,
+  puits: 10,
+  locmaze: 15,
+  so: 25,
+  puzzle: 27,
+  instructionschap2: 30,
+  porteloin: 35,
+  portecadenas: 35,
+  boncode: 40,
+  mauvaiscode: 40,
+  abbaye: 50,
+  moineloin: 60,
+  sceneabbaye: 61,
+  petitphare: 70,
+  suiteaventure: 72,
+  codeancienphare: 80,
+  hautphare: 90,
+  sommetphare: 95,
+  indicemecanisme1: 95,
+  indicemecanisme2: 95,
   finaventure: 100
 };
 
@@ -1972,18 +1789,14 @@ function showScreen(name, addHist = true) {
   screens[name].classList.add('active');
   currentScreen = name;
 
+
   const chantAudio = document.getElementById('chant-audio');
 
-  if (chantAudio) {
-    if (name === 'mauvaiscode') {
-      chantAudio.currentTime = 0;
-      chantAudio.play().catch(() => {
-        console.log("Lecture audio bloquée par le navigateur.");
-      });
-    } else {
-      chantAudio.pause();
-      chantAudio.currentTime = 0;
-    }
+  if (chantAudio && name === 'mauvaiscode') {
+    chantAudio.currentTime = 0;
+    chantAudio.play().catch(() => {
+      console.log("Lecture audio bloquée par le navigateur.");
+    });
   }
 
   const progress = document.getElementById('progress');
@@ -2019,6 +1832,10 @@ function showScreen(name, addHist = true) {
   if (name === 'suiteaventure') {
     lancerTexteFin();
   }
+
+  if (name === 'sommetphare') {
+    mettreAJourBoutonsIndicesMecanisme();
+  }
 }
 
 function goBack() {
@@ -2039,6 +1856,7 @@ function verifier() {
   if (mot === 'sceau') {
     showScreen('puzzle');
   } else {
+    vibrerEchec();
     message.innerText = "Ce n'est pas la bonne réponse, essaye encore !";
   }
 }
@@ -2057,129 +1875,18 @@ if (reponseInput) {
   });
 }
 
-/* PUZZLE */
-const PUZZLE_SIZE = 3;
-let draggedPiece = null;
+/* PUZZLE - VERSION RÉUTILISABLE AVELESCAPE - GLISSÉ AU DOIGT */
+const CONFIG_PUZZLE = {
+  taille: 3,
+  image: "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp",
+  messageVictoire: "Le sceau est reconstitué !",
+  boutonSuite: "Continuer"
+};
+
 let puzzleSolved = false;
-let selectedPiece = null;
-let touchDraggedPiece = null;
-let touchGhost = null;
-
-function handlePieceClick(e) {
-  if (puzzleSolved) return;
-  const piece = e.currentTarget;
-
-  if (!selectedPiece) {
-    selectedPiece = piece;
-    piece.classList.add('selected');
-  } else if (selectedPiece === piece) {
-    selectedPiece.classList.remove('selected');
-    selectedPiece = null;
-  } else {
-    swapPuzzlePieces(selectedPiece, piece);
-    selectedPiece.classList.remove('selected');
-    selectedPiece = null;
-    checkPuzzle();
-  }
-}
-
-function handlePiecePointerDown(e) {
-  if (puzzleSolved) return;
-
-  // Sur mobile/tablette : vrai glisser au doigt.
-  // On bloque le scroll pendant le déplacement pour que la pièce suive bien le doigt.
-  if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
-
-  e.preventDefault();
-  touchDraggedPiece = e.currentTarget;
-  touchDraggedPiece.classList.add('dragging');
-  touchDraggedPiece.setPointerCapture(e.pointerId);
-
-  createTouchGhost(touchDraggedPiece, e.clientX, e.clientY);
-}
-
-function handlePiecePointerMove(e) {
-  if (!touchDraggedPiece || !touchGhost) return;
-  if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
-
-  e.preventDefault();
-  moveTouchGhost(e.clientX, e.clientY);
-}
-
-function handlePiecePointerUp(e) {
-  if (!touchDraggedPiece) return;
-  if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
-
-  e.preventDefault();
-
-  const startPiece = touchDraggedPiece;
-  startPiece.classList.remove('dragging');
-
-  removeTouchGhost();
-
-  // On cherche la pièce située sous le doigt au moment où le joueur relâche.
-  const target = document.elementFromPoint(e.clientX, e.clientY);
-  const targetPiece = target ? target.closest('.puzzle-piece') : null;
-
-  if (targetPiece && targetPiece !== startPiece) {
-    swapPuzzlePieces(startPiece, targetPiece);
-    checkPuzzle();
-  }
-
-  touchDraggedPiece = null;
-}
-
-function handlePiecePointerCancel(e) {
-  if (!touchDraggedPiece) return;
-
-  touchDraggedPiece.classList.remove('dragging');
-  touchDraggedPiece = null;
-  removeTouchGhost();
-}
-
-function createTouchGhost(piece, x, y) {
-  removeTouchGhost();
-
-  const rect = piece.getBoundingClientRect();
-  touchGhost = piece.cloneNode(true);
-  touchGhost.classList.add('dragging');
-  touchGhost.style.position = 'fixed';
-  touchGhost.style.left = '0';
-  touchGhost.style.top = '0';
-  touchGhost.style.width = rect.width + 'px';
-  touchGhost.style.height = rect.height + 'px';
-  touchGhost.style.zIndex = '9999';
-  touchGhost.style.pointerEvents = 'none';
-  touchGhost.style.opacity = '0.85';
-  touchGhost.style.transform = `translate(${x - rect.width / 2}px, ${y - rect.height / 2}px) scale(1.06)`;
-
-  document.body.appendChild(touchGhost);
-}
-
-function moveTouchGhost(x, y) {
-  if (!touchGhost) return;
-
-  const rect = touchGhost.getBoundingClientRect();
-  touchGhost.style.transform = `translate(${x - rect.width / 2}px, ${y - rect.height / 2}px) scale(1.06)`;
-}
-
-function removeTouchGhost() {
-  if (touchGhost && touchGhost.parentNode) {
-    touchGhost.parentNode.removeChild(touchGhost);
-  }
-  touchGhost = null;
-}
-
-function swapPuzzlePieces(pieceA, pieceB) {
-  const tempBg = pieceB.style.backgroundPosition;
-  const tempCorrect = pieceB.dataset.correct;
-
-  pieceB.style.backgroundPosition = pieceA.style.backgroundPosition;
-  pieceB.dataset.correct = pieceA.dataset.correct;
-
-  pieceA.style.backgroundPosition = tempBg;
-  pieceA.dataset.correct = tempCorrect;
-}
+let draggedPiece = null;
+let dragStartX = 0;
+let dragStartY = 0;
 
 function initPuzzle() {
   const board = document.getElementById('puzzle-board');
@@ -2187,117 +1894,175 @@ function initPuzzle() {
   const btn = document.getElementById('btn-puzzle');
 
   puzzleSolved = false;
-  selectedPiece = null;
+  draggedPiece = null;
 
-  if (btn) btn.style.display = 'none';
   if (!board) return;
 
   board.innerHTML = '';
   if (message) message.innerHTML = '';
 
-  board.style.gridTemplateColumns = `repeat(${PUZZLE_SIZE}, 1fr)`;
-  board.style.gridTemplateRows = `repeat(${PUZZLE_SIZE}, 1fr)`;
+  if (btn) {
+    btn.style.display = 'none';
+    btn.innerText = CONFIG_PUZZLE.boutonSuite;
+  }
 
-  const totalPieces = PUZZLE_SIZE * PUZZLE_SIZE;
+  board.style.display = 'block';
+  board.style.position = 'relative';
+  board.style.touchAction = 'none';
+  board.style.overflow = 'hidden';
+
+  const totalPieces = CONFIG_PUZZLE.taille * CONFIG_PUZZLE.taille;
   const pieces = [];
 
-  for (let i = 0; i < totalPieces; i++) {
-    pieces.push(i);
-  }
+  for (let i = 0; i < totalPieces; i++) pieces.push(i);
 
   do {
     pieces.sort(() => Math.random() - 0.5);
   } while (pieces.every((piece, index) => piece === index));
 
-  pieces.forEach((pieceIndex) => {
+  pieces.forEach((pieceIndex, cellIndex) => {
     const piece = document.createElement('div');
     piece.className = 'puzzle-piece';
-    // Le drag & drop HTML fonctionne mal sur mobile.
-    // Sur écran tactile, on désactive le drag natif et on utilise le tap/tap.
-    piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
     piece.dataset.correct = pieceIndex;
+    piece.dataset.cell = cellIndex;
 
-    const x = pieceIndex % PUZZLE_SIZE;
-    const y = Math.floor(pieceIndex / PUZZLE_SIZE);
-    const boardSize = board.clientWidth || 320;
-    const pieceSize = boardSize / PUZZLE_SIZE;
-
-    piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
-    piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
-
-    piece.addEventListener('dragstart', dragStart);
-    piece.addEventListener('dragover', dragOver);
-    piece.addEventListener('drop', dropPiece);
-    piece.addEventListener('dragend', dragEnd);
-
-    // Ordinateur : clic possible en plus du glisser-déposer.
-    piece.addEventListener('click', handlePieceClick);
-
-    // Mobile/tablette : toucher une pièce puis une autre pour les échanger.
-    piece.addEventListener('pointerdown', handlePiecePointerDown);
-    piece.addEventListener('pointermove', handlePiecePointerMove);
-    piece.addEventListener('pointerup', handlePiecePointerUp);
-    piece.addEventListener('pointercancel', handlePiecePointerCancel);
+    appliquerStylePiece(piece, pieceIndex, cellIndex);
+    piece.addEventListener('pointerdown', pointerDownPiece, { passive: false });
 
     board.appendChild(piece);
   });
 }
 
-function dragStart() {
+function appliquerStylePiece(piece, pieceIndex, cellIndex) {
+  const board = document.getElementById('puzzle-board');
+  if (!board) return;
+
+  const boardSize = board.clientWidth || 320;
+  const pieceSize = boardSize / CONFIG_PUZZLE.taille;
+
+  const imageX = pieceIndex % CONFIG_PUZZLE.taille;
+  const imageY = Math.floor(pieceIndex / CONFIG_PUZZLE.taille);
+  const cellX = cellIndex % CONFIG_PUZZLE.taille;
+  const cellY = Math.floor(cellIndex / CONFIG_PUZZLE.taille);
+
+  piece.style.position = 'absolute';
+  piece.style.left = `${cellX * pieceSize}px`;
+  piece.style.top = `${cellY * pieceSize}px`;
+  piece.style.width = `${pieceSize}px`;
+  piece.style.height = `${pieceSize}px`;
+  piece.style.backgroundImage = `url("${CONFIG_PUZZLE.image}")`;
+  piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
+  piece.style.backgroundPosition = `${-(imageX * pieceSize)}px ${-(imageY * pieceSize)}px`;
+  piece.style.transform = 'translate(0px, 0px)';
+  piece.style.zIndex = '1';
+}
+
+function pointerDownPiece(e) {
   if (puzzleSolved) return;
-
-  draggedPiece = this;
-  this.classList.add('dragging');
-}
-
-function dragOver(e) {
-  e.preventDefault();
-}
-
-function dropPiece(e) {
   e.preventDefault();
 
-  if (puzzleSolved) return;
-  if (!draggedPiece || draggedPiece === this) return;
+  draggedPiece = e.currentTarget;
+  dragStartX = e.clientX;
+  dragStartY = e.clientY;
 
-  swapPuzzlePieces(draggedPiece, this);
-
-  checkPuzzle();
+  draggedPiece.classList.add('dragging');
+  draggedPiece.style.zIndex = '50';
+  draggedPiece.setPointerCapture(e.pointerId);
+  draggedPiece.addEventListener('pointermove', pointerMovePiece, { passive: false });
+  draggedPiece.addEventListener('pointerup', pointerUpPiece, { passive: false });
+  draggedPiece.addEventListener('pointercancel', pointerCancelPiece, { passive: false });
 }
 
-function dragEnd() {
-  this.classList.remove('dragging');
+function pointerMovePiece(e) {
+  if (!draggedPiece || puzzleSolved) return;
+  e.preventDefault();
+
+  const dx = e.clientX - dragStartX;
+  const dy = e.clientY - dragStartY;
+  draggedPiece.style.transform = `translate(${dx}px, ${dy}px)`;
+}
+
+function pointerUpPiece(e) {
+  if (!draggedPiece || puzzleSolved) return;
+  e.preventDefault();
+
+  const pieceDepart = draggedPiece;
+  pieceDepart.style.pointerEvents = 'none';
+  const elementDessous = document.elementFromPoint(e.clientX, e.clientY);
+  pieceDepart.style.pointerEvents = '';
+  const pieceArrivee = elementDessous ? elementDessous.closest('.puzzle-piece') : null;
+
+  nettoyerDrag(pieceDepart, e.pointerId);
+
+  if (pieceArrivee && pieceArrivee !== pieceDepart) {
+    echangerPieces(pieceDepart, pieceArrivee);
+    checkPuzzle();
+  }
+
   draggedPiece = null;
 }
 
+function pointerCancelPiece(e) {
+  if (!draggedPiece) return;
+  nettoyerDrag(draggedPiece, e.pointerId);
+  draggedPiece = null;
+}
+
+function nettoyerDrag(piece, pointerId) {
+  piece.classList.remove('dragging');
+  piece.style.transform = 'translate(0px, 0px)';
+  piece.style.zIndex = '1';
+
+  try { piece.releasePointerCapture(pointerId); } catch (err) {}
+
+  piece.removeEventListener('pointermove', pointerMovePiece);
+  piece.removeEventListener('pointerup', pointerUpPiece);
+  piece.removeEventListener('pointercancel', pointerCancelPiece);
+}
+
+function echangerPieces(piece1, piece2) {
+  const correct1 = piece1.dataset.correct;
+  const correct2 = piece2.dataset.correct;
+
+  piece1.dataset.correct = correct2;
+  piece2.dataset.correct = correct1;
+
+  appliquerStylePiece(piece1, Number(piece1.dataset.correct), Number(piece1.dataset.cell));
+  appliquerStylePiece(piece2, Number(piece2.dataset.correct), Number(piece2.dataset.cell));
+}
+
 function checkPuzzle() {
-  const pieces = document.querySelectorAll('.puzzle-piece');
+  const pieces = document.querySelectorAll('#puzzle-board .puzzle-piece');
   let solved = true;
 
-  pieces.forEach((piece, index) => {
-    if (Number(piece.dataset.correct) !== index) {
-      solved = false;
-    }
+  pieces.forEach(piece => {
+    if (Number(piece.dataset.correct) !== Number(piece.dataset.cell)) solved = false;
   });
 
-  if (solved) {
-    puzzleSolved = true;
+  if (!solved) return;
 
-    const message = document.getElementById('puzzle-message');
-    const btn = document.getElementById('btn-puzzle');
+  puzzleSolved = true;
+  const message = document.getElementById('puzzle-message');
+  const btn = document.getElementById('btn-puzzle');
 
-    if (message) {
-      message.innerHTML = `
-        <p>Le sceau est reconstitué !</p>
-        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp"
-             alt="Indice révélé"
-             class="puzzle-result-img">
-      `;
-    }
+  if (message) {
+    message.innerHTML = `
+      <p>${CONFIG_PUZZLE.messageVictoire}</p>
+      <img src="${CONFIG_PUZZLE.image}"
+           alt="Indice révélé"
+           class="puzzle-result-img">
+    `;
+  }
 
-    if (btn) {
-      btn.style.display = 'inline-block';
-    }
+  if (btn) btn.style.display = 'inline-block';
+}
+
+function stopperChant() {
+  const chantAudio = document.getElementById('chant-audio');
+
+  if (chantAudio) {
+    chantAudio.pause();
+    chantAudio.currentTime = 0;
   }
 }
 
@@ -2310,12 +2075,6 @@ const bonCode = '5381';
 
 function nextScreen() {
   showScreen('porteloin');
-
-  setTimeout(() => {
-    if (currentScreen === 'porteloin') {
-      showScreen('portecadenas');
-    }
-  }, 3000);
 }
 
 function verifierCode() {
@@ -2325,8 +2084,10 @@ function verifierCode() {
   const codeEntre = input.value.trim();
 
   if (codeEntre === bonCode) {
-    showScreen('boncode');
+    // Le premier cadenas ouvre maintenant directement l'accès au haut du phare.
+    showScreen('hautphare');
   } else {
+    vibrerEchec();
     showScreen('mauvaiscode');
   }
 }
@@ -2388,6 +2149,7 @@ const dialogueNaufrageurs = [
   "Mais ils dirigent leur navire vers les récifs.",
   "Cela provoque un échouement ou un naufrage.",
   "Puis les naufrageurs pillent l’épave..."
+
 ];
 
 let dialogueIndexNaufrageurs = 0;
@@ -2432,10 +2194,11 @@ function afficherDialogueNaufrageurs() {
 /* DIALOGUE PETIT PHARE */
 const dialoguePhare = [
   "Regardez à l'ouest, en contrebas !",
-  "Les naufrageurs ont kidnappé Yannick !!!",
+  "Yannick !!!",
+  "Mais il ne nous voit pas...",
   "Trouvez une solution pour à la fois :",
-  "faire fuir les brigands",
-  "et prévenir le bateau qui approche les récifs."
+  "lui dire qu'on est là",
+  "et prévenir le bateau qu'il s'approche des récifs."
 ];
 
 let dialogueIndexPhare = 0;
@@ -2492,9 +2255,21 @@ function verifierMotPhare() {
 
   const mot = input.value.trim().toLowerCase();
 
-  if (mot === 'cloche') {
-    showScreen('suiteaventure');
-  } else {
+  if (mot === "cloche") {
+
+    const cloche = document.getElementById("cloche-audio");
+    if (cloche) {
+        cloche.currentTime = 0;
+        cloche.play().catch(() => {});
+    }
+
+    // attendre la fin de la cloche avant de continuer
+    setTimeout(() => {
+        showScreen("suiteaventure");
+    }, 3500); // adapte selon la durée de cloche.mp3
+}
+ else {
+    vibrerEchec();
     message.innerText = 'Réessayez';
   }
 }
@@ -2523,8 +2298,8 @@ function afficherIndicePhare() {
 
 /* TEXTE FINAL */
 const texteFin = [
-  "Vous avez réussi à faire fuir les naufrageurs !",
-  "Yannick vous dit :",
+  "Yannick nous as vu !",
+  "Il nous dit :",
   "Le code du cadenas...",
   "c'est l'année de construction de l'ancien phare,",
   "mais à l'envers!",
@@ -2582,6 +2357,7 @@ function verifierCodeAncienPhare() {
   if (code === '5381') {
     showScreen('hautphare');
   } else {
+    vibrerEchec();
     message.innerText = 'Mauvais code...';
   }
 }
@@ -2600,61 +2376,248 @@ if (codeAncienPhareInput) {
   });
 }
 
-function verifierCodeSommet() {
-  const inputEngrenages = document.getElementById('codeEngrenages');
-  const inputPoids = document.getElementById('codePoids');
-  const message = document.getElementById('message-sommet');
 
-  const image1 = document.getElementById('image-sommet-1');
-  const image2 = document.getElementById('image-sommet-2');
-  const texteFinal = document.getElementById('texte-apres-engrenages');
-  const btnFin = document.getElementById('btn-finaventure');
-  const enigme = document.getElementById('enigme-engrenages');
+/* SOMMET DU PHARE - MÉCANISME HTML */
+const codeCorrectMecanisme = ["D", "A", "B", "C", "G"];
 
-  if (!inputEngrenages || !inputPoids || !message || !image1 || !image2 || !texteFinal || !enigme) return;
+const imageMecanismeEteinte = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentilleeteinte.webp";
+const imageMecanismeAllumee = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentilleallume.webp";
+const imageMecanismeFaisceau = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentillefaisceau.webp";
 
-  const engrenages = inputEngrenages.value.trim().toUpperCase();
-  const poids = inputPoids.value.trim();
+let sequenceMecanisme = [];
+let nbErreursMecanisme = 0;
+let mecanismeSolved = false;
+let phareIntervalMecanisme = null;
+let faisceauTimeoutMecanisme = null;
+let timerSuiteMecanisme = null;
 
-  if (engrenages === 'BCDA' && poids === '30') {
-    message.innerText = '';
-    enigme.style.display = 'none';
+function jouerSuccesMecanisme() {
+  const son = document.getElementById("sonSuccesMecanisme");
+  if (!son) return;
 
-    image1.classList.remove('active-fondu');
-    image2.classList.add('active-fondu');
+  son.pause();
+  son.currentTime = 0;
 
-    setTimeout(() => {
-      texteFinal.style.opacity = 1;
+  son.play().catch(error => {
+    console.log("Son succès bloqué :", error);
+  });
+}
 
-      if (btnFin) {
-        btnFin.style.display = 'inline-block';
-      }
-    }, 1500);
+function clickZoneMecanisme(letter) {
+  if (mecanismeSolved) return;
 
-  } else {
-    message.innerText = "Ce n'est pas le bon code...";
+  hideMessageMecanisme();
+  sequenceMecanisme.push(letter);
+
+  // IMPORTANT : on ne vérifie pas le code à chaque clic.
+  // On laisse d'abord le joueur cliquer sur toutes les zones nécessaires.
+  if (sequenceMecanisme.length < codeCorrectMecanisme.length) {
+    return;
+  }
+
+  const codeEntre = sequenceMecanisme.join("");
+  const codeAttendu = codeCorrectMecanisme.join("");
+
+  if (codeEntre === codeAttendu) {
+    successMecanisme();
+    return;
+  }
+
+  // Ici seulement, après une séquence complète, on compte 1 échec.
+  nbErreursMecanisme++;
+  vibrerEchec();
+  sequenceMecanisme = [];
+
+  showMessageMecanisme("Mauvais ordre. Le mécanisme se bloque.");
+  mettreAJourBoutonsIndicesMecanisme();
+}
+
+function mettreAJourBoutonsIndicesMecanisme() {
+  const boutonIndice1 = document.getElementById("meca-indice1-btn");
+  const boutonIndice2 = document.getElementById("meca-indice2-btn");
+
+  // Après 3 échecs complets, le 1er indice devient disponible.
+  if (boutonIndice1 && nbErreursMecanisme >= 3) {
+    boutonIndice1.hidden = false;
+    boutonIndice1.style.setProperty("display", "inline-block", "important");
+  }
+
+  // Après 4 échecs complets, le 2ème indice devient disponible.
+  if (boutonIndice2 && nbErreursMecanisme >= 4) {
+    boutonIndice2.hidden = false;
+    boutonIndice2.style.setProperty("display", "inline-block", "important");
   }
 }
 
-const codeEngrenagesInput = document.getElementById('codeEngrenages');
-const codePoidsInput = document.getElementById('codePoids');
+function cacherBoutonsIndicesMecanisme() {
+  const boutonIndice1 = document.getElementById("meca-indice1-btn");
+  const boutonIndice2 = document.getElementById("meca-indice2-btn");
 
-if (codeEngrenagesInput) {
-  codeEngrenagesInput.addEventListener('input', function() {
-    const message = document.getElementById('message-sommet');
-    if (message) message.innerText = '';
-  });
+  if (boutonIndice1) {
+    boutonIndice1.hidden = true;
+    boutonIndice1.style.setProperty("display", "none", "important");
+  }
+
+  if (boutonIndice2) {
+    boutonIndice2.hidden = true;
+    boutonIndice2.style.setProperty("display", "none", "important");
+  }
 }
 
-if (codePoidsInput) {
-  codePoidsInput.addEventListener('input', function() {
-    const message = document.getElementById('message-sommet');
-    if (message) message.innerText = '';
-  });
+function successMecanisme() {
+  mecanismeSolved = true;
+
+  jouerSuccesMecanisme();
+
+  const game = document.getElementById("meca-game");
+  const fond = document.getElementById("meca-fond");
+
+  if (game) game.classList.add("meca-active");
+  if (fond) fond.style.backgroundImage = `url("${imageMecanismeAllumee}")`;
+
+  clearInterval(phareIntervalMecanisme);
+  clearTimeout(faisceauTimeoutMecanisme);
+  clearTimeout(timerSuiteMecanisme);
+
+  phareIntervalMecanisme = setInterval(lancerFaisceauMecanisme, 5000);
+
+  timerSuiteMecanisme = setTimeout(() => {
+    const suite = document.getElementById("meca-suite");
+    if (suite) suite.style.display = "block";
+  }, 5000);
 }
+
+function lancerFaisceauMecanisme() {
+  if (!mecanismeSolved) return;
+
+  const fond = document.getElementById("meca-fond");
+  if (!fond) return;
+
+  fond.style.backgroundImage = `url("${imageMecanismeFaisceau}")`;
+
+  clearTimeout(faisceauTimeoutMecanisme);
+
+  faisceauTimeoutMecanisme = setTimeout(() => {
+    if (mecanismeSolved) {
+      fond.style.backgroundImage = `url("${imageMecanismeAllumee}")`;
+    }
+  }, 1000);
+}
+
+function resetMecanismePhare() {
+  sequenceMecanisme = [];
+  nbErreursMecanisme = 0;
+  mecanismeSolved = false;
+
+  const game = document.getElementById("meca-game");
+  const fond = document.getElementById("meca-fond");
+  const suite = document.getElementById("meca-suite");
+
+  if (game) game.classList.remove("meca-active");
+
+  clearInterval(phareIntervalMecanisme);
+  clearTimeout(faisceauTimeoutMecanisme);
+  clearTimeout(timerSuiteMecanisme);
+
+  phareIntervalMecanisme = null;
+  faisceauTimeoutMecanisme = null;
+  timerSuiteMecanisme = null;
+
+  if (fond) fond.style.backgroundImage = `url("${imageMecanismeEteinte}")`;
+  if (suite) suite.style.display = "none";
+
+  cacherBoutonsIndicesMecanisme();
+  hideMessageMecanisme();
+}
+
+function suiteMecanismePhare() {
+  showScreen("finaventure");
+}
+
+function showMessageMecanisme(text) {
+  const message = document.getElementById("meca-message");
+  if (!message) return;
+
+  message.textContent = text;
+  message.style.display = "block";
+}
+
+function hideMessageMecanisme() {
+  const message = document.getElementById("meca-message");
+  if (!message) return;
+
+  message.style.display = "none";
+}
+
+
+/* DÉMARRAGE ROBUSTE DE L'AVENTURE */
+let dernierDemarrageAventure = 0;
+
+function startAventure(event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const maintenant = Date.now();
+  if (maintenant - dernierDemarrageAventure < 400) return;
+  dernierDemarrageAventure = maintenant;
+
+  showScreen('missive1');
+}
+
+/* Sécurité : on expose explicitement les fonctions utilisées par les boutons HTML */
+window.vibrerEchec = vibrerEchec;
+window.startAventure = startAventure;
+window.showScreen = showScreen;
+window.goBack = goBack;
+window.verifier = verifier;
+window.nextScreen = nextScreen;
+window.essayerOuvrir = essayerOuvrir;
+window.verifierCode = verifierCode;
+window.verifierMotPhare = verifierMotPhare;
+window.afficherIndicePhare = afficherIndicePhare;
+window.verifierCodeAncienPhare = verifierCodeAncienPhare;
+window.clickZoneMecanisme = clickZoneMecanisme;
+window.resetMecanismePhare = resetMecanismePhare;
+window.suiteMecanismePhare = suiteMecanismePhare;
+window.mettreAJourBoutonsIndicesMecanisme = mettreAJourBoutonsIndicesMecanisme;
+window.retourSite = retourSite;
+
+
+/* Ajustement mobile : corrige la hauteur utile sur certains navigateurs mobiles */
+function ajusterHauteurMobile() {
+  document.documentElement.style.setProperty('--vh-mobile', `${window.innerHeight * 0.01}px`);
+}
+
+ajusterHauteurMobile();
+window.addEventListener('resize', ajusterHauteurMobile);
+window.addEventListener('orientationchange', ajusterHauteurMobile);
+
+/* Sécurité au chargement : on force l'écran de départ et on ajoute un déclenchement tactile */
+document.addEventListener('DOMContentLoaded', function() {
+  Object.values(screens).forEach(screen => {
+    if (screen) screen.classList.remove('active');
+  });
+
+  if (screens.intro) screens.intro.classList.add('active');
+  currentScreen = 'intro';
+  navHistory = [];
+
+  const progress = document.getElementById('progress');
+  if (progress) progress.style.width = '0%';
+
+  const navBack = document.getElementById('nav-back');
+  if (navBack) navBack.classList.remove('visible');
+
+  const introElements = document.querySelectorAll('#screen-intro .intro-img, #screen-intro .btn-primary');
+  introElements.forEach(element => {
+    element.addEventListener('pointerup', startAventure, { passive: false });
+  });
+});
 
 function retourSite() {
-  window.location.href = "URL_DE_TON_SITE";
+  window.location.href = "https://avelescape.github.io/aventures/";
 }
 </script>
 
