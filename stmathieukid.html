@@ -249,9 +249,10 @@ input {
 .puzzle-piece {
   background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp");
   background-size: 320px 320px;
+  background-repeat: no-repeat;
   cursor: grab;
   border: 1px solid rgba(245, 232, 208, 0.35);
-  touch-action: manipulation;
+  touch-action: none;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -1090,9 +1091,12 @@ input {
 button,
 .btn-primary,
 .nav-back,
-.meca-zone,
-.puzzle-piece {
+.meca-zone {
   touch-action: manipulation;
+}
+
+.puzzle-piece {
+  touch-action: none;
 }
 
 input,
@@ -1440,6 +1444,10 @@ button {
     <div id="puzzle-board"></div>
     <div id="puzzle-message"></div>
 
+    <button class="btn-primary" onclick="initPuzzle()">
+      Mélanger
+    </button>
+
     <button id="btn-puzzle"
             class="btn-primary"
             style="display:none;"
@@ -1517,7 +1525,7 @@ button {
   <div class="abbaye-container">
     <img class="abbaye-img"
          src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpmoineloinkid.webp"
-         alt="Moine apparait à l'abbaye"
+         alt="Moine apparait dans l'abbaye"
          onclick="showScreen('moineloin')">
 
     <button class="btn-primary" onclick="showScreen('moineloin')">
@@ -1545,8 +1553,8 @@ button {
 
 <div class="screen" id="screen-sceneabbaye">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webptroisnaufrageurs.webp"
-       alt="Passage secret de l'abbaye">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpmarinlanuit.webp"
+       alt="navigateurs">
 
   <div class="dialogue-box">
     <p id="dialogue-text-naufrageurs"></p>
@@ -1562,8 +1570,8 @@ button {
 
 <div class="screen" id="screen-petitphare">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpyannickkidnappe.webp"
-       alt="Petit phare">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpyannblesse.webp"
+       alt="Yannick blessé">
 
   <div class="dialogue-box">
     <p id="dialogue-text-phare"></p>
@@ -1585,8 +1593,8 @@ button {
 
 <div class="screen" id="screen-suiteaventure">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpyannick.webp"
-       alt="Yannick">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpyannhurle.webp"
+       alt="Yannick hurle">
 
   <div class="dialogue-box">
     <div id="texte-fin"></div>
@@ -1800,6 +1808,10 @@ function showScreen(name, addHist = true) {
   screens[name].classList.add('active');
   currentScreen = name;
 
+  if (typeof updateBilligForScreen === 'function') {
+    updateBilligForScreen(name);
+  }
+
   const chantAudio = document.getElementById('chant-audio');
 
   if (chantAudio) {
@@ -1890,62 +1902,42 @@ if (reponseInput) {
   });
 }
 
-/* PUZZLE */
-const PUZZLE_SIZE = 3;
+/* PUZZLE MOBILE + ORDINATEUR
+   Version intégrée depuis le puzzle qui fonctionne sur téléphone.
+   Sur mobile : on touche une pièce, puis une autre pour les échanger.
+   Sur ordinateur : le glisser-déposer fonctionne aussi.
+*/
+const CONFIG_PUZZLE = {
+  imagePuzzle: "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp",
+  taille: 3,
+  messageVictoire: "Le sceau est reconstitué !"
+};
+
 let draggedPiece = null;
 let puzzleSolved = false;
 let selectedPiece = null;
-
-function handlePieceClick(e) {
-  if (puzzleSolved) return;
-  const piece = e.currentTarget;
-
-  if (!selectedPiece) {
-    selectedPiece = piece;
-    piece.classList.add('selected');
-  } else if (selectedPiece === piece) {
-    selectedPiece.classList.remove('selected');
-    selectedPiece = null;
-  } else {
-    const tempBg = piece.style.backgroundPosition;
-    const tempCorrect = piece.dataset.correct;
-    piece.style.backgroundPosition = selectedPiece.style.backgroundPosition;
-    piece.dataset.correct = selectedPiece.dataset.correct;
-    selectedPiece.style.backgroundPosition = tempBg;
-    selectedPiece.dataset.correct = tempCorrect;
-    selectedPiece.classList.remove('selected');
-    selectedPiece = null;
-    checkPuzzle();
-  }
-}
-
-function handlePiecePointerDown(e) {
-  // Sur mobile, le dragstart/drop natif ne se déclenche souvent pas.
-  // On force donc le mode « toucher une pièce puis toucher une autre ».
-  if (e.pointerType === 'touch' || e.pointerType === 'pen') {
-    e.preventDefault();
-    handlePieceClick(e);
-  }
-}
+let ignoreNextClickAfterTouch = false;
 
 function initPuzzle() {
   const board = document.getElementById('puzzle-board');
   const message = document.getElementById('puzzle-message');
   const btn = document.getElementById('btn-puzzle');
 
+  if (!board) return;
+
   puzzleSolved = false;
   selectedPiece = null;
-
-  if (btn) btn.style.display = 'none';
-  if (!board) return;
+  draggedPiece = null;
+  ignoreNextClickAfterTouch = false;
 
   board.innerHTML = '';
   if (message) message.innerHTML = '';
+  if (btn) btn.style.display = 'none';
 
-  board.style.gridTemplateColumns = `repeat(${PUZZLE_SIZE}, 1fr)`;
-  board.style.gridTemplateRows = `repeat(${PUZZLE_SIZE}, 1fr)`;
+  board.style.gridTemplateColumns = `repeat(${CONFIG_PUZZLE.taille}, 1fr)`;
+  board.style.gridTemplateRows = `repeat(${CONFIG_PUZZLE.taille}, 1fr)`;
 
-  const totalPieces = PUZZLE_SIZE * PUZZLE_SIZE;
+  const totalPieces = CONFIG_PUZZLE.taille * CONFIG_PUZZLE.taille;
   const pieces = [];
 
   for (let i = 0; i < totalPieces; i++) {
@@ -1956,35 +1948,68 @@ function initPuzzle() {
     pieces.sort(() => Math.random() - 0.5);
   } while (pieces.every((piece, index) => piece === index));
 
-  pieces.forEach((pieceIndex) => {
-    const piece = document.createElement('div');
-    piece.className = 'puzzle-piece';
-    // Le drag & drop HTML fonctionne mal sur mobile.
-    // Sur écran tactile, on désactive le drag natif et on utilise le tap/tap.
-    piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
-    piece.dataset.correct = pieceIndex;
-
-    const x = pieceIndex % PUZZLE_SIZE;
-    const y = Math.floor(pieceIndex / PUZZLE_SIZE);
+  requestAnimationFrame(() => {
     const boardSize = board.clientWidth || 320;
-    const pieceSize = boardSize / PUZZLE_SIZE;
+    const pieceSize = boardSize / CONFIG_PUZZLE.taille;
 
-    piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
-    piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
+    pieces.forEach(pieceIndex => {
+      const piece = document.createElement('div');
+      piece.className = 'puzzle-piece';
+      piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
+      piece.dataset.correct = pieceIndex;
 
-    piece.addEventListener('dragstart', dragStart);
-    piece.addEventListener('dragover', dragOver);
-    piece.addEventListener('drop', dropPiece);
-    piece.addEventListener('dragend', dragEnd);
+      const x = pieceIndex % CONFIG_PUZZLE.taille;
+      const y = Math.floor(pieceIndex / CONFIG_PUZZLE.taille);
 
-    // Ordinateur : clic possible en plus du glisser-déposer.
-    piece.addEventListener('click', handlePieceClick);
+      piece.style.backgroundImage = `url("${CONFIG_PUZZLE.imagePuzzle}")`;
+      piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
+      piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
 
-    // Mobile/tablette : toucher une pièce puis une autre pour les échanger.
-    piece.addEventListener('pointerdown', handlePiecePointerDown);
+      piece.addEventListener('dragstart', dragStart);
+      piece.addEventListener('dragover', dragOver);
+      piece.addEventListener('drop', dropPiece);
+      piece.addEventListener('dragend', dragEnd);
 
-    board.appendChild(piece);
+      piece.addEventListener('click', handlePieceClick);
+      piece.addEventListener('pointerdown', handlePiecePointerDown, { passive: false });
+
+      board.appendChild(piece);
+    });
   });
+}
+
+function handlePiecePointerDown(e) {
+  if (puzzleSolved) return;
+
+  if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+    e.preventDefault();
+    ignoreNextClickAfterTouch = true;
+    handlePieceClick(e);
+  }
+}
+
+function handlePieceClick(e) {
+  if (puzzleSolved) return;
+
+  if (ignoreNextClickAfterTouch && e.type === 'click') {
+    ignoreNextClickAfterTouch = false;
+    return;
+  }
+
+  const piece = e.currentTarget;
+
+  if (!selectedPiece) {
+    selectedPiece = piece;
+    piece.classList.add('selected');
+  } else if (selectedPiece === piece) {
+    selectedPiece.classList.remove('selected');
+    selectedPiece = null;
+  } else {
+    echangerPieces(selectedPiece, piece);
+    selectedPiece.classList.remove('selected');
+    selectedPiece = null;
+    checkPuzzle();
+  }
 }
 
 function dragStart() {
@@ -2004,15 +2029,7 @@ function dropPiece(e) {
   if (puzzleSolved) return;
   if (!draggedPiece || draggedPiece === this) return;
 
-  const tempBg = this.style.backgroundPosition;
-  const tempCorrect = this.dataset.correct;
-
-  this.style.backgroundPosition = draggedPiece.style.backgroundPosition;
-  this.dataset.correct = draggedPiece.dataset.correct;
-
-  draggedPiece.style.backgroundPosition = tempBg;
-  draggedPiece.dataset.correct = tempCorrect;
-
+  echangerPieces(draggedPiece, this);
   checkPuzzle();
 }
 
@@ -2021,8 +2038,19 @@ function dragEnd() {
   draggedPiece = null;
 }
 
+function echangerPieces(piece1, piece2) {
+  const tempBg = piece2.style.backgroundPosition;
+  const tempCorrect = piece2.dataset.correct;
+
+  piece2.style.backgroundPosition = piece1.style.backgroundPosition;
+  piece2.dataset.correct = piece1.dataset.correct;
+
+  piece1.style.backgroundPosition = tempBg;
+  piece1.dataset.correct = tempCorrect;
+}
+
 function checkPuzzle() {
-  const pieces = document.querySelectorAll('.puzzle-piece');
+  const pieces = document.querySelectorAll('#puzzle-board .puzzle-piece');
   let solved = true;
 
   pieces.forEach((piece, index) => {
@@ -2039,8 +2067,8 @@ function checkPuzzle() {
 
     if (message) {
       message.innerHTML = `
-        <p>Le sceau est reconstitué !</p>
-        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp"
+        <p>${CONFIG_PUZZLE.messageVictoire}</p>
+        <img src="${CONFIG_PUZZLE.imagePuzzle}"
              alt="Indice révélé"
              class="puzzle-result-img">
       `;
@@ -2584,6 +2612,7 @@ const billigImages = {
   content: 'https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpbilligassis.webp',
   interrogatif: 'https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpbilliginterrogatif.webp',
   indice: 'https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpbilligindice.webp',
+  curieux: 'https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpbilligloupe.webp',
   inquiet: 'https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpbilliginquiet.webp',
   gauche: 'https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpbilligregardgauche.webp',
   droite: 'https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpbilligregarddroite.webp',
@@ -2647,11 +2676,53 @@ function ajouterBilligAuxPages() {
   });
 }
 
-function changerBillig(screenName, nouvelleImage, nouveauMessage) {
-  const screen = screens[screenName];
-  if (!screen) return;
 
-  const wrapper = screen.querySelector('.billig-helper');
+function creerBilligGlobal() {
+  let wrapper = document.getElementById('billig-helper-global');
+  if (wrapper) return wrapper;
+
+  wrapper = document.createElement('div');
+  wrapper.id = 'billig-helper-global';
+  wrapper.className = 'billig-helper billig-hidden-message';
+  wrapper.style.display = 'none';
+
+  const img = document.createElement('img');
+  img.alt = 'Billig, le chien guide';
+  img.loading = 'eager';
+  img.src = BILLIG_IMAGE_DEFAUT;
+  img.onerror = function() {
+    if (img.src !== BILLIG_IMAGE_DEFAUT) img.src = BILLIG_IMAGE_DEFAUT;
+  };
+
+  wrapper.appendChild(img);
+  document.body.appendChild(wrapper);
+  return wrapper;
+}
+
+function updateBilligForScreen(screenName) {
+  const wrapper = creerBilligGlobal();
+  const config = billigScreens[screenName];
+
+  if (!config) {
+    wrapper.style.display = 'none';
+    return;
+  }
+
+  wrapper.style.display = 'block';
+  wrapper.className = 'billig-helper';
+  if (config.side === 'left') wrapper.classList.add('billig-left');
+  if (config.small) wrapper.classList.add('billig-small');
+  if (!config.message) wrapper.classList.add('billig-hidden-message');
+
+  wrapper.setAttribute('data-message', config.message || '');
+
+  const img = wrapper.querySelector('img');
+  const imageKey = config.image || 'content';
+  if (img) img.src = billigImages[imageKey] || BILLIG_IMAGE_DEFAUT;
+}
+
+function changerBillig(screenName, nouvelleImage, nouveauMessage) {
+  const wrapper = document.getElementById('billig-helper-global') || creerBilligGlobal();
   if (!wrapper) return;
 
   const img = wrapper.querySelector('img');
@@ -2666,6 +2737,8 @@ function changerBillig(screenName, nouvelleImage, nouveauMessage) {
 }
 
 window.changerBillig = changerBillig;
+window.creerBilligGlobal = creerBilligGlobal;
+window.updateBilligForScreen = updateBilligForScreen;
 
 
 
@@ -2680,7 +2753,8 @@ window.addEventListener('orientationchange', ajusterHauteurMobile);
 
 /* Sécurité au chargement : on force l'écran de départ et on ajoute un déclenchement tactile */
 document.addEventListener('DOMContentLoaded', function() {
-  ajouterBilligAuxPages();
+  creerBilligGlobal();
+  updateBilligForScreen('intro');
   Object.values(screens).forEach(screen => {
     if (screen) screen.classList.remove('active');
   });
