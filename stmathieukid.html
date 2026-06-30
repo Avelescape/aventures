@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -1421,6 +1421,103 @@ button {
   box-shadow: 0 0 18px rgba(245,194,75,0.9);
 }
 
+
+
+/* =========================================================
+   CORRECTION FINALE MOBILE
+   - Le bouton site AvelEscape n'est plus fixe.
+   - Billig reste visible et grand sur smartphone.
+   Ces règles sont placées en dernier pour écraser les anciennes.
+   ========================================================= */
+.site-retour {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  z-index: 200 !important;
+  min-height: 30px !important;
+  padding: 5px 9px !important;
+  font-size: 12px !important;
+}
+
+.billig-helper {
+  position: fixed !important;
+  right: max(8px, env(safe-area-inset-right)) !important;
+  bottom: max(8px, env(safe-area-inset-bottom)) !important;
+  width: min(42vw, 190px) !important;
+  max-width: 190px !important;
+  min-width: 150px !important;
+  z-index: 120 !important;
+  pointer-events: none !important;
+  display: block;
+}
+
+.billig-helper img {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.billig-left {
+  left: max(8px, env(safe-area-inset-left)) !important;
+  right: auto !important;
+}
+
+.billig-small {
+  width: min(36vw, 165px) !important;
+  min-width: 135px !important;
+}
+
+.billig-helper::after {
+  right: calc(100% + 12px) !important;
+  bottom: calc(70% + 4px) !important;
+  min-width: 132px !important;
+  max-width: 180px !important;
+  padding: 8px 10px !important;
+  font-size: clamp(16px, 4.6vw, 20px) !important;
+  line-height: 1.12 !important;
+}
+
+.billig-left::after {
+  left: calc(100% + 12px) !important;
+  right: auto !important;
+}
+
+#screen-sommetphare .billig-helper {
+  width: 110px !important;
+  min-width: 100px !important;
+  bottom: 6px !important;
+}
+
+#screen-sommetphare .billig-helper::after {
+  display: none !important;
+}
+
+@media (max-width: 390px) {
+  .billig-helper {
+    width: 165px !important;
+    min-width: 150px !important;
+  }
+
+  .billig-small {
+    width: 145px !important;
+    min-width: 135px !important;
+  }
+
+  .billig-helper::after {
+    max-width: 155px !important;
+    font-size: 16px !important;
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .billig-helper {
+    display: none !important;
+  }
+}
+
 </style>
 </head>
 
@@ -1896,6 +1993,9 @@ function showScreen(name, addHist = true) {
 
   screens[name].classList.add('active');
   currentScreen = name;
+
+  // Le bouton site AvelEscape n'est pas fixe : on revient en haut à chaque écran.
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
   if (typeof updateBilligForScreen === 'function') {
     updateBilligForScreen(name);
