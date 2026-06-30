@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -2902,10 +2902,10 @@ function updateBilligForScreen(screenName) {
   const config = billigScreens[screenName];
 
   if (!config) {
-    wrapper.style.display = 'block';
+    // Aucun Billig sur les écrans non listés dans billigScreens.
+    // Cela masque notamment Billig sur la première fenêtre d'accueil.
+    wrapper.style.display = 'none';
     wrapper.className = 'billig-helper billig-hidden-message';
-    const imgFallback = wrapper.querySelector('img');
-    if (imgFallback) imgFallback.src = BILLIG_IMAGE_DEFAUT;
     return;
   }
 
