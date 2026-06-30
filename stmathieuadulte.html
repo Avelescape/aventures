@@ -2,10 +2,9 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0E3B4C">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2a0a10">
 <title>Le Mystère du Phare</title>
-
 
 <style>
 * { box-sizing: border-box; }
@@ -244,7 +243,8 @@ input {
 }
 
 .puzzle-piece {
-  background-repeat: no-repeat;
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp");
+  background-size: 320px 320px;
   cursor: grab;
   border: 1px solid rgba(245, 232, 208, 0.35);
   touch-action: manipulation;
@@ -331,6 +331,8 @@ input {
 }
 
 
+
+
 /* ---------------- SOMMET DU PHARE - MÉCANISME HTML ---------------- */
 .meca-scene {
   position: relative;
@@ -358,7 +360,7 @@ input {
 .meca-fond {
   position: absolute;
   inset: 0;
-  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentilleeteinte.webp");
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareeteint.webp");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -374,36 +376,16 @@ input {
 }
 
 .meca-zone {
-  fill: rgba(255, 255, 255, 0.08);   /* très léger voile blanc */
-  stroke: rgba(255, 255, 255, 0.18); /* contour discret */
-  stroke-width: 2;
+  fill: rgba(0, 170, 255, 0.18);
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 4;
   cursor: pointer;
-  pointer-events: all;
-  transition: all 0.2s ease;
-}
-
-.meca-zone:hover {
-  fill: rgba(255, 255, 255, 0.15);
-  stroke: rgba(255, 255, 255, 0.35);
 }
 
 .meca-zone:active {
-  fill: rgba(245, 194, 75, 0.25);
-  stroke: rgba(245, 194, 75, 0.7);
+  fill: rgba(255, 255, 255, 0.35);
 }
 
-.meca-zone-label {
-  font-family: Georgia, serif;
-  font-size: 64px;
-  font-weight: 900;
-  fill: #ffffff;
-  text-anchor: middle;
-  dominant-baseline: middle;
-  pointer-events: none;
-  paint-order: stroke;
-  stroke: rgba(0, 0, 0, 0.75);
-  stroke-width: 8px;
-}
 .meca-gear {
   position: absolute;
   background-size: contain;
@@ -417,13 +399,13 @@ input {
 .meca-gear-small {
   width: 13%;
   aspect-ratio: 1 / 1;
-  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-2.webp");
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenage-1.webp");
 }
 
 .meca-gear-big {
   width: 16%;
   aspect-ratio: 1 / 1;
-  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand-1.webp");
+  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpengrenagegrand.webp");
 }
 
 #meca-gearA { left: 36%; top: 50%; }
@@ -524,22 +506,17 @@ input {
 .meca-suite {
   position: absolute;
   left: 50%;
-  bottom: 2%;
+  bottom: 4%;
   transform: translateX(-50%);
   z-index: 20;
   display: none;
-
-  width: 100px;
-  height: 56px;
-  padding: 0;
-
-  font-size: 20px;
+  padding: 18px 40px;
+  font-size: 22px;
   font-weight: bold;
   color: white;
-
   background: rgba(20,20,20,0.85);
   border: 2px solid white;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
 }
 
@@ -557,768 +534,10 @@ input {
     background-size: 280px 280px;
   }
 }
-
-/* =========================================================
-   OPTIMISATION SMARTPHONES - AVELESCAPE ADULTE
-   Ajout : version mobile plus confortable Android / iPhone
-   ========================================================= */
-
-html {
-  width: 100%;
-  min-height: 100%;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  scroll-behavior: smooth;
-}
-body {
-  width: 100%;
-  min-height: 100svh;
-  overscroll-behavior-y: contain;
-  -webkit-tap-highlight-color: transparent;
-}
-
-img,
-button,
-input {
-  max-width: 100%;
-}
-
-button,
-.btn-primary,
-.nav-back,
-.meca-zone,
-.puzzle-piece {
-  touch-action: manipulation;
-}
-
-input,
-textarea,
-select {
-  font-size: 16px !important; /* évite le zoom automatique sur iPhone */
-}
-
-.screen {
-  min-height: 100svh;
-  padding:
-    max(36px, calc(env(safe-area-inset-top, 0px) + 24px))
-    max(14px, env(safe-area-inset-right, 0px))
-    max(34px, calc(env(safe-area-inset-bottom, 0px) + 24px))
-    max(14px, env(safe-area-inset-left, 0px));
-}
-
-.intro-img,
-.lettre-img,
-.missive1-image,
-.missive2-image,
-.chapter-img,
-.abbaye-img,
-.moineloin-img,
-.puzzle-result-img {
-  width: auto;
-  max-width: min(94vw, 760px);
-  max-height: 58svh;
-  object-fit: contain;
-}
-
-.lettre-img {
-  max-height: 72svh;
-}
-
-.missive1-label,
-.missive2-label,
-.puits-label,
-.locmaze-label,
-.so-label,
-.puzzle-label,
-.instructions-label,
-.instructionschap2-label,
-.porte-label,
-.dialogue-box,
-#enigme-phare,
-.indice-mecanisme-page,
-.texte-sommet {
-  width: min(94vw, 760px);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-input[type="text"],
-input[type="number"] {
-  width: min(88vw, 360px);
-  min-height: 52px;
-}
-
-.btn-primary,
-button {
-  min-height: 52px;
-  line-height: 1.1;
-}
-
-#puzzle-board {
-  width: min(92vw, 420px);
-  height: min(92vw, 420px);
-}
-
-.puzzle-piece {
-  background-size: min(92vw, 420px) min(92vw, 420px);
-}
-
-.fondu-images {
-  width: 94vw;
-  height: min(62svh, 720px);
-}
-
-.image-fondu {
-  max-height: min(62svh, 720px);
-}
-
-#screen-sommetphare {
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-#screen-sommetphare h1 {
-  width: min(94vw, 760px);
-  margin: 12px auto 14px;
-  font-size: clamp(23px, 7vw, 38px);
-  line-height: 1.08;
-}
-
-.meca-scene {
-  width: 100%;
-  min-height: auto;
-  height: calc(100svh - 118px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
-  align-items: center;
-}
-
-.meca-game {
-  width: min(100%, calc((100svh - 130px) * 1152 / 2048));
-  max-width: 460px;
-  height: auto;
-  max-height: calc(100svh - 130px);
-  border-radius: 18px;
-}
-
-.meca-message {
-  width: 88%;
-  bottom: 7%;
-  font-size: clamp(15px, 4vw, 18px);
-  padding: 10px 12px;
-}
-
-.meca-indices {
-  bottom: 17%;
-  gap: 8px;
-}
-
-.meca-reset {
-  top: 1.5%;
-  right: 3%;
-  min-height: 40px;
-  padding: 7px 10px;
-  font-size: 14px;
-}
-
-.meca-suite {
-  bottom: 2%;
-  min-height: 50px;
-}
-
-/* Très petits téléphones */
-@media (max-width: 390px) {
-  .screen {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .intro-title {
-    font-size: clamp(31px, 12vw, 42px);
-  }
-
-  #dialogue-text,
-  #dialogue-text-phare,
-  #dialogue-text-naufrageurs,
-  #texte-fin,
-  .missive1-label,
-  .missive2-label,
-  .puits-label,
-  .locmaze-label,
-  .so-label,
-  .puzzle-label,
-  .instructions-label,
-  .instructionschap2-label,
-  .porte-label {
-    font-size: 18px;
-  }
-
-  .btn-primary,
-  button {
-    width: min(94vw, 340px);
-    padding: 12px 14px;
-    font-size: 21px;
-  }
-
-  .nav-back {
-    width: 44px;
-    height: 44px;
-    min-height: 44px;
-    padding: 0;
-  }
-}
-
-/* Téléphones en paysage : on limite la hauteur des visuels pour éviter les boutons hors écran */
-@media (max-height: 520px) and (orientation: landscape) {
-  .screen {
-    padding-top: 18px;
-    padding-bottom: 18px;
-  }
-
-  .intro-img,
-  .lettre-img,
-  .missive1-image,
-  .missive2-image,
-  .chapter-img,
-  .abbaye-img,
-  .moineloin-img {
-    max-height: 42svh;
-  }
-.meca-scene {
-    height: calc(100svh - 72px);
-  }
-
-  #screen-sommetphare h1 {
-    font-size: 22px;
-    margin: 4px auto 8px;
-  }
-
-  .meca-game {
-    max-height: calc(100svh - 82px);
-  }
-}
-
-@supports not (height: 100svh) {
-  body,
-  .screen {
-    min-height: 100vh;
-  }
-
-  .meca-scene {
-    height: calc(100vh - 118px);
-  }
-
-  .meca-game {
-    max-height: calc(100vh - 130px);
-  }
-}
-
-
-/* =========================================================
-   BOUTON RETOUR SITE AVELESCAPE - PETIT FORMAT
-   Visible sur toutes les pages / mobile et ordinateur
-   ========================================================= */
-.site-retour {
-  position: fixed;
-  top: max(12px, env(safe-area-inset-top));
-  right: max(12px, env(safe-area-inset-right));
-  z-index: 999999;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-
-  min-height: 34px;
-  padding: 6px 12px;
-
-  background: rgba(14, 59, 76, 0.92);
-  color: #ff5a1f;
-
-  border: 2px solid #ff5a1f;
-  border-radius: 999px;
-
-  font-family: Georgia, serif;
-  font-size: 14px;
-  font-weight: 900;
-  line-height: 1;
-  text-decoration: none;
-
-  box-shadow: 0 4px 12px rgba(0,0,0,0.28);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.site-retour:hover {
-  background: #ff5a1f;
-  color: #ffffff;
-}
-
-.site-retour:active {
-  transform: scale(0.96);
-}
-
-
-@media (max-width: 480px) {
-  .site-retour {
-    top: max(10px, env(safe-area-inset-top));
-    right: max(10px, env(safe-area-inset-right));
-    min-height: 30px;
-    padding: 5px 9px;
-    gap: 4px;
-    font-size: 12px;
-    border-width: 2px;
-  }
-
-}
-
-
-/* =========================================================
-   PUZZLE - VRAI GLISSÉ AU DOIGT
-   Les pièces suivent le doigt puis s'échangent au relâchement.
-   ========================================================= */
-#puzzle-board {
-  position: relative !important;
-  display: block !important;
-  touch-action: none !important;
-  overflow: hidden !important;
-}
-
-#puzzle-board .puzzle-piece {
-  position: absolute !important;
-  background-repeat: no-repeat !important;
-  touch-action: none !important;
-  cursor: grab;
-  transition: transform 0.08s ease;
-  will-change: transform;
-}
-
-#puzzle-board .puzzle-piece.dragging {
-  opacity: 0.88;
-  cursor: grabbing;
-  transition: none;
-  box-shadow: 0 0 18px rgba(245,194,75,0.9);
-}
-
-
-/* Bouton couper le chant */
-#stop-audio-btn{
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    margin: 10px auto;
-    display: block;
-}
-
-
-/* =========================================================
-   DESIGN ADULTE AVELESCAPE - CINÉMA MARITIME MOBILE
-   Optimisé portable et extérieur
-   ========================================================= */
-:root {
-  --adult-black: #090607;
-  --adult-deep: #16090d;
-  --adult-red: #3A0710;
-  --adult-red-2: #6F1118;
-  --adult-gold: #D4AF37;
-  --adult-gold-light: #F0D47A;
-  --adult-cream: #FFF3D6;
-  --adult-ivory: #FFF8EA;
-  --adult-bronze: #8B5A26;
-  --adult-ink: #1b1110;
-  --rouge-cardinal: var(--adult-black);
-  --cramoisi: var(--adult-red-2);
-  --or: var(--adult-gold);
-  --ivoire: var(--adult-ivory);
-  --nuit-rouge: var(--adult-deep);
-}
-
-html {
-  background: var(--adult-black);
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-body {
-  width: 100%;
-  min-height: 100svh;
-  margin: 0;
-  overflow-x: hidden;
-  font-family: Georgia, serif;
-  color: var(--adult-ivory);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(212,175,55,0.18), transparent 30%),
-    radial-gradient(circle at 15% 20%, rgba(111,17,24,0.45), transparent 32%),
-    linear-gradient(180deg, #2a0a10 0%, #13080b 45%, #070506 100%);
-  overscroll-behavior-y: contain;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.bg {
-  background:
-    radial-gradient(circle at 50% 10%, rgba(255,224,150,0.16), transparent 28%),
-    radial-gradient(circle at 50% 88%, rgba(111,17,24,0.45), transparent 38%),
-    linear-gradient(180deg, rgba(40,8,14,0.96), rgba(5,4,5,0.98));
-}
-
-.bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, transparent, rgba(255,255,255,0.035), transparent),
-    radial-gradient(circle at center, transparent 45%, rgba(0,0,0,0.48) 100%);
-  opacity: .8;
-}
-
-.progress-bar {
-  height: 7px;
-  background: linear-gradient(90deg, #7a1118, var(--adult-gold), #fff1a8);
-  box-shadow: 0 2px 14px rgba(212,175,55,.55);
-}
-
-.screen {
-  min-height: 100svh;
-  padding:
-    max(72px, calc(env(safe-area-inset-top, 0px) + 62px))
-    max(14px, env(safe-area-inset-right, 0px))
-    max(40px, calc(env(safe-area-inset-bottom, 0px) + 28px))
-    max(14px, env(safe-area-inset-left, 0px));
-  text-align: center;
-}
-
-h1, h2, h3, .intro-title {
-  font-family: Georgia, serif;
-  color: var(--adult-gold-light);
-  letter-spacing: .03em;
-  text-shadow: 0 2px 0 rgba(0,0,0,.75), 0 0 18px rgba(212,175,55,.35);
-}
-
-h1 { font-size: clamp(32px, 9.2vw, 48px); line-height: 1.08; }
-h2 { font-size: clamp(28px, 7.4vw, 38px); line-height: 1.12; }
-h3 { font-size: clamp(23px, 6.2vw, 31px); line-height: 1.28; }
-
-.intro-title {
-  font-size: clamp(38px, 13vw, 62px);
-  margin: 22px 0 18px;
-  color: #fff3cf;
-  text-transform: uppercase;
-}
-
-.intro-date,
-.intro-location {
-  color: var(--adult-gold-light);
-  font-size: clamp(19px, 5.2vw, 25px);
-  letter-spacing: .07em;
-  text-transform: uppercase;
-}
-
-.intro-sep-line,
-.intro-sep-diamond { background: var(--adult-gold); }
-
-.intro-img,
-.lettre-img,
-.missive1-image,
-.missive2-image,
-.chapter-img,
-.abbaye-img,
-.moineloin-img,
-.puzzle-result-img {
-  width: auto;
-  max-width: min(94vw, 760px);
-  max-height: 57svh;
-  object-fit: contain;
-  border-radius: 18px;
-  border: 2px solid rgba(212,175,55,.55);
-  box-shadow:
-    0 18px 38px rgba(0,0,0,.52),
-    0 0 0 1px rgba(255,244,210,.08),
-    0 0 26px rgba(212,175,55,.16);
-  filter: brightness(1.12) contrast(1.08) saturate(1.04);
-}
-
-.lettre-img { max-height: 70svh; }
-
-.missive1-label,
-.missive2-label,
-.puits-label,
-.locmaze-label,
-.so-label,
-.puzzle-label,
-.instructions-label,
-.instructionschap2-label,
-.porte-label,
-.dialogue-box,
-#enigme-phare,
-.indice-mecanisme-page,
-.texte-sommet {
-  width: min(94vw, 760px);
-  max-width: 760px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--adult-ivory);
-  background:
-    linear-gradient(180deg, rgba(58,7,16,.96), rgba(17,8,10,.96));
-  border: 2px solid rgba(212,175,55,.82);
-  border-radius: 20px;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.08),
-    inset 0 0 22px rgba(212,175,55,.08),
-    0 16px 34px rgba(0,0,0,.45);
-}
-
-.missive1-label,
-.missive2-label,
-.puits-label,
-.locmaze-label,
-.so-label,
-.puzzle-label,
-.instructions-label,
-.instructionschap2-label,
-.porte-label {
-  margin-top: 26px;
-  margin-bottom: 24px;
-  padding: 24px 20px;
-  font-size: clamp(22px, 6.1vw, 29px);
-  line-height: 1.52;
-}
-
-.dialogue-box,
-#enigme-phare,
-.indice-mecanisme-page {
-  padding: 26px 20px;
-}
-
-#dialogue-text,
-#dialogue-text-phare,
-#dialogue-text-naufrageurs,
-#texte-fin,
-.texte-sommet {
-  font-size: clamp(22px, 6vw, 29px);
-  line-height: 1.55;
-}
-
-#texte-fin { color: var(--adult-ivory); }
-
-.dialogue-box::before,
-#enigme-phare::before,
-.porte-label::before,
-.puzzle-label::before {
-  content: "" !important;
-  display: none !important;
-}
-
-.btn-primary,
-button {
-  width: min(92vw, 390px);
-  min-height: 62px;
-  margin: 14px auto;
-  padding: 17px 24px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #16090d;
-  background:
-    linear-gradient(180deg, #fff2b2 0%, var(--adult-gold) 52%, #9f6a20 100%);
-  border: 2px solid #ffe29a;
-  border-radius: 16px;
-  font-family: Georgia, serif;
-  font-size: clamp(21px, 5.9vw, 28px);
-  font-weight: 800;
-  line-height: 1.08;
-  text-shadow: 0 1px 0 rgba(255,255,255,.35);
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.45),
-    0 6px 0 #5b3512,
-    0 18px 28px rgba(0,0,0,.42);
-  cursor: pointer;
-  touch-action: manipulation;
-}
-
-.btn-primary:active,
-button:active {
-  transform: translateY(3px);
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.35),
-    0 3px 0 #5b3512,
-    0 10px 18px rgba(0,0,0,.42);
-}
-
-.nav-back {
-  top: max(14px, env(safe-area-inset-top));
-  left: max(12px, env(safe-area-inset-left));
-  width: 48px;
-  height: 48px;
-  min-height: 48px;
-  padding: 0;
-  border-radius: 50%;
-  color: var(--adult-ivory);
-  background: rgba(20,8,10,.92);
-  border: 2px solid var(--adult-gold);
-  box-shadow: 0 8px 18px rgba(0,0,0,.45);
-}
-
-.site-retour {
-  position: fixed !important;
-  top: max(12px, env(safe-area-inset-top)) !important;
-  right: max(10px, env(safe-area-inset-right)) !important;
-  z-index: 999999 !important;
-  min-height: 38px;
-  padding: 7px 12px;
-  background: rgba(16,8,10,.90);
-  color: var(--adult-gold-light);
-  border: 2px solid var(--adult-gold);
-  border-radius: 999px;
-  font-family: Georgia, serif;
-  font-size: 13px;
-  font-weight: 800;
-  text-decoration: none;
-  box-shadow: 0 8px 20px rgba(0,0,0,.45), inset 0 0 12px rgba(212,175,55,.14);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-input,
-input[type="text"],
-input[type="number"] {
-  width: min(88vw, 390px);
-  min-height: 64px;
-  padding: 16px 18px;
-  border-radius: 16px;
-  border: 3px solid var(--adult-gold);
-  background: #fff8e8;
-  color: #17090b;
-  font-family: Georgia, serif;
-  font-size: 24px !important;
-  font-weight: 800;
-  text-align: center;
-  box-shadow: inset 0 3px 12px rgba(0,0,0,.18), 0 8px 18px rgba(0,0,0,.28);
-}
-
-input:focus {
-  outline: 3px solid rgba(255,232,160,.65);
-}
-
-#message,
-#puzzle-message,
-#code-message,
-#mot-phare-message,
-#code-ancien-phare-message,
-#message-sommet,
-#indice-phare {
-  color: #ffe08a !important;
-  font-size: clamp(20px, 5.5vw, 26px);
-  font-weight: 800;
-  text-shadow: 0 2px 4px rgba(0,0,0,.65);
-}
-
-#puzzle-board {
-  width: min(92vw, 430px) !important;
-  height: min(92vw, 430px) !important;
-  margin: 26px auto;
-  border: 4px solid var(--adult-gold);
-  border-radius: 18px;
-  background: rgba(0,0,0,.62);
-  box-shadow: 0 16px 34px rgba(0,0,0,.50), 0 0 22px rgba(212,175,55,.22);
-}
-
-.puzzle-piece {
-  border: 1px solid rgba(255,244,210,.55);
-}
-
-.puzzle-piece.selected,
-#puzzle-board .puzzle-piece.dragging {
-  box-shadow: 0 0 0 4px var(--adult-gold), 0 0 22px rgba(255,220,130,.85);
-}
-
-.meca-scene { background: transparent; }
-.meca-game {
-  border: 3px solid var(--adult-gold);
-  border-radius: 22px;
-  box-shadow: 0 18px 38px rgba(0,0,0,.55), 0 0 30px rgba(212,175,55,.20);
-}
-.meca-message {
-  background: rgba(28,10,12,.92);
-  color: var(--adult-ivory);
-  border: 2px solid var(--adult-gold);
-  font-size: clamp(16px, 4.7vw, 21px);
-}
-.meca-reset,
-.meca-indice-btn,
-.meca-suite {
-  color: #17090b;
-  background: linear-gradient(180deg, #fff2b2, var(--adult-gold));
-  border: 2px solid #ffe29a;
-  border-radius: 14px;
-  font-family: Georgia, serif;
-  font-weight: 800;
-}
-
-@media (max-width: 390px) {
-  .screen { padding-left: 10px; padding-right: 10px; }
-  .missive1-label,
-  .missive2-label,
-  .puits-label,
-  .locmaze-label,
-  .so-label,
-  .puzzle-label,
-  .instructions-label,
-  .instructionschap2-label,
-  .porte-label,
-  .dialogue-box,
-  #enigme-phare,
-  .indice-mecanisme-page {
-    font-size: 22px;
-    padding: 22px 16px;
-  }
-  .btn-primary,
-  button { font-size: 21px; min-height: 60px; }
-  .site-retour { font-size: 12px; padding: 6px 10px; min-height: 34px; }
-}
-
-@media (max-height: 520px) and (orientation: landscape) {
-  .screen { padding-top: 62px; padding-bottom: 20px; }
-  .intro-img,
-  .lettre-img,
-  .missive1-image,
-  .missive2-image,
-  .chapter-img,
-  .abbaye-img,
-  .moineloin-img { max-height: 42svh; }
-}
-
-
-/* =========================================================
-   VERSION GEORGIA - AVELESCAPE ADULTE
-   Police unique : Georgia partout.
-   ========================================================= */
-html, body, body *, button, .btn-primary, input, textarea, select {
-  font-family: Georgia, serif !important;
-}
-
-.dialogue-box::before,
-#enigme-phare::before,
-.porte-label::before,
-.puzzle-label::before {
-  content: none !important;
-  display: none !important;
-}
-
 </style>
 </head>
 
 <body>
-
-<audio id="cloche-audio" src="cloche.mp3" preload="auto"></audio>
-
-<a class="site-retour" href="https://avelescape.github.io/aventures/" aria-label="Retour au site AvelEscape">
-  <span>site AvelEscape</span>
-</a>
-
 
 <div class="bg"></div>
 <div class="progress-bar" id="progress" style="width:0%"></div>
@@ -1326,7 +545,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen active" id="screen-intro">
   <img class="intro-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpaffiche.jpg"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/intro1stmath-webp.webp"
        alt="intro"
        onclick="startAventure(event)">
 
@@ -1346,11 +565,11 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-missive1">
   <div class="missive1-label">
-    <p>Un inconnu vous tend une enveloppe scellée.</p>
-    <p>Cliquez pour l'ouvrir.</p>
+    <p>Un inconnu vous tend une enveloppe</p>
+    <p>Cliquez pour l'ouvrir</p>
   </div>
 
-  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpenveloppe1.webp"
+  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/enveloppe-webp.webp"
        alt="missive1 scellée"
        class="missive1-image"
        onclick="showScreen('missive2')">
@@ -1359,9 +578,10 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-missive2">
   <div class="missive2-label">
     <p>Le cachet de cire est brisé...</p>
+    <p>Cliquez pour lire la lettre</p>
   </div>
 
-  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpenveloppe2.webp"
+  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cachet-de-cire-brise-sur-enveloppe-webp.webp"
        alt="missive2 ouverte"
        class="missive2-image"
        onclick="showScreen('lettre')">
@@ -1370,21 +590,21 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-lettre">
   <div class="lettre-container">
     <img class="lettre-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplettre.webp"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/lettre-webp.webp"
          alt="lettre"
          onclick="showScreen('puits')">
 
     <button class="btn-primary" onclick="showScreen('puits')">
-      Clique lorsque vous êtes au puits
+      Cliquez lorsque vous êtes au puits
     </button>
   </div>
 </div>
 
 <div class="screen" id="screen-puits">
   <div class="puits-label">
-    <p>Vous êtes devant le puits de Saint-Mathieu.</p>
+    <p>Vous êtes devant le puits de Saint Mathieu</p>
     <p>Personne...</p>
-    <p>Isabelle vous a pourtant demandé de l'y rejoindre.</p>
+    <p>Isabelle A. Kermannec vous a pourtant demandé de l'y rejoindre</p>
     <p>Peut-être vous a-t-elle laissé un indice ?</p>
 
     <button class="btn-primary" onclick="showScreen('locmaze')">Continuer</button>
@@ -1394,15 +614,10 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-locmaze">
   <div class="locmaze-label">
-    <h2>Entrez le mot :</h2>
-    <p>Première lettre de la 7eme ligne</p>
-    <p>Première lettre de la 12eme ligne</p>
-    <p>Dernière lettre de la 19eme ligne</p>
-    <p>Première lettre de la 21eme ligne</p>
-    <p>Première lettre de la 1ere ligne</p>
+    <h2>Entre le mot :</h2>
     <input type="text" id="reponse">
-
-     <button class="btn-primary" onclick="verifier()">Valider</button>
+    <br><br>
+    <button class="btn-primary" onclick="verifier()">Valider</button>
     <p id="message"></p>
     <button class="btn-primary" onclick="showScreen('so')">Indice</button>
   </div>
@@ -1410,18 +625,20 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-so">
   <div class="so-label">
-    <p>Cherche sur le panneau "Site de la pointe de Saint Mathieu"</p>
-    
+    <p>Face à la fontaine, tout semble inutile</p>
+    <p>pas de seau pour l'eau</p>
+    <p>pas de saut pour passer</p>
+    <p>pas de sot pour comprendre</p>
+    <p>seul compte celui qui scelle</p>
 
     <button class="btn-primary" onclick="showScreen('locmaze')">Retour</button>
   </div>
 </div>
-    
 
 <div class="screen" id="screen-puzzle">
   <div class="puzzle-label">
     <h2>Reconstituez le sceau</h2>
-    <p>Déplace les pièces pour reformer l’image.</p>
+    <p>Déplacez les pièces pour reformer l’image.</p>
 
     <div id="puzzle-board"></div>
     <div id="puzzle-message"></div>
@@ -1438,6 +655,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-instructionschap2">
   <div class="instructionschap2-label">
     <p>Il est temps d'aller au phare</p>
+    <p>Vous y êtes ?</p>
     <button class="btn-primary" onclick="nextScreen()">Cliquez si vous y êtes</button>
   </div>
 </div>
@@ -1445,11 +663,13 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div id="screen-porteloin" class="screen">
   <div class="porte-label">
     <img class="chapter-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareloin.webp"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/porte-phare-loin-webp.webp"
          alt="Porte du phare">
-    <p>Il semble fermé</p>
+
+    <p>Il semble que le phare soit fermé...</p>
+
     <button class="btn-primary" onclick="essayerOuvrir()">
-      Essayez de l’ouvrir
+      Essayer de l’ouvrir
     </button>
   </div>
 </div>
@@ -1457,7 +677,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div id="screen-portecadenas" class="screen">
   <div class="porte-label">
     <img class="chapter-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpportecadenasferme.webp"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cadenas-porte-pharewebp.webp"
          alt="Cadenas du phare">
 
     <p>Entrez le code à 4 chiffres</p>
@@ -1471,7 +691,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div id="screen-boncode" class="screen">
   <div class="porte-label">
     <p>
-      Vous avez trouvé le code.<br>
+      Quelle chance !!! Vous avez trouvé le code.<br>
       Mais les korrigans, gardiens de ce jeu,<br>
       n'ouvriront pas le cadenas pour le moment !
     </p>
@@ -1482,25 +702,19 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   <div class="porte-label">
     <p>Ce n'est pas le bon code</p>
 
-   <h3>
-  Écoutez...<br>
-  D'où provient ce chant ?<br>
-  Il semblerait qu'il provienne de l'abbaye.
-</h3>
+    <h3>
+      Écoutez...<br>
+      D'où provient ce chant ?<br>
+      Il semblerait qu'il provienne de l'abbaye.
+    </h3>
 
-<h3>
-  Vous devriez peut-être y aller.
-</h3>
-<audio id="chant-audio" src="grego.mp3" preload="auto"></audio>
+    <h3>Vous devriez peut-être y aller.</h3>
 
-<button id="stop-audio-btn" onclick="stopperChant()" title="Couper le chant">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
-        <path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v8.05A4.49 4.49 0 0 0 16.5 12zM19 12c0 2.53-1.17 4.78-3 6.24l1.42 1.42C19.61 17.8 21 15.05 21 12c0-3.06-1.39-5.81-3.58-7.66L16 5.76A8.96 8.96 0 0 1 19 12zM4.27 3 3 4.27l5 5H3v6h4l5 5V14.27l6.73 6.73L20 19.73 4.27 3z"/>
-    </svg>
-</button>
+    <!-- Remplace cette URL par l'adresse réelle de ton fichier MP3 sur WordPress -->
+    <audio id="chant-audio" src="grego.mp3" preload="auto"></audio>
 
     <button class="btn-primary" onclick="showScreen('abbaye')">
-      Cliquez lorsque vous êtes à l'abbaye
+      Cliquez lorsque vous serez à l'abbaye
     </button>
   </div>
 </div>
@@ -1508,8 +722,8 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-abbaye">
   <div class="abbaye-container">
     <img class="abbaye-img"
-         src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-pngmoineloin.png"
-         alt="Moine apparait dans l'abbaye"
+         src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/moine-loin-webp.webp"
+         alt="Abbaye"
          onclick="showScreen('moineloin')">
 
     <button class="btn-primary" onclick="showScreen('moineloin')">
@@ -1520,8 +734,8 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-moineloin">
   <img class="moineloin-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpgwenhaelproche.webp"
-       alt="Moine parle">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/moine-pres-webp.webp"
+       alt="Moine au loin">
 
   <div class="dialogue-box">
     <p id="dialogue-text"></p>
@@ -1537,8 +751,8 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-sceneabbaye">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webptroisnaufrageurs.webp"
-       alt="naufrageurs">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/naufrageurs-webp.webp"
+       alt="Passage secret de l'abbaye">
 
   <div class="dialogue-box">
     <p id="dialogue-text-naufrageurs"></p>
@@ -1554,8 +768,8 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-petitphare">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpyannickkidnappe.webp"
-       alt="Yannick kidnappé">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/kidnapping-webp.webp"
+       alt="Petit phare">
 
   <div class="dialogue-box">
     <p id="dialogue-text-phare"></p>
@@ -1577,8 +791,8 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-suiteaventure">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpyannick.webp"
-       alt="Yannick hurle">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/yannick-hurle-webp.webp"
+       alt="Yannick">
 
   <div class="dialogue-box">
     <div id="texte-fin"></div>
@@ -1591,8 +805,8 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-codeancienphare">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpportecadenasferme.webp"
-       alt="porte du phare">
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/cadenas-porte-pharewebp.webp"
+       alt="Ancien phare">
 
   <div class="texte-sommet" style="opacity:1;">
     <p>Entrez le code à 4 chiffres :</p>
@@ -1612,15 +826,15 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-hautphare">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpporteouverte.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/porte-ouverte-webp.webp"
        alt="Phare ouvert">
 
   <div class="texte-sommet" style="opacity:1;">
-    <p>Le cadenas s’ouvre.</p>
+    <p>Le cadenas s’ouvre !</p>
   </div>
 
   <button class="btn-primary" onclick="showScreen('sommetphare')">
-    Monter au sommet du phare
+    Monter en haut du phare
   </button>
 </div>
 
@@ -1645,10 +859,9 @@ html, body, body *, button, .btn-primary, input, textarea, select {
         <rect class="meca-zone" x="680" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('C')" />
         <rect class="meca-zone" x="850" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('D')" />
 
-        <rect class="meca-zone" x="500" y="1500" width="130" height="280" rx="15" onclick="clickZoneMecanisme('E')" />
-        <rect class="meca-zone" x="680" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('F')" />
-        <rect class="meca-zone" x="820" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('G')" />
-
+        <rect class="meca-zone" x="450" y="1500" width="130" height="250" rx="15" onclick="clickZoneMecanisme('E')" />
+        <rect class="meca-zone" x="610" y="1400" width="130" height="380" rx="15" onclick="clickZoneMecanisme('F')" />
+        <rect class="meca-zone" x="770" y="1400" width="130" height="380" rx="15" onclick="clickZoneMecanisme('G')" />
       </svg>
 
       <div id="meca-message" class="meca-message"></div>
@@ -1669,7 +882,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
     </div>
   </div>
 
-  <audio id="sonSuccesMecanisme" src="engrenages.mp3" preload="auto"></audio>
+  <audio id="sonSuccesMecanisme" src="https://avelescape.github.io/Audio/Stmathieu/engrenages.mp3" preload="auto"></audio>
 </div>
 
 
@@ -1695,10 +908,14 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-finaventure">
   <img class="chapter-img"
-       src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webfin.webp"
+       src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/fin-webp.webp"
        alt="Fin de l'aventure">
 
- <div style="height:220px;"></div>
+  <div class="texte-sommet" style="opacity:1; margin-top:20px;">
+    <p>Vous avez réussi l'aventure !</p>
+    <p>Grâce à vous, Yannick est sauvé <br>et les marins ne feront pas naufrage.</p>
+    <p>A très bientôt pour une nouvelle aventure!</p>
+  </div>
 
   <button class="btn-primary" onclick="retourSite()">
     Fin
@@ -1747,28 +964,28 @@ const screens = {
 
 const progressMap = {
   intro: 0,
-  missive1: 0,
-  missive2: 0,
-  lettre: 0,
-  puits: 10,
-  locmaze: 15,
-  so: 25,
-  puzzle: 27,
-  instructionschap2: 30,
-  porteloin: 35,
-  portecadenas: 35,
-  boncode: 40,
-  mauvaiscode: 40,
-  abbaye: 50,
-  moineloin: 60,
-  sceneabbaye: 61,
-  petitphare: 70,
-  suiteaventure: 72,
-  codeancienphare: 80,
-  hautphare: 90,
-  sommetphare: 95,
-  indicemecanisme1: 95,
-  indicemecanisme2: 95,
+  missive1: 15,
+  missive2: 25,
+  lettre: 35,
+  puits: 45,
+  locmaze: 55,
+  so: 55,
+  puzzle: 65,
+  instructionschap2: 80,
+  porteloin: 85,
+  portecadenas: 90,
+  boncode: 100,
+  mauvaiscode: 100,
+  abbaye: 100,
+  moineloin: 100,
+  sceneabbaye: 100,
+  petitphare: 100,
+  suiteaventure: 100,
+  codeancienphare: 100,
+  hautphare: 100,
+  sommetphare: 100,
+  indicemecanisme1: 100,
+  indicemecanisme2: 100,
   finaventure: 100
 };
 
@@ -1789,14 +1006,18 @@ function showScreen(name, addHist = true) {
   screens[name].classList.add('active');
   currentScreen = name;
 
-
   const chantAudio = document.getElementById('chant-audio');
 
-  if (chantAudio && name === 'mauvaiscode') {
-    chantAudio.currentTime = 0;
-    chantAudio.play().catch(() => {
-      console.log("Lecture audio bloquée par le navigateur.");
-    });
+  if (chantAudio) {
+    if (name === 'mauvaiscode') {
+      chantAudio.currentTime = 0;
+      chantAudio.play().catch(() => {
+        console.log("Lecture audio bloquée par le navigateur.");
+      });
+    } else {
+      chantAudio.pause();
+      chantAudio.currentTime = 0;
+    }
   }
 
   const progress = document.getElementById('progress');
@@ -1875,18 +1096,43 @@ if (reponseInput) {
   });
 }
 
-/* PUZZLE - VERSION RÉUTILISABLE AVELESCAPE - GLISSÉ AU DOIGT */
-const CONFIG_PUZZLE = {
-  taille: 3,
-  image: "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp",
-  messageVictoire: "Le sceau est reconstitué !",
-  boutonSuite: "Continuer"
-};
-
-let puzzleSolved = false;
+/* PUZZLE */
+const PUZZLE_SIZE = 3;
 let draggedPiece = null;
-let dragStartX = 0;
-let dragStartY = 0;
+let puzzleSolved = false;
+let selectedPiece = null;
+
+function handlePieceClick(e) {
+  if (puzzleSolved) return;
+  const piece = e.currentTarget;
+
+  if (!selectedPiece) {
+    selectedPiece = piece;
+    piece.classList.add('selected');
+  } else if (selectedPiece === piece) {
+    selectedPiece.classList.remove('selected');
+    selectedPiece = null;
+  } else {
+    const tempBg = piece.style.backgroundPosition;
+    const tempCorrect = piece.dataset.correct;
+    piece.style.backgroundPosition = selectedPiece.style.backgroundPosition;
+    piece.dataset.correct = selectedPiece.dataset.correct;
+    selectedPiece.style.backgroundPosition = tempBg;
+    selectedPiece.dataset.correct = tempCorrect;
+    selectedPiece.classList.remove('selected');
+    selectedPiece = null;
+    checkPuzzle();
+  }
+}
+
+function handlePiecePointerDown(e) {
+  // Sur mobile, le dragstart/drop natif ne se déclenche souvent pas.
+  // On force donc le mode « toucher une pièce puis toucher une autre ».
+  if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+    e.preventDefault();
+    handlePieceClick(e);
+  }
+}
 
 function initPuzzle() {
   const board = document.getElementById('puzzle-board');
@@ -1894,175 +1140,121 @@ function initPuzzle() {
   const btn = document.getElementById('btn-puzzle');
 
   puzzleSolved = false;
-  draggedPiece = null;
+  selectedPiece = null;
 
+  if (btn) btn.style.display = 'none';
   if (!board) return;
 
   board.innerHTML = '';
   if (message) message.innerHTML = '';
 
-  if (btn) {
-    btn.style.display = 'none';
-    btn.innerText = CONFIG_PUZZLE.boutonSuite;
-  }
+  board.style.gridTemplateColumns = `repeat(${PUZZLE_SIZE}, 1fr)`;
+  board.style.gridTemplateRows = `repeat(${PUZZLE_SIZE}, 1fr)`;
 
-  board.style.display = 'block';
-  board.style.position = 'relative';
-  board.style.touchAction = 'none';
-  board.style.overflow = 'hidden';
-
-  const totalPieces = CONFIG_PUZZLE.taille * CONFIG_PUZZLE.taille;
+  const totalPieces = PUZZLE_SIZE * PUZZLE_SIZE;
   const pieces = [];
 
-  for (let i = 0; i < totalPieces; i++) pieces.push(i);
+  for (let i = 0; i < totalPieces; i++) {
+    pieces.push(i);
+  }
 
   do {
     pieces.sort(() => Math.random() - 0.5);
   } while (pieces.every((piece, index) => piece === index));
 
-  pieces.forEach((pieceIndex, cellIndex) => {
+  pieces.forEach((pieceIndex) => {
     const piece = document.createElement('div');
     piece.className = 'puzzle-piece';
+    // Le drag & drop HTML fonctionne mal sur mobile.
+    // Sur écran tactile, on désactive le drag natif et on utilise le tap/tap.
+    piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
     piece.dataset.correct = pieceIndex;
-    piece.dataset.cell = cellIndex;
 
-    appliquerStylePiece(piece, pieceIndex, cellIndex);
-    piece.addEventListener('pointerdown', pointerDownPiece, { passive: false });
+    const x = pieceIndex % PUZZLE_SIZE;
+    const y = Math.floor(pieceIndex / PUZZLE_SIZE);
+    const boardSize = board.clientWidth || 320;
+    const pieceSize = boardSize / PUZZLE_SIZE;
+
+    piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
+    piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
+
+    piece.addEventListener('dragstart', dragStart);
+    piece.addEventListener('dragover', dragOver);
+    piece.addEventListener('drop', dropPiece);
+    piece.addEventListener('dragend', dragEnd);
+
+    // Ordinateur : clic possible en plus du glisser-déposer.
+    piece.addEventListener('click', handlePieceClick);
+
+    // Mobile/tablette : toucher une pièce puis une autre pour les échanger.
+    piece.addEventListener('pointerdown', handlePiecePointerDown);
 
     board.appendChild(piece);
   });
 }
 
-function appliquerStylePiece(piece, pieceIndex, cellIndex) {
-  const board = document.getElementById('puzzle-board');
-  if (!board) return;
-
-  const boardSize = board.clientWidth || 320;
-  const pieceSize = boardSize / CONFIG_PUZZLE.taille;
-
-  const imageX = pieceIndex % CONFIG_PUZZLE.taille;
-  const imageY = Math.floor(pieceIndex / CONFIG_PUZZLE.taille);
-  const cellX = cellIndex % CONFIG_PUZZLE.taille;
-  const cellY = Math.floor(cellIndex / CONFIG_PUZZLE.taille);
-
-  piece.style.position = 'absolute';
-  piece.style.left = `${cellX * pieceSize}px`;
-  piece.style.top = `${cellY * pieceSize}px`;
-  piece.style.width = `${pieceSize}px`;
-  piece.style.height = `${pieceSize}px`;
-  piece.style.backgroundImage = `url("${CONFIG_PUZZLE.image}")`;
-  piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
-  piece.style.backgroundPosition = `${-(imageX * pieceSize)}px ${-(imageY * pieceSize)}px`;
-  piece.style.transform = 'translate(0px, 0px)';
-  piece.style.zIndex = '1';
-}
-
-function pointerDownPiece(e) {
+function dragStart() {
   if (puzzleSolved) return;
-  e.preventDefault();
 
-  draggedPiece = e.currentTarget;
-  dragStartX = e.clientX;
-  dragStartY = e.clientY;
-
-  draggedPiece.classList.add('dragging');
-  draggedPiece.style.zIndex = '50';
-  draggedPiece.setPointerCapture(e.pointerId);
-  draggedPiece.addEventListener('pointermove', pointerMovePiece, { passive: false });
-  draggedPiece.addEventListener('pointerup', pointerUpPiece, { passive: false });
-  draggedPiece.addEventListener('pointercancel', pointerCancelPiece, { passive: false });
+  draggedPiece = this;
+  this.classList.add('dragging');
 }
 
-function pointerMovePiece(e) {
-  if (!draggedPiece || puzzleSolved) return;
+function dragOver(e) {
   e.preventDefault();
-
-  const dx = e.clientX - dragStartX;
-  const dy = e.clientY - dragStartY;
-  draggedPiece.style.transform = `translate(${dx}px, ${dy}px)`;
 }
 
-function pointerUpPiece(e) {
-  if (!draggedPiece || puzzleSolved) return;
+function dropPiece(e) {
   e.preventDefault();
 
-  const pieceDepart = draggedPiece;
-  pieceDepart.style.pointerEvents = 'none';
-  const elementDessous = document.elementFromPoint(e.clientX, e.clientY);
-  pieceDepart.style.pointerEvents = '';
-  const pieceArrivee = elementDessous ? elementDessous.closest('.puzzle-piece') : null;
+  if (puzzleSolved) return;
+  if (!draggedPiece || draggedPiece === this) return;
 
-  nettoyerDrag(pieceDepart, e.pointerId);
+  const tempBg = this.style.backgroundPosition;
+  const tempCorrect = this.dataset.correct;
 
-  if (pieceArrivee && pieceArrivee !== pieceDepart) {
-    echangerPieces(pieceDepart, pieceArrivee);
-    checkPuzzle();
-  }
+  this.style.backgroundPosition = draggedPiece.style.backgroundPosition;
+  this.dataset.correct = draggedPiece.dataset.correct;
 
+  draggedPiece.style.backgroundPosition = tempBg;
+  draggedPiece.dataset.correct = tempCorrect;
+
+  checkPuzzle();
+}
+
+function dragEnd() {
+  this.classList.remove('dragging');
   draggedPiece = null;
-}
-
-function pointerCancelPiece(e) {
-  if (!draggedPiece) return;
-  nettoyerDrag(draggedPiece, e.pointerId);
-  draggedPiece = null;
-}
-
-function nettoyerDrag(piece, pointerId) {
-  piece.classList.remove('dragging');
-  piece.style.transform = 'translate(0px, 0px)';
-  piece.style.zIndex = '1';
-
-  try { piece.releasePointerCapture(pointerId); } catch (err) {}
-
-  piece.removeEventListener('pointermove', pointerMovePiece);
-  piece.removeEventListener('pointerup', pointerUpPiece);
-  piece.removeEventListener('pointercancel', pointerCancelPiece);
-}
-
-function echangerPieces(piece1, piece2) {
-  const correct1 = piece1.dataset.correct;
-  const correct2 = piece2.dataset.correct;
-
-  piece1.dataset.correct = correct2;
-  piece2.dataset.correct = correct1;
-
-  appliquerStylePiece(piece1, Number(piece1.dataset.correct), Number(piece1.dataset.cell));
-  appliquerStylePiece(piece2, Number(piece2.dataset.correct), Number(piece2.dataset.cell));
 }
 
 function checkPuzzle() {
-  const pieces = document.querySelectorAll('#puzzle-board .puzzle-piece');
+  const pieces = document.querySelectorAll('.puzzle-piece');
   let solved = true;
 
-  pieces.forEach(piece => {
-    if (Number(piece.dataset.correct) !== Number(piece.dataset.cell)) solved = false;
+  pieces.forEach((piece, index) => {
+    if (Number(piece.dataset.correct) !== index) {
+      solved = false;
+    }
   });
 
-  if (!solved) return;
+  if (solved) {
+    puzzleSolved = true;
 
-  puzzleSolved = true;
-  const message = document.getElementById('puzzle-message');
-  const btn = document.getElementById('btn-puzzle');
+    const message = document.getElementById('puzzle-message');
+    const btn = document.getElementById('btn-puzzle');
 
-  if (message) {
-    message.innerHTML = `
-      <p>${CONFIG_PUZZLE.messageVictoire}</p>
-      <img src="${CONFIG_PUZZLE.image}"
-           alt="Indice révélé"
-           class="puzzle-result-img">
-    `;
-  }
+    if (message) {
+      message.innerHTML = `
+        <p>Le sceau est reconstitué !</p>
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp"
+             alt="Indice révélé"
+             class="puzzle-result-img">
+      `;
+    }
 
-  if (btn) btn.style.display = 'inline-block';
-}
-
-function stopperChant() {
-  const chantAudio = document.getElementById('chant-audio');
-
-  if (chantAudio) {
-    chantAudio.pause();
-    chantAudio.currentTime = 0;
+    if (btn) {
+      btn.style.display = 'inline-block';
+    }
   }
 }
 
@@ -2149,7 +1341,6 @@ const dialogueNaufrageurs = [
   "Mais ils dirigent leur navire vers les récifs.",
   "Cela provoque un échouement ou un naufrage.",
   "Puis les naufrageurs pillent l’épave..."
-
 ];
 
 let dialogueIndexNaufrageurs = 0;
@@ -2194,11 +1385,10 @@ function afficherDialogueNaufrageurs() {
 /* DIALOGUE PETIT PHARE */
 const dialoguePhare = [
   "Regardez à l'ouest, en contrebas !",
-  "Yannick !!!",
-  "Mais il ne nous voit pas...",
+  "Les naufrageurs ont kidnappé Yannick !!!",
   "Trouvez une solution pour à la fois :",
-  "lui dire qu'on est là",
-  "et prévenir le bateau qu'il s'approche des récifs."
+  "faire fuir les brigands",
+  "et prévenir le bateau qui approche les récifs."
 ];
 
 let dialogueIndexPhare = 0;
@@ -2255,20 +1445,9 @@ function verifierMotPhare() {
 
   const mot = input.value.trim().toLowerCase();
 
-  if (mot === "cloche") {
-
-    const cloche = document.getElementById("cloche-audio");
-    if (cloche) {
-        cloche.currentTime = 0;
-        cloche.play().catch(() => {});
-    }
-
-    // attendre la fin de la cloche avant de continuer
-    setTimeout(() => {
-        showScreen("suiteaventure");
-    }, 3500); // adapte selon la durée de cloche.mp3
-}
- else {
+  if (mot === 'cloche') {
+    showScreen('suiteaventure');
+  } else {
     vibrerEchec();
     message.innerText = 'Réessayez';
   }
@@ -2298,8 +1477,8 @@ function afficherIndicePhare() {
 
 /* TEXTE FINAL */
 const texteFin = [
-  "Yannick nous as vu !",
-  "Il nous dit :",
+  "Vous avez réussi à faire fuir les naufrageurs !",
+  "Yannick vous dit :",
   "Le code du cadenas...",
   "c'est l'année de construction de l'ancien phare,",
   "mais à l'envers!",
@@ -2380,9 +1559,9 @@ if (codeAncienPhareInput) {
 /* SOMMET DU PHARE - MÉCANISME HTML */
 const codeCorrectMecanisme = ["D", "A", "B", "C", "G"];
 
-const imageMecanismeEteinte = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentilleeteinte.webp";
-const imageMecanismeAllumee = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentilleallume.webp";
-const imageMecanismeFaisceau = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webplentillefaisceau.webp";
+const imageMecanismeEteinte = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareeteint.webp";
+const imageMecanismeAllumee = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpphareallume.webp";
+const imageMecanismeFaisceau = "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webppharefaisceau.webp";
 
 let sequenceMecanisme = [];
 let nbErreursMecanisme = 0;
@@ -2584,16 +1763,6 @@ window.suiteMecanismePhare = suiteMecanismePhare;
 window.mettreAJourBoutonsIndicesMecanisme = mettreAJourBoutonsIndicesMecanisme;
 window.retourSite = retourSite;
 
-
-/* Ajustement mobile : corrige la hauteur utile sur certains navigateurs mobiles */
-function ajusterHauteurMobile() {
-  document.documentElement.style.setProperty('--vh-mobile', `${window.innerHeight * 0.01}px`);
-}
-
-ajusterHauteurMobile();
-window.addEventListener('resize', ajusterHauteurMobile);
-window.addEventListener('orientationchange', ajusterHauteurMobile);
-
 /* Sécurité au chargement : on force l'écran de départ et on ajoute un déclenchement tactile */
 document.addEventListener('DOMContentLoaded', function() {
   Object.values(screens).forEach(screen => {
@@ -2617,7 +1786,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function retourSite() {
-  window.location.href = "https://avelescape.github.io/aventures/";
+  window.location.href = "URL_DE_TON_SITE";
 }
 </script>
 
