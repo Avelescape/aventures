@@ -309,7 +309,7 @@
   <!-- TEXTE INTRO -->
   <div class="intro-text">
     <h3 class="intro-brand">Avel Escape</h3>
-    <p>Vous propose de découvrir ou de redécouvrir des lieux touristiques (sites historiques, vieux centres-villes...) de façon ludique.<br><br>Basés sur l'histoire, vous l'explorerez le lieu choisi de façon ludique à travers une enquête ou un escape game <span class="intro-gratuit">GRATUIT</span><br><br></p>
+    <p>Vous propose de découvrir ou de redécouvrir des lieux touristiques (sites historiques, vieux centres-villes...) de façon ludique.<br><br>Basées sur l'histoire, nos aventures vous font explorer le lieu choisi de façon ludique <span class="intro-gratuit">GRATUITEMENT</span><br><br></p>
   </div>
 
   <!-- BAR CATÉGORIES -->
@@ -333,8 +333,7 @@
         <span class="bar-drop-item" onclick="filterDept('Ille-et-Vilaine')">Ille-et-Vilaine (35)</span>
       </div>
     </div>
-    <a class="bar-tab" href="#fiches" onclick="filterType('escape');return false;">Escape games</a>
-    <a class="bar-tab" href="#fiches" onclick="filterType('enquête');return false;">Enquêtes</a>
+    <a class="bar-tab" href="#fiches" onclick="showAllAdventures();return false;">Toutes les aventures</a>
     <a class="bar-tab" href="#carte">Carte GPS</a>
   </div>
 
@@ -431,24 +430,42 @@
 
 <script>
 const sites=[
- {id:1,
- title:"Le Mystère du Phare de St-Mathieu",
- type:"enquête",
- city:"Plougonvelin",
- dept:"Finistère",
- kids:true,
- desc:"1834 — Le gardien du phare de Saint-Mathieu a disparu, mettant en danger les bateaux navigant en mer d'Iroise.",
- lat:48.3327,
- lng:-4.7754,
- gmaps:"https://maps.google.com/?q=48.3327,-4.7754",
- img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpsaintmathieu.webp",
- url:"stmathieuadulte.html",
- urlKids:"stmathieukid.html"
-}
-  {id:2,title:"Les irrépressibles Conquetois",type:"enquête",city:"Le Conquet",dept:"Finistère",duration:"90 MIN",players:"2–6 joueurs",difficulty:"Facile",kids:false,desc:"1874 — Visitez Le Conquet à travers une enquête humouristique.",lat:48.3594,lng:-4.7739,gmaps:"https://maps.google.com/?q=48.3594,-4.7739",img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpleconquet.webp",url:"leconquet.html"},
+  {
+    id:1,
+    title:"Le Mystère du Phare de St-Mathieu",
+    city:"Plougonvelin",
+    dept:"Finistère",
+    duration:"90 MIN",
+    players:"Famille",
+    difficulty:"Facile",
+    kids:true,
+    desc:"1834 — Le gardien du phare de Saint-Mathieu a disparu, mettant en danger les bateaux navigant en mer d'Iroise.",
+    lat:48.3327,
+    lng:-4.7754,
+    gmaps:"https://maps.google.com/?q=48.3327,-4.7754",
+    img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpsaintmathieu.webp",
+    url:"stmathieuadulte.html",
+    urlKids:"stmathieukid.html"
+  },
+  {
+    id:2,
+    title:"Les irrépressibles Conquetois",
+    city:"Le Conquet",
+    dept:"Finistère",
+    duration:"90 MIN",
+    players:"2–6 joueurs",
+    difficulty:"Facile",
+    kids:false,
+    desc:"1874 — Visitez Le Conquet à travers une aventure humoristique.",
+    lat:48.3594,
+    lng:-4.7739,
+    gmaps:"https://maps.google.com/?q=48.3594,-4.7739",
+    img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpleconquet.webp",
+    url:"leconquet.html"
+  }
 ];
 
-let currentFilter={type:null,dept:null};
+let currentFilter={dept:null};
 let carouselPos=0;
 let mapInst,userMarker;
 
@@ -460,7 +477,6 @@ function renderCarousel(){
   const dots=document.getElementById('carouselDots');
   track.innerHTML='';dots.innerHTML='';
   const filtered=sites.filter(s=>{
-    if(currentFilter.type&&s.type!==currentFilter.type)return false;
     if(currentFilter.dept&&!s.dept.includes(currentFilter.dept))return false;
     return true;
   });
@@ -476,6 +492,7 @@ function renderCarousel(){
     <div class="adv-card" onclick="openModal(${s.id})">
       <div class="adv-card-img">
         ${imgHtml}
+        <span class="adv-badge-type">AVENTURE</span>
       </div>
       <div class="adv-card-body">
         <h3 class="adv-card-title">${s.title}</h3>
@@ -561,15 +578,13 @@ window.addEventListener('resize',()=>{carouselPos=0;updateCarouselPos();});
 })();
 
 /* ── FILTRES ── */
-function filterType(t){
-  currentFilter.type=currentFilter.type===t?null:t;
+function showAllAdventures(){
   currentFilter.dept=null;
   document.querySelector('#fiches').scrollIntoView({behavior:'smooth'});
   renderCarousel();
 }
 function filterDept(d){
   currentFilter.dept=currentFilter.dept===d?null:d;
-  currentFilter.type=null;
   document.getElementById('barDrop').classList.remove('open');
   document.querySelector('#fiches').scrollIntoView({behavior:'smooth'});
   renderCarousel();
@@ -583,11 +598,11 @@ function openModal(id){
   document.getElementById('modal-img').innerHTML=s.img
     ?`<img src="${s.img}" alt="${s.title}" loading="lazy">`
     :`<div class="modal-img-ph"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" opacity="0.18"><rect x="4" y="10" width="40" height="28" rx="3" stroke="#C8B89A" stroke-width="2"/><circle cx="17" cy="22" r="6" stroke="#C8B89A" stroke-width="2"/><path d="M4 34l12-10 10 8 7-6 11 8" stroke="#C8B89A" stroke-width="2"/></svg></div>`;
-  document.getElementById('modal-type').textContent=s.type==='escape'?'Escape game':'Enquête';
+  document.getElementById('modal-type').textContent='Aventure';
   document.getElementById('modal-title').textContent=s.title;
   document.getElementById('modal-desc').textContent=s.desc;
   document.getElementById('modal-meta').innerHTML=
-    `<span class="modal-tag">${s.duration}</span><span class="modal-tag">${s.players}</span><span class="modal-tag">${s.city}</span><span class="modal-tag">${s.dept}</span>`;
+    `${s.duration?`<span class="modal-tag">${s.duration}</span>`:''}${s.players?`<span class="modal-tag">${s.players}</span>`:''}${s.difficulty?`<span class="modal-tag">${s.difficulty}</span>`:''}<span class="modal-tag">${s.city}</span><span class="modal-tag">${s.dept}</span>`;
   document.getElementById('modal-actions').innerHTML=
     `${s.url?`<a class="btn-fiche-primary" href="${s.url}" style="text-align:center;text-decoration:none">Commencer</a>`:`<button class="btn-fiche-primary" onclick="alert('Aventure à venir !')">Commencer</button>`}
      ${s.kids&&s.urlKids?`<a class="btn-fiche-primary modal-btn-kids" href="${s.urlKids}" style="text-align:center;text-decoration:none">Commencer <em>— kids —</em></a>`:s.kids?`<button class="btn-fiche-primary modal-btn-kids" onclick="alert('Aventure Kids à venir !')">Commencer <em>— kids —</em></button>`:''}
@@ -639,7 +654,7 @@ function initMap(){
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:18}).addTo(mapInst);
   sites.forEach(s=>{
     const icon=L.divIcon({className:'',
-      html:`<div style="background:${s.type==='escape'?'#d4530a':'#071428'};color:white;font-family:Inter,sans-serif;font-size:9px;font-weight:700;letter-spacing:.08em;padding:4px 10px;white-space:nowrap;border-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,.3)">${s.type==='escape'?'ESCAPE':'ENQUÊTE'}</div>`,
+      html:`<div style="background:#071428;color:white;font-family:Inter,sans-serif;font-size:9px;font-weight:700;letter-spacing:.08em;padding:4px 10px;white-space:nowrap;border-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,.3)">AVENTURE</div>`,
       iconAnchor:[28,14]
     });
     L.marker([s.lat,s.lng],{icon}).addTo(mapInst)
