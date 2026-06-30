@@ -720,6 +720,345 @@ input:focus {
   }
 }
 
+
+
+/* =========================================================
+   OPTIMISATION MOBILE PLEIN SOLEIL - AVELESCAPE ADULTE
+   Garde le style cinéma maritime, mais améliore fortement
+   la lisibilité dehors sur smartphone.
+   ========================================================= */
+
+@media (max-width: 760px) {
+  :root {
+    --rouge-cardinal: #160405;
+    --cramoisi: #5A0D12;
+    --or: #F0C65A;
+    --ivoire: #FFF8ED;
+    --nuit-rouge: #2A1718;
+  }
+
+  html {
+    background: #211517;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100svh;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(240,198,90,0.18), transparent 34%),
+      linear-gradient(180deg, #362021 0%, #281719 48%, #1B1114 100%);
+    color: var(--ivoire);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .bg {
+    background:
+      radial-gradient(circle at 20% 8%, rgba(255,235,180,0.18), transparent 28%),
+      radial-gradient(circle at 80% 15%, rgba(171,83,54,0.20), transparent 30%),
+      linear-gradient(180deg, #3A2021, #211416 64%, #130C0E);
+  }
+
+  .screen {
+    min-height: 100svh;
+    padding:
+      max(34px, calc(env(safe-area-inset-top, 0px) + 22px))
+      max(13px, env(safe-area-inset-right, 0px))
+      max(34px, calc(env(safe-area-inset-bottom, 0px) + 22px))
+      max(13px, env(safe-area-inset-left, 0px));
+  }
+
+  .progress-bar {
+    height: 8px;
+    background: linear-gradient(90deg, #FFF1B8, var(--or), #B9752E);
+    box-shadow: 0 2px 14px rgba(240,198,90,0.65);
+  }
+
+  .intro-title {
+    font-size: clamp(34px, 11vw, 52px);
+    color: #FFF8ED;
+    text-shadow:
+      0 2px 0 rgba(0,0,0,0.85),
+      0 0 14px rgba(240,198,90,0.55),
+      0 0 28px rgba(240,198,90,0.28);
+  }
+
+  .intro-date,
+  .intro-location,
+  h1, h2, h3 {
+    color: #F7D36B;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.75);
+  }
+
+  .missive1-label,
+  .missive2-label,
+  .puits-label,
+  .locmaze-label,
+  .so-label,
+  .puzzle-label,
+  .instructions-label,
+  .instructionschap2-label,
+  .porte-label,
+  .dialogue-box,
+  #enigme-phare,
+  .texte-sommet,
+  .indice-mecanisme-page {
+    width: min(94vw, 760px);
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 18px;
+    color: #FFF8ED;
+    background: rgba(23, 10, 11, 0.93);
+    border: 2px solid rgba(240,198,90,0.95);
+    border-radius: 18px;
+    box-shadow:
+      0 0 0 1px rgba(255,248,237,0.12) inset,
+      0 12px 30px rgba(0,0,0,0.55),
+      0 0 24px rgba(240,198,90,0.22);
+    backdrop-filter: blur(3px);
+  }
+
+  .missive1-label,
+  .missive2-label,
+  .puits-label,
+  .locmaze-label,
+  .so-label,
+  .puzzle-label,
+  .instructions-label,
+  .instructionschap2-label,
+  .porte-label {
+    margin-top: 62px;
+    font-size: clamp(19px, 5vw, 23px);
+    line-height: 1.45;
+    font-weight: 600;
+  }
+
+  #dialogue-text,
+  #dialogue-text-phare,
+  #dialogue-text-naufrageurs,
+  #texte-fin {
+    font-size: clamp(18px, 4.8vw, 22px);
+    line-height: 1.48;
+    font-weight: 600;
+  }
+
+  .intro-img,
+  .lettre-img,
+  .missive1-image,
+  .missive2-image,
+  .chapter-img,
+  .abbaye-img,
+  .moineloin-img,
+  .puzzle-result-img {
+    width: auto;
+    max-width: min(94vw, 760px);
+    max-height: 58svh;
+    object-fit: contain;
+    filter: brightness(1.18) contrast(1.1) saturate(1.04);
+    border-radius: 18px;
+    box-shadow:
+      0 16px 34px rgba(0,0,0,0.58),
+      0 0 0 1px rgba(240,198,90,0.35);
+  }
+
+  .lettre-img {
+    max-height: 72svh;
+  }
+
+  .btn-primary,
+  button {
+    width: min(92vw, 360px);
+    min-height: 56px;
+    margin: 10px auto;
+    padding: 14px 18px;
+    font-size: clamp(18px, 4.8vw, 22px);
+    font-weight: 700;
+    color: #FFF8ED;
+    background:
+      linear-gradient(180deg, rgba(122,31,22,0.98), rgba(60,8,10,0.98));
+    border: 2px solid #F0C65A;
+    border-radius: 15px;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      0 5px 0 rgba(79,36,14,0.95),
+      0 13px 24px rgba(0,0,0,0.46),
+      0 0 18px rgba(240,198,90,0.20);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.75);
+    touch-action: manipulation;
+  }
+
+  .btn-primary:active,
+  button:active {
+    transform: translateY(3px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.16),
+      0 2px 0 rgba(79,36,14,0.95),
+      0 8px 18px rgba(0,0,0,0.42);
+  }
+
+  .nav-back {
+    width: 46px;
+    height: 46px;
+    min-height: 46px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(24,9,10,0.96);
+    color: #FFF8ED;
+    border: 2px solid #F0C65A;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.45);
+  }
+
+  input,
+  input[type="text"],
+  input[type="number"] {
+    width: min(88vw, 360px);
+    min-height: 54px;
+    padding: 13px 14px;
+    font-size: 18px !important;
+    font-weight: 700;
+    color: #160405;
+    background: #FFF8ED;
+    border: 3px solid #F0C65A;
+    border-radius: 13px;
+    box-shadow:
+      inset 0 2px 7px rgba(0,0,0,0.18),
+      0 6px 18px rgba(0,0,0,0.26);
+  }
+
+  input:focus {
+    outline: 3px solid rgba(255,248,237,0.6);
+  }
+
+  #message,
+  #puzzle-message,
+  #code-message,
+  #mot-phare-message,
+  #code-ancien-phare-message,
+  #message-sommet,
+  #indice-phare {
+    color: #FFE18A !important;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.85);
+  }
+
+  #puzzle-board {
+    width: min(92vw, 420px);
+    height: min(92vw, 420px);
+    border: 4px solid #F0C65A;
+    border-radius: 16px;
+    background: #170A0B;
+    box-shadow:
+      0 14px 32px rgba(0,0,0,0.55),
+      0 0 22px rgba(240,198,90,0.28);
+    overflow: hidden;
+  }
+
+  .puzzle-piece {
+    background-size: min(92vw, 420px) min(92vw, 420px);
+    border: 1px solid rgba(255,248,237,0.55);
+  }
+
+  .puzzle-piece.selected {
+    box-shadow: 0 0 0 4px #F0C65A, 0 0 18px rgba(255,225,138,0.85);
+    border: 2px solid #FFF8ED;
+  }
+
+  .fondu-images {
+    width: 94vw;
+    height: min(62svh, 720px);
+  }
+
+  .image-fondu {
+    max-height: min(62svh, 720px);
+  }
+
+  .meca-game {
+    border: 3px solid #F0C65A;
+    border-radius: 18px;
+    box-shadow:
+      0 18px 38px rgba(0,0,0,0.6),
+      0 0 26px rgba(240,198,90,0.30);
+  }
+
+  .meca-message {
+    width: 88%;
+    color: #FFF8ED;
+    background: rgba(23,10,11,0.95);
+    border: 2px solid #F0C65A;
+    font-size: clamp(16px, 4.3vw, 19px);
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 390px) {
+  .screen {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .intro-title {
+    font-size: clamp(32px, 12vw, 44px);
+  }
+
+  .missive1-label,
+  .missive2-label,
+  .puits-label,
+  .locmaze-label,
+  .so-label,
+  .puzzle-label,
+  .instructions-label,
+  .instructionschap2-label,
+  .porte-label {
+    font-size: 18px;
+    padding: 18px 14px;
+  }
+
+  .btn-primary,
+  button {
+    width: min(94vw, 340px);
+    font-size: 20px;
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .screen {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  .intro-img,
+  .lettre-img,
+  .missive1-image,
+  .missive2-image,
+  .chapter-img,
+  .abbaye-img,
+  .moineloin-img {
+    max-height: 44svh;
+  }
+
+  .missive1-label,
+  .missive2-label,
+  .puits-label,
+  .locmaze-label,
+  .so-label,
+  .puzzle-label,
+  .instructions-label,
+  .instructionschap2-label,
+  .porte-label,
+  .dialogue-box {
+    margin-top: 20px;
+  }
+}
+
+@supports not (height: 100svh) {
+  @media (max-width: 760px) {
+    body,
+    .screen {
+      min-height: 100vh;
+    }
+  }
+}
+
 </style>
 </head>
 
