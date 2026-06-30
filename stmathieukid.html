@@ -247,8 +247,7 @@ input {
 }
 
 .puzzle-piece {
-  background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp");
-  background-size: 320px 320px;
+  background-repeat: no-repeat;
   cursor: grab;
   border: 1px solid rgba(245, 232, 208, 0.35);
   touch-action: manipulation;
@@ -1330,49 +1329,78 @@ button {
 }
 
 
-/* Intégration du puzzle validé */
-#screen-puzzle #puzzle-board {
-  width: min(320px, 90vw);
-  height: min(320px, 90vw);
-  margin: 25px auto;
-  display: grid;
-  gap: 2px;
-  border: 3px solid var(--or);
-  background: #000;
-  box-shadow: 0 0 18px rgba(212,175,55,0.35);
-}
 
-#screen-puzzle .puzzle-piece {
-  background-repeat: no-repeat;
-  cursor: grab;
-  border: 1px solid rgba(245,232,208,0.35);
+/* =========================================================
+   BOUTON RETOUR SITE AVELESCAPE - PETIT FORMAT
+   Visible sur toutes les pages / mobile et ordinateur
+   ========================================================= */
+.site-retour {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 999999;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  min-height: 34px;
+  padding: 6px 12px;
+
+  background: rgba(14, 59, 76, 0.92);
+  color: #ff5a1f;
+
+  border: 2px solid #ff5a1f;
+  border-radius: 999px;
+
+  font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  cursor: pointer;
   touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-#screen-puzzle .puzzle-piece.dragging {
-  opacity: 0.5;
+.site-retour:hover {
+  background: #ff5a1f;
+  color: #ffffff;
 }
 
-#screen-puzzle .puzzle-piece.selected {
-  box-shadow: 0 0 14px rgba(212,175,55,0.9);
-  border: 2px solid var(--or);
-  opacity: 0.75;
-  transform: scale(1.05);
+.site-retour:active {
+  transform: scale(0.96);
 }
 
-#screen-puzzle .puzzle-result-img {
-  display: block;
-  max-width: 90%;
-  max-height: 55vh;
-  margin: 20px auto;
+
+@media (max-width: 480px) {
+  .site-retour {
+    top: max(10px, env(safe-area-inset-top));
+    right: max(10px, env(safe-area-inset-right));
+    min-height: 30px;
+    padding: 5px 9px;
+    gap: 4px;
+    font-size: 12px;
+    border-width: 2px;
+  }
+
 }
 
 </style>
 </head>
 
 <body>
+
+<a class="site-retour" href="https://avelescape.github.io/aventures/" aria-label="Retour au site AvelEscape">
+  <span>site AvelEscape</span>
+</a>
+
 
 <div class="bg"></div>
 <div class="progress-bar" id="progress" style="width:0%"></div>
@@ -1473,18 +1501,20 @@ button {
     
 
 <div class="screen" id="screen-puzzle">
-  <h1 id="titre-puzzle"></h1>
-  <p id="texte-puzzle"></p>
+  <div class="puzzle-label">
+    <h2>Reconstitue le sceau</h2>
+    <p>Déplace les pièces pour reformer l’image.</p>
 
-  <div id="puzzle-board"></div>
+    <div id="puzzle-board"></div>
+    <div id="puzzle-message"></div>
 
-  <div id="puzzle-message"></div>
-
-  <button onclick="initPuzzle()">Mélanger</button>
-
-  <button id="btn-suite-puzzle" style="display:none;" onclick="allerSuite()">
-    Continuer
-  </button>
+    <button id="btn-puzzle"
+            class="btn-primary"
+            style="display:none;"
+            onclick="showScreen('instructionschap2')">
+      Continuons
+    </button>
+  </div>
 </div>
 
 <div class="screen" id="screen-instructionschap2">
@@ -1630,7 +1660,7 @@ button {
     <div id="texte-fin"></div>
   </div>
 
-  <button id="btn-suite-aventure" class="btn-primary" style="display:none;" onclick="showScreen('codeancienphare')">
+  <button id="btn-suite" class="btn-primary" style="display:none;" onclick="showScreen('codeancienphare')">
     Continuer
   </button>
 </div>
@@ -1932,54 +1962,36 @@ if (reponseInput) {
   });
 }
 
-/* =====================================================
-   CONFIGURATION DU PUZZLE
-   Pour une nouvelle aventure, change seulement imagePuzzle
-   ===================================================== */
-
+/* PUZZLE - VERSION RÉUTILISABLE AVELESCAPE */
 const CONFIG_PUZZLE = {
-  titre: "Reconstituez l’image",
-  texte: "Déplacez les pièces pour reformer l’image.",
-
-  // CHANGE UNIQUEMENT CETTE LIGNE POUR UNE AUTRE AVENTURE
-  imagePuzzle: "https://avelescape.wordpress.com/wp-content/uploads/2026/05/sceau-webp.webp",
-
-  taille: 3, // 3 = puzzle 3x3, 4 = puzzle 4x4, etc.
-
-  messageVictoire: "Puzzle reconstitué !",
-
-  // Écran suivant dans l'aventure
-  pageSuivante: "instructionschap2"
+  taille: 3,
+  image: "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp",
+  messageVictoire: "Le sceau est reconstitué !",
+  boutonSuite: "Continuons"
 };
-
-/* =====================================================
-   CODE DU PUZZLE
-   Tu n’as normalement rien à modifier en dessous
-   ===================================================== */
 
 let draggedPiece = null;
 let puzzleSolved = false;
 let selectedPiece = null;
 
-const titrePuzzle = document.getElementById("titre-puzzle");
-const textePuzzle = document.getElementById("texte-puzzle");
-if (titrePuzzle) titrePuzzle.innerText = CONFIG_PUZZLE.titre;
-if (textePuzzle) textePuzzle.innerText = CONFIG_PUZZLE.texte;
-
 function initPuzzle() {
-  const board = document.getElementById("puzzle-board");
-  const message = document.getElementById("puzzle-message");
-  const btnSuite = document.getElementById("btn-suite-puzzle");
-
-  if (!board || !message || !btnSuite) return;
+  const board = document.getElementById('puzzle-board');
+  const message = document.getElementById('puzzle-message');
+  const btn = document.getElementById('btn-puzzle');
 
   puzzleSolved = false;
   selectedPiece = null;
   draggedPiece = null;
 
-  board.innerHTML = "";
-  message.innerHTML = "";
-  btnSuite.style.display = "none";
+  if (!board) return;
+
+  board.innerHTML = '';
+  if (message) message.innerHTML = '';
+
+  if (btn) {
+    btn.style.display = 'none';
+    btn.innerText = CONFIG_PUZZLE.boutonSuite;
+  }
 
   board.style.gridTemplateColumns = `repeat(${CONFIG_PUZZLE.taille}, 1fr)`;
   board.style.gridTemplateRows = `repeat(${CONFIG_PUZZLE.taille}, 1fr)`;
@@ -1996,9 +2008,9 @@ function initPuzzle() {
   } while (pieces.every((piece, index) => piece === index));
 
   pieces.forEach(pieceIndex => {
-    const piece = document.createElement("div");
-    piece.className = "puzzle-piece";
-    piece.draggable = !window.matchMedia("(pointer: coarse)").matches;
+    const piece = document.createElement('div');
+    piece.className = 'puzzle-piece';
+    piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
     piece.dataset.correct = pieceIndex;
 
     const x = pieceIndex % CONFIG_PUZZLE.taille;
@@ -2007,17 +2019,17 @@ function initPuzzle() {
     const boardSize = board.clientWidth || 320;
     const pieceSize = boardSize / CONFIG_PUZZLE.taille;
 
-    piece.style.backgroundImage = `url("${CONFIG_PUZZLE.imagePuzzle}")`;
+    piece.style.backgroundImage = `url("${CONFIG_PUZZLE.image}")`;
     piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
     piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
 
-    piece.addEventListener("dragstart", dragStart);
-    piece.addEventListener("dragover", dragOver);
-    piece.addEventListener("drop", dropPiece);
-    piece.addEventListener("dragend", dragEnd);
+    piece.addEventListener('dragstart', dragStart);
+    piece.addEventListener('dragover', dragOver);
+    piece.addEventListener('drop', dropPiece);
+    piece.addEventListener('dragend', dragEnd);
 
-    piece.addEventListener("click", handlePieceClick);
-    piece.addEventListener("pointerdown", handlePiecePointerDown);
+    piece.addEventListener('click', handlePieceClick);
+    piece.addEventListener('pointerdown', handlePiecePointerDown);
 
     board.appendChild(piece);
   });
@@ -2030,20 +2042,24 @@ function handlePieceClick(e) {
 
   if (!selectedPiece) {
     selectedPiece = piece;
-    piece.classList.add("selected");
-  } else if (selectedPiece === piece) {
-    selectedPiece.classList.remove("selected");
-    selectedPiece = null;
-  } else {
-    echangerPieces(selectedPiece, piece);
-    selectedPiece.classList.remove("selected");
-    selectedPiece = null;
-    checkPuzzle();
+    piece.classList.add('selected');
+    return;
   }
+
+  if (selectedPiece === piece) {
+    selectedPiece.classList.remove('selected');
+    selectedPiece = null;
+    return;
+  }
+
+  echangerPieces(selectedPiece, piece);
+  selectedPiece.classList.remove('selected');
+  selectedPiece = null;
+  checkPuzzle();
 }
 
 function handlePiecePointerDown(e) {
-  if (e.pointerType === "touch" || e.pointerType === "pen") {
+  if (e.pointerType === 'touch' || e.pointerType === 'pen') {
     e.preventDefault();
     handlePieceClick(e);
   }
@@ -2053,7 +2069,7 @@ function dragStart() {
   if (puzzleSolved) return;
 
   draggedPiece = this;
-  this.classList.add("dragging");
+  this.classList.add('dragging');
 }
 
 function dragOver(e) {
@@ -2071,7 +2087,7 @@ function dropPiece(e) {
 }
 
 function dragEnd() {
-  this.classList.remove("dragging");
+  this.classList.remove('dragging');
   draggedPiece = null;
 }
 
@@ -2087,7 +2103,7 @@ function echangerPieces(piece1, piece2) {
 }
 
 function checkPuzzle() {
-  const pieces = document.querySelectorAll(".puzzle-piece");
+  const pieces = document.querySelectorAll('.puzzle-piece');
   let solved = true;
 
   pieces.forEach((piece, index) => {
@@ -2096,20 +2112,25 @@ function checkPuzzle() {
     }
   });
 
-  if (solved) {
-    puzzleSolved = true;
+  if (!solved) return;
 
-    document.getElementById("puzzle-message").innerHTML = `
+  puzzleSolved = true;
+
+  const message = document.getElementById('puzzle-message');
+  const btn = document.getElementById('btn-puzzle');
+
+  if (message) {
+    message.innerHTML = `
       <p>${CONFIG_PUZZLE.messageVictoire}</p>
-      <img src="${CONFIG_PUZZLE.imagePuzzle}" class="puzzle-result-img" alt="Image reconstituée">
+      <img src="${CONFIG_PUZZLE.image}"
+           alt="Indice révélé"
+           class="puzzle-result-img">
     `;
-
-    document.getElementById("btn-suite-puzzle").style.display = "inline-block";
   }
-}
 
-function allerSuite() {
-  showScreen(CONFIG_PUZZLE.pageSuivante);
+  if (btn) {
+    btn.style.display = 'inline-block';
+  }
 }
 
 function essayerOuvrir() {
@@ -2345,7 +2366,7 @@ let timerFin = null;
 
 function lancerTexteFin() {
   const container = document.getElementById('texte-fin');
-  const btn = document.getElementById('btn-suite-aventure');
+  const btn = document.getElementById('btn-suite');
 
   if (!container || !btn) return;
 
@@ -2360,7 +2381,7 @@ function lancerTexteFin() {
 
 function afficherLigneFin() {
   const container = document.getElementById('texte-fin');
-  const btn = document.getElementById('btn-suite-aventure');
+  const btn = document.getElementById('btn-suite');
 
   if (!container || !btn || indexFin >= texteFin.length) return;
 
