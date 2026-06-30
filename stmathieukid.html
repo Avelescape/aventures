@@ -921,7 +921,7 @@ input:focus {
   position: fixed;
   right: max(14px, env(safe-area-inset-right));
   bottom: max(18px, env(safe-area-inset-bottom));
-  width: clamp(82px, 22vw, 132px);
+  width: 240px;
   z-index: 12;
   pointer-events: none;
   filter: drop-shadow(0 10px 14px rgba(0,0,0,0.35));
@@ -1424,98 +1424,99 @@ button {
 
 
 /* =========================================================
-   CORRECTION FINALE MOBILE
-   - Le bouton site AvelEscape n'est plus fixe.
-   - Billig reste visible et grand sur smartphone.
-   Ces règles sont placées en dernier pour écraser les anciennes.
+   CORRECTION FINALE MOBILE : BILLIG VISIBLE + BOUTON SITE NON FIXE
+   Ces règles sont placées à la fin pour écraser les anciennes règles.
    ========================================================= */
+body {
+  position: relative;
+}
+
 .site-retour {
   position: absolute !important;
   top: 12px !important;
   right: 12px !important;
-  z-index: 200 !important;
-  min-height: 30px !important;
-  padding: 5px 9px !important;
-  font-size: 12px !important;
+  z-index: 1000 !important;
 }
 
-.billig-helper {
-  position: fixed !important;
-  right: max(8px, env(safe-area-inset-right)) !important;
-  bottom: max(8px, env(safe-area-inset-bottom)) !important;
-  width: min(42vw, 190px) !important;
-  max-width: 190px !important;
-  min-width: 150px !important;
-  z-index: 120 !important;
-  pointer-events: none !important;
+.billig-helper,
+#billig-helper-global {
   display: block;
+  position: fixed !important;
+  right: 8px !important;
+  bottom: 10px !important;
+  left: auto !important;
+  width: 210px !important;
+  max-width: 48vw !important;
+  z-index: 99999 !important;
+  pointer-events: none !important;
+  filter: drop-shadow(0 12px 18px rgba(0,0,0,0.35));
 }
 
-.billig-helper img {
+.billig-helper img,
+#billig-helper-global img {
   width: 100% !important;
   height: auto !important;
   display: block !important;
-  background: transparent !important;
-  border: none !important;
+  border: 0 !important;
   box-shadow: none !important;
+  background: transparent !important;
 }
 
-.billig-left {
-  left: max(8px, env(safe-area-inset-left)) !important;
+.billig-left,
+#billig-helper-global.billig-left {
+  left: 8px !important;
   right: auto !important;
 }
 
-.billig-small {
-  width: min(36vw, 165px) !important;
-  min-width: 135px !important;
+.billig-small,
+#billig-helper-global.billig-small {
+  width: 180px !important;
+  max-width: 42vw !important;
 }
 
-.billig-helper::after {
+.billig-helper::after,
+#billig-helper-global::after {
   right: calc(100% + 12px) !important;
-  bottom: calc(70% + 4px) !important;
-  min-width: 132px !important;
-  max-width: 180px !important;
-  padding: 8px 10px !important;
-  font-size: clamp(16px, 4.6vw, 20px) !important;
+  bottom: 58% !important;
+  min-width: 135px !important;
+  max-width: 185px !important;
+  padding: 9px 11px !important;
+  font-size: 18px !important;
   line-height: 1.12 !important;
+  z-index: 100000 !important;
 }
 
-.billig-left::after {
+.billig-left::after,
+#billig-helper-global.billig-left::after {
   left: calc(100% + 12px) !important;
   right: auto !important;
 }
 
-#screen-sommetphare .billig-helper {
-  width: 110px !important;
-  min-width: 100px !important;
-  bottom: 6px !important;
-}
-
-#screen-sommetphare .billig-helper::after {
-  display: none !important;
-}
-
 @media (max-width: 390px) {
-  .billig-helper {
-    width: 165px !important;
-    min-width: 150px !important;
+  .billig-helper,
+  #billig-helper-global {
+    width: 185px !important;
+    max-width: 50vw !important;
   }
 
-  .billig-small {
-    width: 145px !important;
-    min-width: 135px !important;
+  .billig-small,
+  #billig-helper-global.billig-small {
+    width: 160px !important;
+    max-width: 44vw !important;
   }
 
-  .billig-helper::after {
+  .billig-helper::after,
+  #billig-helper-global::after {
     max-width: 155px !important;
     font-size: 16px !important;
   }
 }
 
-@media (max-height: 520px) and (orientation: landscape) {
-  .billig-helper {
-    display: none !important;
-  }
+/* Sur le mécanisme, Billig reste visible mais plus discret pour ne pas gêner les zones tactiles. */
+#screen-sommetphare.active ~ #billig-helper-global,
+#billig-helper-global.sommet-mode {
+  width: 120px !important;
+  max-width: 30vw !important;
 }
 
 </style>
@@ -1993,9 +1994,6 @@ function showScreen(name, addHist = true) {
 
   screens[name].classList.add('active');
   currentScreen = name;
-
-  // Le bouton site AvelEscape n'est pas fixe : on revient en haut à chaque écran.
-  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
   if (typeof updateBilligForScreen === 'function') {
     updateBilligForScreen(name);
@@ -2825,13 +2823,18 @@ const BILLIG_IMAGE_DEFAUT = billigImages.content;
 const billigScreens = {
   missive1: { image: 'lettre', side: 'right' },
   missive2: { image: 'interrogatif', message: 'On l\'ouvre ?', side: 'right', small: true },
-  lettre: { image: 'inquiet', message: 'Je suis très inquiet aussi!', side: 'right', small: true },
+  puits: { image: 'curieux', message: 'Cherchons l’indice !', side: 'right' },
+  so: { image: 'loupe', message: 'Regarde le panneau !', side: 'right' },
   puzzle: { image: 'allongé', message: 'j\'adore les puzzles!', side: 'right' },
   instructionschap2: { image: 'court', message: 'Je vous accompagne!', side: 'right' },
   porteloin: { image: 'curieux', message: 'La porte est fermée...', side: 'left' },
   portecadenas: { image: 'droite', message: 'des chants', side: 'right', small: true },
-  mauvaiscode: { image: 'court', message: ' allons voir', side: 'right' },
+  mauvaiscode: { image: 'court', message: 'Allons voir !', side: 'right' },
+  abbaye: { image: 'assis', message: 'L’abbaye...', side: 'left' },
+  moineloin: { image: 'inquiet', message: 'Un moine !', side: 'right', small: true },
+  sceneabbaye: { image: 'loupe', message: 'Écoutons...', side: 'right' },
   petitphare: { image: 'inquiet', message: 'Vite, Yannick !', side: 'right' },
+  suiteaventure: { image: 'inquiet', message: 'Dépêchons-nous !', side: 'right' },
   codeancienphare: { image: 'indice', message: 'Trouvons l\'année !', side: 'left', small: true },
   hautphare: { image: 'allongé', message: 'On monte ?', side: 'right' },
   sommetphare: { image: 'gauche', message: 'Actionne le mécanisme', side: 'left', small: true },
@@ -2847,6 +2850,7 @@ function ajouterBilligAuxPages() {
 
     const wrapper = document.createElement('div');
     wrapper.className = 'billig-helper';
+  wrapper.classList.toggle('sommet-mode', screenName === 'sommetphare');
     if (config.side === 'left') wrapper.classList.add('billig-left');
     if (config.small) wrapper.classList.add('billig-small');
     if (!config.message) wrapper.classList.add('billig-hidden-message');
@@ -2894,10 +2898,14 @@ function creerBilligGlobal() {
 
 function updateBilligForScreen(screenName) {
   const wrapper = creerBilligGlobal();
+  wrapper.classList.toggle('sommet-mode', screenName === 'sommetphare');
   const config = billigScreens[screenName];
 
   if (!config) {
-    wrapper.style.display = 'none';
+    wrapper.style.display = 'block';
+    wrapper.className = 'billig-helper billig-hidden-message';
+    const imgFallback = wrapper.querySelector('img');
+    if (imgFallback) imgFallback.src = BILLIG_IMAGE_DEFAUT;
     return;
   }
 
