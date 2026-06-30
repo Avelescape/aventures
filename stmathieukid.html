@@ -1392,6 +1392,35 @@ button {
 
 }
 
+
+
+/* =========================================================
+   PUZZLE - VRAI GLISSÉ AU DOIGT
+   Les pièces suivent le doigt puis s'échangent au relâchement.
+   ========================================================= */
+#puzzle-board {
+  position: relative !important;
+  display: block !important;
+  touch-action: none !important;
+  overflow: hidden !important;
+}
+
+#puzzle-board .puzzle-piece {
+  position: absolute !important;
+  background-repeat: no-repeat !important;
+  touch-action: none !important;
+  cursor: grab;
+  transition: transform 0.08s ease;
+  will-change: transform;
+}
+
+#puzzle-board .puzzle-piece.dragging {
+  opacity: 0.88;
+  cursor: grabbing;
+  transition: none;
+  box-shadow: 0 0 18px rgba(245,194,75,0.9);
+}
+
 </style>
 </head>
 
@@ -1962,7 +1991,7 @@ if (reponseInput) {
   });
 }
 
-/* PUZZLE - VERSION RÉUTILISABLE AVELESCAPE */
+/* PUZZLE - VERSION RÉUTILISABLE AVELESCAPE - GLISSÉ AU DOIGT */
 const CONFIG_PUZZLE = {
   taille: 3,
   image: "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp",
@@ -1970,9 +1999,10 @@ const CONFIG_PUZZLE = {
   boutonSuite: "Continuons"
 };
 
-let draggedPiece = null;
 let puzzleSolved = false;
-let selectedPiece = null;
+let draggedPiece = null;
+let dragStartX = 0;
+let dragStartY = 0;
 
 function initPuzzle() {
   const board = document.getElementById('puzzle-board');
@@ -1980,7 +2010,6 @@ function initPuzzle() {
   const btn = document.getElementById('btn-puzzle');
 
   puzzleSolved = false;
-  selectedPiece = null;
   draggedPiece = null;
 
   if (!board) return;
@@ -1993,129 +2022,142 @@ function initPuzzle() {
     btn.innerText = CONFIG_PUZZLE.boutonSuite;
   }
 
-  board.style.gridTemplateColumns = `repeat(${CONFIG_PUZZLE.taille}, 1fr)`;
-  board.style.gridTemplateRows = `repeat(${CONFIG_PUZZLE.taille}, 1fr)`;
+  board.style.display = 'block';
+  board.style.position = 'relative';
+  board.style.touchAction = 'none';
+  board.style.overflow = 'hidden';
 
   const totalPieces = CONFIG_PUZZLE.taille * CONFIG_PUZZLE.taille;
   const pieces = [];
 
-  for (let i = 0; i < totalPieces; i++) {
-    pieces.push(i);
-  }
+  for (let i = 0; i < totalPieces; i++) pieces.push(i);
 
   do {
     pieces.sort(() => Math.random() - 0.5);
   } while (pieces.every((piece, index) => piece === index));
 
-  pieces.forEach(pieceIndex => {
+  pieces.forEach((pieceIndex, cellIndex) => {
     const piece = document.createElement('div');
     piece.className = 'puzzle-piece';
-    piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
     piece.dataset.correct = pieceIndex;
+    piece.dataset.cell = cellIndex;
 
-    const x = pieceIndex % CONFIG_PUZZLE.taille;
-    const y = Math.floor(pieceIndex / CONFIG_PUZZLE.taille);
-
-    const boardSize = board.clientWidth || 320;
-    const pieceSize = boardSize / CONFIG_PUZZLE.taille;
-
-    piece.style.backgroundImage = `url("${CONFIG_PUZZLE.image}")`;
-    piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
-    piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
-
-    piece.addEventListener('dragstart', dragStart);
-    piece.addEventListener('dragover', dragOver);
-    piece.addEventListener('drop', dropPiece);
-    piece.addEventListener('dragend', dragEnd);
-
-    piece.addEventListener('click', handlePieceClick);
-    piece.addEventListener('pointerdown', handlePiecePointerDown);
+    appliquerStylePiece(piece, pieceIndex, cellIndex);
+    piece.addEventListener('pointerdown', pointerDownPiece, { passive: false });
 
     board.appendChild(piece);
   });
 }
 
-function handlePieceClick(e) {
+function appliquerStylePiece(piece, pieceIndex, cellIndex) {
+  const board = document.getElementById('puzzle-board');
+  if (!board) return;
+
+  const boardSize = board.clientWidth || 320;
+  const pieceSize = boardSize / CONFIG_PUZZLE.taille;
+
+  const imageX = pieceIndex % CONFIG_PUZZLE.taille;
+  const imageY = Math.floor(pieceIndex / CONFIG_PUZZLE.taille);
+  const cellX = cellIndex % CONFIG_PUZZLE.taille;
+  const cellY = Math.floor(cellIndex / CONFIG_PUZZLE.taille);
+
+  piece.style.position = 'absolute';
+  piece.style.left = `${cellX * pieceSize}px`;
+  piece.style.top = `${cellY * pieceSize}px`;
+  piece.style.width = `${pieceSize}px`;
+  piece.style.height = `${pieceSize}px`;
+  piece.style.backgroundImage = `url("${CONFIG_PUZZLE.image}")`;
+  piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
+  piece.style.backgroundPosition = `${-(imageX * pieceSize)}px ${-(imageY * pieceSize)}px`;
+  piece.style.transform = 'translate(0px, 0px)';
+  piece.style.zIndex = '1';
+}
+
+function pointerDownPiece(e) {
   if (puzzleSolved) return;
-
-  const piece = e.currentTarget;
-
-  if (!selectedPiece) {
-    selectedPiece = piece;
-    piece.classList.add('selected');
-    return;
-  }
-
-  if (selectedPiece === piece) {
-    selectedPiece.classList.remove('selected');
-    selectedPiece = null;
-    return;
-  }
-
-  echangerPieces(selectedPiece, piece);
-  selectedPiece.classList.remove('selected');
-  selectedPiece = null;
-  checkPuzzle();
-}
-
-function handlePiecePointerDown(e) {
-  if (e.pointerType === 'touch' || e.pointerType === 'pen') {
-    e.preventDefault();
-    handlePieceClick(e);
-  }
-}
-
-function dragStart() {
-  if (puzzleSolved) return;
-
-  draggedPiece = this;
-  this.classList.add('dragging');
-}
-
-function dragOver(e) {
-  e.preventDefault();
-}
-
-function dropPiece(e) {
   e.preventDefault();
 
-  if (puzzleSolved) return;
-  if (!draggedPiece || draggedPiece === this) return;
+  draggedPiece = e.currentTarget;
+  dragStartX = e.clientX;
+  dragStartY = e.clientY;
 
-  echangerPieces(draggedPiece, this);
-  checkPuzzle();
+  draggedPiece.classList.add('dragging');
+  draggedPiece.style.zIndex = '50';
+  draggedPiece.setPointerCapture(e.pointerId);
+  draggedPiece.addEventListener('pointermove', pointerMovePiece, { passive: false });
+  draggedPiece.addEventListener('pointerup', pointerUpPiece, { passive: false });
+  draggedPiece.addEventListener('pointercancel', pointerCancelPiece, { passive: false });
 }
 
-function dragEnd() {
-  this.classList.remove('dragging');
+function pointerMovePiece(e) {
+  if (!draggedPiece || puzzleSolved) return;
+  e.preventDefault();
+
+  const dx = e.clientX - dragStartX;
+  const dy = e.clientY - dragStartY;
+  draggedPiece.style.transform = `translate(${dx}px, ${dy}px)`;
+}
+
+function pointerUpPiece(e) {
+  if (!draggedPiece || puzzleSolved) return;
+  e.preventDefault();
+
+  const pieceDepart = draggedPiece;
+  pieceDepart.style.pointerEvents = 'none';
+  const elementDessous = document.elementFromPoint(e.clientX, e.clientY);
+  pieceDepart.style.pointerEvents = '';
+  const pieceArrivee = elementDessous ? elementDessous.closest('.puzzle-piece') : null;
+
+  nettoyerDrag(pieceDepart, e.pointerId);
+
+  if (pieceArrivee && pieceArrivee !== pieceDepart) {
+    echangerPieces(pieceDepart, pieceArrivee);
+    checkPuzzle();
+  }
+
   draggedPiece = null;
 }
 
+function pointerCancelPiece(e) {
+  if (!draggedPiece) return;
+  nettoyerDrag(draggedPiece, e.pointerId);
+  draggedPiece = null;
+}
+
+function nettoyerDrag(piece, pointerId) {
+  piece.classList.remove('dragging');
+  piece.style.transform = 'translate(0px, 0px)';
+  piece.style.zIndex = '1';
+
+  try { piece.releasePointerCapture(pointerId); } catch (err) {}
+
+  piece.removeEventListener('pointermove', pointerMovePiece);
+  piece.removeEventListener('pointerup', pointerUpPiece);
+  piece.removeEventListener('pointercancel', pointerCancelPiece);
+}
+
 function echangerPieces(piece1, piece2) {
-  const tempBg = piece2.style.backgroundPosition;
-  const tempCorrect = piece2.dataset.correct;
+  const correct1 = piece1.dataset.correct;
+  const correct2 = piece2.dataset.correct;
 
-  piece2.style.backgroundPosition = piece1.style.backgroundPosition;
-  piece2.dataset.correct = piece1.dataset.correct;
+  piece1.dataset.correct = correct2;
+  piece2.dataset.correct = correct1;
 
-  piece1.style.backgroundPosition = tempBg;
-  piece1.dataset.correct = tempCorrect;
+  appliquerStylePiece(piece1, Number(piece1.dataset.correct), Number(piece1.dataset.cell));
+  appliquerStylePiece(piece2, Number(piece2.dataset.correct), Number(piece2.dataset.cell));
 }
 
 function checkPuzzle() {
-  const pieces = document.querySelectorAll('.puzzle-piece');
+  const pieces = document.querySelectorAll('#puzzle-board .puzzle-piece');
   let solved = true;
 
-  pieces.forEach((piece, index) => {
-    if (Number(piece.dataset.correct) !== index) {
-      solved = false;
-    }
+  pieces.forEach(piece => {
+    if (Number(piece.dataset.correct) !== Number(piece.dataset.cell)) solved = false;
   });
 
   if (!solved) return;
 
   puzzleSolved = true;
-
   const message = document.getElementById('puzzle-message');
   const btn = document.getElementById('btn-puzzle');
 
@@ -2128,9 +2170,7 @@ function checkPuzzle() {
     `;
   }
 
-  if (btn) {
-    btn.style.display = 'inline-block';
-  }
+  if (btn) btn.style.display = 'inline-block';
 }
 
 function essayerOuvrir() {
