@@ -249,10 +249,9 @@ input {
 .puzzle-piece {
   background-image: url("https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp");
   background-size: 320px 320px;
-  background-repeat: no-repeat;
   cursor: grab;
   border: 1px solid rgba(245, 232, 208, 0.35);
-  touch-action: none;
+  touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -1091,12 +1090,9 @@ input {
 button,
 .btn-primary,
 .nav-back,
-.meca-zone {
-  touch-action: manipulation;
-}
-
+.meca-zone,
 .puzzle-piece {
-  touch-action: none;
+  touch-action: manipulation;
 }
 
 input,
@@ -1443,10 +1439,6 @@ button {
 
     <div id="puzzle-board"></div>
     <div id="puzzle-message"></div>
-
-    <button class="btn-primary" onclick="initPuzzle()">
-      Mélanger
-    </button>
 
     <button id="btn-puzzle"
             class="btn-primary"
@@ -1902,42 +1894,62 @@ if (reponseInput) {
   });
 }
 
-/* PUZZLE MOBILE + ORDINATEUR
-   Version intégrée depuis le puzzle qui fonctionne sur téléphone.
-   Sur mobile : on touche une pièce, puis une autre pour les échanger.
-   Sur ordinateur : le glisser-déposer fonctionne aussi.
-*/
-const CONFIG_PUZZLE = {
-  imagePuzzle: "https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp",
-  taille: 3,
-  messageVictoire: "Le sceau est reconstitué !"
-};
-
+/* PUZZLE */
+const PUZZLE_SIZE = 3;
 let draggedPiece = null;
 let puzzleSolved = false;
 let selectedPiece = null;
-let ignoreNextClickAfterTouch = false;
+
+function handlePieceClick(e) {
+  if (puzzleSolved) return;
+  const piece = e.currentTarget;
+
+  if (!selectedPiece) {
+    selectedPiece = piece;
+    piece.classList.add('selected');
+  } else if (selectedPiece === piece) {
+    selectedPiece.classList.remove('selected');
+    selectedPiece = null;
+  } else {
+    const tempBg = piece.style.backgroundPosition;
+    const tempCorrect = piece.dataset.correct;
+    piece.style.backgroundPosition = selectedPiece.style.backgroundPosition;
+    piece.dataset.correct = selectedPiece.dataset.correct;
+    selectedPiece.style.backgroundPosition = tempBg;
+    selectedPiece.dataset.correct = tempCorrect;
+    selectedPiece.classList.remove('selected');
+    selectedPiece = null;
+    checkPuzzle();
+  }
+}
+
+function handlePiecePointerDown(e) {
+  // Sur mobile, le dragstart/drop natif ne se déclenche souvent pas.
+  // On force donc le mode « toucher une pièce puis toucher une autre ».
+  if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+    e.preventDefault();
+    handlePieceClick(e);
+  }
+}
 
 function initPuzzle() {
   const board = document.getElementById('puzzle-board');
   const message = document.getElementById('puzzle-message');
   const btn = document.getElementById('btn-puzzle');
 
-  if (!board) return;
-
   puzzleSolved = false;
   selectedPiece = null;
-  draggedPiece = null;
-  ignoreNextClickAfterTouch = false;
+
+  if (btn) btn.style.display = 'none';
+  if (!board) return;
 
   board.innerHTML = '';
   if (message) message.innerHTML = '';
-  if (btn) btn.style.display = 'none';
 
-  board.style.gridTemplateColumns = `repeat(${CONFIG_PUZZLE.taille}, 1fr)`;
-  board.style.gridTemplateRows = `repeat(${CONFIG_PUZZLE.taille}, 1fr)`;
+  board.style.gridTemplateColumns = `repeat(${PUZZLE_SIZE}, 1fr)`;
+  board.style.gridTemplateRows = `repeat(${PUZZLE_SIZE}, 1fr)`;
 
-  const totalPieces = CONFIG_PUZZLE.taille * CONFIG_PUZZLE.taille;
+  const totalPieces = PUZZLE_SIZE * PUZZLE_SIZE;
   const pieces = [];
 
   for (let i = 0; i < totalPieces; i++) {
@@ -1948,68 +1960,35 @@ function initPuzzle() {
     pieces.sort(() => Math.random() - 0.5);
   } while (pieces.every((piece, index) => piece === index));
 
-  requestAnimationFrame(() => {
+  pieces.forEach((pieceIndex) => {
+    const piece = document.createElement('div');
+    piece.className = 'puzzle-piece';
+    // Le drag & drop HTML fonctionne mal sur mobile.
+    // Sur écran tactile, on désactive le drag natif et on utilise le tap/tap.
+    piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
+    piece.dataset.correct = pieceIndex;
+
+    const x = pieceIndex % PUZZLE_SIZE;
+    const y = Math.floor(pieceIndex / PUZZLE_SIZE);
     const boardSize = board.clientWidth || 320;
-    const pieceSize = boardSize / CONFIG_PUZZLE.taille;
+    const pieceSize = boardSize / PUZZLE_SIZE;
 
-    pieces.forEach(pieceIndex => {
-      const piece = document.createElement('div');
-      piece.className = 'puzzle-piece';
-      piece.draggable = !window.matchMedia('(pointer: coarse)').matches;
-      piece.dataset.correct = pieceIndex;
+    piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
+    piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
 
-      const x = pieceIndex % CONFIG_PUZZLE.taille;
-      const y = Math.floor(pieceIndex / CONFIG_PUZZLE.taille);
+    piece.addEventListener('dragstart', dragStart);
+    piece.addEventListener('dragover', dragOver);
+    piece.addEventListener('drop', dropPiece);
+    piece.addEventListener('dragend', dragEnd);
 
-      piece.style.backgroundImage = `url("${CONFIG_PUZZLE.imagePuzzle}")`;
-      piece.style.backgroundSize = `${boardSize}px ${boardSize}px`;
-      piece.style.backgroundPosition = `${-(x * pieceSize)}px ${-(y * pieceSize)}px`;
+    // Ordinateur : clic possible en plus du glisser-déposer.
+    piece.addEventListener('click', handlePieceClick);
 
-      piece.addEventListener('dragstart', dragStart);
-      piece.addEventListener('dragover', dragOver);
-      piece.addEventListener('drop', dropPiece);
-      piece.addEventListener('dragend', dragEnd);
+    // Mobile/tablette : toucher une pièce puis une autre pour les échanger.
+    piece.addEventListener('pointerdown', handlePiecePointerDown);
 
-      piece.addEventListener('click', handlePieceClick);
-      piece.addEventListener('pointerdown', handlePiecePointerDown, { passive: false });
-
-      board.appendChild(piece);
-    });
+    board.appendChild(piece);
   });
-}
-
-function handlePiecePointerDown(e) {
-  if (puzzleSolved) return;
-
-  if (e.pointerType === 'touch' || e.pointerType === 'pen') {
-    e.preventDefault();
-    ignoreNextClickAfterTouch = true;
-    handlePieceClick(e);
-  }
-}
-
-function handlePieceClick(e) {
-  if (puzzleSolved) return;
-
-  if (ignoreNextClickAfterTouch && e.type === 'click') {
-    ignoreNextClickAfterTouch = false;
-    return;
-  }
-
-  const piece = e.currentTarget;
-
-  if (!selectedPiece) {
-    selectedPiece = piece;
-    piece.classList.add('selected');
-  } else if (selectedPiece === piece) {
-    selectedPiece.classList.remove('selected');
-    selectedPiece = null;
-  } else {
-    echangerPieces(selectedPiece, piece);
-    selectedPiece.classList.remove('selected');
-    selectedPiece = null;
-    checkPuzzle();
-  }
 }
 
 function dragStart() {
@@ -2029,7 +2008,15 @@ function dropPiece(e) {
   if (puzzleSolved) return;
   if (!draggedPiece || draggedPiece === this) return;
 
-  echangerPieces(draggedPiece, this);
+  const tempBg = this.style.backgroundPosition;
+  const tempCorrect = this.dataset.correct;
+
+  this.style.backgroundPosition = draggedPiece.style.backgroundPosition;
+  this.dataset.correct = draggedPiece.dataset.correct;
+
+  draggedPiece.style.backgroundPosition = tempBg;
+  draggedPiece.dataset.correct = tempCorrect;
+
   checkPuzzle();
 }
 
@@ -2038,19 +2025,8 @@ function dragEnd() {
   draggedPiece = null;
 }
 
-function echangerPieces(piece1, piece2) {
-  const tempBg = piece2.style.backgroundPosition;
-  const tempCorrect = piece2.dataset.correct;
-
-  piece2.style.backgroundPosition = piece1.style.backgroundPosition;
-  piece2.dataset.correct = piece1.dataset.correct;
-
-  piece1.style.backgroundPosition = tempBg;
-  piece1.dataset.correct = tempCorrect;
-}
-
 function checkPuzzle() {
-  const pieces = document.querySelectorAll('#puzzle-board .puzzle-piece');
+  const pieces = document.querySelectorAll('.puzzle-piece');
   let solved = true;
 
   pieces.forEach((piece, index) => {
@@ -2067,8 +2043,8 @@ function checkPuzzle() {
 
     if (message) {
       message.innerHTML = `
-        <p>${CONFIG_PUZZLE.messageVictoire}</p>
-        <img src="${CONFIG_PUZZLE.imagePuzzle}"
+        <p>Le sceau est reconstitué !</p>
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/1-webpsceau.webp"
              alt="Indice révélé"
              class="puzzle-result-img">
       `;
