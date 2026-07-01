@@ -250,6 +250,21 @@
     .modal-btn-kids{background:var(--orange)!important}
     .modal-btn-kids em{font-style:italic;font-family:Georgia,serif;font-size:12px}
     .btn-itinerary{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--orange);border:1.5px solid var(--orange);padding:12px 14px;border-radius:9px;background:transparent;cursor:pointer;min-height:44px;text-decoration:none}
+  
+  /* COMMENT ÇA MARCHE */
+
+.how-it-works{
+    background:#FCE7C9;
+    padding:18px 16px 10px;
+}
+
+.how-it-works-img{
+    width:100%;
+    display:block;
+    border-radius:18px;
+    box-shadow:
+        0 8px 25px rgba(7,27,52,.10);
+}
   </style>
 </head>
 <body>
@@ -276,10 +291,6 @@
     <div class="container hero-content">
       <h2>Visitez <em>autrement</em></h2>
       <div class="hero-buttons">
-        <a class="hero-btn hero-btn-secondary" href="#fiches">
-          Trouver un lieu
-          <span>→</span>
-        </a>
         <a class="hero-btn hero-btn-primary" href="#">
           Mon passeport
           <span>→</span>
@@ -289,32 +300,18 @@
   </section>
 
   <!-- FEATURES BAR/ bars de fonctionnalités -->
-  <div class="features-bar">
-    <div class="features-card">
-      <div class="feat-item">
-        <div class="feat-icon-wrap">
-          <svg viewBox="0 0 40 40"><circle cx="17" cy="17" r="9"/><line x1="23" y1="23" x2="33" y2="33"/></svg>
-        </div>
-        <p class="feat-label">Transformer vos escapades touristiques en véritables aventures</p>
-      </div>
-      <div class="feat-div"></div>
-      <div class="feat-item">
-        <div class="feat-icon-wrap">
-          <svg viewBox="0 0 40 40"><circle cx="13" cy="13" r="4.5"/><circle cx="27" cy="13" r="4.5"/><path d="M5 34c0-7 4-11 8-11M35 34c0-7-4-11-8-11M12 34c0-7 3.6-11 8-11s8 4 8 11"/></svg>
-        </div>
-        <p class="feat-label">Seul, en famille ou entre amis</p>
-      </div>
-      <div class="feat-div"></div>
-      <div class="feat-item feat-item-kids">
-        <img class="feat-kids-img" src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/parecheminkids.png" alt="Aventures Kids">
-      </div>
-    </div>
-  </div>
+  <!-- COMMENT ÇA MARCHE -->
+  <section class="how-it-works">
+    <img
+        src="https://avelescape.wordpress.com/wp-content/uploads/2026/07/0-pngcommentcamarche.png"
+        alt="Comment ça marche"
+        class="how-it-works-img">
+  </section>
 
   <!-- TEXTE INTRO -->
   <div class="intro-text">
     <h3 class="intro-brand">Avel Escape</h3>
-    <p>Vous propose de découvrir ou de redécouvrir des lieux touristiques (sites historiques, vieux centres-villes...) de façon ludique.<br><br>Basées sur l'histoire, nos aventures vous font explorer le lieu choisi de façon ludique <span class="intro-gratuit">GRATUITEMENT</span><br><br></p>
+    <p>Vous propose de découvrir ou de redécouvrir des lieux touristiques (sites historiques, vieux centres-villes...) de façon ludique.<br>
   </div>
 
   <!-- BAR CATÉGORIES -->
@@ -612,6 +609,7 @@ document.querySelectorAll('.hero-btn-primary').forEach(btn=>{
   btn.addEventListener('touchend',()=>btn.classList.remove('touching'));
   btn.addEventListener('touchcancel',()=>btn.classList.remove('touching'));
 });
+
 </script>
 </body>
 </html>
