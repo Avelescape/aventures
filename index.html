@@ -126,7 +126,7 @@ header{
     flex-direction:column;
     align-items:flex-start;
 
-    margin-top:55px;      /* descend le bouton */
+    margin-top:100px;      /* descend le bouton */
 
 }
 .hero-btn{
@@ -173,7 +173,7 @@ header{
   position:relative;
   z-index:5;
   text-align:center;
-  padding:62px 7.5% 28px;
+  padding:20px 7.5% 28px;
   background:var(--cream);
 }
 .eyebrow{
@@ -235,6 +235,18 @@ header{
 .adventures{background:var(--cream);padding:18px 0 34px}
 .carousel-outer{position:relative}.carousel-mask{overflow:hidden}.carousel-track{display:flex;gap:14px;transition:transform .4s cubic-bezier(.4,0,.2,1)}.carousel-nav-btn{display:none}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:5px;margin-top:10px}.carousel-dot{width:6px;height:6px;border-radius:50%;background:var(--sand);cursor:pointer;transition:all .2s;flex-shrink:0;border:0}.carousel-dot.active{background:var(--gold);width:18px;border-radius:3px}.carousel-dot.nearby{width:4px;height:4px;background:#D9C3A0}
 .adv-card{flex:0 0 calc(25% - 11px);background:#FFF8EE;border:1px solid #D9C3A0;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(7,27,52,.14);cursor:pointer}.adv-card:active{transform:scale(.99)}.adv-card-img{height:160px;position:relative;overflow:hidden}.adv-card-img img{width:100%;height:100%;object-fit:cover;display:block}.adv-card-body{padding:14px 14px}.adv-card-title{font-family:Georgia,serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.2}.adv-card-loc{display:flex;align-items:center;gap:5px;font-size:11px;color:#6D6253;margin-bottom:12px;font-weight:500}.adv-card-actions{display:flex;gap:8px}.adv-btn-voir{flex:1;background:var(--orange);color:white;border:none;border-radius:9px;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:42px}.adv-btn-fav{width:42px;height:42px;border-radius:9px;border:1.5px solid #D9C3A0;background:#EAD9BC;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:#6D6253}.adv-btn-fav.fav-active{color:var(--orange);border-color:var(--orange)}.adv-btn-fav.fav-active svg{fill:var(--orange)}
+
+
+/* BANDEAU AVENTURES KIDS */
+.kids-banner{
+  background:var(--cream);
+  padding:14px 0 20px;
+}
+.kids-banner img{
+  width:100%;
+  height:auto;
+  display:block;
+}
 
 /* AVIS + CTA */
 .reviews-section{background:var(--cream);padding:20px 0}.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.review-photo-card{border-radius:12px;overflow:hidden;background:var(--navy);min-height:100px}.review-photo-card img{width:100%;height:100%;object-fit:cover}.review-card{background:#FFF8EE;border:1px solid #D9C3A0;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:5px;min-height:100px}.review-stars{color:var(--orange);font-size:13px;letter-spacing:1px}.review-text{font-size:12px;color:#1D1A16;line-height:1.5;flex:1;font-style:italic}.review-author{font-size:11px;font-weight:700;color:var(--navy)}
@@ -313,6 +325,14 @@ header{
         <div class="carousel-mask"><div class="carousel-track" id="carouselTrack"></div></div>
         <div class="carousel-dots" id="carouselDots"></div>
       </div>
+    </div>
+  </section>
+
+
+  <!-- BANDEAU AVENTURES KIDS -->
+  <section class="kids-banner" aria-label="Aventures Kids">
+    <div class="container">
+      <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/07/0-webpaventureskids.webp" alt="Aventures Kids" loading="lazy">
     </div>
   </section>
 
@@ -400,4 +420,3 @@ renderCarousel();
 </script>
 </body>
 </html>
-
