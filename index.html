@@ -77,8 +77,8 @@ header{
 /* HERO */
 .hero{
   position:relative;
-  min-height:680px;
-  overflow:hidden;
+  min-height:620px;
+  overflow:visible;
   background:
     linear-gradient(90deg,rgba(252,231,201,.55) 0%,rgba(252,231,201,.18) 36%,rgba(7,27,52,.05) 65%,rgba(7,27,52,.25) 100%),
     url('https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpheropasseport.webp') center bottom/cover no-repeat;
@@ -157,15 +157,16 @@ header{
 /* CARTES QUI CHEVAUCHENT LE HERO */
 .comment-cartes{
   position:relative;
-  z-index:20;
-  margin-top:-80px;
-  padding:0 56px 0;
+  z-index:50;
+  margin-top:-180px; /* chevauchement plus marqué sur l’image du hero */
+  padding:0 56px;
 }
 .comment-cartes img{
   width:100%;
   height:auto;
+  display:block;
   border-radius:0;
-  filter:drop-shadow(0 20px 24px rgba(7,27,52,.22));
+  filter:drop-shadow(0 18px 24px rgba(0,0,0,.18));
 }
 
 /* INTRO AVENTURES */
@@ -173,7 +174,8 @@ header{
   position:relative;
   z-index:5;
   text-align:center;
-  padding:5px 7.5% 28px;
+  margin-top:-80px; /* remonte Nos aventures sous les cartes */
+  padding:22px 7.5% 24px;
   background:var(--cream);
 }
 .eyebrow{
@@ -241,7 +243,7 @@ header{
 .kids-banner{
   background:var(--cream);
   width:100%;
-  margin-top:-45px;
+  margin-top:-65px;
   padding:0 0 20px;
 }
 .kids-banner .container{
@@ -269,15 +271,15 @@ header{
   .kids-banner{
   background:var(--cream);
   width:100%;
-  margin-top:-45px;
+  margin-top:-65px;
   padding:0 0 20px;
-}.hero-content{padding-top:72px;width:78%}.hero h1{font-size:58px}.hero-subtitle{font-size:18px;margin-top:18px}.hero-free{font-size:23px;margin-top:18px}.hero-buttons{gap:12px;width:100%;max-width:350px}.hero-btn{min-height:56px;font-size:17px;padding:0 15px}.hero-btn .arrow{font-size:30px}.hero-btn svg{width:24px;height:24px}.comment-cartes{margin-top:-60px;padding:0 18px}.comment-cartes img{border-radius:0}.adventures-intro{padding:38px 28px 24px}.eyebrow{font-size:15px}.adventures-intro h2{font-size:34px}.adventures-intro p{font-size:17px}.cta-all{min-height:54px;font-size:16px}.adv-card{flex-basis:calc(50% - 7px)}.adv-card-img{height:160px}.adventures{padding:18px 0 0}
+}.hero-content{padding-top:72px;width:78%}.hero h1{font-size:58px}.hero-subtitle{font-size:18px;margin-top:18px}.hero-free{font-size:23px;margin-top:18px}.hero-buttons{gap:12px;width:100%;max-width:350px}.hero-btn{min-height:56px;font-size:17px;padding:0 15px}.hero-btn .arrow{font-size:30px}.hero-btn svg{width:24px;height:24px}.comment-cartes{margin-top:-90px;padding:0 18px}.comment-cartes img{border-radius:0}.adventures-intro{margin-top:-38px;padding:24px 28px 20px}.eyebrow{font-size:15px}.adventures-intro h2{font-size:34px}.adventures-intro p{font-size:17px}.cta-all{min-height:54px;font-size:16px}.adv-card{flex-basis:calc(50% - 7px)}.adv-card-img{height:160px}.adventures{padding:18px 0 0}
   .carousel-dots{margin-top:2px;margin-bottom:0}
-  .kids-banner{margin-top:-45px;padding:0 0 20px}
+  .kids-banner{margin-top:-65px;padding:0 0 20px}
   .kids-banner .container{padding:0 18px}
   .reviews-grid{grid-template-columns:repeat(3,1fr)}
 }
-@media(max-width:390px){.hero h1{font-size:50px}.hero-content{width:86%}.comment-cartes{margin-top:-54px;padding:0 14px}.adventures-intro h2{font-size:30px}.hero{min-height:515px}.adv-card-img{height:145px}}
+@media(max-width:390px){.hero h1{font-size:50px}.hero-content{width:86%}.comment-cartes{margin-top:-82px;padding:0 14px}.adventures-intro{margin-top:-34px}.adventures-intro h2{font-size:30px}.hero{min-height:515px}.adv-card-img{height:145px}}
 </style>
 </head>
 <body>
@@ -310,7 +312,7 @@ header{
   </section>
 
   <section class="comment-cartes" aria-label="Comment ça marche">
-    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/07/0-pngbandeaucartescommentcamarche.png" alt="Choisissez un lieu, résolvez les énigmes, validez votre aventure, collectionnez vos aventures">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/07/0-webpexplications.webp" alt="Choisissez un lieu, résolvez les énigmes, validez votre aventure, collectionnez vos aventures">
   </section>
 
   <section class="adventures-intro" id="fiches">
@@ -349,7 +351,7 @@ header{
   <!-- BANDEAU AVENTURES KIDS -->
   <section class="kids-banner" aria-label="Aventures Kids">
     <div class="container">
-      <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/07/0-webpaventureskids.webp" alt="Aventures Kids" loading="lazy">
+      <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/07/0-pngaventuresbilligkids.png" alt="Aventures Kids" loading="lazy">
     </div>
   </section>
 
