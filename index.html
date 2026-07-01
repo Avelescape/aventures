@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#071B34" />
   <title>Passeport Aventures — Avel Escape</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Cormorant+Garamond:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
       --navy:#071B34;--navy-2:#102847;--navy-3:#071B34;
@@ -37,13 +35,13 @@
     .nav{height:56px;display:flex;align-items:center;justify-content:space-between;position:relative}
     .nav-center{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center}
     .nav-logo-img{width:400px;height:120px;object-fit:contain}
-    .nav-logo-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#ec6a2d;white-space:nowrap}
+    .nav-logo-text{font-family: Georgia, serif;font-size:18px;font-weight:700;color:#ec6a2d;white-space:nowrap}
     .nav-left{display:flex;align-items:center;gap:12px}
     .nav-burger{display:flex;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:10px;flex-shrink:0;min-width:44px;min-height:44px}
     .nav-burger span{display:block;width:22px;height:1.5px;background:white}
     .brand{display:flex;align-items:center;gap:10px}
     .feather{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.3))}
-    .brand-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--orange);letter-spacing:1.5px;white-space:nowrap}
+    .brand-name{font-family: Georgia, serif;font-size:14px;font-weight:700;color:var(--orange);letter-spacing:1.5px;white-space:nowrap}
     .nav-connexion{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:8px 14px;color:white;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
 
     /* HERO */
@@ -63,14 +61,39 @@
       pointer-events:none;
     }
     .hero-content{position:relative;z-index:2;padding:40px 0 48px;padding-left:24px}
-    .hero h2{font-family:'Playfair Display',serif;font-size:clamp(26px,8vw,38px);line-height:.9;color:var(--navy);text-shadow:0 1px 4px rgba(255,255,255,.5);font-weight:800}
-    .hero h2 em{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:clamp(32px,10vw,46px);color:var(--orange);line-height:.95}
+    .hero h2{font-family: Georgia, serif;font-size:clamp(26px,8vw,38px);line-height:.9;color:var(--navy);text-shadow:0 1px 4px rgba(255,255,255,.5);font-weight:800}
+    .hero h2 em{display:block;font-family: Georgia, serif;font-style:italic;font-weight:700;font-size:clamp(32px,10vw,46px);color:var(--orange);line-height:.95}
     .hero-buttons{display:flex;flex-direction:column;gap:10px;align-items:flex-start;margin-top:16px}
     .nav-gratuit{font-size:18px;font-weight:900;color:#DFFF00;letter-spacing:2px}
     .hero-btn{min-width:220px}
     .hero-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;border-radius:12px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;border:none;min-height:48px}
-    .hero-btn-primary{background:var(--navy);color:white;border:2px solid #f11d06}
-    .hero-btn-primary.touching{border-color:var(--orange);box-shadow:0 0 0 2px var(--orange)}
+    /* Bouton Passeport */
+    .hero-btn-primary{
+    background:linear-gradient(180deg,#0B2342 0%, #071B34 100%);
+    color:#FCE7C9;
+    border:2px solid #C89A4A;
+    border-radius:14px;
+
+    font-family:Georgia, serif;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:none;
+
+    box-shadow:
+        0 8px 18px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+    transition:all .2s ease;
+}
+    .hero-btn-primary.touching{
+    transform:translateY(2px);
+    border-color:#D9AC5E;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,.20),
+        inset 0 2px 4px rgba(0,0,0,.18);
+}
     .hero-btn-secondary{background:var(--card);color:var(--text);border:1.5px solid var(--border)}
     .btn-left{display:flex;align-items:center;gap:10px}
 
@@ -97,7 +120,7 @@
     /* INTRO TEXT */
     .intro-text{padding:14px 16px;background:var(--cream)}
     .intro-text p{font-size:13px;color:var(--text);line-height:1.6}
-    .intro-brand{font-family:'Playfair Display',serif;font-size:24px;font-weight:800;color:var(--orange);margin-bottom:8px;text-align:center}
+    .intro-brand{font-family: Georgia, serif;font-size:24px;font-weight:800;color:var(--orange);margin-bottom:8px;text-align:center}
     .intro-gratuit{font-size:20px;font-weight:900;color:var(--orange);vertical-align:middle;line-height:1}
 
     /* BAR CATÉGORIES */
@@ -117,29 +140,11 @@
     .bar-subdrop-item{display:flex;align-items:center;padding:11px 18px 11px 30px;font-size:13px;color:var(--navy);text-decoration:none;border-top:.5px solid rgba(201,184,138,.25);min-height:44px}
     .bar-subdrop-item:active{background:var(--sand);color:var(--orange)}
 
-    /* MAP */
-    .map-section{background:var(--cream);padding:20px 0}
-    .map-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 28px rgba(7,27,52,.12)}
-    .map-gps-col{padding:20px 16px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--border)}
-    .map-gps-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--navy);line-height:1.3}
-    .gps-btn{display:flex;align-items:center;justify-content:center;gap:9px;background:var(--navy);color:var(--gold-light);border:none;border-radius:10px;padding:14px 16px;font-size:11px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;cursor:pointer;width:100%;min-height:44px}
-    .gps-btn.locating{background:var(--teal)}
-    .gps-btn svg{flex-shrink:0}
-    .nearby-list{overflow-y:auto;max-height:160px}
-    .nearby-empty{font-size:12px;color:var(--muted);font-style:italic;line-height:1.6}
-    .nearby-item{padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;min-height:44px;display:flex;flex-direction:column;justify-content:center}
-    .nearby-item:last-child{border-bottom:none}
-    .nearby-item:active{opacity:.7}
-    .nearby-item-name{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:2px;line-height:1.3}
-    .nearby-item-dist{font-size:11px;color:var(--muted)}
-    .map-visual-col{min-height:220px}
-    #map{width:100%;height:220px;filter:sepia(.3) saturate(.9) brightness(1.05)}
-
     /* ADVENTURES */
     .adventures{background:var(--cream);padding:28px 0}
     .section-heading-line{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:22px}
     .section-heading-line::before,.section-heading-line::after{content:'';flex:1;height:1px;background:rgba(201,162,39,.4)}
-    .section-heading-line span{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:white;white-space:nowrap}
+    .section-heading-line span{font-family: Georgia, serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:white;white-space:nowrap}
     .carousel-outer{position:relative}
     .carousel-mask{overflow:hidden}
     .carousel-track{display:flex;gap:14px;transition:transform .4s cubic-bezier(.4,0,.2,1)}
@@ -165,7 +170,7 @@
     .adv-badge-type{position:absolute;top:10px;left:10px;background:var(--orange);color:white;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:5px}
     .adv-badge-time{position:absolute;top:10px;right:10px;background:rgba(7,20,40,.75);color:white;font-size:9px;font-weight:700;padding:3px 9px;border-radius:5px;display:flex;align-items:center;gap:4px}
     .adv-card-body{padding:14px 16px}
-    .adv-card-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.25}
+    .adv-card-title{font-family: Georgia, serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.25}
     .adv-card-loc{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:500}
     .adv-card-info{display:flex;align-items:center;gap:9px;font-size:11px;color:var(--muted);margin-bottom:14px;font-weight:500}
     .adv-diff{background:var(--parchment);border:1px solid var(--border);border-radius:4px;padding:2px 8px;font-size:10px;font-weight:600;color:var(--text)}
@@ -194,10 +199,10 @@
     .prog-stat{padding:14px 16px;border-bottom:1px solid var(--sand);display:flex;align-items:center;gap:14px}
     .prog-stat:last-child{border-bottom:none;position:relative;overflow:hidden}
     .prog-stat-ico{font-size:26px;flex-shrink:0}
-    .prog-stat-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);line-height:1}
+    .prog-stat-val{font-family: Georgia, serif;font-size:22px;font-weight:700;color:var(--navy);line-height:1}
     .prog-stat-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-top:2px}
     .prog-auteur-body{flex:1;min-width:0}
-    .prog-auteur-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px;line-height:1.25}
+    .prog-auteur-title{font-family: Georgia, serif;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px;line-height:1.25}
     .prog-auteur-desc{font-size:11px;color:var(--muted);line-height:1.5}
     .prog-rose-deco{position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:80px;height:80px;opacity:.15;pointer-events:none}
 
@@ -217,7 +222,7 @@
     .cta-inner{display:grid;grid-template-columns:1fr 2fr;gap:8px;padding:2px 10px;align-items:center}
     .cta-col-left{display:flex;flex-direction:column;gap:14px}
     .cta-col-right{display:flex;align-items:center;justify-content:center}
-    .cta-title{font-family:'Playfair Display',serif;font-size:14px;color:white;line-height:1.55}
+    .cta-title{font-family: Georgia, serif;font-size:14px;color:white;line-height:1.55}
     .cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--navy);border-radius:10px;padding:12px 14px;border:none;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;min-height:44px}
     .cta-btn-cgv{display:inline-flex;align-items:center;justify-content:center;background:var(--cream);color:var(--navy);border-radius:10px;padding:12px 18px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-decoration:none;min-height:44px}
 
@@ -236,7 +241,7 @@
     .modal-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
     .modal-close{float:right;background:transparent;border:1px solid var(--border);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);min-height:36px}
     .modal-type{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-top:14px}
-    .modal h2{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin:6px 0 5px}
+    .modal h2{font-family: Georgia, serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin:6px 0 5px}
     .modal p{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:14px;font-style:italic;font-family:Georgia,serif}
     .modal-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
     .modal-tag{font-size:11px;background:var(--parchment);border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px}
@@ -271,7 +276,7 @@
     <div class="container hero-content">
       <h2>Visitez <em>autrement</em></h2>
       <div class="hero-buttons">
-        <a class="hero-btn hero-btn-secondary" href="#carte">
+        <a class="hero-btn hero-btn-secondary" href="#fiches">
           Trouver un lieu
           <span>→</span>
         </a>
@@ -334,29 +339,7 @@
       </div>
     </div>
     <a class="bar-tab" href="#fiches" onclick="showAllAdventures();return false;">Toutes les aventures</a>
-    <a class="bar-tab" href="#carte">Carte GPS</a>
   </div>
-
-  <!-- MAP — carte arrondie sur fond sombre -->
-  <section id="carte" class="map-section">
-    <div class="container">
-    <div class="map-card">
-      <div class="map-gps-col">
-        <p class="map-gps-title">Ma position<br>&amp; jeux à proximité</p>
-        <button class="gps-btn" id="gpsBtn" onclick="locateUser()">
-          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><circle cx="10" cy="10" r="7"/><line x1="10" y1="1" x2="10" y2="3"/><line x1="10" y1="17" x2="10" y2="19"/><line x1="1" y1="10" x2="3" y2="10"/><line x1="17" y1="10" x2="19" y2="10"/></svg>
-          Localiser ma position
-        </button>
-        <div id="nearbyList" class="nearby-list">
-          <p class="nearby-empty">Activez la géolocalisation pour voir les aventures les plus proches de vous.</p>
-        </div>
-      </div>
-      <div class="map-visual-col">
-        <div id="map"></div>
-      </div>
-    </div>
-    </div>
-  </section>
 
   <!-- ADVENTURES — carrousel -->
   <section id="fiches" class="adventures">
@@ -467,7 +450,6 @@ const sites=[
 
 let currentFilter={dept:null};
 let carouselPos=0;
-let mapInst,userMarker;
 
 /* ── CAROUSEL ── */
 function getCardsPerView(){return 2;}
@@ -615,52 +597,6 @@ function openModal(id){
 function closeModal(){document.getElementById('modal').classList.remove('open');}
 document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
 
-/* ── GÉOLOCALISATION ── */
-function haversine(lat1,lng1,lat2,lng2){
-  const R=6371,dL=(lat2-lat1)*Math.PI/180,dG=(lng2-lng1)*Math.PI/180;
-  const a=Math.sin(dL/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dG/2)**2;
-  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-}
-function locateUser(){
-  if(!navigator.geolocation){alert('Géolocalisation non supportée par votre navigateur.');return;}
-  const btn=document.getElementById('gpsBtn');
-  btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><circle cx="10" cy="10" r="7"/><line x1="10" y1="1" x2="10" y2="3"/><line x1="10" y1="17" x2="10" y2="19"/><line x1="1" y1="10" x2="3" y2="10"/><line x1="17" y1="10" x2="19" y2="10"/></svg> Localisation…`;
-  btn.classList.add('locating');
-  navigator.geolocation.getCurrentPosition(pos=>{
-    const{latitude:lat,longitude:lng}=pos.coords;
-    btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4 10 8 14 16 6"/></svg> Position trouvée`;
-    if(mapInst){
-      if(userMarker)userMarker.remove();
-      userMarker=L.circleMarker([lat,lng],{radius:9,fillColor:'#1a4040',fillOpacity:1,color:'white',weight:2.5}).addTo(mapInst)
-        .bindPopup('<b>Vous êtes ici</b>').openPopup();
-      mapInst.flyTo([lat,lng],10);
-    }
-    const sorted=[...sites].map(s=>({...s,dist:haversine(lat,lng,s.lat,s.lng)})).sort((a,b)=>a.dist-b.dist);
-    document.getElementById('nearbyList').innerHTML=sorted.map(s=>`
-      <div class="nearby-item" onclick="openModal(${s.id})">
-        <div class="nearby-item-name">${s.title}</div>
-        <div class="nearby-item-dist">${s.city} — ${s.dist<1?Math.round(s.dist*1000)+' km':Math.round(s.dist)+' km'}</div>
-      </div>`).join('');
-  },()=>{
-    btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><circle cx="10" cy="10" r="7"/><line x1="10" y1="1" x2="10" y2="3"/><line x1="10" y1="17" x2="10" y2="19"/><line x1="1" y1="10" x2="3" y2="10"/><line x1="17" y1="10" x2="19" y2="10"/></svg> Localiser ma position`;
-    btn.classList.remove('locating');
-    alert('Localisation refusée ou impossible.');
-  });
-}
-
-/* ── MAP ── */
-function initMap(){
-  mapInst=L.map('map').setView([48.2,-2.9],8);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:18}).addTo(mapInst);
-  sites.forEach(s=>{
-    const icon=L.divIcon({className:'',
-      html:`<div style="background:#071428;color:white;font-family:Inter,sans-serif;font-size:9px;font-weight:700;letter-spacing:.08em;padding:4px 10px;white-space:nowrap;border-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,.3)">AVENTURE</div>`,
-      iconAnchor:[28,14]
-    });
-    L.marker([s.lat,s.lng],{icon}).addTo(mapInst)
-     .bindPopup(`<b style="font-family:'Playfair Display',serif">${s.title}</b><br><small>${s.city}</small><br><a href="${s.gmaps}" target="_blank" style="color:#d4530a;font-size:11px">Itinéraire →</a>`);
-  });
-}
 
 document.addEventListener('click',e=>{
   if(!e.target.closest('.bar-drop-wrap')){
@@ -670,8 +606,6 @@ document.addEventListener('click',e=>{
 });
 
 renderCarousel();
-if(typeof L!=='undefined'){initMap();}
-else{window.addEventListener('load',()=>{if(typeof L!=='undefined')initMap();});}
 
 document.querySelectorAll('.hero-btn-primary').forEach(btn=>{
   btn.addEventListener('touchstart',()=>btn.classList.add('touching'),{passive:true});
