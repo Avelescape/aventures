@@ -126,7 +126,7 @@ header{
     flex-direction:column;
     align-items:flex-start;
 
-    margin-top:120px;      /* descend le bouton */
+    margin-top:250px;      /* descend le bouton */
 
 }
 .hero-btn{
@@ -173,7 +173,7 @@ header{
   position:relative;
   z-index:5;
   text-align:center;
-  padding:20px 7.5% 28px;
+  padding:5px 7.5% 28px;
   background:var(--cream);
 }
 .eyebrow{
@@ -233,19 +233,25 @@ header{
 
 /* ADVENTURES */
 .adventures{background:var(--cream);padding:18px 0 34px}
-.carousel-outer{position:relative}.carousel-mask{overflow:hidden}.carousel-track{display:flex;gap:14px;transition:transform .4s cubic-bezier(.4,0,.2,1)}.carousel-nav-btn{display:none}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:5px;margin-top:10px}.carousel-dot{width:6px;height:6px;border-radius:50%;background:var(--sand);cursor:pointer;transition:all .2s;flex-shrink:0;border:0}.carousel-dot.active{background:var(--gold);width:18px;border-radius:3px}.carousel-dot.nearby{width:4px;height:4px;background:#D9C3A0}
+.carousel-outer{position:relative}.carousel-mask{overflow:hidden}.carousel-track{display:flex;gap:14px;transition:transform .4s cubic-bezier(.4,0,.2,1)}.carousel-nav-btn{display:none}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:5px;margin-top:2px;margin-bottom:0}.carousel-dot{width:6px;height:6px;border-radius:50%;background:var(--sand);cursor:pointer;transition:all .2s;flex-shrink:0;border:0}.carousel-dot.active{background:var(--gold);width:18px;border-radius:3px}.carousel-dot.nearby{width:4px;height:4px;background:#D9C3A0}
 .adv-card{flex:0 0 calc(25% - 11px);background:#FFF8EE;border:1px solid #D9C3A0;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(7,27,52,.14);cursor:pointer}.adv-card:active{transform:scale(.99)}.adv-card-img{height:160px;position:relative;overflow:hidden}.adv-card-img img{width:100%;height:100%;object-fit:cover;display:block}.adv-card-body{padding:14px 14px}.adv-card-title{font-family:Georgia,serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.2}.adv-card-loc{display:flex;align-items:center;gap:5px;font-size:11px;color:#6D6253;margin-bottom:12px;font-weight:500}.adv-card-actions{display:flex;gap:8px}.adv-btn-voir{flex:1;background:var(--orange);color:white;border:none;border-radius:9px;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:42px}.adv-btn-fav{width:42px;height:42px;border-radius:9px;border:1.5px solid #D9C3A0;background:#EAD9BC;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:#6D6253}.adv-btn-fav.fav-active{color:var(--orange);border-color:var(--orange)}.adv-btn-fav.fav-active svg{fill:var(--orange)}
 
 
 /* BANDEAU AVENTURES KIDS */
 .kids-banner{
   background:var(--cream);
-  padding:14px 0 20px;
+  width:100%;
+  margin-top:-45px;
+  padding:0 0 20px;
+}
+.kids-banner .container{
+  width:100%;
+  padding:0 7.5%;       /* même largeur que les cartes */
 }
 .kids-banner img{
+  display:block;
   width:100%;
   height:auto;
-  display:block;
 }
 
 /* AVIS + CTA */
@@ -258,7 +264,18 @@ header{
 @media(max-width:760px){
   body{max-width:480px}
   .nav{height:78px;padding:0 18px}.nav-logo-img{width:210px;height:70px}.nav-burger{width:40px}.nav-burger span{width:27px;height:3px}.nav-connexion{height:42px;padding:0 14px;font-size:14px;gap:8px}.nav-connexion svg{width:20px;height:20px}
-  .hero{min-height:545px;background-position:center bottom}.hero::after{display:none}.container{padding:0 28px}.hero-content{padding-top:72px;width:78%}.hero h1{font-size:58px}.hero-subtitle{font-size:18px;margin-top:18px}.hero-free{font-size:23px;margin-top:18px}.hero-buttons{gap:12px;width:100%;max-width:350px}.hero-btn{min-height:56px;font-size:17px;padding:0 15px}.hero-btn .arrow{font-size:30px}.hero-btn svg{width:24px;height:24px}.comment-cartes{margin-top:-60px;padding:0 18px}.comment-cartes img{border-radius:0}.adventures-intro{padding:38px 28px 24px}.eyebrow{font-size:15px}.adventures-intro h2{font-size:34px}.adventures-intro p{font-size:17px}.cta-all{min-height:54px;font-size:16px}.adv-card{flex-basis:calc(50% - 7px)}.adv-card-img{height:160px}.reviews-grid{grid-template-columns:repeat(3,1fr)}
+  .hero{min-height:545px;background-position:center bottom}.hero::after{display:none}.container{padding:0 28px}
+  .kids-banner .container{padding:0 18px;}
+  .kids-banner{
+  background:var(--cream);
+  width:100%;
+  margin-top:-45px;
+  padding:0 0 20px;
+}.hero-content{padding-top:72px;width:78%}.hero h1{font-size:58px}.hero-subtitle{font-size:18px;margin-top:18px}.hero-free{font-size:23px;margin-top:18px}.hero-buttons{gap:12px;width:100%;max-width:350px}.hero-btn{min-height:56px;font-size:17px;padding:0 15px}.hero-btn .arrow{font-size:30px}.hero-btn svg{width:24px;height:24px}.comment-cartes{margin-top:-60px;padding:0 18px}.comment-cartes img{border-radius:0}.adventures-intro{padding:38px 28px 24px}.eyebrow{font-size:15px}.adventures-intro h2{font-size:34px}.adventures-intro p{font-size:17px}.cta-all{min-height:54px;font-size:16px}.adv-card{flex-basis:calc(50% - 7px)}.adv-card-img{height:160px}.adventures{padding:18px 0 0}
+  .carousel-dots{margin-top:2px;margin-bottom:0}
+  .kids-banner{margin-top:-45px;padding:0 0 20px}
+  .kids-banner .container{padding:0 18px}
+  .reviews-grid{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:390px){.hero h1{font-size:50px}.hero-content{width:86%}.comment-cartes{margin-top:-54px;padding:0 14px}.adventures-intro h2{font-size:30px}.hero{min-height:515px}.adv-card-img{height:145px}}
 </style>
