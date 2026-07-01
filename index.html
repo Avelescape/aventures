@@ -121,7 +121,14 @@ header{
   color:#FFF200;
   letter-spacing:.5px;
 }
-.hero-buttons{margin-top:22px;display:flex;flex-direction:column;gap:18px;width:min(360px,100%)}
+.hero-buttons{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+
+    margin-top:55px;      /* descend le bouton */
+
+}
 .hero-btn{
   min-height:72px;
   display:flex;align-items:center;justify-content:space-between;gap:18px;
@@ -260,8 +267,6 @@ header{
   <section class="hero">
     <div class="container hero-content">
       <h1>Visitez <em>autrement</em></h1>
-      <p class="hero-subtitle">Des aventures inoubliables<br>au cœur du patrimoine breton.</p>
-      <div class="hero-free">GRATUIT</div>
       <div class="hero-buttons">
         <a class="hero-btn hero-btn-primary" href="#">
           <span class="btn-left">
@@ -270,13 +275,7 @@ header{
           </span>
           <span class="arrow">›</span>
         </a>
-        <a class="hero-btn hero-btn-secondary" href="#fiches">
-          <span class="btn-left">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#071B34" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.1 5-5 2.1 2.1-5 5-2.1z"/></svg>
-            TROUVER UN LIEU
-          </span>
-          <span class="arrow">›</span>
-        </a>
+    
       </div>
     </div>
   </section>
@@ -288,8 +287,8 @@ header{
   <section class="adventures-intro" id="fiches">
     <div class="eyebrow">✦ Nos aventures ✦</div>
     <h2>Découvrez nos aventures</h2>
-    <p>Explorez des lieux exceptionnels à travers des enquêtes captivantes inspirées de l’histoire et des légendes bretonnes.</p>
-    <a class="cta-all" href="#aventures">VOIR TOUTES LES AVENTURES <span>›</span></a>
+    <p>Visitez ou revisitez les lieux touristiques à travers des enquêtes captivantes inspirées de l’histoire et des légendes locales.</p>
+    <a class="cta-all" href="#aventures">TROUVER UN LIEU </a>
   </section>
 
   <div class="bar">
