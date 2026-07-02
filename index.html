@@ -293,9 +293,30 @@ header{
   .carousel-dots{margin-top:2px;margin-bottom:0}
   .kids-banner{margin-top:-65px;padding:0 0 20px}
   .kids-banner .container{padding:0 18px}
-  .reviews-grid{grid-template-columns:repeat(3,1fr)}
+  .reviews-section{padding:10px 0 8px}
+  .reviews-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+    align-items:stretch;
+  }
+  .review-photo-card{display:none}
+  .review-card{
+    min-height:unset;
+    height:auto;
+    padding:8px;
+    gap:3px;
+    border-radius:10px;
+  }
+  .review-stars{font-size:11px;letter-spacing:.5px;line-height:1}
+  .review-text{
+    font-size:10.5px;
+    line-height:1.22;
+    margin:0;
+    flex:0;
+  }
+  .review-author{font-size:10px;line-height:1.1;margin-top:2px}
 }
-@media(max-width:390px){.hero h1{font-size:50px}.hero-content{width:86%}.comment-cartes{margin-top:-82px;padding:0 14px}.adventures-intro{margin-top:-34px}.adventures-intro h2{font-size:30px}.hero{min-height:515px}.adv-card-img{height:145px}}
+@media(max-width:390px){.hero h1{font-size:50px}.hero-content{width:86%}.comment-cartes{margin-top:-82px;padding:0 14px}.adventures-intro{margin-top:-34px}.adventures-intro h2{font-size:30px}.hero{min-height:515px}.adv-card-img{height:145px}.review-text{font-size:10px}.review-card{padding:7px}}
 </style>
 </head>
 <body>
