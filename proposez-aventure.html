@@ -4,43 +4,790 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#071B34" />
-<title>Devenir auteur — AvelEscape</title>
+<title>Proposer une aventure — AvelEscape</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#071B34;--deep:#031529;--gold:#C89A4A;--orange:#F63D0E;--cream:#FCE7C9;--paper:#FFF8EE;--sand:#D9C3A0;--muted:#4f463b;--ink:#071B34}
-*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;background:var(--cream)}body{font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--ink);max-width:1024px;margin:0 auto;min-height:100vh;box-shadow:0 0 50px rgba(0,0,0,.16)}a{text-decoration:none;color:inherit}img{max-width:100%;display:block}.container{width:100%;padding:0 7.5%}
-header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#082542 0%,#041a31 100%);border-bottom:2px solid rgba(200,154,74,.35);padding-top:env(safe-area-inset-top,0)}.brand-bar{height:126px;display:flex;align-items:center;justify-content:center}.brand-logo{width:460px;height:112px;object-fit:contain}
-.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 78% 18%,rgba(200,154,74,.34),transparent 28%),linear-gradient(135deg,#071B34 0%,#041a31 54%,#031529 100%);color:var(--paper);padding:74px 0 92px;border-bottom:1px solid rgba(200,154,74,.28)}.hero:before{content:"";position:absolute;right:-150px;bottom:-170px;width:470px;height:470px;border:2px solid rgba(200,154,74,.20);border-radius:50%}.hero:after{content:"✦";position:absolute;right:9%;top:52px;color:rgba(252,231,201,.45);font-size:74px;font-family:Georgia,serif}.hero-content{position:relative;z-index:2;max-width:720px}.eyebrow{display:inline-flex;align-items:center;gap:10px;color:#F8D99E;font-family:Georgia,serif;font-size:18px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px}.hero h1{font-family:Georgia,serif;font-size:clamp(50px,7vw,80px);line-height:.95;letter-spacing:-1px;max-width:690px}.hero h1 em{display:block;color:var(--orange);font-style:italic}.hero p{margin-top:22px;max-width:650px;font-family:Georgia,serif;font-size:24px;line-height:1.35;color:#FFF1DC}.hero-actions{margin-top:30px}.btn{min-height:58px;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:0 24px;font-family:Georgia,serif;font-size:19px;font-weight:700;letter-spacing:.3px;box-shadow:0 8px 20px rgba(0,0,0,.22)}.btn-primary{background:linear-gradient(180deg,#E04412,#C83209);color:white;border:2px solid rgba(255,248,238,.24)}
-.intro{padding:38px 0 12px}.intro-card{background:var(--paper);border:1px solid var(--sand);border-radius:22px;padding:28px;box-shadow:0 12px 30px rgba(7,27,52,.12)}.intro-card h2{font-family:Georgia,serif;font-size:34px;color:var(--navy);margin-bottom:10px}.intro-card p{font-family:Georgia,serif;font-size:20px;line-height:1.48;color:var(--muted)}.place-list{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}.place-list span{background:#FCE7C9;border:1px solid #E1C89E;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700;color:var(--navy)}
-.form-section{padding:22px 0 46px}.form-wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:18px;align-items:start}.panel{background:linear-gradient(180deg,#082542,#03172E);color:var(--paper);border:1px solid rgba(200,154,74,.45);border-radius:22px;padding:26px;box-shadow:0 12px 30px rgba(7,27,52,.16);position:sticky;top:145px}.panel h2{font-family:Georgia,serif;font-size:30px;line-height:1.05;margin-bottom:16px}.panel ul{list-style:none;display:flex;flex-direction:column;gap:13px;margin-top:18px}.panel li{display:flex;gap:10px;font-size:15px;line-height:1.45;color:#FCE7C9}.panel li:before{content:"✦";color:var(--gold);font-family:Georgia,serif}.panel-note{margin-top:24px;padding:14px;border-radius:14px;background:rgba(252,231,201,.08);border:1px solid rgba(252,231,201,.18);font-family:Georgia,serif;font-size:17px;line-height:1.35}.author-form{background:var(--paper);border:1px solid var(--sand);border-radius:22px;padding:26px;box-shadow:0 12px 30px rgba(7,27,52,.12)}.form-title{font-family:Georgia,serif;font-size:34px;color:var(--navy);margin-bottom:8px}.form-subtitle{font-family:Georgia,serif;font-size:19px;line-height:1.42;color:var(--muted);margin-bottom:22px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-block{grid-column:1/-1;margin:10px 0 2px;padding:13px 15px;border-radius:14px;background:linear-gradient(180deg,#082542,#03172E);color:var(--paper);font-family:Georgia,serif;font-size:20px;font-weight:700;border:1px solid rgba(200,154,74,.45)}.form-group{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}.form-group.full,.full{grid-column:1/-1}label{font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--navy)}input,select,textarea{width:100%;border:1.5px solid var(--sand);background:#FCE7C9;color:var(--navy);border-radius:12px;padding:14px;font:500 16px Inter,system-ui,sans-serif;outline:none;min-height:50px}textarea{min-height:132px;resize:vertical;line-height:1.45}input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 4px rgba(246,61,14,.10);background:var(--paper)}input[type=file]{padding:12px;background:var(--paper)}.form-help{font-size:12px;color:#6D6253;line-height:1.4}.help-box{grid-column:1/-1;background:#FCE7C9;border:1px solid rgba(217,195,160,.9);border-radius:14px;padding:14px 16px;color:var(--muted);font-size:14px;line-height:1.55}.help-box strong{display:block;font-family:Georgia,serif;color:var(--navy);font-size:18px;margin-bottom:5px}.checkbox-line{display:flex;gap:12px;align-items:flex-start;background:#FCE7C9;border:1px solid #EAD9BC;border-radius:14px;padding:14px;margin:12px 0;color:var(--navy);line-height:1.45;text-transform:none;font-weight:500;letter-spacing:0}.checkbox-line input{margin-top:4px;width:18px;height:18px;min-height:auto;accent-color:var(--gold);flex:none}.reward-box{grid-column:1/-1;background:var(--paper);border:1.5px dashed var(--gold);border-radius:16px;padding:18px;margin:8px 0 16px}.reward-box h3{font-family:Georgia,serif;font-size:23px;color:var(--navy);margin-bottom:10px}.reward-box ul{padding-left:20px;line-height:1.75;color:var(--muted)}.form-status{display:none;border-radius:14px;padding:15px;margin:18px 0;font-size:15px;line-height:1.45}.form-status.success{display:block;background:#e7f6e9;border:1px solid #9bd3a3;color:#123d1a}.form-status.error{display:block;background:#fff0ee;border:1px solid #f0a098;color:#7a170c}.submit-area{margin:28px 0 10px;text-align:center}.submit-btn{width:min(420px,100%);min-height:62px;border:none;border-radius:12px;background:linear-gradient(180deg,#E04412,#C83209);color:#fff;font-family:Georgia,serif;font-size:20px;font-weight:700;cursor:pointer;box-shadow:0 10px 20px rgba(198,50,9,.22)}.submit-btn:disabled{opacity:.65;cursor:wait}.note-small{font-size:12px;color:#6D6253;line-height:1.45;text-align:center;margin-top:12px}
-footer{background:var(--navy);color:var(--paper);padding:30px 0;text-align:center;border-top:1px solid rgba(200,154,74,.25)}footer img{width:220px;margin:0 auto 12px}footer p{font-family:Georgia,serif;font-size:16px;color:#FCE7C9}
-@media(max-width:760px){body{max-width:480px}.container{padding:0 28px}.brand-bar{height:94px}.brand-logo{width:310px;height:82px}.hero{padding:54px 0 74px}.hero h1{font-size:48px}.hero p{font-size:20px}.btn{width:100%;min-height:54px;font-size:17px}.intro-card,.panel,.author-form{border-radius:18px;padding:20px}.form-wrap{grid-template-columns:1fr}.panel{position:relative;top:auto}.form-grid{grid-template-columns:1fr}.form-title,.intro-card h2{font-size:30px}}@media(max-width:390px){.container{padding:0 18px}.brand-logo{width:280px}.hero h1{font-size:42px}.hero p{font-size:18px}}
+:root{
+  --navy:#071B34;
+  --navy-deep:#031529;
+  --gold:#C89A4A;
+  --orange:#F63D0E;
+  --cream:#FCE7C9;
+  --cream-2:#FFF8EE;
+  --sand:#D9C3A0;
+  --text:#071B34;
+  --muted:#4f463b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--cream)}
+body{
+  font-family:Inter,system-ui,sans-serif;
+  background:var(--cream);
+  color:var(--text);
+  max-width:1024px;
+  margin:0 auto;
+  min-height:100vh;
+  box-shadow:0 0 50px rgba(0,0,0,.16);
+}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+.container{width:100%;padding:0 7.5%}
+
+/* HEADER */
+header{
+  background:linear-gradient(180deg,#082542 0%,#041a31 100%);
+  color:white;
+  position:sticky;
+  top:0;
+  z-index:200;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding-top:env(safe-area-inset-top,0px);
+}
+.nav{
+  height:112px;
+  padding:0 36px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:relative;
+}
+.nav-burger{
+  width:46px;height:46px;
+  border:none;background:transparent;
+  display:flex;flex-direction:column;justify-content:center;gap:8px;
+  cursor:pointer;
+}
+.nav-burger span{display:block;width:38px;height:4px;border-radius:4px;background:#F9ECDC}
+.nav-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.nav-logo-img{width:320px;height:92px;object-fit:contain}
+.nav-connexion{
+  height:56px;
+  display:flex;align-items:center;gap:14px;
+  padding:0 26px;
+  border:1.5px solid rgba(255,255,255,.9);
+  border-radius:999px;
+  background:rgba(255,255,255,.02);
+  color:white;
+  font-family:Georgia,serif;
+  font-size:22px;
+  cursor:pointer;
+}
+.nav-connexion svg{width:28px;height:28px}
+
+/* HERO PROPOSITION D’AVENTURE */
+.author-hero{
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 78% 22%,rgba(200,154,74,.35),transparent 28%),
+    linear-gradient(135deg,#071B34 0%,#041a31 52%,#031529 100%);
+  color:#FFF8EE;
+  padding:74px 0 96px;
+  border-bottom:1px solid rgba(200,154,74,.28);
+}
+.author-hero::before{
+  content:"";
+  position:absolute;
+  right:-110px;
+  bottom:-160px;
+  width:420px;
+  height:420px;
+  border:2px solid rgba(200,154,74,.22);
+  border-radius:50%;
+}
+.author-hero::after{
+  content:"✦";
+  position:absolute;
+  right:9%;
+  top:52px;
+  color:rgba(252,231,201,.45);
+  font-size:74px;
+  font-family:Georgia,serif;
+}
+.author-hero-content{position:relative;z-index:2;max-width:720px}
+.author-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  color:#F8D99E;
+  font-family:Georgia,serif;
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin-bottom:18px;
+}
+.author-hero h1{
+  font-family:Georgia,serif;
+  font-size:clamp(48px,7vw,78px);
+  line-height:.95;
+  letter-spacing:-1px;
+  max-width:620px;
+}
+.author-hero h1 em{display:block;color:var(--orange);font-style:italic}
+.author-hero p{
+  margin-top:22px;
+  max-width:610px;
+  font-family:Georgia,serif;
+  font-size:24px;
+  line-height:1.35;
+  color:#FFF1DC;
+}
+.author-hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+.author-btn{
+  min-height:58px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  border-radius:12px;
+  padding:0 22px;
+  font-family:Georgia,serif;
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:.3px;
+  box-shadow:0 8px 20px rgba(0,0,0,.22);
+}
+.author-btn-primary{background:linear-gradient(180deg,#E04412,#C83209);color:white;border:2px solid rgba(255,248,238,.24)}
+.author-btn-secondary{background:#FFF8EE;color:var(--navy);border:2px solid var(--gold)}
+
+/* INTRO */
+.author-intro{
+  background:var(--cream);
+  padding:38px 0 12px;
+}
+.intro-card{
+  background:#FFF8EE;
+  border:1px solid var(--sand);
+  border-radius:22px;
+  padding:26px;
+  box-shadow:0 12px 30px rgba(7,27,52,.12);
+}
+.intro-card h2{
+  font-family:Georgia,serif;
+  font-size:34px;
+  color:var(--navy);
+  margin-bottom:10px;
+}
+.intro-card p{
+  font-family:Georgia,serif;
+  font-size:20px;
+  line-height:1.48;
+  color:var(--muted);
+}
+.steps-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:20px;
+}
+.step-card{
+  background:#FCE7C9;
+  border:1px solid rgba(200,154,74,.45);
+  border-radius:16px;
+  padding:18px;
+}
+.step-number{
+  width:34px;height:34px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  background:var(--navy);
+  color:#FFF8EE;
+  font-weight:800;
+  margin-bottom:12px;
+}
+.step-card h3{
+  font-family:Georgia,serif;
+  font-size:20px;
+  margin-bottom:6px;
+  color:var(--navy);
+}
+.step-card p{
+  font-size:14px;
+  line-height:1.45;
+  font-family:Inter,system-ui,sans-serif;
+}
+
+/* FORM */
+.form-section{background:var(--cream);padding:22px 0 46px}
+.form-wrap{
+  display:grid;
+  grid-template-columns:.85fr 1.15fr;
+  gap:18px;
+  align-items:start;
+}
+.author-panel{
+  background:linear-gradient(180deg,#082542,#03172E);
+  color:#FFF8EE;
+  border:1px solid rgba(200,154,74,.45);
+  border-radius:22px;
+  padding:26px;
+  box-shadow:0 12px 30px rgba(7,27,52,.16);
+  position:sticky;
+  top:130px;
+}
+.author-panel h2{
+  font-family:Georgia,serif;
+  font-size:30px;
+  line-height:1.05;
+  margin-bottom:16px;
+  color:#FFF8EE;
+}
+.author-panel ul{list-style:none;display:flex;flex-direction:column;gap:13px;margin-top:18px}
+.author-panel li{
+  display:flex;
+  gap:10px;
+  font-size:15px;
+  line-height:1.45;
+  color:#FCE7C9;
+}
+.author-panel li::before{content:"✦";color:var(--gold);font-family:Georgia,serif}
+.author-panel-note{
+  margin-top:24px;
+  padding:14px;
+  border-radius:14px;
+  background:rgba(252,231,201,.08);
+  border:1px solid rgba(252,231,201,.18);
+  font-family:Georgia,serif;
+  font-size:17px;
+  line-height:1.35;
+}
+.author-form{
+  background:#FFF8EE;
+  border:1px solid var(--sand);
+  border-radius:22px;
+  padding:26px;
+  box-shadow:0 12px 30px rgba(7,27,52,.12);
+}
+.form-title{
+  font-family:Georgia,serif;
+  font-size:34px;
+  color:var(--navy);
+  margin-bottom:8px;
+}
+.form-subtitle{
+  font-family:Georgia,serif;
+  font-size:19px;
+  line-height:1.42;
+  color:var(--muted);
+  margin-bottom:22px;
+}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.form-group.full{grid-column:1/-1}
+label{
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  color:var(--navy);
+}
+input,select,textarea{
+  width:100%;
+  border:1.5px solid #D9C3A0;
+  background:#FCE7C9;
+  color:var(--navy);
+  border-radius:12px;
+  padding:14px 14px;
+  font:500 16px Inter,system-ui,sans-serif;
+  outline:none;
+  min-height:50px;
+}
+textarea{min-height:132px;resize:vertical;line-height:1.45}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--orange);
+  box-shadow:0 0 0 4px rgba(246,61,14,.10);
+  background:#FFF8EE;
+}
+.form-block{
+  grid-column:1/-1;
+  margin:8px 0 2px;
+  padding:12px 14px;
+  border-radius:14px;
+  background:linear-gradient(180deg,#082542,#03172E);
+  color:#FFF8EE;
+  font-family:Georgia,serif;
+  font-size:20px;
+  font-weight:700;
+  border:1px solid rgba(200,154,74,.45);
+}
+input[type="file"]{
+  padding:12px;
+  background:#FFF8EE;
+}
+.progression-help{
+  background:#FCE7C9;
+  border:1px solid rgba(217,195,160,.8);
+  border-radius:14px;
+  padding:12px 14px;
+  font-size:13px;
+  color:#4f463b;
+  line-height:1.45;
+  margin-bottom:14px;
+}
+
+.form-help{font-size:12px;color:#6D6253;line-height:1.4}
+.checkbox-row{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  background:#FCE7C9;
+  border:1px solid rgba(217,195,160,.8);
+  border-radius:14px;
+  padding:13px;
+  margin:4px 0 18px;
+}
+.checkbox-row input{width:18px;height:18px;min-height:auto;margin-top:2px;accent-color:var(--orange)}
+.checkbox-row span{font-size:13px;line-height:1.45;color:#4f463b}
+.submit-btn{
+  width:100%;
+  min-height:62px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(180deg,#E04412,#C83209);
+  color:white;
+  font-family:Georgia,serif;
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:.5px;
+  cursor:pointer;
+  box-shadow:0 10px 20px rgba(198,50,9,.20);
+}
+.submit-btn:active{transform:scale(.99)}
+.form-note{
+  margin-top:14px;
+  font-size:12px;
+  color:#6D6253;
+  text-align:center;
+  line-height:1.45;
+}
+
+/* FOOTER */
+.author-footer{
+  background:var(--navy);
+  color:#FFF8EE;
+  padding:30px 0;
+  text-align:center;
+  border-top:1px solid rgba(200,154,74,.25);
+}
+.author-footer img{width:220px;margin:0 auto 12px}
+.author-footer p{font-family:Georgia,serif;font-size:16px;color:#FCE7C9}
+
+@media(max-width:760px){
+  body{max-width:480px}
+  .container{padding:0 28px}
+  .nav{height:78px;padding:0 18px}
+  .nav-logo-img{width:210px;height:70px}
+  .nav-burger{width:40px}
+  .nav-burger span{width:27px;height:3px}
+  .nav-connexion{height:42px;padding:0 14px;font-size:14px;gap:8px}
+  .nav-connexion svg{width:20px;height:20px}
+  .author-hero{padding:54px 0 74px}
+  .author-hero h1{font-size:50px}
+  .author-hero p{font-size:20px}
+  .author-hero-actions{flex-direction:column}
+  .author-btn{width:100%;min-height:54px;font-size:17px}
+  .intro-card,.author-panel,.author-form{border-radius:18px;padding:20px}
+  .steps-grid{grid-template-columns:1fr}
+  .form-wrap{grid-template-columns:1fr}
+  .author-panel{position:relative;top:auto}
+  .form-grid{grid-template-columns:1fr}
+  .form-title,.intro-card h2{font-size:30px}
+}
+@media(max-width:390px){
+  .container{padding:0 18px}
+  .author-hero h1{font-size:44px}
+  .author-hero p{font-size:18px}
+}
+
+.form-step{
+  position:relative;
+  background:#FFF8EE;
+  border:1px solid #D9C3A0;
+  border-radius:18px;
+  padding:28px;
+  margin:22px 0;
+  box-shadow:0 10px 24px rgba(7,27,52,.10);
+}
+.form-step h2{
+  font-family:Georgia,serif;
+  color:#071B34;
+  font-size:30px;
+  margin-bottom:12px;
+}
+.step-badge{
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#C89A4A,#A87528);
+  color:#FFF8EE;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:Georgia,serif;
+  font-weight:700;
+  font-size:20px;
+  margin-bottom:14px;
+  box-shadow:0 5px 12px rgba(168,117,40,.25);
+}
+.step-help{
+  font-family:Georgia,serif;
+  color:#4f463b;
+  font-size:18px;
+  line-height:1.45;
+  margin-bottom:18px;
+}
+.upload-box{
+  border:1.5px dashed #C89A4A;
+  border-radius:16px;
+  background:#FCE7C9;
+  padding:20px;
+  margin:18px 0;
+}
+.upload-box label{
+  display:block;
+  font-family:Georgia,serif;
+  font-size:20px;
+  font-weight:700;
+  color:#071B34;
+  margin-bottom:12px;
+}
+.upload-box input[type="file"]{
+  display:block;
+  width:100%;
+  background:#FFF8EE;
+  border:1px solid #D9C3A0;
+  border-radius:10px;
+  padding:12px;
+  color:#071B34;
+}
+.upload-box small{
+  display:block;
+  margin-top:10px;
+  color:#6D6253;
+  font-size:13px;
+}
+.help-box{
+  background:#FFF8EE;
+  border:1px solid #EAD9BC;
+  border-radius:14px;
+  padding:18px;
+  color:#071B34;
+}
+.help-box strong{
+  display:block;
+  font-family:Georgia,serif;
+  font-size:18px;
+  margin-bottom:10px;
+}
+.help-box ul{
+  padding-left:20px;
+  line-height:1.7;
+}
+.checkbox-line{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  background:#FCE7C9;
+  border:1px solid #EAD9BC;
+  border-radius:14px;
+  padding:14px;
+  margin:12px 0;
+  color:#071B34;
+  line-height:1.45;
+}
+.checkbox-line input{
+  margin-top:4px;
+  width:18px;
+  height:18px;
+  accent-color:#C89A4A;
+  flex:none;
+}
+.submit-area{
+  margin:30px 0 10px;
+  text-align:center;
+}
+.submit-btn{
+  width:min(420px,100%);
+  min-height:62px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(180deg,#E04412,#C83209);
+  color:#fff;
+  font-family:Georgia,serif;
+  font-size:20px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 10px 20px rgba(198,50,9,.22);
+}
+@media(max-width:760px){
+  .form-step{padding:22px 18px;border-radius:16px}
+  .form-step h2{font-size:25px}
+  .step-help{font-size:16px}
+}
+
 </style>
 </head>
 <body>
-<header><div class="brand-bar"><a href="index.html" aria-label="Accueil AvelEscape"><img class="brand-logo" src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webproseaveltransparent.webp" alt="AvelEscape"></a></div></header>
+<header>
+  <nav class="nav" aria-label="Navigation principale">
+    <button class="nav-burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <a class="nav-center" href="index.html" aria-label="Accueil AvelEscape">
+      <img class="nav-logo-img" src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webproseaveltransparent.webp" alt="AvelEscape">
+    </a>
+    <button class="nav-connexion" type="button">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-4 3.1-7 7-7s7 3 7 7"/></svg>
+      Connexion
+    </button>
+  </nav>
+</header>
+
 <main>
-<section class="hero"><div class="container hero-content"><div class="eyebrow">✦ Devenir auteur ✦</div><h1>Imaginez la prochaine <em>aventure AvelEscape</em></h1><p>Chaque lieu peut devenir le décor d’une enquête, d’une mission, d’une chasse au trésor ou d’un récit interactif. Partagez votre idée : nous l’étudierons avec attention.</p><div class="hero-actions"><a class="btn btn-primary" href="#formulaire">Déposer mon idée ›</a></div></div></section>
-<section class="intro"><div class="container"><div class="intro-card"><h2>Des aventures dans des lieux librement accessibles</h2><p>AvelEscape privilégie les espaces publics ou librement accessibles, afin que les joueurs puissent vivre l’expérience sans billet d’entrée permanent.</p><div class="place-list"><span>Centre historique</span><span>Quartier remarquable</span><span>Village</span><span>Place</span><span>Rue</span><span>Parc public</span><span>Jardin public</span><span>Forêt</span><span>Sentier</span><span>Promenade</span><span>Pont</span><span>Fontaine</span><span>Lavoir</span><span>Canal</span><span>Écluse</span><span>Remparts accessibles</span><span>Monument en accès libre</span><span>Site naturel</span><span>Panorama</span><span>Site archéologique accessible</span></div></div></div></section>
-<section class="form-section" id="formulaire"><div class="container form-wrap">
-<aside class="panel"><h2>Ce que vous pouvez proposer</h2><ul><li>Un lieu librement accessible que vous connaissez, aimez ou souhaitez faire découvrir.</li><li>Une époque, une ambiance, une anecdote ou un fait marquant.</li><li>Des personnages réels, fictifs ou inspirés de l’histoire du lieu.</li><li>Des énigmes d’observation, de logique, de déduction ou de manipulation.</li><li>Des idées de codes, coffres, puzzles, objets à assembler ou mécanismes.</li><li>Des photos, plans, croquis ou documents utiles.</li></ul><div class="panel-note">L’objectif n’est pas de fournir un jeu terminé, mais une base riche pour imaginer une aventure AvelEscape autour d’un lieu réel.</div></aside>
-<form class="author-form" id="authorForm"><h2 class="form-title">Devenir auteur</h2><p class="form-subtitle">Présentez votre idée comme un dossier : lieu, histoire, personnages, énigmes, mécanismes, photos et documents.</p><div class="form-grid">
-<div class="form-block">Vous</div><div class="form-group full"><label for="identite">Nom, prénom ou pseudo</label><input id="identite" type="text" placeholder="Ex. Marie Dupont ou Explorateur29" autocomplete="name" required></div><div class="form-group"><label for="email">Adresse e-mail</label><input id="email" type="email" autocomplete="email" required></div><div class="form-group"><label for="telephone">Téléphone</label><input id="telephone" type="tel" autocomplete="tel"></div><div class="form-group full"><label for="profil">Vous proposez cette aventure en tant que</label><select id="profil" required><option value="">Choisir une option</option><option>Joueur AvelEscape</option><option>Famille</option><option>Enseignant / élèves</option><option>Passionné d’histoire ou de lieux remarquables</option><option>Professionnel du tourisme ou de la culture</option><option>Autre</option></select></div>
-<div class="form-block">Le lieu</div><div class="form-group"><label for="titre_aventure">Titre provisoire</label><input id="titre_aventure" type="text" placeholder="Ex. Le secret de la vieille place" required></div><div class="form-group"><label for="lieu">Lieu précis</label><input id="lieu" type="text" placeholder="Ex. centre historique, parc public, sentier…" required></div><div class="form-group"><label for="departement">Ville / département</label><input id="departement" type="text" placeholder="Ex. Nantes, 44" required></div><div class="form-group"><label for="epoque">Époque ou période</label><input id="epoque" type="text" placeholder="Ex. Antiquité, XIXe siècle, époque contemporaine…" required></div><div class="help-box"><strong>Conseil AvelEscape</strong> Choisissez de préférence un lieu accessible au public, sans billet d’entrée permanent. L’aventure doit pouvoir être jouée simplement lors d’une balade.</div><div class="form-group full"><label for="interet_lieu">Pourquoi ce lieu mérite-t-il une aventure AvelEscape ?</label><textarea id="interet_lieu" placeholder="Expliquez ce qui rend ce lieu intéressant : détail insolite, histoire méconnue, ambiance, point de vue, traces du passé, parcours agréable…" required></textarea></div>
-<div class="form-block">L’histoire</div><div class="form-group full"><label for="histoire">Histoire ou mystère proposé</label><textarea id="histoire" placeholder="Racontez le point de départ : secret, disparition, objet perdu, message ancien, défi, enquête, mission, fait historique, anecdote locale…" required></textarea></div><div class="form-group full"><label for="personnages">Personnages</label><textarea id="personnages" placeholder="Personnage historique, habitant, artisan, scientifique, explorateur, témoin, enquêteur, personnage fictif…"></textarea></div><div class="form-group full"><label for="ambiance">Ambiance souhaitée</label><textarea id="ambiance" placeholder="Historique, mystérieuse, familiale, humoristique, fantastique, policière, chasse au trésor, mission secrète, exploration…"></textarea></div>
-<div class="form-block">Les énigmes et mécanismes</div><div class="form-group full"><label for="enigmes">Idées d’énigmes</label><textarea id="enigmes" placeholder="Observation d’un détail, code à trouver, inscription à lire, suite logique, mot caché, puzzle, déduction, comparaison d’images…"></textarea></div><div class="form-group full"><label for="mecanismes">Idées de mécanismes</label><textarea id="mecanismes" placeholder="Cadenas, coffre, roue, mécanisme, puzzle, manipulation, objet à assembler, combinaison, carte à reconstituer, défi numérique…"></textarea></div><div class="form-group full"><label for="progression">Progression de l’aventure</label><textarea id="progression" placeholder="Ex. 1. Point de départ → 2. Premier indice → 3. Code à résoudre → 4. Nouveau lieu → 5. Révélation finale…" required></textarea><div class="form-help">Un début, quelques étapes et une révélation finale suffisent.</div></div>
-<div class="form-block">Photos et documents</div><div class="form-group full"><label for="photos">Photos du lieu</label><input id="photos" type="file" accept="image/*" multiple><div class="form-help">Photos générales, détails observables, repères, éléments visibles depuis l’espace public, croquis ou captures utiles.</div></div><div class="form-group full"><label for="documents">Documents utiles</label><input id="documents" type="file" multiple accept=".jpg,.jpeg,.png,.webp,.pdf,.doc,.docx"><div class="form-help">Formats acceptés : JPG, PNG, WEBP, PDF, DOC et DOCX.</div></div><label class="checkbox-line full"><input type="checkbox" name="usage_etude_photos" required><span>Je certifie être l’auteur des photos et documents transmis, ou disposer des autorisations nécessaires pour les partager. J’autorise AvelEscape à les utiliser dans le cadre de l’étude de cette proposition.</span></label><div class="help-box"><strong>Vous pouvez ajouter :</strong> plans, cartes, documents historiques, articles, dessins, notes, photographies, croquis ou tout élément permettant de comprendre le potentiel du lieu librement accessible.</div>
-<div class="form-block">Accord sur la proposition</div><label class="checkbox-line full"><input type="checkbox" name="accord_contact" required><span>J’accepte d’être recontacté(e) par AvelEscape au sujet de ma proposition.</span></label><label class="checkbox-line full"><input type="checkbox" name="exploitation_commerciale" required><span>En soumettant cette proposition, j’autorise AvelEscape à étudier, adapter, modifier, compléter, publier, reproduire et exploiter tout ou partie de ma proposition, y compris à des fins commerciales, sans qu’une rémunération ou une indemnisation ne soit due. Je comprends qu’AvelEscape pourra, s’il le souhaite, remercier certains contributeurs par des avantages non financiers : mention du nom ou pseudo, accès à des missions exclusives, badges, récompenses virtuelles, accès anticipé ou autres avantages. Ces récompenses sont facultatives et ne constituent pas une contrepartie contractuelle.</span></label><label class="checkbox-line full"><input type="checkbox" name="etude_sans_garantie" required><span>J’accepte que ma proposition soit étudiée par AvelEscape, sans garantie de réalisation, de publication ou de commercialisation.</span></label><div class="reward-box"><h3>Pourquoi proposer une aventure ?</h3><ul><li>Participer au développement d’AvelEscape.</li><li>Faire découvrir un lieu qui vous tient à cœur.</li><li>Voir éventuellement votre nom ou pseudo cité dans une aventure.</li><li>Débloquer des récompenses ou missions exclusives non financières.</li><li>Contribuer à créer de nouvelles expériences de visite.</li></ul></div>
-</div><div id="formStatus" class="form-status" aria-live="polite"></div><div class="submit-area"><button type="submit" class="submit-btn" id="submitBtn">Proposer mon aventure</button><p class="note-small">Votre proposition sera transmise à AvelEscape pour étude.</p></div></form></div></section>
-</main><footer><div class="container"><img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webproseaveltransparent.webp" alt="AvelEscape"><p>Des aventures immersives inspirées par les joueurs.</p></div></footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL="https://braybbxyptumhtbfqoho.supabase.co";const SUPABASE_PUBLIC_KEY="sb_publishable_2EdmGUgw5lo0NDgCDwmudA_kS8COBvo";const STORAGE_BUCKET="Propositions-auteurs";const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY);const form=document.getElementById("authorForm"),submitBtn=document.getElementById("submitBtn"),formStatus=document.getElementById("formStatus");function value(id){return document.getElementById(id)?.value.trim()||""}function checked(name){return document.querySelector(`input[name="${name}"]`)?.checked||false}function showStatus(type,message){formStatus.className="form-status "+type;formStatus.innerHTML=message;formStatus.scrollIntoView({behavior:"smooth",block:"center"})}function safeName(name){return name.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9._-]/g,"-").replace(/-+/g,"-").toLowerCase()}async function uploadFiles(files,folder){const paths=[];for(const file of files){const path=`${folder}/${Date.now()}-${crypto.randomUUID()}-${safeName(file.name)}`;const {error}=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,file,{cacheControl:"3600",upsert:false});if(error)throw error;paths.push(path)}return paths}async function insertProposal(payload){
-  const { error } = await supabaseClient
-    .from("propositions_auteurs")
-    .insert([payload]);
-  if (error) throw error;
-}form.addEventListener("submit",async(event)=>{event.preventDefault();submitBtn.disabled=true;submitBtn.textContent="Envoi en cours…";showStatus("success","⏳ Envoi de votre proposition en cours…");try{const folder=`proposition-${Date.now()}-${crypto.randomUUID()}`;const photoPaths=document.getElementById("photos").files.length?await uploadFiles(document.getElementById("photos").files,`${folder}/photos`):[];const documentPaths=document.getElementById("documents").files.length?await uploadFiles(document.getElementById("documents").files,`${folder}/documents`):[];const payload={nom_pseudo:value("identite"),email:value("email"),telephone:value("telephone"),lieu:value("lieu"),departement:value("departement"),epoque:value("epoque"),titre_aventure:value("titre_aventure"),histoire:(value("interet_lieu")?"Pourquoi ce lieu mérite une aventure : "+value("interet_lieu")+"\n\n":"")+value("histoire")+(value("ambiance")?"\n\nAmbiance : "+value("ambiance"):"")+(value("progression")?"\n\nProgression : "+value("progression"):""),personnages:value("personnages"),enigmes:value("enigmes"),mecanismes:value("mecanismes"),photos:JSON.stringify(photoPaths),documents:JSON.stringify(documentPaths),consentement_photos:checked("usage_etude_photos"),statut:"reçue",commentaires_admin:""};await insertProposal(payload);form.reset();showStatus("success","✅ <strong>Votre proposition a bien été reçue.</strong><br>Merci de contribuer à AvelEscape. Nous étudierons votre proposition avec attention.")}catch(error){console.error(error);showStatus("error","⚠️ <strong>L’envoi n’a pas pu aboutir.</strong><br>Message technique : "+(error.message||error))}finally{submitBtn.disabled=false;submitBtn.textContent="Proposer mon aventure"}});
-</script>
+  <section class="author-hero">
+    <div class="container author-hero-content">
+      <div class="author-eyebrow">✦ Proposer une aventure ✦</div>
+      <h1>Imaginez <em>une aventure</em></h1>
+      <p>Vous avez une idée de parcours, de mystère, de légende ou de lieu à faire découvrir ? Partagez-la avec AvelEscape.</p>
+      <div class="author-hero-actions">
+        <a class="author-btn author-btn-primary" href="#formulaire">Proposer mon aventure ›</a>
+        <a class="author-btn author-btn-secondary" href="index.html">Retour au site</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="author-intro">
+    <div class="container">
+      <div class="intro-card">
+        <h2>Proposer une aventure AvelEscape, c’est quoi ?</h2>
+        <p>Partager une idée de visite-jeu immersive, accessible sur mobile, qui transforme une balade en aventure culturelle. Chaque joueur peut proposer un lieu, une histoire, une ambiance ou une piste d’énigmes.</p>
+        <div class="steps-grid">
+          <article class="step-card">
+            <div class="step-number">1</div>
+            <h3>Un lieu</h3>
+            <p>Une ville, un village, un phare, une abbaye, un port ou un quartier à faire découvrir.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-number">2</div>
+            <h3>Une histoire</h3>
+            <p>Un mystère, une légende, un personnage historique ou un événement local.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-number">3</div>
+            <h3>Des énigmes</h3>
+            <p>Des observations sur place, des indices, des codes et une progression simple à jouer.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="form-section" id="formulaire">
+    <div class="container form-wrap">
+      <aside class="author-panel">
+        <h2>Ce que vous pouvez proposer</h2>
+        <ul>
+          <li>Un lieu que vous connaissez ou que vous aimez.</li>
+          <li>Une époque, une ambiance ou un événement historique.</li>
+          <li>Des personnages réels ou inventés qui portent l’histoire.</li>
+          <li>Des idées d’énigmes, de cadenas, de trappes, d’engrenages ou d’objets à manipuler.</li>
+          <li>Une progression simple : début, étapes, révélation finale.</li>
+          <li>Des photos du lieu, repères ou détails observables sur place.</li>
+        </ul>
+        <div class="author-panel-note">L’objectif n’est pas de fournir un jeu terminé, mais une base riche pour imaginer une aventure AvelEscape autour d’un lieu réel.</div>
+      </aside>
+
+      <form class="author-form" action="mailto:contact@avelescape.fr" method="post" enctype="text/plain">
+        <h2 class="form-title">Proposer une aventure</h2>
+        <p class="form-subtitle">Présentez votre idée comme un mini-dossier : lieu, époque, histoire, personnages, énigmes, mécanismes, photos et progression de jeu.</p>
+
+        <div class="form-grid">
+          <div class="form-block">Vos coordonnées</div>
+          <div class="form-group">
+            <label for="prenom">Prénom</label>
+            <input id="prenom" name="Prénom" type="text" autocomplete="given-name" required>
+          </div>
+          <div class="form-group">
+            <label for="nom">Nom</label>
+            <input id="nom" name="Nom" type="text" autocomplete="family-name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Adresse e-mail</label>
+            <input id="email" name="Email" type="email" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label for="telephone">Téléphone</label>
+            <input id="telephone" name="Téléphone" type="tel" autocomplete="tel">
+          </div>
+          <div class="form-group full">
+            <label for="profil">Vous proposez cette aventure en tant que</label>
+            <select id="profil" name="Profil" required>
+              <option value="">Choisir une option</option>
+              <option>Joueur AvelEscape</option>
+              <option>Habitant du territoire</option>
+              <option>Famille</option>
+<option>Enseignant / Élèves</option>
+              <option>Passionné d’histoire ou de patrimoine</option>
+              <option>Autre</option>
+            </select>
+          </div>
+
+          <div class="form-block">Le lieu et l’époque</div>
+          <div class="form-group">
+            <label for="lieu">Lieu précis de l’aventure</label>
+            <input id="lieu" name="Lieu précis" type="text" placeholder="Ex. phare, abbaye, port, quartier, château…" required>
+          </div>
+          <div class="form-group">
+            <label for="ville">Ville / territoire</label>
+            <input id="ville" name="Ville ou territoire" type="text" placeholder="Ex. Quimper, Roscoff, Saint-Mathieu…" required>
+          </div>
+          <div class="form-group">
+            <label for="epoque">Époque imaginée</label>
+            <input id="epoque" name="Époque" type="text" placeholder="Ex. 1834, Moyen Âge, années 1900…" required>
+          </div>
+          <div class="form-group">
+            <label for="duree">Durée estimée du parcours</label>
+            <select id="duree" name="Durée estimée">
+              <option value="">Choisir une option</option>
+              <option>30 à 45 minutes</option>
+              <option>45 à 60 minutes</option>
+              <option>60 à 90 minutes</option>
+              <option>Plus de 90 minutes</option>
+              <option>Je ne sais pas</option>
+            </select>
+          </div>
+
+          <div class="form-block">L’histoire proposée</div>
+          <div class="form-group full">
+            <label for="histoire">Histoire ou mystère proposé</label>
+            <textarea id="histoire" name="Histoire proposée" placeholder="Racontez le point de départ : disparition, secret, légende, objet perdu, message ancien, événement historique…" required></textarea>
+          </div>
+          <div class="form-group full">
+            <label for="ambiance">Ambiance souhaitée</label>
+            <textarea id="ambiance" name="Ambiance souhaitée" placeholder="Ex. aventure familiale, mystère historique, humour, légende bretonne, enquête douce, ambiance maritime…"></textarea>
+          </div>
+
+          <div class="form-block">Les personnages</div>
+          <div class="form-group full">
+            <label for="personnages">Personnages réels ou inventés</label>
+            <textarea id="personnages" name="Personnages" placeholder="Nom, rôle, époque, caractère, lien avec le lieu : gardien de phare, moine, marin, artisan, enfant, témoin…"></textarea>
+          </div>
+
+          <div class="form-block">Les énigmes et mécanismes</div>
+          <div class="form-group full">
+            <label for="enigmes">Idées d’énigmes</label>
+            <textarea id="enigmes" name="Idées d’énigmes" placeholder="Observation d’une statue, code à trouver, inscription à lire, détail architectural, puzzle, suite logique, mot caché…"></textarea>
+          </div>
+          <div class="form-group full">
+            <label for="mecanismes">Idées de mécanismes</label>
+            <textarea id="mecanismes" name="Idées de mécanismes" placeholder="Cadenas, trappe, engrenages, coffre, roue, sablier, balance, lampe, cloche, carte à reconstituer…"></textarea>
+          </div>
+
+          <div class="form-block">La progression de l’aventure</div>
+          <div class="form-group full">
+            <label for="progression">Déroulé proposé</label>
+            <textarea id="progression" name="Progression de l’aventure" placeholder="Ex. 1. Départ devant le phare → 2. Trouver un indice sur la porte → 3. Résoudre un code → 4. Aller vers l’abbaye → 5. Révélation finale…" required></textarea>
+            <div class="form-help">Indiquez les grandes étapes, même si elles sont encore approximatives.</div>
+          </div>
+          <div class="progression-help full">
+            Conseil : une bonne progression peut simplement contenir un début, 3 à 5 étapes, puis une révélation finale.
+          </div>
+
+          <div class="form-block">Photos et documents</div>
+          <div class="form-group full">
+            <label for="photos">Photos du lieu</label>
+            <input id="photos" name="Photos du lieu" type="file" accept="image/*" multiple>
+            <div class="form-help">Vous pouvez ajouter plusieurs photos : façade, détails, panneau historique, statue, porte, vue générale…</div>
+          </div>
+          <div class="form-group full">
+            <label for="liens">Liens utiles ou sources</label>
+            <textarea id="liens" name="Liens ou sources" placeholder="Lien vers une page historique, office de tourisme, article, photo libre, information…"></textarea>
+          </div>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" name="Accord contact" required>
+          <span>J’accepte d’être recontacté(e) par AvelEscape au sujet de ma proposition d’aventure.</span>
+        </label>
+        <p class="form-note">Important : l’envoi par e-mail ne transmet pas toujours les photos. Pour recevoir les fichiers correctement, reliez ce formulaire à WordPress, Formspree, Tally, Google Forms ou un espace de dépôt.</p>
+      
+<div class="form-group">
+<label for="pseudo">Pseudo AvelEscape</label>
+<input type="text" id="pseudo" name="pseudo" placeholder="Votre pseudo d'aventurier">
+</div>
+
+
+      <section class="form-step">
+        <div class="step-badge">8</div>
+        <h2>Photos et documents</h2>
+        <p class="step-help">
+          Ajoutez tous les éléments qui pourront nous aider à comprendre votre proposition d'aventure.
+        </p>
+
+        <div class="upload-box">
+          <label for="documents">Ajouter des photos et documents</label>
+          <input
+            type="file"
+            id="documents"
+            name="documents[]"
+            multiple
+            accept=".jpg,.jpeg,.png,.webp,.pdf,.doc,.docx"
+          >
+          <small>Formats acceptés : JPG, PNG, WEBP, PDF, DOC et DOCX.</small>
+        </div>
+
+        <div class="help-box">
+          <strong>Vous pouvez ajouter :</strong>
+          <ul>
+            <li>Des photographies du lieu</li>
+            <li>Des cartes ou plans</li>
+            <li>Des documents historiques</li>
+            <li>Des articles de presse</li>
+            <li>Des extraits d'ouvrages, si vous êtes autorisé à les partager</li>
+            <li>Des croquis ou dessins</li>
+            <li>Tout autre document utile</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="form-step">
+        <div class="step-badge">9</div>
+        <h2>Déclarations</h2>
+
+        <label class="checkbox-line">
+          <input type="checkbox" name="droits_fichiers" required>
+          <span>Je certifie être l'auteur des photographies et documents transmis, ou disposer des autorisations nécessaires pour les partager.</span>
+        </label>
+
+        <label class="checkbox-line">
+          <input type="checkbox" name="usage_etude" required>
+          <span>J'autorise AvelEscape à utiliser ces photographies et documents uniquement dans le cadre de l'étude de cette proposition.</span>
+        </label>
+
+        <label class="checkbox-line">
+          <input type="checkbox" name="droits_tiers" required>
+          <span>Je garantis que les éléments transmis ne portent pas atteinte aux droits d'un tiers : droit d'auteur, droit à l'image, propriété intellectuelle ou propriété privée.</span>
+        </label>
+
+        <label class="checkbox-line">
+          <input type="checkbox" name="etude_sans_garantie" required>
+          <span>J'accepte que ma proposition soit étudiée par AvelEscape, sans garantie de réalisation, de publication ou de commercialisation.</span>
+        </label>
+      </section>
+
+      <div class="submit-area">
+        <button type="submit" class="submit-btn">Envoyer ma proposition d'aventure</button>
+      </div>
+
+    </form>
+    </div>
+  </section>
+</main>
+
+<footer class="author-footer">
+  <div class="container">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webproseaveltransparent.webp" alt="AvelEscape">
+    <p>Des aventuress, historiques et immersives inspirées par les joueurs.</p>
+  </div>
+</footer>
 </body>
 </html>
