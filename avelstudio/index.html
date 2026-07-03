@@ -1,4 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AvelStudio</title>
+
+    <style>
+        :root{
+            --cream:#F5EFE0;
+            --paper:#EDE4CE;
+            --navy:#1A2C4A;
+            --orange:#E04412;
+            --border:#C9B88A;
+            --text:#2A1F14;
+        }
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            background:var(--cream);
+            font-family:Georgia,serif;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .login{
+
+            width:420px;
+            background:var(--paper);
+
+            border:2px solid var(--border);
+            border-radius:20px;
+
+            padding:40px;
+
+            box-shadow:0 20px 45px rgba(0,0,0,.15);
+
+        }
+
+        h1{
+
+            text-align:center;
+            color:var(--navy);
+            font-size:42px;
+
+        }
+
+        h2{
+
+            text-align:center;
+            color:var(--orange);
+            font-size:18px;
+            margin-top:10px;
+            margin-bottom:35px;
+
+        }
+
+        label{
+
+            display:block;
+            margin-bottom:8px;
+            color:var(--navy);
+            font-weight:bold;
+
+        }
+
+        input{
+
+            width:100%;
+            padding:14px;
+
+            border-radius:10px;
+            border:1px solid var(--border);
+
+            margin-bottom:20px;
+
+            font-size:16px;
+
+        }
+
+        button{
+
+            width:100%;
+
+            padding:15px;
+
+            border:none;
+            border-radius:50px;
+
+            background:var(--orange);
+
+            color:white;
+
+            font-size:17px;
+            font-weight:bold;
+
+            cursor:pointer;
+
+        }
+
+        button:hover{
+
+            background:#C83209;
+
+        }
+
+        #message{
+
+            margin-top:18px;
+            text-align:center;
+            color:red;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="login">
+
+    <h1>AVELSTUDIO</h1>
+
+    <h2>Atelier de création AvelEscape</h2>
+
+    <form id="loginForm">
+
+        <label>Email</label>
+
+        <input
+            id="email"
+            type="email"
+            required
+        >
+
+        <label>Mot de passe</label>
+
+        <input
+            id="password"
+            type="password"
+            required
+        >
+
+        <button type="submit">
+
+            Se connecter
+
+        </button>
+
+        <div id="message"></div>
+
+    </form>
+
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="js/supabase.js"></script>
+
 <script src="js/login.js"></script>
+
+</body>
+
+</html>
