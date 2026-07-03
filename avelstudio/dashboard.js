@@ -52,8 +52,8 @@ async function loadAdventures() {
       <h3>${escapeHtml(aventure.titre || "Aventure sans titre")}</h3>
 
       <div class="adventure-meta">
-        <span class="badge">${escapeHtml(aventure.statut || "brouillon")}</span>
-        <span>Type : ${escapeHtml(aventure.type_aventure || "non défini")}</span>
+        <span class="badge">${escapeHtml(aventure.statut || "Brouillon")}</span>
+        <span>Type : ${escapeHtml(aventure.type_aventure || "Adulte")}</span>
         <span>ID : ${aventure.id}</span>
       </div>
     `;
@@ -65,13 +65,14 @@ async function loadAdventures() {
 newAdventureBtn.addEventListener("click", async () => {
   message.textContent = "";
   message.className = "message";
+
   newAdventureBtn.disabled = true;
   newAdventureBtn.textContent = "Création...";
 
   const nouvelleAventure = {
     titre: "Nouvelle aventure",
-    type_aventure: "standard",
-    statut: "brouillon"
+    type_aventure: "Adulte",
+    statut: "Brouillon"
   };
 
   const { error } = await supabaseClient
