@@ -68,6 +68,11 @@ h1 {
   background: #c83209;
 }
 
+.primary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .secondary-btn {
   background: #f5efe0;
   color: #1a2c4a;
