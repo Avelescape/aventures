@@ -4,8 +4,17 @@ const newAdventureBtn = document.getElementById("newAdventureBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
 document.addEventListener("DOMContentLoaded", async () => {
+  if (!window.supabaseClient && typeof supabaseClient === "undefined") {
+    showMessage("Erreur : Supabase n'est pas chargé. Vérifie le fichier supabase.js.", "error");
+    adventuresList.innerHTML = "";
+    return;
+  }
+
   await checkUser();
   await loadAdventures();
+
+  newAdventureBtn.addEventListener("click", createAdventure);
+  logoutBtn.addEventListener("click", logout);
 });
 
 async function checkUser() {
@@ -13,23 +22,22 @@ async function checkUser() {
 
   if (error || !data.user) {
     window.location.href = "login.html";
+    return;
   }
 }
 
 async function loadAdventures() {
   adventuresList.innerHTML = "Chargement...";
-  message.textContent = "";
-  message.className = "message";
+  clearMessage();
 
   const { data, error } = await supabaseClient
     .from("aventures")
-    .select("*")
+    .select("id, created_at, lieu_id, titre, type_aventure, statut")
     .order("created_at", { ascending: false });
 
   if (error) {
     adventuresList.innerHTML = "";
-    showMessage("Erreur lors du chargement des aventures.", "error");
-    console.error(error);
+    showMessage("Erreur lors du chargement des aventures : " + error.message, "error");
     return;
   }
 
@@ -42,37 +50,27 @@ async function loadAdventures() {
     return;
   }
 
-  adventuresList.innerHTML = "";
-
-  data.forEach((aventure) => {
-    const card = document.createElement("article");
-    card.className = "adventure-card";
-
-    card.innerHTML = `
-      <h3>${escapeHtml(aventure.titre || "Aventure sans titre")}</h3>
-
-      <div class="adventure-meta">
-        <span class="badge">${escapeHtml(aventure.statut || "Brouillon")}</span>
-        <span>Type : ${escapeHtml(aventure.type_aventure || "Adulte")}</span>
-        <span>ID : ${aventure.id}</span>
-      </div>
-    `;
-
-    adventuresList.appendChild(card);
-  });
+  adventuresList.innerHTML = data.map(adventure => `
+    <article class="adventure-card">
+      <h2>${escapeHtml(adventure.titre || "Aventure sans titre")}</h2>
+      <p><strong>Type :</strong> ${escapeHtml(adventure.type_aventure || "Non défini")}</p>
+      <p><strong>Statut :</strong> ${escapeHtml(adventure.statut || "Non défini")}</p>
+      <p><strong>Créée le :</strong> ${formatDate(adventure.created_at)}</p>
+    </article>
+  `).join("");
 }
 
-newAdventureBtn.addEventListener("click", async () => {
-  message.textContent = "";
-  message.className = "message";
-
+async function createAdventure() {
   newAdventureBtn.disabled = true;
   newAdventureBtn.textContent = "Création...";
 
+  clearMessage();
+
   const nouvelleAventure = {
+    lieu_id: null,
     titre: "Nouvelle aventure",
-    type_aventure: "Adulte",
-    statut: "Brouillon"
+    type_aventure: "classique",
+    statut: "brouillon"
   };
 
   const { error } = await supabaseClient
@@ -80,25 +78,42 @@ newAdventureBtn.addEventListener("click", async () => {
     .insert([nouvelleAventure]);
 
   if (error) {
-    showMessage("Impossible de créer l’aventure.", "error");
-    console.error(error);
-  } else {
-    showMessage("Nouvelle aventure créée.", "success");
-    await loadAdventures();
+    showMessage("Erreur lors de la création : " + error.message, "error");
+    newAdventureBtn.disabled = false;
+    newAdventureBtn.textContent = "+ Nouvelle aventure";
+    return;
   }
+
+  showMessage("Nouvelle aventure créée.", "success");
+  await loadAdventures();
 
   newAdventureBtn.disabled = false;
   newAdventureBtn.textContent = "+ Nouvelle aventure";
-});
+}
 
-logoutBtn.addEventListener("click", async () => {
+async function logout() {
   await supabaseClient.auth.signOut();
   window.location.href = "login.html";
-});
+}
 
 function showMessage(text, type) {
   message.textContent = text;
-  message.className = `message ${type}`;
+  message.className = "message " + type;
+}
+
+function clearMessage() {
+  message.textContent = "";
+  message.className = "message";
+}
+
+function formatDate(dateString) {
+  if (!dateString) return "Date inconnue";
+
+  return new Date(dateString).toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  });
 }
 
 function escapeHtml(value) {
