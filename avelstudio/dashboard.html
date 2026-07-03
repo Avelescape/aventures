@@ -1,27 +1,47 @@
-Début du nouveau chat
 
-Nous reprenons le développement d'AvelStudio.
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AvelStudio - Tableau de bord</title>
 
-État actuel :
+  <link rel="stylesheet" href="dashboard.css" />
 
-GitHub Pages fonctionne.
-Supabase est connecté.
-Authentification fonctionnelle.
-dashboard.html fonctionne.
-dashboard.css fonctionne.
-dashboard.js affiche le tableau de bord.
-La table aventures existe avec les colonnes :
-id
-created_at
-lieu_id
-titre
-type_aventure
-statut
-La policy RLS "AvelStudio authenticated users" (ALL / authenticated) est créée.
-Le tableau de bord affiche actuellement "Aucune aventure pour le moment."
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script defer src="dashboard.js"></script>
+</head>
 
-Objectif : Version 0.3
-Je veux que le bouton "+ Nouvelle aventure" crée une nouvelle ligne dans la table aventures, puis affiche immédiatement cette aventure dans le tableau de bord.
+<body>
+  <main class="dashboard">
 
-Consigne importante :
-Fournis-moi toujours les fichiers complets (HTML, CSS et JS si nécessaire), jamais uniquement des extraits de code. Nous construisons AvelStudio étape par étape comme un véritable logiciel.
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">AvelStudio</p>
+        <h1>Tableau de bord</h1>
+        <p class="subtitle">Gère tes aventures Avelescape.</p>
+      </div>
+
+      <button id="logoutBtn" class="secondary-btn">Se déconnecter</button>
+    </header>
+
+    <section class="actions-bar">
+      <button id="newAdventureBtn" class="primary-btn">
+        + Nouvelle aventure
+      </button>
+    </section>
+
+    <section class="adventures-section">
+      <h2>Mes aventures</h2>
+
+      <div id="message" class="message"></div>
+
+      <div id="adventuresList" class="adventures-list">
+        Chargement...
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>
