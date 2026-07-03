@@ -1,41 +1,27 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AvelStudio - Tableau de bord</title>
-  <link rel="stylesheet" href="dashboard.css" />
-</head>
+Début du nouveau chat
 
-<body>
-  <main class="studio-page">
-    <header class="studio-header">
-      <div>
-        <p class="studio-kicker">AvelStudio</p>
-        <h1>Tableau de bord</h1>
-        <p class="studio-subtitle">Gestion des aventures AvelEscape</p>
-      </div>
+Nous reprenons le développement d'AvelStudio.
 
-      <button id="logoutBtn" class="logout-btn">Déconnexion</button>
-    </header>
+État actuel :
 
-    <section class="studio-actions">
-      <button id="newAdventureBtn" class="primary-btn">
-        + Nouvelle aventure
-      </button>
-    </section>
+GitHub Pages fonctionne.
+Supabase est connecté.
+Authentification fonctionnelle.
+dashboard.html fonctionne.
+dashboard.css fonctionne.
+dashboard.js affiche le tableau de bord.
+La table aventures existe avec les colonnes :
+id
+created_at
+lieu_id
+titre
+type_aventure
+statut
+La policy RLS "AvelStudio authenticated users" (ALL / authenticated) est créée.
+Le tableau de bord affiche actuellement "Aucune aventure pour le moment."
 
-    <section class="studio-card">
-      <h2>Mes aventures</h2>
+Objectif : Version 0.3
+Je veux que le bouton "+ Nouvelle aventure" crée une nouvelle ligne dans la table aventures, puis affiche immédiatement cette aventure dans le tableau de bord.
 
-      <p id="loadingMessage">Chargement des aventures...</p>
-
-      <div id="aventuresList" class="aventures-list"></div>
-    </section>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase.js"></script>
-  <script src="dashboard.js"></script>
-</body>
-</html>
+Consigne importante :
+Fournis-moi toujours les fichiers complets (HTML, CSS et JS si nécessaire), jamais uniquement des extraits de code. Nous construisons AvelStudio étape par étape comme un véritable logiciel.
