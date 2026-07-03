@@ -4,41 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AvelStudio - Tableau de bord</title>
-
   <link rel="stylesheet" href="dashboard.css" />
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js"></script>
-  <script defer src="dashboard.js"></script>
 </head>
 
 <body>
   <main class="dashboard">
     <header class="dashboard-header">
       <div>
-        <p class="eyebrow">AvelStudio</p>
-        <h1>Tableau de bord</h1>
-        <p class="subtitle">Gère tes aventures Avelescape.</p>
+        <h1>AvelStudio</h1>
+        <p>Tableau de bord des aventures</p>
       </div>
 
-      <button id="logoutBtn" class="secondary-btn">Se déconnecter</button>
+      <button id="logoutBtn" class="secondary-btn">Déconnexion</button>
     </header>
 
-    <section class="actions-bar">
+    <section class="actions">
       <button id="newAdventureBtn" class="primary-btn">
         + Nouvelle aventure
       </button>
     </section>
 
-    <section class="adventures-section">
-      <h2>Mes aventures</h2>
+    <p id="message" class="message"></p>
 
-      <div id="message" class="message"></div>
-
-      <div id="adventuresList" class="adventures-list">
-        Chargement...
-      </div>
+    <section id="adventuresList" class="adventures-list">
+      Chargement...
     </section>
   </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="dashboard.js"></script>
 </body>
 </html>
