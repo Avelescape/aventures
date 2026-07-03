@@ -1,12 +1,48 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>AvelStudio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AvelStudio - Tableau de bord</title>
+
+  <link rel="stylesheet" href="dashboard.css" />
 </head>
+
 <body>
+  <main class="studio-page">
+    <header class="studio-header">
+      <div>
+        <p class="studio-kicker">AvelStudio</p>
+        <h1>Tableau de bord</h1>
+        <p class="studio-subtitle">
+          Gestion des aventures Avelescape
+        </p>
+      </div>
 
-<h1>Bienvenue dans AvelStudio 🎉</h1>
+      <button id="logoutBtn" class="logout-btn">
+        Déconnexion
+      </button>
+    </header>
 
+    <section class="studio-actions">
+      <button class="primary-btn">
+        + Nouvelle aventure
+      </button>
+    </section>
+
+    <section class="studio-card">
+      <h2>Mes aventures</h2>
+
+      <p id="loadingMessage">
+        Chargement des aventures...
+      </p>
+
+      <div id="aventuresList" class="aventures-list"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="dashboard.js"></script>
 </body>
 </html>
