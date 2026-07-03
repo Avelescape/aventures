@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("password").value;
 
     const { error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
+      email: email,
+      password: password
     });
 
     if (error) {
