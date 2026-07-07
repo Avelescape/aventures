@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -492,7 +493,7 @@ input {
 .meca-indices {
   position: absolute;
   left: 50%;
-  bottom: 15%;
+  bottom: 26%;
   transform: translateX(-50%);
   z-index: 30;
   display: flex;
@@ -715,7 +716,7 @@ button {
 }
 
 .meca-indices {
-  bottom: 17%;
+  bottom: 30%;
   gap: 8px;
 }
 
@@ -2520,8 +2521,8 @@ function mettreAJourBoutonsIndicesMecanisme() {
     boutonIndice1.style.setProperty("display", "inline-block", "important");
   }
 
-  // Après 5 échecs complets, le 2ème indice devient disponible.
-  if (boutonIndice2 && nbErreursMecanisme >= 5) {
+  // Après 1 échec complet, le 2ème indice devient disponible.
+  if (boutonIndice2 && nbErreursMecanisme >= 1) {
     boutonIndice2.hidden = false;
     boutonIndice2.style.setProperty("display", "inline-block", "important");
   }
@@ -2702,4 +2703,3 @@ function retourSite() {
 
 </body>
 </html>
-
