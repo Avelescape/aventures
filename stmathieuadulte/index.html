@@ -393,6 +393,13 @@ input {
   stroke: rgba(245, 194, 75, 0.7);
 }
 
+.meca-zone.meca-zone-selected {
+  fill: rgba(245, 194, 75, 0.4);
+  stroke: rgba(245, 194, 75, 0.95);
+  stroke-width: 4;
+  filter: drop-shadow(0 0 10px rgba(245, 194, 75, 0.8));
+}
+
 .meca-zone-label {
   font-family: Georgia, serif;
   font-size: 64px;
@@ -1670,14 +1677,14 @@ html, body, body *, button, .btn-primary, input, textarea, select {
       <div id="meca-gearD" class="meca-gear meca-gear-big"></div>
 
       <svg class="meca-zones" viewBox="0 0 1152 2048" preserveAspectRatio="none">
-        <rect class="meca-zone" x="370" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('A')" />
-        <rect class="meca-zone" x="520" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('B')" />
-        <rect class="meca-zone" x="680" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('C')" />
-        <rect class="meca-zone" x="850" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('D')" />
+        <rect class="meca-zone" x="370" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('A', this)" />
+        <rect class="meca-zone" x="520" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('B', this)" />
+        <rect class="meca-zone" x="680" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('C', this)" />
+        <rect class="meca-zone" x="850" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('D', this)" />
 
-        <rect class="meca-zone" x="500" y="1500" width="130" height="280" rx="15" onclick="clickZoneMecanisme('E')" />
-        <rect class="meca-zone" x="680" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('F')" />
-        <rect class="meca-zone" x="820" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('G')" />
+        <rect class="meca-zone" x="500" y="1500" width="130" height="280" rx="15" onclick="clickZoneMecanisme('E', this)" />
+        <rect class="meca-zone" x="680" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('F', this)" />
+        <rect class="meca-zone" x="820" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('G', this)" />
 
       </svg>
 
@@ -1700,6 +1707,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   </div>
 
   <audio id="sonSuccesMecanisme" src="audios/engrenages.mp3" preload="auto"></audio>
+  <audio id="sonZoneMecanisme" src="audios/ABCDEFG.mp3" preload="auto"></audio>
 </div>
 
 
@@ -2420,7 +2428,7 @@ if (codeAncienPhareInput) {
 
 
 /* SOMMET DU PHARE - MÉCANISME HTML */
-const codeCorrectMecanisme = ["D", "A", "B", "C", "G"];
+const codeCorrectMecanisme = ["D", "A", "B", "C", "F"];
 
 const imageMecanismeEteinte = "images/1-webplentilleeteinte.webp";
 const imageMecanismeAllumee = "images/1-webplentilleallume.webp";
@@ -2445,11 +2453,26 @@ function jouerSuccesMecanisme() {
   });
 }
 
-function clickZoneMecanisme(letter) {
+function jouerSonZoneMecanisme() {
+  const son = document.getElementById("sonZoneMecanisme");
+  if (!son) return;
+
+  son.pause();
+  son.currentTime = 0;
+
+  son.play().catch(error => {
+    console.log("Son zone bloqué :", error);
+  });
+}
+
+function clickZoneMecanisme(letter, zoneEl) {
   if (mecanismeSolved) return;
 
+  jouerSonZoneMecanisme();
   hideMessageMecanisme();
   sequenceMecanisme.push(letter);
+
+  if (zoneEl) zoneEl.classList.add('meca-zone-selected');
 
   // IMPORTANT : on ne vérifie pas le code à chaque clic.
   // On laisse d'abord le joueur cliquer sur toutes les zones nécessaires.
@@ -2469,9 +2492,16 @@ function clickZoneMecanisme(letter) {
   nbErreursMecanisme++;
   vibrerEchec();
   sequenceMecanisme = [];
+  reinitialiserZonesMecanisme();
 
   showMessageMecanisme("Mauvais ordre. Le mécanisme se bloque.");
   mettreAJourBoutonsIndicesMecanisme();
+}
+
+function reinitialiserZonesMecanisme() {
+  document.querySelectorAll('.meca-zone.meca-zone-selected').forEach(zone => {
+    zone.classList.remove('meca-zone-selected');
+  });
 }
 
 function mettreAJourBoutonsIndicesMecanisme() {
@@ -2570,6 +2600,7 @@ function resetMecanismePhare() {
 
   cacherBoutonsIndicesMecanisme();
   hideMessageMecanisme();
+  reinitialiserZonesMecanisme();
 }
 
 function suiteMecanismePhare() {
