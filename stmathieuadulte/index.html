@@ -358,7 +358,7 @@ input {
 .meca-fond {
   position: absolute;
   inset: 0;
-  background-image: src("=");
+  background-image: url("images/1-webplentilleeteinte.webp");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -417,7 +417,7 @@ input {
 .meca-gear-small {
   width: 13%;
   aspect-ratio: 1 / 1;
-  background-image: url("images/1-webpengrenage.webp")
+  background-image: url("images/1-webpengrenage.webp");
 }
 
 .meca-gear-big {
@@ -1313,9 +1313,9 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <body>
 
-<audio id="cloche-audio" src="cloche.mp3" preload="auto"></audio>
+<audio id="cloche-audio" src="audios/cloche.mp3" preload="auto"></audio>
 
-<a class="site-retour" url="index.html">
+<a class="site-retour" href="../index.html">
   <span>site AvelEscape</span>
 </a>
 
@@ -1326,7 +1326,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen active" id="screen-intro">
   <img class="intro-img"
-       src="image/1-webpaffiche.webp"
+       src="images/1-webpaffiche.webp"
        alt="intro"
        onclick="startAventure(event)">
 
@@ -1350,7 +1350,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
     <p>Cliquez pour l'ouvrir.</p>
   </div>
 
-  <img src="image/1-webpenveloppe1.webp"
+  <img src="images/1-webpenveloppe1.webp"
        alt="missive1 scellée"
        class="missive1-image"
        onclick="showScreen('missive2')">
@@ -1361,7 +1361,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
     <p>Le cachet de cire est brisé...</p>
   </div>
 
-  <img src="image/1-webpenveloppe2.webp"
+  <img src="images/1-webpenveloppe2.webp"
        alt="missive2 ouverte"
        class="missive2-image"
        onclick="showScreen('lettre')">
@@ -1370,7 +1370,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-lettre">
   <div class="lettre-container">
     <img class="lettre-img"
-         src="image/1-webplettresosisabella.webp"
+         src="images/1-webplettresosisabella.webp"
          alt="lettre"
          onclick="showScreen('puits')">
 
@@ -1445,7 +1445,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div id="screen-porteloin" class="screen">
   <div class="porte-label">
     <img class="chapter-img"
-         src="image/1-webpphareloin.webp
+         src="images/1-webpphareloin.webp"
          alt="Porte du phare">
     <p>Il semble fermé</p>
     <button class="btn-primary" onclick="essayerOuvrir()">
@@ -1457,7 +1457,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div id="screen-portecadenas" class="screen">
   <div class="porte-label">
     <img class="chapter-img"
-         src="image/1-webpcadenasportefermee.webp"
+         src="images/1-webpcadenasportefermee.webp"
          alt="Cadenas du phare">
 
     <p>Entrez le code à 4 chiffres</p>
@@ -1491,7 +1491,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <h3>
   Vous devriez peut-être y aller.
 </h3>
-<audio id="chant-audio" src="grego.mp3" preload="auto"></audio>
+<audio id="chant-audio" src="audios/grego.mp3" preload="auto"></audio>
 
 <button id="stop-audio-btn" onclick="stopperChant()" title="Couper le chant">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
@@ -1508,7 +1508,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-abbaye">
   <div class="abbaye-container">
     <img class="abbaye-img"
-         src="image/1-webpmoineloin.webp"
+         src="images/1-webpmoineloin.webp"
          alt="Moine apparait dans l'abbaye"
          onclick="showScreen('moineloin')">
 
@@ -1520,7 +1520,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-moineloin">
   <img class="moineloin-img"
-       src="image/1-webpgwenhaelproche.webp"
+       src="images/1-webpgwenhaelproche.webp"
        alt="Moine parle">
 
   <div class="dialogue-box">
@@ -1537,7 +1537,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-sceneabbaye">
   <img class="chapter-img"
-       src="image/1-webptroisnaufrageurs.webp"
+       src="images/1-webptroisnaufrageurs.webp"
        alt="naufrageurs">
 
   <div class="dialogue-box">
@@ -1554,7 +1554,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-petitphare">
   <img class="chapter-img"
-       src="image/1-webpyannickkidnappe.webp"
+       src="images/1-webpyannickkidnappe.webp"
        alt="Yannick kidnappé">
 
   <div class="dialogue-box">
@@ -1577,7 +1577,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-suiteaventure">
   <img class="chapter-img"
-       src="image/1-webpyannick.webp"
+       src="images/1-webpyannick.webp"
        alt="Yannick hurle">
 
   <div class="dialogue-box">
@@ -1591,7 +1591,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-codeancienphare">
   <img class="chapter-img"
-       src="image/1-webpcadenasportefermee.webp"
+       src="images/1-webpcadenasportefermee.webp"
        alt="porte du phare">
 
   <div class="texte-sommet" style="opacity:1;">
@@ -1612,7 +1612,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-hautphare">
   <img class="chapter-img"
-       src="image/1-webprdcphare.webp"
+       src="images/1-webprdcphare.webp"
        alt="Phare ouvert">
 
   <div class="texte-sommet" style="opacity:1;">
@@ -1669,7 +1669,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
     </div>
   </div>
 
-  <audio id="sonSuccesMecanisme" src="engrenages.mp3" preload="auto"></audio>
+  <audio id="sonSuccesMecanisme" src="audios/engrenages.mp3" preload="auto"></audio>
 </div>
 
 
@@ -1695,7 +1695,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-finaventure">
   <img class="chapter-img"
-       src="image/1-webfin.webp"
+       src="images/1-webfin.webp"
        alt="Fin de l'aventure">
 
  <div style="height:220px;"></div>
@@ -1878,7 +1878,7 @@ if (reponseInput) {
 /* PUZZLE - VERSION RÉUTILISABLE AVELESCAPE - GLISSÉ AU DOIGT */
 const CONFIG_PUZZLE = {
   taille: 3,
-  image: URL("image/1-webpsceau.webp"),
+  image: "images/1-webpsceau.webp",
   messageVictoire: "Le sceau est reconstitué !",
   boutonSuite: "Continuer"
 };
@@ -2380,9 +2380,9 @@ if (codeAncienPhareInput) {
 /* SOMMET DU PHARE - MÉCANISME HTML */
 const codeCorrectMecanisme = ["D", "A", "B", "C", "G"];
 
-const imageMecanismeEteinte = url(image/1-webplentilleeteinte.webp);
-const imageMecanismeAllumee = url(image/1-webplentilleallume.webp);
-const imageMecanismeFaisceau = url(image/1-webpsceau.webp);
+const imageMecanismeEteinte = "images/1-webplentilleeteinte.webp";
+const imageMecanismeAllumee = "images/1-webplentilleallume.webp";
+const imageMecanismeFaisceau = "images/1-webpsceau.webp";
 
 let sequenceMecanisme = [];
 let nbErreursMecanisme = 0;
