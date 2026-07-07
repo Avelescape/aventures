@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -907,28 +906,14 @@ button {
 }
 
 
-/* Bouton couper le chant - flottant, visible sur tous les écrans pendant la lecture */
+/* Bouton couper le chant */
 #stop-audio-btn{
-    position: fixed;
-    top: max(64px, calc(env(safe-area-inset-top, 0px) + 54px));
-    right: max(12px, env(safe-area-inset-right, 0px));
-    z-index: 999999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 46px;
-    height: 46px;
-    background: rgba(16, 8, 10, 0.85);
-    border: 2px solid var(--or);
-    border-radius: 50%;
+    background: transparent;
+    border: none;
     cursor: pointer;
     padding: 0;
-    margin: 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-}
-
-#stop-audio-btn.visible{
-    display: flex;
+    margin: 10px auto;
+    display: block;
 }
 
 
@@ -1340,7 +1325,6 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <body>
 
 <audio id="cloche-audio" src="audios/cloche.mp3" preload="auto"></audio>
-<audio id="chant-audio" src="audios/grego.mp3" preload="auto"></audio>
 
 <a class="site-retour" href="../index.html">
   <span>site AvelEscape</span>
@@ -1350,12 +1334,6 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="bg"></div>
 <div class="progress-bar" id="progress" style="width:0%"></div>
 <button class="nav-back" id="nav-back" onclick="goBack()">←</button>
-
-<button id="stop-audio-btn" onclick="stopperChant()" title="Couper le chant">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff">
-        <path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v8.05A4.49 4.49 0 0 0 16.5 12zM19 12c0 2.53-1.17 4.78-3 6.24l1.42 1.42C19.61 17.8 21 15.05 21 12c0-3.06-1.39-5.81-3.58-7.66L16 5.76A8.96 8.96 0 0 1 19 12zM4.27 3 3 4.27l5 5H3v6h4l5 5V14.27l6.73 6.73L20 19.73 4.27 3z"/>
-    </svg>
-</button>
 
 <div class="screen active" id="screen-intro">
   <img class="intro-img"
@@ -1403,12 +1381,12 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-lettre">
   <div class="lettre-container">
     <img class="lettre-img"
-         src="1-webpisalettre.webp"
+         src="images/1-webplettresosisabella.webp"
          alt="lettre"
          onclick="showScreen('puits')">
 
     <button class="btn-primary" onclick="showScreen('puits')">
-      Cliquez lorsque vous êtes au puits
+      Clique lorsque vous êtes au puits
     </button>
   </div>
 </div>
@@ -1417,7 +1395,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   <div class="puits-label">
     <p>Vous êtes devant le puits de Saint-Mathieu.</p>
     <p>Personne...</p>
-    <p>Isabelle vous a pourtant demandé de l'y rejoindre.</p>
+    <p>Isabella vous a pourtant demandé de l'y rejoindre.</p>
     <p>Peut-être vous a-t-elle laissé un indice ?</p>
 
     <button class="btn-primary" onclick="showScreen('locmaze')">Continuer</button>
@@ -1443,13 +1421,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-so">
   <div class="so-label">
-    <p>Un autre façon de trouver le mot...</p>
-    <p>Première lettre de la 7eme ligne</p>
-    <p>Première lettre de la 12eme ligne</p>
-    <p>Dernière lettre de la 19eme ligne</p>
-    <p>Première lettre de la 21eme ligne</p>
-    <p>Première lettre de la 1ere ligne</p>
-
+    <p>Cherche sur le panneau "Site de la pointe de Saint Mathieu"</p>
     
 
     <button class="btn-primary" onclick="showScreen('locmaze')">Retour</button>
@@ -1460,7 +1432,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-puzzle">
   <div class="puzzle-label">
     <h2>Reconstituez le sceau</h2>
-    <p>Déplacez les pièces pour reformer l’image.</p>
+    <p>Déplace les pièces pour reformer l’image.</p>
 
     <div id="puzzle-board"></div>
     <div id="puzzle-message"></div>
@@ -1471,7 +1443,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   <div class="puzzle-label">
     <h2>Le sceau est reconstitué !</h2>
     <img src="images/1-webpsceau.webp" alt="Sceau du phare" class="puzzle-result-img">
-    <button class="btn-primary" onclick="showScreen('instructionschap2')">Continuer</button>
+    <button id="btn-continuer-sceau" class="btn-primary" onclick="continuerApresSceau(event)">Continuer</button>
   </div>
 </div>
 
@@ -1531,6 +1503,13 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <h3>
   Vous devriez peut-être y aller.
 </h3>
+<audio id="chant-audio" src="audios/grego.mp3" preload="auto"></audio>
+
+<button id="stop-audio-btn" onclick="stopperChant()" title="Couper le chant">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
+        <path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v8.05A4.49 4.49 0 0 0 16.5 12zM19 12c0 2.53-1.17 4.78-3 6.24l1.42 1.42C19.61 17.8 21 15.05 21 12c0-3.06-1.39-5.81-3.58-7.66L16 5.76A8.96 8.96 0 0 1 19 12zM4.27 3 3 4.27l5 5H3v6h4l5 5V14.27l6.73 6.73L20 19.73 4.27 3z"/>
+    </svg>
+</button>
 
     <button class="btn-primary" onclick="showScreen('abbaye')">
       Cliquez lorsque vous êtes à l'abbaye
@@ -1564,7 +1543,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
           class="btn-primary"
           style="display:none;"
           onclick="showScreen('sceneabbaye')">
-    Continuez vers le petit phare
+    Continuer vers le petit phare
   </button>
 </div>
 
@@ -1581,7 +1560,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
           class="btn-primary"
           style="display:none;"
           onclick="showScreen('petitphare')">
-    Continuez
+    Continuer
   </button>
 </div>
 
@@ -1614,11 +1593,11 @@ html, body, body *, button, .btn-primary, input, textarea, select {
        alt="Les naufrageurs fuient">
 
   <div class="dialogue-box">
-    <p>Grâce à la cloche, les naufrageurs ont pris peur et fuient.</p>
+    <p>Grâce à la cloche, les naufrageurs ont pris peur.</p>
   </div>
 
   <button class="btn-primary" onclick="showScreen('suiteaventure')">
-    Continuez
+    Continuer
   </button>
 </div>
 
@@ -1632,7 +1611,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   </div>
 
   <button id="btn-suite" class="btn-primary" style="display:none;" onclick="showScreen('codeancienphare')">
-    Continuez
+    Continuer
   </button>
 </div>
 
@@ -1667,12 +1646,11 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   </div>
 
   <button class="btn-primary" onclick="showScreen('sommetphare')">
-    Montez au sommet du phare
+    Monter au sommet du phare
   </button>
 </div>
 
 <div class="screen" id="screen-sommetphare">
-  <h1>Actionnez les engrenages et les poids pour rallumer le phare.</h1>
 
   <div class="meca-scene">
     <div class="meca-game" id="meca-game">
@@ -1745,12 +1723,6 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   <img class="chapter-img"
        src="images/1-webfin.webp"
        alt="Fin de l'aventure">
-       <p>Bravo, vous avez sauvé Yannick et les marins!</p>
-       <p>C'est grâce à vous que les naufrageurs ne sont pas arrivés à leur fin,</p>
-       <p>cette fois-çi...</p>
-       <p>Peut-être les retrouverons-nous dans une de nos prochaines aventures ?</p>
-       <p>...</p>
-       <p></p>Your support helps Gregorian Chanting (@GregorianChanting) keep the ancient voice of monastic devotion alive.</p>
 
  <div style="height:220px;"></div>
 
@@ -1771,26 +1743,6 @@ function vibrerEchec() {
 
 let currentScreen = 'intro';
 let navHistory = [];
-
-/* Bouton couper le chant : visible partout tant que le chant joue */
-const stopAudioBtn = document.getElementById('stop-audio-btn');
-const chantAudioGlobal = document.getElementById('chant-audio');
-
-function majBoutonStopChant() {
-  if (!stopAudioBtn || !chantAudioGlobal) return;
-
-  if (!chantAudioGlobal.paused && !chantAudioGlobal.ended) {
-    stopAudioBtn.classList.add('visible');
-  } else {
-    stopAudioBtn.classList.remove('visible');
-  }
-}
-
-if (chantAudioGlobal) {
-  chantAudioGlobal.addEventListener('play', majBoutonStopChant);
-  chantAudioGlobal.addEventListener('pause', majBoutonStopChant);
-  chantAudioGlobal.addEventListener('ended', majBoutonStopChant);
-}
 
 const screens = {
   intro: document.getElementById('screen-intro'),
@@ -1841,8 +1793,8 @@ const progressMap = {
   petitphare: 70,
   suiteaventure: 72,
   codeancienphare: 80,
-  hautphare: 85,
-  sommetphare: 90,
+  hautphare: 90,
+  sommetphare: 95,
   indicemecanisme1: 95,
   indicemecanisme2: 95,
   finaventure: 100
@@ -2124,6 +2076,17 @@ function checkPuzzle() {
   }, 900);
 }
 
+let dernierClicSceauContinuer = 0;
+function continuerApresSceau(event) {
+  if (event) event.preventDefault();
+
+  const maintenant = Date.now();
+  if (maintenant - dernierClicSceauContinuer < 400) return;
+  dernierClicSceauContinuer = maintenant;
+
+  showScreen('instructionschap2');
+}
+
 function stopperChant() {
   const chantAudio = document.getElementById('chant-audio');
 
@@ -2260,11 +2223,11 @@ function afficherDialogueNaufrageurs() {
 
 /* DIALOGUE PETIT PHARE */
 const dialoguePhare = [
-  "Regardez à l'ouest, en contrebas",
+  "Regardez à l'ouest, en contrebas !",
   "Yannick !!!",
   "Mais il ne nous voit pas...",
-  "Trouvez une solution pour à la fois:",
-  "lui dire qu'on est là,",
+  "Trouvez une solution pour à la fois :",
+  "lui dire qu'on est là",
   "et prévenir le bateau qu'il s'approche des récifs."
 ];
 
@@ -2330,10 +2293,10 @@ function verifierMotPhare() {
         cloche.play().catch(() => {});
     }
 
-    // attendre la fin de la cloche avant de continuer
+    // court instant pour entendre la cloche sonner avant de continuer
     setTimeout(() => {
         showScreen("naufrageursfuient");
-    }, 3500); // adapte selon la durée de cloche.mp3
+    }, 1500);
 }
  else {
     vibrerEchec();
@@ -2365,11 +2328,10 @@ function afficherIndicePhare() {
 
 /* TEXTE FINAL */
 const texteFin = [
-  "Yannick nous a vu !",
+  "Yannick nous as vu !",
   "Il nous dit :",
-  "retournez au phare,",
-  "le code du cadenas...",
-  "C'est l'année de construction du phare,",
+  "Le code du cadenas...",
+  "c'est l'année de construction de l'ancien phare,",
   "mais à l'envers!",
   "Dépêchez-vous..."
 ];
@@ -2683,6 +2645,7 @@ function startAventure(event) {
 /* Sécurité : on expose explicitement les fonctions utilisées par les boutons HTML */
 window.vibrerEchec = vibrerEchec;
 window.startAventure = startAventure;
+window.continuerApresSceau = continuerApresSceau;
 window.showScreen = showScreen;
 window.goBack = goBack;
 window.verifier = verifier;
@@ -2728,6 +2691,11 @@ document.addEventListener('DOMContentLoaded', function() {
   introElements.forEach(element => {
     element.addEventListener('pointerup', startAventure, { passive: false });
   });
+
+  const btnContinuerSceau = document.getElementById('btn-continuer-sceau');
+  if (btnContinuerSceau) {
+    btnContinuerSceau.addEventListener('pointerup', continuerApresSceau, { passive: false });
+  }
 });
 
 function retourSite() {
