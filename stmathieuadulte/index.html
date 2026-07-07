@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1270,12 +1269,20 @@ input:focus {
   border: 2px solid var(--adult-gold);
   font-size: clamp(16px, 4.7vw, 21px);
 }
-.meca-reset,
 .meca-indice-btn,
 .meca-suite {
   color: #17090b;
   background: linear-gradient(180deg, #fff2b2, var(--adult-gold));
   border: 2px solid #ffe29a;
+  border-radius: 14px;
+  font-family: Georgia, serif;
+  font-weight: 800;
+}
+
+.meca-reset {
+  color: #fff3cf;
+  background: linear-gradient(180deg, #a5232c 0%, var(--adult-red-2) 100%);
+  border: 2px solid #ffb3ab;
   border-radius: 14px;
   font-family: Georgia, serif;
   font-weight: 800;
@@ -1400,12 +1407,12 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-lettre">
   <div class="lettre-container">
     <img class="lettre-img"
-         src="images/1-webplettresosisabella.webp"
+         src="1-webpisalettre.webp"
          alt="lettre"
          onclick="showScreen('puits')">
 
     <button class="btn-primary" onclick="showScreen('puits')">
-      Clique lorsque vous êtes au puits
+      Cliquez lorsque vous êtes au puits
     </button>
   </div>
 </div>
@@ -1457,7 +1464,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-puzzle">
   <div class="puzzle-label">
     <h2>Reconstituez le sceau</h2>
-    <p>Déplace les pièces pour reformer l’image.</p>
+    <p>Déplacez les pièces pour reformer l’image.</p>
 
     <div id="puzzle-board"></div>
     <div id="puzzle-message"></div>
@@ -1561,7 +1568,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
           class="btn-primary"
           style="display:none;"
           onclick="showScreen('sceneabbaye')">
-    Continuer vers le petit phare
+    Continuez vers le petit phare
   </button>
 </div>
 
@@ -1578,7 +1585,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
           class="btn-primary"
           style="display:none;"
           onclick="showScreen('petitphare')">
-    Continuer
+    Continuez
   </button>
 </div>
 
@@ -1611,11 +1618,11 @@ html, body, body *, button, .btn-primary, input, textarea, select {
        alt="Les naufrageurs fuient">
 
   <div class="dialogue-box">
-    <p>Grâce à la cloche, les naufrageurs ont pris peur.</p>
+    <p>Grâce à la cloche, les naufrageurs ont pris peur et fuient.</p>
   </div>
 
   <button class="btn-primary" onclick="showScreen('suiteaventure')">
-    Continuer
+    Continuez
   </button>
 </div>
 
@@ -1629,7 +1636,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   </div>
 
   <button id="btn-suite" class="btn-primary" style="display:none;" onclick="showScreen('codeancienphare')">
-    Continuer
+    Continuez
   </button>
 </div>
 
@@ -1664,7 +1671,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   </div>
 
   <button class="btn-primary" onclick="showScreen('sommetphare')">
-    Monter au sommet du phare
+    Montez au sommet du phare
   </button>
 </div>
 
@@ -1742,6 +1749,12 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   <img class="chapter-img"
        src="images/1-webfin.webp"
        alt="Fin de l'aventure">
+       <p>Bravo, vous avez sauvé Yannick et les marins!</p>
+       <p>C'est grâce à vous queles naufrageurs ne sont pas arrivés à leur fin,</p>
+       <p>cette fois-çi...</p>
+       <p>Peut-être les retrouverons-nous dans une de nos prochaines aventures ?</p>
+       <p>...</p>
+       <p></p>Your support helps Gregorian Chanting (@GregorianChanting) keep the ancient voice of monastic devotion alive.</p>
 
  <div style="height:220px;"></div>
 
@@ -1832,8 +1845,8 @@ const progressMap = {
   petitphare: 70,
   suiteaventure: 72,
   codeancienphare: 80,
-  hautphare: 90,
-  sommetphare: 95,
+  hautphare: 85,
+  sommetphare: 90,
   indicemecanisme1: 95,
   indicemecanisme2: 95,
   finaventure: 100
@@ -2250,11 +2263,11 @@ function afficherDialogueNaufrageurs() {
 
 /* DIALOGUE PETIT PHARE */
 const dialoguePhare = [
-  "Regardez à l'ouest, en contrebas !",
+  "Regardez à l'ouest, en contrebas",
   "Yannick !!!",
   "Mais il ne nous voit pas...",
-  "Trouvez une solution pour à la fois :",
-  "lui dire qu'on est là",
+  "Trouvez une solution pour à la fois:",
+  "lui dire qu'on est là,",
   "et prévenir le bateau qu'il s'approche des récifs."
 ];
 
@@ -2357,7 +2370,8 @@ function afficherIndicePhare() {
 const texteFin = [
   "Yannick nous as vu !",
   "Il nous dit :",
-  "Le code du cadenas...",
+  "retournez au phare,",
+  "le code du cadenas...",
   "c'est l'année de construction de l'ancien phare,",
   "mais à l'envers!",
   "Dépêchez-vous..."
@@ -2703,3 +2717,4 @@ function retourSite() {
 
 </body>
 </html>
+
