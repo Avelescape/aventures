@@ -1714,7 +1714,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-indicemecanisme1">
   <div class="indice-mecanisme-page">
     <h2>1er indice</h2>
-    <p>L'ordre des engrenages et du poids est l'identité certifiée du phare.</p>
+    <p>Le code est l'identité certifiée du phare.</p>
     <button class="btn-primary" onclick="showScreen('sommetphare')">
       Retour au mécanisme
     </button>
@@ -1724,7 +1724,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-indicemecanisme2">
   <div class="indice-mecanisme-page">
     <h2>2ème indice</h2>
-    <p>Le sceau est l'identification officielle du phare.</p>
+    <p>L'identité certifiée est sur le sceau...</p>
     <button class="btn-primary" onclick="showScreen('sommetphare')">
       Retour au mécanisme
     </button>
@@ -2508,14 +2508,14 @@ function mettreAJourBoutonsIndicesMecanisme() {
   const boutonIndice1 = document.getElementById("meca-indice1-btn");
   const boutonIndice2 = document.getElementById("meca-indice2-btn");
 
-  // Après 3 échecs complets, le 1er indice devient disponible.
-  if (boutonIndice1 && nbErreursMecanisme >= 3) {
+  // Après 1 échec complet, le 1er indice devient disponible.
+  if (boutonIndice1 && nbErreursMecanisme >= 1) {
     boutonIndice1.hidden = false;
     boutonIndice1.style.setProperty("display", "inline-block", "important");
   }
 
-  // Après 4 échecs complets, le 2ème indice devient disponible.
-  if (boutonIndice2 && nbErreursMecanisme >= 4) {
+  // Après 5 échecs complets, le 2ème indice devient disponible.
+  if (boutonIndice2 && nbErreursMecanisme >= 5) {
     boutonIndice2.hidden = false;
     boutonIndice2.style.setProperty("display", "inline-block", "important");
   }
@@ -2696,3 +2696,4 @@ function retourSite() {
 
 </body>
 </html>
+
