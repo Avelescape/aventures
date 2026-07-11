@@ -1592,6 +1592,29 @@ body:has(#screen-puits.active) #billig-helper-global {
   right: auto !important;
 }
 
+
+/* =========================================================
+   CORRECTION SCÈNE DU PUZZLE
+   Billig et sa bulle restent visibles sans cacher le puzzle
+   ========================================================= */
+body:has(#screen-puzzle.active) #billig-helper-global {
+  width: 130px !important;
+  max-width: 32vw !important;
+  right: 5px !important;
+  left: auto !important;
+  bottom: 5px !important;
+}
+
+body:has(#screen-puzzle.active) #billig-helper-global::after {
+  right: 0 !important;
+  left: auto !important;
+  bottom: calc(100% + 8px) !important;
+  min-width: 130px !important;
+  max-width: 170px !important;
+  font-size: 16px !important;
+  line-height: 1.1 !important;
+}
+
 </style>
 </head>
 
