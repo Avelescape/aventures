@@ -1582,6 +1582,16 @@ body {
 #stop-audio-btn.visible{
     display: flex;
 }
+
+/* =========================================================
+   CORRECTION SCÈNE DU PUITS
+   Billig passe à gauche pour ne plus cacher le bouton Retour
+   ========================================================= */
+body:has(#screen-puits.active) #billig-helper-global {
+  left: 8px !important;
+  right: auto !important;
+}
+
 </style>
 </head>
 
