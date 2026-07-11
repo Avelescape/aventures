@@ -1615,6 +1615,125 @@ body:has(#screen-puzzle.active) #billig-helper-global::after {
   line-height: 1.1 !important;
 }
 
+
+/* =========================================================
+   AGRANDISSEMENT GÉNÉRAL DES ÉCRITURES
+   Ajout final : ces règles écrasent les anciennes tailles
+   sans modifier le fonctionnement de l'aventure.
+   ========================================================= */
+
+/* Textes principaux des cartes, consignes et dialogues */
+#dialogue-text,
+#dialogue-text-phare,
+#dialogue-text-naufrageurs,
+#texte-fin,
+.missive1-label,
+.missive2-label,
+.puits-label,
+.locmaze-label,
+.so-label,
+.puzzle-label,
+.instructions-label,
+.instructionschap2-label,
+.porte-label,
+.texte-sommet,
+.indice-mecanisme-page {
+  font-size: clamp(22px, 5.5vw, 28px) !important;
+  line-height: 1.5 !important;
+}
+
+/* Titres */
+h2 {
+  font-size: clamp(30px, 8vw, 40px) !important;
+  line-height: 1.15 !important;
+}
+
+h3 {
+  font-size: clamp(25px, 6.5vw, 34px) !important;
+  line-height: 1.25 !important;
+}
+
+/* Messages de réponse, de réussite, d'erreur et indices */
+#message,
+#puzzle-message,
+#code-message,
+#mot-phare-message,
+#code-ancien-phare-message,
+#message-sommet,
+#indice-phare {
+  font-size: clamp(20px, 5vw, 25px) !important;
+  line-height: 1.4 !important;
+}
+
+/* Champs dans lesquels le joueur écrit */
+input,
+input[type="text"],
+input[type="number"] {
+  font-size: 22px !important;
+}
+
+/* Boutons principaux */
+.btn-primary,
+button {
+  font-size: clamp(22px, 5.5vw, 28px) !important;
+}
+
+/* La flèche Retour conserve une taille adaptée à son bouton rond */
+.nav-back {
+  font-size: 26px !important;
+}
+
+/* Les petits boutons du mécanisme restent lisibles sans devenir trop grands */
+.meca-reset {
+  font-size: 16px !important;
+}
+
+.meca-indice-btn {
+  font-size: clamp(19px, 4.5vw, 23px) !important;
+}
+
+.meca-suite {
+  font-size: 24px !important;
+}
+
+/* Bulle de Billig */
+.billig-helper::after,
+#billig-helper-global::after {
+  font-size: 20px !important;
+  line-height: 1.2 !important;
+}
+
+/* Ajustement pour les très petits téléphones */
+@media (max-width: 390px) {
+  #dialogue-text,
+  #dialogue-text-phare,
+  #dialogue-text-naufrageurs,
+  #texte-fin,
+  .missive1-label,
+  .missive2-label,
+  .puits-label,
+  .locmaze-label,
+  .so-label,
+  .puzzle-label,
+  .instructions-label,
+  .instructionschap2-label,
+  .porte-label,
+  .texte-sommet,
+  .indice-mecanisme-page {
+    font-size: 21px !important;
+  }
+
+  .btn-primary,
+  button {
+    font-size: 22px !important;
+  }
+
+  .billig-helper::after,
+  #billig-helper-global::after {
+    font-size: 18px !important;
+  }
+}
+
 </style>
 </head>
 
@@ -2709,7 +2828,7 @@ if (codeAncienPhareInput) {
 
 
 /* SOMMET DU PHARE - MÉCANISME HTML */
-const codeCorrectMecanisme = ["D", "A", "B", "C", "G"];
+const codeCorrectMecanisme = ["D", "A", "B", "C", "F"];
 
 const imageMecanismeEteinte = "images/1-webplentilleeteinte.webp";
 const imageMecanismeAllumee = "images/1-webplentilleallume.webp";
