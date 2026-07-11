@@ -1754,6 +1754,7 @@ button {
 
 <audio id="cloche-audio" src="audios/cloche.mp3" preload="auto"></audio>
 <audio id="chant-audio" src="audios/grego.mp3" preload="auto"></audio>
+<audio id="zones-phare-audio" src="audios/ABCDEFG.mp3" preload="auto"></audio>
 
 <a class="site-retour" href="https://avelescape.github.io/aventures/" aria-label="Retour au site AvelEscape">
   <span>site AvelEscape</span>
@@ -2115,7 +2116,7 @@ button {
     <p id="meca-indice0-message" style="display:none;"></p>
   </div>
 
-  <audio id="sonSuccesMecanisme" src="engrenages.mp3" preload="auto"></audio>
+  <audio id="sonSuccesMecanisme" src="audios/engrenages.mp3" preload="auto"></audio>
 </div>
 
 
@@ -2905,6 +2906,15 @@ function jouerSuccesMecanisme() {
 }
 
 function clickZoneMecanisme(letter) {
+  // Joue le son à chaque appui sur une zone cliquable du mécanisme.
+  const sonZonePhare = document.getElementById('zones-phare-audio');
+  if (sonZonePhare) {
+    sonZonePhare.currentTime = 0;
+    sonZonePhare.play().catch(() => {
+      console.log("Lecture du son des zones bloquée par le navigateur.");
+    });
+  }
+
   if (mecanismeSolved) return;
 
   hideMessageMecanisme();
