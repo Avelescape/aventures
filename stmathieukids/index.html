@@ -376,12 +376,25 @@ input {
   width: 100%;
   height: 100%;
   z-index: 5;
+
+  /* Les zones restent cachées tant que l’image du phare n’est pas chargée. */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   transition: opacity 0.4s ease;
 }
 
+/* L’image est visible en premier, puis les zones apparaissent. */
+.meca-game.meca-ready .meca-zones {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
 .meca-active .meca-zones {
-  opacity: 0;
-  pointer-events: none;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .meca-zone {
@@ -1739,8 +1752,8 @@ button {
 
 <body>
 
-<audio id="cloche-audio" src="cloche.mp3" preload="auto"></audio>
-<audio id="chant-audio" src="grego.mp3" preload="auto"></audio>
+<audio id="cloche-audio" src="audios/cloche.mp3" preload="auto"></audio>
+<audio id="chant-audio" src="audios/grego.mp3" preload="auto"></audio>
 
 <a class="site-retour" href="https://avelescape.github.io/aventures/" aria-label="Retour au site AvelEscape">
   <span>site AvelEscape</span>
@@ -1980,7 +1993,7 @@ button {
 
 <div class="screen" id="screen-petitphare">
   <img class="chapter-img"
-       src="images/1-webpwebpyannblesse.webp"
+       src="images/1-webpyannblesse.webp"
        alt="Yannick blessé">
 
   <div class="dialogue-box">
@@ -2290,7 +2303,45 @@ function showScreen(name, addHist = true) {
   }
 
   if (name === 'sommetphare') {
+    preparerAffichageMecanismePhare();
     mettreAJourBoutonsIndicesMecanisme();
+  }
+}
+
+/*
+ * Charge d’abord l’image du mécanisme, puis affiche les zones cliquables.
+ * Cela évite que les rectangles apparaissent avant le décor sur mobile.
+ */
+function preparerAffichageMecanismePhare() {
+  const game = document.getElementById('meca-game');
+  const fond = document.getElementById('meca-fond');
+
+  if (!game || !fond) return;
+
+  game.classList.remove('meca-ready');
+
+  const image = new Image();
+
+  const afficherZonesApresImage = () => {
+    fond.style.backgroundImage = `url("${imageMecanismeEteinte}")`;
+
+    /* Deux frames laissent au navigateur le temps d’afficher réellement l’image. */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (currentScreen === 'sommetphare' && !mecanismeSolved) {
+          game.classList.add('meca-ready');
+        }
+      });
+    });
+  };
+
+  image.onload = afficherZonesApresImage;
+  image.onerror = afficherZonesApresImage;
+  image.src = imageMecanismeEteinte;
+
+  /* Une image déjà en cache peut être immédiatement complète. */
+  if (image.complete) {
+    afficherZonesApresImage();
   }
 }
 
