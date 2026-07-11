@@ -1756,6 +1756,37 @@ button {
   color: #000000 !important;
 }
 
+
+/* =========================================================
+   SCÈNE FINALE : BULLE PLUS LISIBLE + CRÉDIT DU CHANT
+   ========================================================= */
+body:has(#screen-finaventure.active) #billig-helper-global::after {
+  min-width: 190px !important;
+  max-width: 270px !important;
+  padding: 14px 16px !important;
+  font-size: clamp(22px, 5.5vw, 28px) !important;
+  line-height: 1.25 !important;
+}
+
+.credit-chant {
+  width: min(92vw, 700px);
+  margin: 22px auto 0;
+  padding: 14px 18px;
+  color: var(--cream);
+  font-size: clamp(15px, 3.8vw, 18px);
+  line-height: 1.45;
+  font-weight: 700;
+  text-align: center;
+}
+
+@media (max-width: 390px) {
+  body:has(#screen-finaventure.active) #billig-helper-global::after {
+    min-width: 165px !important;
+    max-width: 220px !important;
+    font-size: 22px !important;
+  }
+}
+
 </style>
 </head>
 
@@ -2123,6 +2154,13 @@ button {
       Indice
     </button>
     <p id="meca-indice0-message" style="display:none;"></p>
+
+    <button id="retour-puzzle-indice"
+            class="btn-primary"
+            style="display:none;"
+            onclick="showScreen('puzzle')">
+      Retour au puzzle
+    </button>
   </div>
 
   <audio id="sonSuccesMecanisme" src="audios/engrenages.mp3" preload="auto"></audio>
@@ -2159,6 +2197,10 @@ button {
   <button class="btn-primary" onclick="retourSite()">
     Fin
   </button>
+
+  <p class="credit-chant">
+    Your support helps Gregorian Chanting (@GregorianChanting) keep the ancient voice of monastic devotion alive.
+  </p>
 </div>
 
 <script>
@@ -2990,6 +3032,12 @@ function afficherIndiceInitial() {
 
   message.textContent = "Le code pour activer le phare se trouvait sur le sceau, en début de jeu.";
   message.style.display = "block";
+
+  const retourPuzzleIndice = document.getElementById('retour-puzzle-indice');
+  if (retourPuzzleIndice) {
+    retourPuzzleIndice.style.display = 'inline-block';
+  }
+
 }
 
 function successMecanisme() {
