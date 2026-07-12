@@ -474,10 +474,67 @@ body,
   background:transparent !important;
 }
 
+
+/* =========================================================
+   BOUTON RETOUR AU SITE AVELESCAPE
+   ========================================================= */
+.site-retour {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(10px, env(safe-area-inset-right));
+  z-index: 999999;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 7px 12px;
+  background: rgba(16, 8, 10, 0.90);
+  color: #F0D47A;
+  border: 2px solid #D4AF37;
+  border-radius: 999px;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.45),
+    inset 0 0 12px rgba(212,175,55,.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.site-retour:hover{
+  background:#D4AF37;
+  color:#16090d;
+}
+.site-retour:active{
+  transform:scale(.96);
+}
+@media(max-width:480px){
+  .site-retour{
+    top:max(10px, env(safe-area-inset-top));
+    right:max(10px, env(safe-area-inset-right));
+    min-height:34px;
+    padding:6px 10px;
+    font-size:12px;
+  }
+}
+
+
 </style>
 </head>
 
 <body>
+
+<!-- BOUTON RETOUR AU SITE AVELESCAPE -->
+<a class="site-retour" href="../index.html">
+  <span>Site AvelEscape</span>
+</a>
+
+
 <main class="enquete">
 
   <section class="etape active" id="Intro">
