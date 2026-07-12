@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -21,8 +20,8 @@
 
     .enquete{
       width:100vw;
-      height:calc(100vh - 56px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
-      margin-top:calc(56px + env(safe-area-inset-top, 0px));
+      height:calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+      margin-top:env(safe-area-inset-top, 0px);
       position:relative;
       overflow:hidden;
     }
@@ -222,7 +221,7 @@
     .mot{
       display:inline-block;
       opacity:0;
-      animation:apparMot 0.7s ease forwards;
+      animation:apparMot 0.38s ease forwards;
       animation-play-state:paused;
     }
 
@@ -232,7 +231,7 @@
 
     .mot-bloc{
       opacity:0;
-      animation:apparMot 0.7s ease forwards;
+      animation:apparMot 0.38s ease forwards;
       animation-play-state:paused;
     }
 
@@ -254,79 +253,231 @@
       from{ opacity:0; }
       to{ opacity:1; }
     }
+  
+/* =========================================================
+   DESIGN AVELESCAPE — IODE & CUIVRE
+   Le Conquet · 1874
+   ========================================================= */
+:root{
+  --iode-bg-1:#123D42;
+  --iode-bg-2:#06191C;
+  --iode-panel-1:rgba(24,73,75,.97);
+  --iode-panel-2:rgba(7,27,29,.98);
+  --iode-copper:#D88A3D;
+  --iode-green:#2B8C85;
+  --iode-light:#F2C77E;
+  --iode-text:#FFF7E8;
+  --iode-muted:#C8DDD7;
+  --iode-ink:#102526;
+  --iode-glow:rgba(55,184,169,.34);
+  --iode-shadow:rgba(0,0,0,.52);
+}
+
+html{background:var(--iode-bg-2)}
+
+body{
+  color:var(--iode-text);
+  background:
+    radial-gradient(circle at 50% 0%,var(--iode-glow),transparent 31%),
+    radial-gradient(circle at 12% 62%,rgba(216,138,61,.18),transparent 35%),
+    linear-gradient(180deg,var(--iode-bg-1),var(--iode-bg-2));
+}
+
+.enquete{
+  background:
+    radial-gradient(circle at 50% 0%,var(--iode-glow),transparent 31%),
+    linear-gradient(180deg,var(--iode-bg-1),var(--iode-bg-2));
+}
+
+.etape{
+  color:var(--iode-text);
+  background:
+    radial-gradient(circle at 50% 0%,rgba(55,184,169,.16),transparent 34%),
+    radial-gradient(circle at 8% 78%,rgba(216,138,61,.12),transparent 34%),
+    linear-gradient(180deg,var(--iode-bg-1),var(--iode-bg-2));
+}
+
+.vignette{
+  background:
+    radial-gradient(circle,rgba(0,0,0,0) 44%,rgba(1,20,22,.20) 73%,rgba(0,7,9,.68) 100%);
+}
+
+header{
+  background:linear-gradient(180deg,#092a2e,#06191c);
+  color:var(--iode-text);
+  border-bottom:1px solid rgba(216,138,61,.62);
+  box-shadow:0 8px 24px rgba(0,0,0,.36);
+}
+
+.nav-burger span{background:var(--iode-light)}
+
+.nav-connexion{
+  color:var(--iode-light);
+  background:rgba(5,25,28,.88);
+  border:1px solid var(--iode-copper);
+  box-shadow:0 5px 16px rgba(0,0,0,.34),inset 0 0 12px rgba(43,140,133,.14);
+}
+.nav-connexion:hover{
+  color:var(--iode-ink);
+  background:var(--iode-light);
+  border-color:var(--iode-light);
+  box-shadow:0 0 18px var(--iode-glow);
+}
+
+.photo,.photo2{
+  border:2px solid rgba(216,138,61,.68);
+  border-radius:18px;
+  filter:
+    brightness(1.07)
+    contrast(1.04)
+    drop-shadow(0 14px 24px rgba(0,0,0,.45));
+  box-shadow:0 0 22px rgba(55,184,169,.18);
+}
+
+.contenu-etape{
+  position:relative;
+}
+
+.ligne-fondu{
+  color:var(--iode-text);
+  text-shadow:0 2px 3px rgba(0,0,0,.76);
+}
+
+.ligne-fondu-orange{
+  color:var(--iode-light);
+  text-shadow:0 2px 3px rgba(0,0,0,.78),0 0 12px rgba(216,138,61,.15);
+}
+
+.texte-transition,.titre-choix{
+  color:var(--iode-light);
+  text-shadow:0 2px 0 #000,0 0 18px var(--iode-glow);
+}
+
+.lettre-manuscrite{
+  color:#352114;
+  padding:24px 20px;
+  border:2px solid var(--iode-copper);
+  border-radius:18px;
+  background:
+    linear-gradient(rgba(255,247,224,.94),rgba(224,199,151,.94));
+  box-shadow:
+    inset 0 0 30px rgba(121,70,27,.18),
+    0 18px 34px rgba(0,0,0,.48),
+    0 0 20px rgba(55,184,169,.16);
+}
+
+.bouton{
+  min-height:56px;
+  color:var(--iode-ink);
+  background:
+    linear-gradient(180deg,#F8D99A 0%,var(--iode-light) 38%,var(--iode-copper) 100%);
+  border:2px solid #FFE3A9;
+  border-radius:16px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.48),
+    0 6px 0 #74431e,
+    0 15px 25px rgba(0,0,0,.43),
+    0 0 16px rgba(55,184,169,.12);
+}
+.bouton:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.52),
+    0 8px 0 #74431e,
+    0 18px 28px rgba(0,0,0,.48),
+    0 0 20px var(--iode-glow);
+}
+.bouton:active{
+  transform:translateY(3px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.35),
+    0 3px 0 #74431e,
+    0 9px 16px rgba(0,0,0,.42);
+}
+
+.personnage-bouton{
+  color:var(--iode-text);
+}
+.personnage-bouton:hover{
+  filter:drop-shadow(0 0 16px var(--iode-glow));
+}
+.personnage-bouton img{
+  filter:drop-shadow(0 8px 14px rgba(0,0,0,.48));
+}
+.nom-personnage{
+  color:var(--iode-light);
+  text-shadow:0 2px 3px rgba(0,0,0,.82);
+}
+
+#rep-eau{
+  color:var(--iode-ink)!important;
+  background:linear-gradient(180deg,#fff8e8,#ead5aa)!important;
+  border:2px solid var(--iode-copper)!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.32)!important;
+}
+
+#rep-eau-err{
+  color:#ffaaa0!important;
+  font-weight:bold;
+  text-shadow:0 2px 3px rgba(0,0,0,.72);
+}
+
+@media(max-width:480px){
+  .etape{padding:1.5rem .9rem 2rem}
+  .lettre-manuscrite{padding:21px 17px}
+}
 
 
-    /* =========================================================
-       BOUTON RETOUR AU SITE AVELESCAPE
-       Visible sur toutes les scènes
-       Compatible ordinateur, Android et iPhone
-       ========================================================= */
-    .site-retour{
-      position:fixed;
-      top:max(12px, env(safe-area-inset-top));
-      right:max(10px, env(safe-area-inset-right));
-      z-index:999999;
+/* =========================================================
+   CORRECTION — SUPPRESSION DE L'EFFET DE BANDEAU SOUS LES IMAGES
+   ========================================================= */
+.photo,
+.photo2{
+  display:block;
+  background:transparent!important;
+  border:none!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 10px 14px rgba(0,0,0,.30))!important;
+}
 
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
+/* Évite qu'un espace de ligne apparaisse sous les images */
+img{
+  vertical-align:middle;
+}
 
-      min-height:38px;
-      padding:7px 12px;
 
-      background:rgba(16,8,10,0.90);
-      color:#F0D47A;
+/* =========================================================
+   CORRECTION — ARRIÈRE-PLAN UNIFORME
+   Supprime la différence de teinte et la ligne horizontale
+   ========================================================= */
+body,
+.enquete,
+.etape{
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(55,184,169,.16),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      #123D42 0%,
+      #06191C 100%
+    ) !important;
 
-      border:2px solid #D4AF37;
-      border-radius:999px;
+  background-attachment:fixed !important;
+}
 
-      font-family:Georgia, serif;
-      font-size:13px;
-      font-weight:800;
-      line-height:1;
-      text-decoration:none;
+/* Suppression de la couche qui assombrissait une partie de l'écran */
+.vignette{
+  background:transparent !important;
+}
 
-      box-shadow:
-        0 8px 20px rgba(0,0,0,0.45),
-        inset 0 0 12px rgba(212,175,55,0.14);
-
-      backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px);
-
-      cursor:pointer;
-      touch-action:manipulation;
-      -webkit-tap-highlight-color:transparent;
-    }
-
-    .site-retour:hover{
-      background:#D4AF37;
-      color:#16090d;
-    }
-
-    .site-retour:active{
-      transform:scale(0.96);
-    }
-
-    @media (max-width:480px){
-      .site-retour{
-        top:max(10px, env(safe-area-inset-top));
-        right:max(10px, env(safe-area-inset-right));
-        min-height:34px;
-        padding:6px 10px;
-        font-size:12px;
-      }
-    }
-
-  </style>
+</style>
 </head>
 
 <body>
-
-<!-- BOUTON RETOUR AU SITE AVELESCAPE -->
-<a class="site-retour" href="../index.html">
-  <span>site AvelEscape</span>
-</a>
-
 <main class="enquete">
 
   <section class="etape active" id="Intro">
@@ -358,20 +509,20 @@
     <div class="vignette"></div>
 
     <div class="lettre-manuscrite">
-      <span class="mot" style="animation-delay:0.1s">Le 7 mai 1874</span><br><br><br>
-      <span class="mot" style="animation-delay:0.5s">Cher Professeur Cécile,</span><br><br><br>
-      <span class="mot" style="animation-delay:3.5s"> Un mal inquiétant s'est déclaré dans notre village.</span><br><br>
-      <span class="mot" style="animation-delay:5.0s">En effet, les villageois, deviennent de plus en plus agressifs: tout est prétexte à bagarre... </span><br><br>
+      <span class="mot" style="animation-delay:0.05s">Le 7 mai 1874</span><br><br><br>
+      <span class="mot" style="animation-delay:0.24s">Cher Professeur Cécile,</span><br><br><br>
+      <span class="mot" style="animation-delay:1.68s"> Un mal inquiétant s'est déclaré dans notre village.</span><br><br>
+      <span class="mot" style="animation-delay:2.40s">En effet, les villageois, deviennent de plus en plus agressifs: tout est prétexte à bagarre... </span><br><br>
       
-      <span class="mot" style="animation-delay:8.5s">Les médecins ne s'accordent point sur la cause de cette affection:</span><br>
-      <span class="mot" style="animation-delay:11.0s">L'un craint un terrible virus, l'autre un empoisonnement.</span><br><br>
-      <span class="mot" style="animation-delay:13.5s">Je sollicite humblement votre grand savoir pour découvrir la nature de ce mal qui nous touche.</span><br><br>
-      <span class="mot" style="animation-delay:16.0s">Veuillez agréer, très honoré Professeur, l'expression de mon profond respect.</span><br><br>
-      <span class="mot" style="animation-delay:18.5s"> Le maire du Conquet</span>
+      <span class="mot" style="animation-delay:4.08s">Les médecins ne s'accordent point sur la cause de cette affection:</span><br>
+      <span class="mot" style="animation-delay:5.28s">L'un craint un terrible virus, l'autre un empoisonnement.</span><br><br>
+      <span class="mot" style="animation-delay:6.48s">Je sollicite humblement votre grand savoir pour découvrir la nature de ce mal qui nous touche.</span><br><br>
+      <span class="mot" style="animation-delay:7.68s">Veuillez agréer, très honoré Professeur, l'expression de mon profond respect.</span><br><br>
+      <span class="mot" style="animation-delay:8.88s"> Le maire du Conquet</span>
     </div>
 
     <div class="contenu-etape">
-      <button class="bouton mot-bloc" data-suivant="Chapitre3" style="animation-delay:20.5s">Accepter l'enquête</button>
+      <button class="bouton mot-bloc" data-suivant="Chapitre3" style="animation-delay:9.84s">Accepter l'enquête</button>
     </div>
   </section>
 
