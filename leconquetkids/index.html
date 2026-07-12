@@ -1,1 +1,1879 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#071B34">
+  <title>Enquête immersive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
+  <style>
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    body{
+      background:#F4EAD8;
+      color:#4A3728;
+      font-family:Georgia, serif;
+      overflow:hidden;
+    }
+
+
+    .enquete{
+      width:100vw;
+      height:calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+      margin-top:env(safe-area-inset-top, 0px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .etape{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 1s ease;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      padding:2rem 1rem;
+      overflow-y:auto;
+      background:#F4EAD8;
+    }
+
+    .etape.active{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .photo,
+    .photo2{
+      width:min(90vw, 430px);
+      object-fit:contain;
+      margin-top:2rem;
+      margin-bottom:2rem;
+      z-index:2;
+      filter:drop-shadow(0 8px 18px rgba(75,50,25,0.28));
+    }
+
+    .photo{ max-height:45vh; }
+    .photo2{ max-height:65vh; }
+
+    .vignette{
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle, rgba(0,0,0,0) 48%, rgba(120,88,48,0.10) 76%, rgba(85,58,30,0.22) 100%);
+      pointer-events:none;
+    }
+
+    .contenu-etape{
+      width:min(92vw, 420px);
+      text-align:center;
+      z-index:5;
+    }
+
+    .ligne-fondu,
+    .ligne-fondu-orange{
+      display:block;
+      margin-bottom:1rem;
+      font-size:clamp(1rem, 4.4vw, 1.18rem);
+      line-height:1.5;
+      opacity:0;
+      transform:translateY(10px);
+      animation:fadeUp 1.4s ease forwards;
+    }
+
+    .ligne-fondu{
+      color:#623a1c;
+      text-shadow:1px 1px 1px rgba(255,255,255,0.45);
+    }
+
+    .ligne-fondu-orange{
+      color:#cc5303;
+      text-shadow:1px 1px 1px rgba(255,255,255,0.38);
+      font-weight:bold;
+    }
+
+    .bouton{
+      margin-top:1rem;
+      padding:0.9rem 1.4rem;
+      border:1px solid #A67C52;
+      border-radius:12px;
+      background:linear-gradient(to bottom, #F8EEDC, #E3D2B2);
+      color:#4A3728;
+      font-weight:bold;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      cursor:pointer;
+      min-width:220px;
+      box-shadow:
+        0 4px 12px rgba(90,60,30,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.72);
+      transition:0.2s;
+      position:relative;
+      z-index:10;
+    }
+
+    .bouton:hover{
+      transform:translateY(-2px);
+      box-shadow:
+        0 6px 16px rgba(90,60,30,0.32),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    .bouton:active{ transform:scale(0.98); }
+
+    .texte-transition{
+      font-size:2rem;
+      color:#4A3728;
+      text-shadow:1px 1px 1px rgba(255,255,255,0.45);
+    }
+
+    .fade-in{ animation:fadeIn 1.5s ease; }
+
+    .titre-choix{
+      color:#4A3728;
+      font-size:clamp(1.6rem, 6vw, 2.4rem);
+      text-align:center;
+      margin-bottom:2rem;
+      z-index:5;
+      text-shadow:1px 1px 1px rgba(255,255,255,0.45);
+    }
+
+    .selection-personnages{
+      width:min(95vw, 850px);
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:center;
+      gap:32px;
+      z-index:5;
+    }
+
+    .personnage-bouton{
+      background:transparent;
+      border:none;
+      cursor:pointer;
+      color:#4A3728;
+      font-family:Georgia, serif;
+      text-align:center;
+      transition:transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .personnage-bouton:hover{
+      transform:scale(1.12);
+      filter:drop-shadow(0 0 14px rgba(90,60,30,0.45));
+    }
+
+    .personnage-bouton img{
+      width:110px;
+      max-height:150px;
+      object-fit:contain;
+      display:block;
+      margin:auto;
+      filter:drop-shadow(0 6px 12px rgba(75,50,25,0.25));
+    }
+
+    .nom-personnage{
+      display:block;
+      margin-top:0.7rem;
+      font-size:1rem;
+      color:#4A3728;
+      font-weight:bold;
+      text-shadow:1px 1px 1px rgba(255,255,255,0.4);
+    }
+
+    /* HEADER */
+    header{
+      background:#071B34;
+      color:#F4EAD8;
+      border-bottom:1px solid rgba(201,162,39,.3);
+      position:fixed;
+      top:0;
+      left:50%;
+      padding-top:env(safe-area-inset-top, 0px);
+      transform:translateX(-50%);
+      width:100%;
+      max-width:480px;
+      z-index:10000;
+      overflow:hidden;
+    }
+    .nav{height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px}
+    .nav-left{display:flex;align-items:center;gap:12px}
+    .nav-burger{display:flex;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:4px;flex-shrink:0}
+    .nav-burger span{display:block;width:22px;height:1.5px;background:#F4EAD8}
+    .brand{display:flex;align-items:center;gap:10px}
+    .feather{width:200px;height:200px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.3));margin-top:8px;}
+    .nav-connexion{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:8px 14px;color:white;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;transition:background 0.25s,border-color 0.25s,box-shadow 0.25s;}
+    .nav-connexion:hover{background:rgba(201,162,39,.18);border-color:rgba(201,162,39,.7);box-shadow:0 0 10px rgba(201,162,39,.35);}
+    .nav-connexion:active{background:rgba(201,162,39,.28);box-shadow:0 0 16px rgba(201,162,39,.5);}
+
+    .lettre-manuscrite{
+      font-family:'Great Vibes', cursive;
+      font-size:clamp(1.1rem, 5vw, 1.6rem);
+      color:#2E1B0E;
+      text-align:left;
+      line-height:1.8;
+      z-index:3;
+      max-width:min(90vw, 400px);
+    }
+
+    .mot{
+      display:inline-block;
+      opacity:0;
+      animation:apparMot 0.38s ease forwards;
+      animation-play-state:paused;
+    }
+
+    .etape.active .mot{
+      animation-play-state:running;
+    }
+
+    .mot-bloc{
+      opacity:0;
+      animation:apparMot 0.38s ease forwards;
+      animation-play-state:paused;
+    }
+
+    .etape.active .mot-bloc{
+      animation-play-state:running;
+    }
+
+    @keyframes apparMot{
+      from{ opacity:0; filter:blur(4px); transform:translateY(4px); }
+      to{ opacity:1; filter:blur(0); transform:translateY(0); }
+    }
+
+    @keyframes fadeUp{
+      from{ opacity:0; transform:translateY(10px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    @keyframes fadeIn{
+      from{ opacity:0; }
+      to{ opacity:1; }
+    }
+  
+/* =========================================================
+   DESIGN AVELESCAPE — IODE & CUIVRE
+   Le Conquet · 1874
+   ========================================================= */
+:root{
+  --iode-bg-1:#123D42;
+  --iode-bg-2:#06191C;
+  --iode-panel-1:rgba(24,73,75,.97);
+  --iode-panel-2:rgba(7,27,29,.98);
+  --iode-copper:#D88A3D;
+  --iode-green:#2B8C85;
+  --iode-light:#F2C77E;
+  --iode-text:#FFF7E8;
+  --iode-muted:#C8DDD7;
+  --iode-ink:#102526;
+  --iode-glow:rgba(55,184,169,.34);
+  --iode-shadow:rgba(0,0,0,.52);
+}
+
+html{background:var(--iode-bg-2)}
+
+body{
+  color:var(--iode-text);
+  background:
+    radial-gradient(circle at 50% 0%,var(--iode-glow),transparent 31%),
+    radial-gradient(circle at 12% 62%,rgba(216,138,61,.18),transparent 35%),
+    linear-gradient(180deg,var(--iode-bg-1),var(--iode-bg-2));
+}
+
+.enquete{
+  background:
+    radial-gradient(circle at 50% 0%,var(--iode-glow),transparent 31%),
+    linear-gradient(180deg,var(--iode-bg-1),var(--iode-bg-2));
+}
+
+.etape{
+  color:var(--iode-text);
+  background:
+    radial-gradient(circle at 50% 0%,rgba(55,184,169,.16),transparent 34%),
+    radial-gradient(circle at 8% 78%,rgba(216,138,61,.12),transparent 34%),
+    linear-gradient(180deg,var(--iode-bg-1),var(--iode-bg-2));
+}
+
+.vignette{
+  background:
+    radial-gradient(circle,rgba(0,0,0,0) 44%,rgba(1,20,22,.20) 73%,rgba(0,7,9,.68) 100%);
+}
+
+header{
+  background:linear-gradient(180deg,#092a2e,#06191c);
+  color:var(--iode-text);
+  border-bottom:1px solid rgba(216,138,61,.62);
+  box-shadow:0 8px 24px rgba(0,0,0,.36);
+}
+
+.nav-burger span{background:var(--iode-light)}
+
+.nav-connexion{
+  color:var(--iode-light);
+  background:rgba(5,25,28,.88);
+  border:1px solid var(--iode-copper);
+  box-shadow:0 5px 16px rgba(0,0,0,.34),inset 0 0 12px rgba(43,140,133,.14);
+}
+.nav-connexion:hover{
+  color:var(--iode-ink);
+  background:var(--iode-light);
+  border-color:var(--iode-light);
+  box-shadow:0 0 18px var(--iode-glow);
+}
+
+.photo,.photo2{
+  border:2px solid rgba(216,138,61,.68);
+  border-radius:18px;
+  filter:
+    brightness(1.07)
+    contrast(1.04)
+    drop-shadow(0 14px 24px rgba(0,0,0,.45));
+  box-shadow:0 0 22px rgba(55,184,169,.18);
+}
+
+.contenu-etape{
+  position:relative;
+}
+
+.ligne-fondu{
+  color:var(--iode-text);
+  text-shadow:0 2px 3px rgba(0,0,0,.76);
+}
+
+.ligne-fondu-orange{
+  color:var(--iode-light);
+  text-shadow:0 2px 3px rgba(0,0,0,.78),0 0 12px rgba(216,138,61,.15);
+}
+
+.texte-transition,.titre-choix{
+  color:var(--iode-light);
+  text-shadow:0 2px 0 #000,0 0 18px var(--iode-glow);
+}
+
+.lettre-manuscrite{
+  color:#352114;
+  padding:24px 20px;
+  border:2px solid var(--iode-copper);
+  border-radius:18px;
+  background:
+    linear-gradient(rgba(255,247,224,.94),rgba(224,199,151,.94));
+  box-shadow:
+    inset 0 0 30px rgba(121,70,27,.18),
+    0 18px 34px rgba(0,0,0,.48),
+    0 0 20px rgba(55,184,169,.16);
+}
+
+.bouton{
+  min-height:56px;
+  color:var(--iode-ink);
+  background:
+    linear-gradient(180deg,#F8D99A 0%,var(--iode-light) 38%,var(--iode-copper) 100%);
+  border:2px solid #FFE3A9;
+  border-radius:16px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.48),
+    0 6px 0 #74431e,
+    0 15px 25px rgba(0,0,0,.43),
+    0 0 16px rgba(55,184,169,.12);
+}
+.bouton:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.52),
+    0 8px 0 #74431e,
+    0 18px 28px rgba(0,0,0,.48),
+    0 0 20px var(--iode-glow);
+}
+.bouton:active{
+  transform:translateY(3px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.35),
+    0 3px 0 #74431e,
+    0 9px 16px rgba(0,0,0,.42);
+}
+
+.personnage-bouton{
+  color:var(--iode-text);
+}
+.personnage-bouton:hover{
+  filter:drop-shadow(0 0 16px var(--iode-glow));
+}
+.personnage-bouton img{
+  filter:drop-shadow(0 8px 14px rgba(0,0,0,.48));
+}
+.nom-personnage{
+  color:var(--iode-light);
+  text-shadow:0 2px 3px rgba(0,0,0,.82);
+}
+
+#rep-eau{
+  color:var(--iode-ink)!important;
+  background:linear-gradient(180deg,#fff8e8,#ead5aa)!important;
+  border:2px solid var(--iode-copper)!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.32)!important;
+}
+
+#rep-eau-err{
+  color:#ffaaa0!important;
+  font-weight:bold;
+  text-shadow:0 2px 3px rgba(0,0,0,.72);
+}
+
+@media(max-width:480px){
+  .etape{padding:1.5rem .9rem 2rem}
+  .lettre-manuscrite{padding:21px 17px}
+}
+
+
+/* =========================================================
+   CORRECTION — SUPPRESSION DE L'EFFET DE BANDEAU SOUS LES IMAGES
+   ========================================================= */
+.photo,
+.photo2{
+  display:block;
+  background:transparent!important;
+  border:none!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 10px 14px rgba(0,0,0,.30))!important;
+}
+
+/* Évite qu'un espace de ligne apparaisse sous les images */
+img{
+  vertical-align:middle;
+}
+
+
+/* =========================================================
+   CORRECTION — ARRIÈRE-PLAN UNIFORME
+   Supprime la différence de teinte et la ligne horizontale
+   ========================================================= */
+body,
+.enquete,
+.etape{
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(55,184,169,.16),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      #123D42 0%,
+      #06191C 100%
+    ) !important;
+
+  background-attachment:fixed !important;
+}
+
+/* Suppression de la couche qui assombrissait une partie de l'écran */
+.vignette{
+  background:transparent !important;
+}
+
+
+/* =========================================================
+   AVELESCAPE KIDS — LE CONQUET
+   PALETTE « PIRATES & TRÉSOR »
+   Billig sera ajouté ultérieurement.
+   ========================================================= */
+:root{
+  --kids-ocean:#173D5C;
+  --kids-ocean-dark:#0B2136;
+  --kids-turquoise:#2D8190;
+  --kids-turquoise-dark:#17606D;
+  --kids-sand:#DFC48E;
+  --kids-cream:#FFF0CF;
+  --kids-gold:#F5B83D;
+  --kids-gold-light:#FFD86B;
+  --kids-gold-dark:#B97819;
+  --kids-red:#D94A42;
+  --kids-red-dark:#A83232;
+  --kids-ink:#231B16;
+  --kids-border:#B68A48;
+  --kids-sky:#79C4D1;
+  --kids-shadow:rgba(4,20,34,.42);
+}
+
+html{background:var(--kids-ocean-dark)!important}
+
+body,
+.enquete,
+.etape{
+  color:var(--kids-cream)!important;
+  background:
+    radial-gradient(circle at 50% -5%,rgba(121,196,209,.32),transparent 32%),
+    radial-gradient(circle at 8% 75%,rgba(217,74,66,.15),transparent 30%),
+    linear-gradient(180deg,var(--kids-ocean) 0%,var(--kids-ocean-dark) 100%)!important;
+  background-attachment:fixed!important;
+}
+
+.etape{
+  padding:1.5rem 1rem 2.2rem!important;
+}
+
+.vignette{
+  background:
+    radial-gradient(circle,transparent 50%,rgba(5,25,40,.12) 78%,rgba(4,16,28,.42) 100%)!important;
+}
+
+/* Titres et textes */
+.titre-choix,
+.texte-transition{
+  color:var(--kids-gold-light)!important;
+  font-family:Georgia,serif!important;
+  font-weight:900!important;
+  text-shadow:0 3px 0 rgba(4,20,34,.55),0 0 16px rgba(245,184,61,.25)!important;
+}
+
+.ligne-fondu{
+  color:var(--kids-cream)!important;
+  font-size:clamp(1.08rem,4.8vw,1.28rem)!important;
+  font-weight:700!important;
+  text-shadow:0 2px 3px rgba(4,20,34,.82)!important;
+}
+
+.ligne-fondu-orange{
+  color:var(--kids-gold-light)!important;
+  font-size:clamp(1.08rem,4.8vw,1.28rem)!important;
+  font-weight:900!important;
+  text-shadow:0 2px 3px rgba(4,20,34,.86)!important;
+}
+
+/* Images : sans bandeau, avec une ombre douce */
+.photo,
+.photo2{
+  display:block!important;
+  background:transparent!important;
+  border:none!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:
+    brightness(1.08)
+    contrast(1.03)
+    drop-shadow(0 11px 15px rgba(4,20,34,.38))!important;
+}
+
+/* Carte parchemin Kids */
+.lettre-manuscrite{
+  color:var(--kids-ink)!important;
+  padding:24px 20px!important;
+  border:4px solid var(--kids-border)!important;
+  border-radius:24px!important;
+  background:
+    radial-gradient(circle at 18% 12%,rgba(255,255,255,.52),transparent 22%),
+    linear-gradient(180deg,#FFF8E3,var(--kids-cream) 62%,var(--kids-sand))!important;
+  box-shadow:
+    inset 0 0 26px rgba(122,77,28,.13),
+    0 7px 0 #8D6536,
+    0 18px 30px var(--kids-shadow)!important;
+}
+
+/* Gros boutons Kids en relief */
+.bouton{
+  min-width:min(84vw,300px)!important;
+  min-height:58px!important;
+  padding:.95rem 1.25rem!important;
+  color:var(--kids-ink)!important;
+  font-family:Georgia,serif!important;
+  font-size:clamp(.98rem,4.3vw,1.12rem)!important;
+  font-weight:900!important;
+  letter-spacing:.035em!important;
+  text-transform:none!important;
+  background:
+    linear-gradient(180deg,#FFE58A 0%,var(--kids-gold-light) 20%,var(--kids-gold) 64%,#DE9227 100%)!important;
+  border:3px solid #FFF0A8!important;
+  border-radius:18px!important;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.62),
+    0 6px 0 var(--kids-gold-dark),
+    0 13px 22px var(--kids-shadow)!important;
+}
+
+.bouton:hover{
+  transform:translateY(-2px)!important;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.68),
+    0 8px 0 var(--kids-gold-dark),
+    0 16px 25px var(--kids-shadow)!important;
+}
+
+.bouton:active{
+  transform:translateY(4px)!important;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.42),
+    0 2px 0 var(--kids-gold-dark),
+    0 8px 14px var(--kids-shadow)!important;
+}
+
+/* Choix des personnages */
+.selection-personnages{
+  gap:22px!important;
+}
+
+.personnage-bouton{
+  min-width:132px;
+  padding:13px 10px 16px!important;
+  color:var(--kids-ink)!important;
+  background:linear-gradient(180deg,#FFF8E4,var(--kids-cream))!important;
+  border:3px solid var(--kids-border)!important;
+  border-radius:22px!important;
+  box-shadow:0 6px 0 #856137,0 14px 22px var(--kids-shadow)!important;
+}
+
+.personnage-bouton:hover{
+  transform:translateY(-3px) scale(1.03)!important;
+  filter:none!important;
+}
+
+.personnage-bouton:active{
+  transform:translateY(3px) scale(.98)!important;
+  box-shadow:0 2px 0 #856137,0 7px 13px var(--kids-shadow)!important;
+}
+
+.personnage-bouton img{
+  width:112px!important;
+  filter:drop-shadow(0 7px 10px rgba(35,27,22,.25))!important;
+}
+
+.nom-personnage{
+  color:var(--kids-ocean-dark)!important;
+  font-size:1rem!important;
+  font-weight:900!important;
+  text-shadow:none!important;
+}
+
+/* Champ de réponse */
+#rep-eau{
+  color:var(--kids-ink)!important;
+  background:linear-gradient(180deg,#FFFDF4,#FFF0CF)!important;
+  border:3px solid var(--kids-gold)!important;
+  border-radius:16px!important;
+  box-shadow:0 6px 0 var(--kids-gold-dark),0 12px 18px var(--kids-shadow)!important;
+  font-size:1.15rem!important;
+  font-weight:900!important;
+}
+
+#rep-eau-err{
+  color:#FFB2A9!important;
+  font-weight:900!important;
+  text-shadow:0 2px 3px rgba(4,20,34,.8)!important;
+}
+
+/* Le header n'est pas utilisé dans le HTML actuel, mais il est harmonisé */
+header{
+  background:linear-gradient(180deg,var(--kids-ocean-dark),#071828)!important;
+  border-bottom:2px solid var(--kids-gold)!important;
+}
+.nav-burger span{background:var(--kids-gold-light)!important}
+.nav-connexion{
+  color:var(--kids-ocean-dark)!important;
+  background:var(--kids-gold)!important;
+  border:2px solid var(--kids-gold-light)!important;
+}
+
+/* Petites bulles décoratives marines, sans ajouter Billig */
+.etape::before,
+.etape::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  opacity:.16;
+}
+.etape::before{
+  width:90px;height:90px;
+  left:-38px;top:18%;
+  border:3px solid var(--kids-sky);
+}
+.etape::after{
+  width:55px;height:55px;
+  right:-22px;bottom:12%;
+  border:3px solid var(--kids-gold);
+}
+
+@media(max-width:480px){
+  .etape{padding:1.25rem .85rem 2rem!important}
+  .lettre-manuscrite{padding:21px 17px!important}
+  .selection-personnages[style]{
+    grid-template-columns:repeat(2,1fr)!important;
+    gap:15px!important;
+  }
+  .personnage-bouton{
+    min-width:0;
+    width:100%;
+  }
+  .personnage-bouton img{
+    width:min(26vw,105px)!important;
+  }
+}
+
+
+/* =========================================================
+   AVELESCAPE KIDS — LE CONQUET
+   NOUVELLE PALETTE DOUCE « PORT & TRÉSOR »
+   Cette surcharge remplace les couleurs trop proches
+   de la version adulte, sans modifier le fonctionnement.
+   ========================================================= */
+:root{
+  --kids-ocean:#78B8C4;
+  --kids-ocean-dark:#4F8FA1;
+  --kids-turquoise:#83C9C1;
+  --kids-turquoise-dark:#55A79F;
+
+  --kids-sand:#F3DEB4;
+  --kids-cream:#FFF8E8;
+
+  --kids-gold:#F5C96A;
+  --kids-gold-light:#FFE5A3;
+  --kids-gold-dark:#D8A84E;
+
+  --kids-red:#E98A78;
+  --kids-red-dark:#C96E61;
+
+  --kids-ink:#354B55;
+  --kids-border:#D7B878;
+  --kids-sky:#BCE3E8;
+
+  --kids-shadow:rgba(48,89,101,.25);
+}
+
+html{
+  background:#4F8FA1!important;
+}
+
+body,
+.enquete,
+.etape{
+  color:var(--kids-ink)!important;
+  background:
+    radial-gradient(circle at 50% -4%,rgba(255,255,255,.48),transparent 34%),
+    radial-gradient(circle at 8% 76%,rgba(255,229,163,.28),transparent 31%),
+    linear-gradient(
+      180deg,
+      #A8D7DE 0%,
+      #78B8C4 48%,
+      #5D9EAE 100%
+    )!important;
+  background-attachment:fixed!important;
+}
+
+.vignette{
+  background:
+    radial-gradient(
+      circle,
+      transparent 56%,
+      rgba(72,135,149,.08) 82%,
+      rgba(62,112,126,.18) 100%
+    )!important;
+}
+
+/* Textes plus doux : bleu encre au lieu du blanc */
+.ligne-fondu{
+  color:#FDF9EE!important;
+  text-shadow:
+    0 2px 2px rgba(48,89,101,.48),
+    0 0 8px rgba(48,89,101,.18)!important;
+}
+
+.ligne-fondu-orange{
+  color:#FFF1BF!important;
+  text-shadow:
+    0 2px 2px rgba(64,105,117,.50),
+    0 0 9px rgba(245,201,106,.18)!important;
+}
+
+.titre-choix,
+.texte-transition{
+  color:#FFF4C9!important;
+  text-shadow:
+    0 3px 0 rgba(62,112,126,.30),
+    0 0 14px rgba(255,255,255,.28)!important;
+}
+
+/* Parchemin clair, moins ancien et plus enfantin */
+.lettre-manuscrite{
+  color:#4B4034!important;
+  border-color:#D9B875!important;
+  background:
+    radial-gradient(circle at 18% 12%,rgba(255,255,255,.72),transparent 24%),
+    linear-gradient(180deg,#FFFCF2,#FFF4D8 64%,#F2DDB3)!important;
+  box-shadow:
+    inset 0 0 24px rgba(189,145,77,.10),
+    0 6px 0 #C8A363,
+    0 17px 28px rgba(64,105,117,.23)!important;
+}
+
+/* Boutons jaune vanille, sans rouge sombre */
+.bouton{
+  color:#40545C!important;
+  background:
+    linear-gradient(
+      180deg,
+      #FFF3BE 0%,
+      #FFE49A 30%,
+      #F5C96A 100%
+    )!important;
+  border-color:#FFF8D9!important;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.76),
+    0 6px 0 #D3A74F,
+    0 13px 21px rgba(48,89,101,.25)!important;
+}
+
+.bouton:hover{
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.82),
+    0 8px 0 #D3A74F,
+    0 16px 24px rgba(48,89,101,.28)!important;
+}
+
+.bouton:active{
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.55),
+    0 2px 0 #D3A74F,
+    0 8px 13px rgba(48,89,101,.23)!important;
+}
+
+/* Cartes personnages pastel */
+.personnage-bouton{
+  color:#40545C!important;
+  background:
+    linear-gradient(180deg,#FFFCF3,#FFF1D3)!important;
+  border-color:#E0BF7C!important;
+  box-shadow:
+    0 6px 0 #C9A35E,
+    0 14px 22px rgba(48,89,101,.24)!important;
+}
+
+.nom-personnage{
+  color:#426D79!important;
+}
+
+/* Champ de réponse */
+#rep-eau{
+  color:#40545C!important;
+  background:
+    linear-gradient(180deg,#FFFFFF,#FFF6DD)!important;
+  border-color:#F5C96A!important;
+  box-shadow:
+    0 6px 0 #D3A74F,
+    0 12px 18px rgba(48,89,101,.22)!important;
+}
+
+#rep-eau-err{
+  color:#A94F4B!important;
+  text-shadow:none!important;
+}
+
+/* Décorations plus légères */
+.etape::before{
+  border-color:#D8F2F3!important;
+  opacity:.28!important;
+}
+
+.etape::after{
+  border-color:#FFE4A0!important;
+  opacity:.30!important;
+}
+
+header{
+  background:
+    linear-gradient(180deg,#5C9EAD,#4C8797)!important;
+  border-bottom-color:#F5C96A!important;
+}
+
+
+/* =========================================================
+   CORRECTION DE LISIBILITÉ — CONTRASTE RENFORCÉ
+   Conserve la palette douce Kids.
+   ========================================================= */
+
+/* Textes narratifs : bleu nuit bien lisible */
+.ligne-fondu{
+  color:#173B4A!important;
+  font-weight:900!important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.72),
+    0 2px 4px rgba(255,255,255,.34)!important;
+}
+
+.ligne-fondu-orange{
+  color:#6F3E18!important;
+  font-weight:900!important;
+  text-shadow:
+    0 1px 0 rgba(255,248,220,.82),
+    0 2px 4px rgba(255,255,255,.34)!important;
+}
+
+/* Titres : bleu très foncé sur le fond pastel */
+.titre-choix,
+.texte-transition{
+  color:#153A49!important;
+  font-weight:900!important;
+  text-shadow:
+    0 2px 0 rgba(255,255,255,.75),
+    0 0 9px rgba(255,255,255,.48)!important;
+}
+
+/* Texte des parchemins */
+.lettre-manuscrite{
+  color:#30271F!important;
+  font-weight:700!important;
+}
+
+.lettre-manuscrite strong{
+  color:#173B4A!important;
+  font-weight:900!important;
+}
+
+/* Boutons : texte plus sombre */
+.bouton{
+  color:#173642!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.48)!important;
+}
+
+/* Noms des personnages */
+.nom-personnage{
+  color:#174B5B!important;
+  font-weight:900!important;
+}
+
+/* Champ de réponse */
+#rep-eau{
+  color:#173642!important;
+}
+
+#rep-eau::placeholder{
+  color:#5E7076!important;
+  opacity:1!important;
+}
+
+/* Message d'erreur plus contrasté */
+#rep-eau-err{
+  color:#7E2929!important;
+  font-weight:900!important;
+  background:rgba(255,245,235,.88)!important;
+  border-radius:12px!important;
+  padding:7px 10px!important;
+}
+
+/* Léger fond clair derrière les textes seuls,
+   pour rester lisibles sur toutes les images et tous les écrans */
+.texte-transition{
+  width:min(92vw,720px)!important;
+  padding:18px 16px!important;
+  border:2px solid rgba(255,255,255,.58)!important;
+  border-radius:20px!important;
+  background:rgba(236,250,250,.78)!important;
+  box-shadow:0 10px 24px rgba(48,89,101,.18)!important;
+  backdrop-filter:blur(4px)!important;
+  -webkit-backdrop-filter:blur(4px)!important;
+}
+
+.texte-transition .ligne-fondu{
+  color:#173B4A!important;
+}
+
+.texte-transition .ligne-fondu-orange{
+  color:#754018!important;
+}
+
+
+/* =========================================================
+   CORRECTION DU FOND — UNE SEULE CONTINUITÉ VISUELLE
+   Supprime l'effet de deux écrans séparés par une ligne.
+   ========================================================= */
+
+html,
+body{
+  min-height:100%;
+  margin:0!important;
+  background:#78B8C4!important;
+}
+
+body{
+  position:relative;
+  isolation:isolate;
+}
+
+/* Un seul fond fixe pour toute l'aventure */
+body::before{
+  content:"";
+  position:fixed;
+  z-index:-2;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% -8%,rgba(255,255,255,.52),transparent 38%),
+    radial-gradient(circle at 8% 78%,rgba(255,229,163,.22),transparent 34%),
+    linear-gradient(
+      180deg,
+      #B7E0E5 0%,
+      #8BC5CF 38%,
+      #72AFBC 70%,
+      #5E9EAD 100%
+    );
+}
+
+/* Aucun fond individuel sur les conteneurs et les scènes */
+.enquete,
+.etape{
+  background:none!important;
+  background-image:none!important;
+  background-color:transparent!important;
+  background-attachment:initial!important;
+}
+
+/* Supprime toute bordure, ombre ou ligne entre deux scènes */
+.enquete,
+.etape,
+.etape + .etape{
+  border:0!important;
+  border-top:0!important;
+  border-bottom:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+
+/* Les scènes cachées ne créent aucun espace */
+.etape:not(.active){
+  display:none!important;
+}
+
+/* La scène active remplit l'écran sans rupture */
+.etape.active{
+  display:flex!important;
+  min-height:100svh!important;
+  width:100%!important;
+  margin:0!important;
+}
+
+/* Vignette continue, sans bord horizontal */
+.vignette{
+  position:fixed!important;
+  inset:0!important;
+  z-index:5!important;
+  width:100%!important;
+  height:100%!important;
+  border:0!important;
+  box-shadow:none!important;
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 58%,
+      rgba(57,112,126,.05) 80%,
+      rgba(49,94,108,.13) 100%
+    )!important;
+}
+
+</style>
+</head>
+
+<body>
+<main class="enquete">
+
+  <section class="etape active" id="Intro">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpirrepressibles.webp" class="photo" alt="Intro">
+
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="Chapitre1">débuter l'aventure </button>
+    </div>
+  </section>
+
+  <section class="etape" id="Chapitre1">
+    <div class="vignette"></div>
+
+    <div class="contenu-etape">
+      <span class="ligne-fondu">Pr Cécile, médecin biologiste,</span>
+      <span class="ligne-fondu">vous êtes réputé pour avoir résolu</span>
+      <span class="ligne-fondu">de nombreux mystères à travers la France.</span>
+      <span class="ligne-fondu">Vous recevez un courrier du maire</span>
+      <span class="ligne-fondu">d’un petit village breton situé</span>
+      <span class="ligne-fondu">à la pointe de la Bretagne.</span>
+
+      <button class="bouton" data-suivant="Chapitre2">Suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="Chapitre2">
+    <div class="vignette"></div>
+
+    <div class="lettre-manuscrite">
+      <span class="mot" style="animation-delay:0.05s">Le 7 mai 1874</span><br><br><br>
+      <span class="mot" style="animation-delay:0.24s">Cher Professeur Cécile,</span><br><br><br>
+      <span class="mot" style="animation-delay:1.68s"> Un mal inquiétant s'est déclaré dans notre village.</span><br><br>
+      <span class="mot" style="animation-delay:2.40s">En effet, les villageois, deviennent de plus en plus agressifs: tout est prétexte à bagarre... </span><br><br>
+      
+      <span class="mot" style="animation-delay:4.08s">Les médecins ne s'accordent point sur la cause de cette affection:</span><br>
+      <span class="mot" style="animation-delay:5.28s">L'un craint un terrible virus, l'autre un empoisonnement.</span><br><br>
+      <span class="mot" style="animation-delay:6.48s">Je sollicite humblement votre grand savoir pour découvrir la nature de ce mal qui nous touche.</span><br><br>
+      <span class="mot" style="animation-delay:7.68s">Veuillez agréer, très honoré Professeur, l'expression de mon profond respect.</span><br><br>
+      <span class="mot" style="animation-delay:8.88s"> Le maire du Conquet</span>
+    </div>
+
+    <div class="contenu-etape">
+      <button class="bouton mot-bloc" data-suivant="Chapitre3" style="animation-delay:9.84s">Accepter l'enquête</button>
+    </div>
+  </section>
+
+  <section class="etape" id="Chapitre3">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpaccueilcaleche.webp" class="photo" alt="Le maire">
+
+    <div class="contenu-etape">
+      <span class="ligne-fondu">Le maire vous attend</span>
+      <span class="ligne-fondu">à votre arrivée au Conquet.</span>
+      <span class="ligne-fondu">Y êtes-vous ?</span>
+
+      <button class="bouton" data-suivant="Chapitre4">Suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="Chapitre4">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpmairecoop.webp" class="photo" alt="Accueil">
+
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Pr Cécile, je suis ravi de vous accueillir.</span>
+      <span class="ligne-fondu-orange">Degemer mat ar Konk Leon</span>
+      <span class="ligne-fondu-orange">(Bienvenue au Conquet)</span>
+      <span class="ligne-fondu-orange">malgré les circonstances...</span>
+      <span class="ligne-fondu-orange">Je vous propose de m'accompagner</span>
+      <span class="ligne-fondu-orange">à la mairie.</span>
+
+      <button class="bouton" data-suivant="chapitre5">Continuer</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre5">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpmairepreocupe.webp" class="photo" alt="Maire préoccupé">
+
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Pas un jour sans bagarre...</span>
+      <span class="ligne-fondu-orange">Avant, ils ne se battaient que le samedi soir contre les Plougonvelinois!</span>
+      <span class="ligne-fondu-orange">Demain, c'est mardi, jour de marché.</span>
+      <span class="ligne-fondu-orange">Allez-y...</span>
+      <span class="ligne-fondu-orange">Vous verrez par vous-même.</span>
+
+      <button class="bouton" data-suivant="chapitre6">Continuer</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre6">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpmairehabilitation.webp" class="photo" alt="Attestation préfet">
+
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Le préfet est inquiet de la situation...</span>
+      <span class="ligne-fondu-orange">Je vous remets une habilitation.</span>
+      <span class="ligne-fondu-orange">Attention:<p></p>   vous ne pouvez pas entrer  <p>  dans les propriétés privées.</span>
+
+      <button class="bouton" data-suivant="chapitre7">Continuer</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre7">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpaccueilhotel.webp" class="photo" alt="Accueil hôtel">
+
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Bonjour Professeur,</span>
+      <span class="ligne-fondu-orange">Monsieur le Maire vous a réservé une chambre.</span>
+
+      <button class="bouton" data-suivant="chapitre8">Suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre8">
+    <div class="vignette"></div>
+    <div id="sequence-container" class="contenu-etape"></div>
+  </section>
+
+  <section class="etape" id="chapitre9">
+    <div class="vignette"></div>
+    <div id="dispute-container" class="contenu-etape"></div>
+  </section>
+
+  <section class="etape" id="chapitre10">
+    <div class="vignette"></div>
+
+    <h2 class="titre-choix">Qui souhaitez-vous interroger ?</h2>
+
+    <div class="selection-personnages">
+
+      <button class="personnage-bouton" data-suivant="medecin">
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpdocteur.webp" alt="Médecin">
+        <span class="nom-personnage">Le médecin</span>
+      </button>
+
+      <button class="personnage-bouton" data-suivant="maire">
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webmaireleconquet.webp" alt="Maire">
+        <span class="nom-personnage">Le maire</span>
+      </button>
+
+      <button class="personnage-bouton" data-suivant="aubergiste">
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpaubergiste.webp" alt="Aubergiste">
+        <span class="nom-personnage">L’aubergiste</span>
+      </button>
+
+    </div>
+  </section>
+
+  <section class="etape" id="medecin">
+    <div class="vignette"></div>
+
+    <div class="contenu-etape">
+      <span class="ligne-fondu">Le médecin a son cabinet à son domicile, au port.</span>
+      <span class="ligne-fondu">Passez par la rampe Lombard, surnommée "Le casse-cou"</span>
+      <span class="ligne-fondu">(elle est très en pente).</span>
+      <button class="bouton" data-suivant="carte1">Chercher son adresse sur la carte</button>
+      <button class="bouton" data-suivant="chapitre11">Cliquez si vous êtes au quai du Drellach</button>
+    </div>
+  </section>
+
+  <section class="etape" id="aubergiste">
+    <div class="vignette"></div>
+ <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpaccueilhotel.webp" class="photo" alt="Carte du Conquet">
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Le bistrot et le restaurant ne sont pas encore ouverts, revenez plus tard.</span>
+      <button class="bouton" data-suivant="chapitre10">Retour aux personnages</button>
+    </div>
+  </section>
+
+   <section class="etape" id="maire">
+    <div class="vignette"></div>
+<img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webmaireencolere.webp" class="photo" alt="Carte du Conquet">
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Vous croyez que je vais faire votre enquête à votre place?</span>
+      <button class="bouton" data-suivant="chapitre10">Retour aux personnages</button>
+     
+    </div>
+  </section>
+
+  
+
+  <section class="etape" id="carte1">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpplan3d.webp" class="photo" alt="Carte du Conquet">
+
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="vous êtes quai du drellach">Retour</button>
+    </div>
+  </section>
+    <section class="etape" id="chapitre11">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webparcenciel1.webp" class="photo" alt="Accueil">
+
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Bonjour,</span>
+      <span class="ligne-fondu-orange">Si vous cherchez le docteur, il n'est pas encore là... </span>
+      <span class="ligne-fondu-orange">je l'attends aussi.</span>
+      
+      <button class="bouton" data-suivant="chapitre11-1">suite</button>
+    </div>
+  </section>
+  <section class="etape" id="chapitre11-1">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webparcenciel1.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Ici, tout le monde m'appelle Kanevedenn (Arc-en-ciel).</span>
+      <span class="ligne-fondu-orange">Je suis un ancien pêcheur, ma famille est originaire d'ici.</span>
+      <span class="ligne-fondu-orange">Contrairement à la plupart des pêcheurs du Conquet.</span>
+    
+  
+      <button class="bouton" data-suivant="chapitre11-2">suite</button>
+    </div>
+  </section>
+  <section class="etape" id="chapitre11-2">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webparcenciel2.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Beaucoup de Paimpolais sont venus s'installer ici, </span>
+      <span class="ligne-fondu-orange">il n'y avait plus beaucoup de poissons dans le nord de la Bretagne...</span>
+      <span class="ligne-fondu-orange">Ils appellent ça la surpêche!</span>
+      <button class="bouton" data-suivant="chapitre11-3">suite</button>
+    </div>
+   </section>
+  
+    <section class="etape" id="chapitre11-3">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webparcenciel3.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+   <span class="ligne-fondu-orange">Les Conquetois sont d'excellents marins qui sont souvent recrutés pour Le Roy.</span>
+      <span class="ligne-fondu-orange">Il faut dire qu'ici, on a été marqué par les invasions,</span>
+      <span class="ligne-fondu-orange">surtout celle de 1558: les Anglais et les Flamands ont tout détruit...</span>
+      <button class="bouton" data-suivant="chapitre11-4">suite</button>
+    </div>
+  </section>
+  <section class="etape" id="chapitre11-4">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webparcenciel2.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+   <span class="ligne-fondu-orange">Il y a pire, comme salle d'attente de médecin!</span>
+      <span class="ligne-fondu-orange">&nbsp;</span>
+      <span class="ligne-fondu-orange">On voit passer les bateaux de pêche, et les bateaux de goémon.</span>
+      <span class="ligne-fondu-orange">Le goémon est récolté près des îles de Beniguet et de Quéménes,</span>
+      <span class="ligne-fondu-orange">et transformé en iode à l'usine, un peu plus loin dans la ria.</span>
+      <span class="ligne-fondu-orange">- Tiens, voilà le Docteur! -</span>
+      <button class="bouton" data-suivant="chapitre12-1">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre12-1">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webparriveedocteur.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+   <span class="ligne-fondu-orange">vous êtes Professeur Cécile, l'enquêteur?</span>
+      <span class="ligne-fondu-orange">je suis désolé de me présenter avec un oeil au beurre noir...</span>
+      <button class="bouton" data-suivant="chapitre12-2">suite</button>
+    </div>
+  </section>
+   <section class="etape" id="chapitre12-2">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpdocteurtriste.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+   <span class="ligne-fondu-orange">Je suis atteint du même mal que les habitants...</span>
+      <span class="ligne-fondu-orange">Hier, au lieu de soigner mon patient, je me suis battu!</span>
+      <span class="ligne-fondu-orange">ce n'est pas digne d'un médecin.</span>
+      <span class="ligne-fondu-orange">Aidez-nous, professeur, avant que cela finisse mal...</span>
+      <button class="bouton" data-suivant="chapitre12-3">suite</button>
+    </div>
+  </section>
+  <section class="etape" id="chapitre12-3">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webparcenciel3.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+   <span class="ligne-fondu-orange">Je suis le seul du village à ne pas avoir cette maladie!</span>
+    <button class="bouton" data-suivant="chapitre12-4">suite</button>
+    </div>
+  </section>
+   <section class="etape" id="chapitre12-4">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webparriveedocteur.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+   <span class="ligne-fondu-orange">Je ne pourrai pas vous aider...</span>
+   <span class="ligne-fondu-orange">J'envisage même d'arrêter d'être médecin.</span>
+   <span class="ligne-fondu-orange">Allez voir le druide, il vous sera peut-être plus utile que moi.</span>
+    <button class="bouton" data-suivant="chapitre12-5">suite</button>
+    </div>
+  </section>
+   <section class="etape" id="chapitre12-5">
+    <div class="vignette"></div>
+  <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpdocteurdirection.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+   <span class="ligne-fondu-orange">A cette heure-ci, </span>
+   <span class="ligne-fondu-orange">il est très probablement au lavoir.</span>
+   <span class="ligne-fondu-orange">C'est juste un peu plus loin sur votre droite.</span>
+    <button class="bouton" data-suivant="chapitre13">suite</button>
+    </div>
+  </section>
+    <section class="etape" id="chapitre13">
+    <div class="vignette"></div>
+    <div class="contenu-etape">
+   <span class="ligne-fondu">Cliquez sur le bouton si vous êtes au lavoir</span>
+    <button class="bouton" data-suivant="chapitre14">continuer</button>
+    </div>
+  </section>
+
+    <section class="etape" id="chapitre14">
+    <div class="vignette"></div>
+   <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpdruidelavoir1.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+   <span class="ligne-fondu-orange">J'imagine que vous n'êtes pas venu au lavoir pour laver votre linge... </span>
+   <span class="ligne-fondu-orange">Allons droit au but!</span>
+   <span class="ligne-fondu-orange">&nbsp;</span>
+   <span class="ligne-fondu-orange">J'ai consulté les divinités, elles m'ont assuré </span>
+   <span class="ligne-fondu-orange">que ce n'étaient pas elles qui punissent les Conquetois.</span>
+   <span class="ligne-fondu-orange">Elles me disent que c'est un des 4 éléments.</span>
+   <button class="bouton" data-suivant="chapitre15">suite</button>
+    </div>
+  </section>
+
+    <section class="etape" id="chapitre15">
+    <div class="vignette"></div>
+   <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpchemindruide.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+   <span class="ligne-fondu-orange">Nous nous reverrons, Professeur.</span>
+   <span class="ligne-fondu-orange">Je vous conseille de rejoindre le bourg par ce ribine (petit chemin en breton).</span>
+    <button class="bouton" data-suivant="chapitre16">suite</button>
+    </div>
+  </section>
+ 
+   <section class="etape" id="chapitre16">
+    <div class="vignette"></div>
+   <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpcarte-le-conquet-a-transformer.webp" class="photo" alt="Monsieur Tissier">
+  
+    <button class="bouton" data-suivant="chapitre17-1">cliquez si vous êtes devant l'actuelle mairie</button>
+    </div>
+  </section>
+  
+    <section class="etape" id="chapitre17-1">
+    <div class="vignette"></div>
+   <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webptissier1.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+   <span class="ligne-fondu-orange">Bonjour Professeur<span>
+   <span class="ligne-fondu-orange"> vous arrivez à point nommé, car je souhaitais m'entretenir avec vous.</span>
+    <span class="ligne-fondu-orange">Je me nomme François Tissier.</span>
+    <span class="ligne-fondu-orange">Je suis chimiste, et j'ai mis au point un procédé pour transformer les algues en iode.</span>
+    <span class="ligne-fondu-orange">Je vend mon iode pour l'industrie pharmaceutique:</span>
+    <span class="ligne-fondu-orange">la teinture d'iode est un excellent antiseptique.</span>
+    <button class="bouton" data-suivant="chapitre17-2">suite</button>
+    </div>
+  </section>
+  <section class="etape" id="chapitre17-2">
+    <div class="vignette"></div>
+   <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webptissier2.webp" class="photo" alt="monsieurarcenciel">
+    <div class="contenu-etape">
+   <span class="ligne-fondu-orange">Je sais que ma fortune dérange... </span>
+   <span class="ligne-fondu-orange">Mon usine est la première de ce type en France! </span>
+   <span class="ligne-fondu-orange">&nbsp;</span>
+    <span class="ligne-fondu-orange">Ce ne sont pas mes activités qui nuisent à la santé de la population:</span>
+    <span class="ligne-fondu-orange">j'ai besoin des Conquetois pour faire fonctionner mon affaire...</span>
+    <button class="bouton" data-suivant="chapitre17-3">suite</button>
+    </div>
+  </section>
+  <section class="etape" id="chapitre17-3">
+    <div class="vignette"></div>
+   <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webptissier1.webp" class="photo" alt="Monsieur Tisssier">
+    <div class="contenu-etape">
+    <span class="ligne-fondu-orange">Lorsque vous aurez résolu cette enquête, allez donc voir où est mon usine.</span>
+     <span class="ligne-fondu-orange">Elle se trouve à la sortie du Conquet: il faut prendre la petite route</span>
+     <span class="ligne-fondu-orange">en face de la caserne des gendarmes.</span>
+    <span class="ligne-fondu-orange">N'y entrez pas sans autorisation!</span>
+    
+
+    <button class="bouton" data-suivant="chapitre18">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre18">
+    <div class="vignette"></div>
+
+    <h2 class="titre-choix">Qui souhaitez-vous interroger ?</h2>
+
+    <div class="selection-personnages" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+
+      <button class="personnage-bouton" data-suivant="medecin-18">
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpdocteur.webp" alt="Médecin">
+        <span class="nom-personnage">Le médecin</span>
+      </button>
+
+      <button class="personnage-bouton" data-suivant="maire-18">
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webmaireleconquet.webp" alt="Maire">
+        <span class="nom-personnage">Le maire</span>
+      </button>
+
+      <button class="personnage-bouton" data-suivant="aubergiste-18">
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpaubergiste.webp" alt="Aubergiste">
+        <span class="nom-personnage">L'aubergiste</span>
+      </button>
+
+      <button class="personnage-bouton" data-suivant="druide-18">
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpdruide.webp" alt="Druide">
+        <span class="nom-personnage">Le druide</span>
+      </button>
+
+      <button class="personnage-bouton" data-suivant="Kanevedenn-18">
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpkanevedenn.webp" alt="Kanevedenn">
+        <span class="nom-personnage">Kanevedenn</span>
+      </button>
+
+      <button class="personnage-bouton" data-suivant="carte-18">
+        <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpplan3d.webp" alt="Plan de la ville">
+        <span class="nom-personnage">Plan de la ville</span>
+      </button>
+
+    </div>
+
+  </section>
+
+  <section class="etape" id="aubergiste-18">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpemployeaubergiste.webp" class="photo" alt="Plan du Conquet">
+
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">"Ma patronne n'est pas là!</span>
+      <span class="ligne-fondu-orange">Elle doit être en train de compter les pièces d'or que son grand-père lui a léguées."</span>
+      <span class="ligne-fondu-orange">C'était un célèbre marchand qui s'appelait "Changélédix".</span>
+      <span class="ligne-fondu-orange">On lui aurait donné le Bon-Dieu sans confession, comme sa petite-fille!</span>
+      <span class="ligne-fondu-orange">Et pourtant, si vous saviez..."</span>
+      <button class="bouton" data-suivant="chapitre18">Retour aux personnages</button>
+    </div>
+  </section>
+
+  <section class="etape" id="maire-18">
+    <div class="vignette"></div>
+
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpmairetresencolere.webp" class="photo" alt="Plan du Conquet">
+    
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">"Vous êtes vraiment incompétent!</span>
+      <span class="ligne-fondu-orange">retournez enquêter, si vous ne voulez pas que je vous mette une raclée!!!"</span>
+      <button class="bouton" data-suivant="chapitre18">Retour aux personnages</button>
+    </div>
+  </section>
+
+  <section class="etape" id="medecin-18">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpenarretmaladie.webp" class="photo" alt="En arrêt maladie">
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="chapitre18">Retour aux personnages</button>
+    </div>
+  </section>
+
+  <section class="etape" id="druide-18">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpdruide.webp" class="photo" alt="Druide">
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Ecoutez bien les témoignages et rejoignez-moi là où le maire vous a accueilli.</span>
+      <button class="bouton" data-suivant="chapitre18">Retour aux personnages</button>
+    </div>
+  </section>
+
+  <section class="etape" id="Kanevedenn-18">
+    <div class="vignette"></div>
+    <div class="contenu-etape">
+      <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpkanevedenn.webp" class="photo" alt="Kanevedenn">
+      <span class="ligne-fondu-orange">Je vais vous raconter d'où vient mon surnom: Kanevedenn.</span>
+      <span class="ligne-fondu-orange">Un soir de pleine lune, je rentrais de la pêche, j'ai actionné le bouton de la fontaine, car j'avais soif.</span>
+      <span class="ligne-fondu-orange">L'eau avait une couleur magnifique, comme un arc en ciel!</span>
+      <button class="bouton" data-suivant="kanevedenn-18-1">suite</button>
+    </div>
+      </section>
+ <section class="etape" id="kanevedenn-18-1">
+    <div class="vignette"></div>
+    <div class="contenu-etape">
+      <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpkanevedenn.webp" class="photo" alt="Kanevedenn">
+      <span class="ligne-fondu-orange">J'en ai parlé le lendemain, personne ne m'a cru...</span>
+      <span class="ligne-fondu-orange">et les gens m'ont surnommé kanevedenn: "arc en ciel" en breton.</span>
+      <span class="ligne-fondu-orange">Plus jamais je n'ai bu de cette eau! </span>
+      <button class="bouton" data-suivant="chapitre18">Retour aux personnages</button>
+    </div>
+  
+  </section>
+
+  <section class="etape" id="chapitre19">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpdruirefontaine.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Vous avez déduit la même chose que moi!</span>
+      <button class="bouton" data-suivant="chapitre20">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre20">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpdruidefontainesuite.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">l'eau est contaminée, et c'est pour cela que les gens sont agressifs.</span>
+      <span class="ligne-fondu-orange">Suivez-moi, avant que la nuit ne tombe!</span>
+      <button class="bouton" data-suivant="chapitre21">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre21">
+    <div class="vignette"></div>
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="chapitre22">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre22">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpsourcier2-1.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="chapitre23">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre23">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpsourcier3-2.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="chapitre24">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre24">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpsourcier4-2.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="chapitre25">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre25">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpsourcier5-2.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="chapitre26">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre26">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpsourcier6-2.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="chapitre27">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre27">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpsourcier7-2.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="chapitre28">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre28">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpsourcier8-2.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="chapitre29">descendre dans le trou</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre29">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpcaverne1.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">ce n'est pas de ma faute...</span>
+      <button class="bouton" data-suivant="chapitre29-1">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre29-1">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpcaverne2.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">C'est la cachette de mon grand-père, Changélédix.</span>
+      <span class="ligne-fondu-orange">Il avait un bateau et était marchand.</span>
+      <span class="ligne-fondu-orange">Un jour, il a sauvé deux gaulois et leur petit chien </span>
+      <span class="ligne-fondu-orange">et en échange, ils lui ont donné un chaudron de potion magique.</span>
+      <button class="bouton" data-suivant="chapitre29-2">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre29-2">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpchaudron.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">La potion devait servir à donner de la force aux Conquetois</span>
+      <span class="ligne-fondu-orange">si les anglais nous envahissaient à nouveau...</span>
+      <span class="ligne-fondu-orange">Je n'avais pas vu que le chaudron était rouillé!</span>
+      <button class="bouton" data-suivant="chapitre29-3">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre29-3">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpcaverne1.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+       <span class="ligne-fondu-orange">La potion s'écoule dans le ruisseau qui mène à la fontaine</span>
+      <span class="ligne-fondu-orange">mais elle ne donne plus de force,</span>
+      <span class="ligne-fondu-orange">mais elle rend agressif...</span>
+      <button class="bouton" data-suivant="chapitre29-4">suite</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre29-4">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpdruideetaubergiste.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      <span class="ligne-fondu-orange">Ne sois pas inquiète, tu as gardé le secret pour le bien de tous.</span>
+      <span class="ligne-fondu-orange">Les Conquetois comprendront.</span>
+      <span class="ligne-fondu-orange">Je vais m'occuper de ce chaudron, trouve une autre cachette pour ton trésor!</span>
+      <button class="bouton" data-suivant="chapitre30">suite et fin</button>
+    </div>
+  </section>
+
+  <section class="etape" id="chapitre30">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpfin.webp" class="photo" alt="Kanevedenn">
+    <div class="contenu-etape">
+      
+    </div>
+  </section>
+
+  <section class="etape" id="carte-18">
+    <div class="vignette"></div>
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpplan3d.webp" class="photo" alt="Plan du Conquet">
+    <div class="contenu-etape">
+      <button class="bouton" data-suivant="chapitre18">Retour aux personnages</button>
+      <span class="ligne-fondu" style="margin-top:1.4rem">Qu'est-ce qui rend les Conquetois agressifs ?</span>
+      <input id="rep-eau" type="text" autocomplete="off" placeholder="• • •"
+        style="margin-top:.8rem;padding:.7rem 1rem;border:1px solid #A67C52;border-radius:10px;
+               background:linear-gradient(to bottom,#F8EEDC,#E3D2B2);color:#4A3728;
+               font-family:Georgia,serif;font-size:1rem;text-align:center;
+               width:min(80vw,260px);outline:none">
+      <span id="rep-eau-err" style="visibility:hidden;color:#c0392b;font-size:.9rem;margin-top:.5rem;display:block">
+        Mauvaise réponse, cherchez encore...
+      </span>
+      <button class="bouton" onclick="validerEau()">Valider</button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function wait(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  function changerEtape(idCible){
+    const prochaineEtape = document.getElementById(idCible);
+
+    if(!prochaineEtape){
+      console.error("Étape introuvable :", idCible);
+      return;
+    }
+
+    const etapeActive = document.querySelector('.etape.active');
+
+    if(etapeActive){
+      etapeActive.classList.remove('active');
+    }
+
+    prochaineEtape.classList.add('active');
+
+    if(idCible === 'chapitre8'){
+      sequenceRepos();
+    }
+
+    if(idCible === 'chapitre9'){
+      sequenceDispute();
+    }
+  }
+
+  function validerEau(){
+    var v = document.getElementById('rep-eau').value.trim().toLowerCase();
+    var err = document.getElementById('rep-eau-err');
+    if(v === 'eau'){
+      err.style.visibility = 'hidden';
+      changerEtape('chapitre19');
+    } else {
+      err.style.visibility = 'visible';
+    }
+  }
+
+  document.addEventListener('click', function(event){
+    const bouton = event.target.closest('[data-suivant]');
+
+    if(!bouton){
+      return;
+    }
+
+    const cible = bouton.dataset.suivant;
+
+    if(!cible){
+      return;
+    }
+
+    changerEtape(cible);
+  });
+
+  async function sequenceRepos(){
+    const container = document.getElementById('sequence-container');
+
+    container.innerHTML = "";
+
+    await wait(1000);
+
+    container.innerHTML = `
+      <span class="texte-transition">
+        Le lendemain...
+      </span>
+    `;
+
+    await wait(1000);
+
+    container.innerHTML = `
+      <img
+        src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpmarchecalme.webp"
+        class="photo fade-in"
+        alt="Marché du Conquet calme"
+      >
+    `;
+
+    await wait(3000);
+
+    container.innerHTML = "";
+
+    await wait(1000);
+
+    container.innerHTML = `
+      <span class="texte-transition">
+        Tout à coup...
+      </span>
+    `;
+
+    await wait(2500);
+
+    changerEtape('chapitre9');
+  }
+
+  async function sequenceDispute(){
+    const container = document.getElementById('dispute-container');
+
+    container.innerHTML = `
+      <img
+        src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpdisputefemmes.webp"
+        class="photo fade-in"
+        alt="Dispute entre femmes au marché"
+      >
+    `;
+
+    await wait(3000);
+
+    container.innerHTML = `
+      <img
+        src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/2-webpbagarremarche.webp"
+        class="photo fade-in"
+        alt="Bagarre générale"
+      >
+    `;
+
+    await wait(3000);
+
+    const btn = document.createElement('button');
+    btn.className = 'bouton fade-in';
+    btn.setAttribute('data-suivant', 'chapitre10');
+    btn.textContent = "Commencer l'enquête";
+    container.appendChild(btn);
+
+    const btnRevoir = document.createElement('button');
+    btnRevoir.className = 'bouton fade-in';
+    btnRevoir.setAttribute('data-suivant', 'chapitre8');
+    btnRevoir.textContent = "Revoir";
+    container.appendChild(btnRevoir);
+  }
+</script>
+
+</body>
+</html>
