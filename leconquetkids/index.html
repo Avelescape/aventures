@@ -1072,6 +1072,136 @@ body::before{
     )!important;
 }
 
+
+
+/* =========================================================
+   BILLIG — PREMIÈRE SCÈNE LE CONQUET KIDS
+   Même organisation de fichiers que Saint-Mathieu Kids.
+   ========================================================= */
+#Intro{
+  justify-content:flex-start!important;
+  padding-bottom:max(26px, env(safe-area-inset-bottom))!important;
+}
+
+#Intro .photo{
+  margin-top:clamp(12px,3vh,30px)!important;
+  margin-bottom:clamp(8px,1.8vh,18px)!important;
+  max-height:42vh!important;
+}
+
+.intro-billig-zone{
+  position:relative;
+  width:min(94vw,520px);
+  min-height:clamp(190px,31vh,300px);
+  margin:0 auto;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  z-index:20;
+}
+
+.intro-billig{
+  position:absolute;
+  right:clamp(-8px,1vw,14px);
+  bottom:0;
+  width:clamp(150px,40vw,225px);
+  pointer-events:none;
+  filter:drop-shadow(0 12px 18px rgba(48,89,101,.32));
+  animation:billigEntreConquet .9s cubic-bezier(.2,.78,.22,1) both;
+}
+
+.intro-billig img{
+  display:block;
+  width:100%;
+  height:auto;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+.intro-billig-bulle{
+  position:absolute;
+  left:clamp(0px,2vw,22px);
+  top:clamp(0px,1vh,12px);
+  width:min(58vw,260px);
+  padding:14px 16px;
+  color:#173642;
+  background:linear-gradient(180deg,#FFFCF3,#FFF1D3);
+  border:3px solid #55A79F;
+  border-radius:22px 22px 7px 22px;
+  font-family:Georgia,serif;
+  font-size:clamp(17px,4.6vw,22px);
+  font-weight:900;
+  line-height:1.28;
+  text-align:center;
+  box-shadow:0 6px 0 rgba(64,145,145,.55),0 14px 24px rgba(48,89,101,.23);
+  opacity:0;
+  transform:translateY(10px) scale(.96);
+  animation:billigBulleConquet .5s ease .72s forwards;
+}
+
+.intro-billig-bulle::after{
+  content:"";
+  position:absolute;
+  right:-17px;
+  bottom:22px;
+  width:28px;
+  height:24px;
+  background:#FFF1D3;
+  border-right:3px solid #55A79F;
+  border-bottom:3px solid #55A79F;
+  transform:skewX(-32deg) rotate(-8deg);
+}
+
+#Intro .contenu-etape{
+  margin-top:8px;
+  padding-bottom:8px;
+  z-index:30;
+}
+
+#Intro .bouton{
+  opacity:0;
+  transform:translateY(10px);
+  animation:apparitionBoutonIntro .5s ease 1.15s forwards;
+}
+
+@keyframes billigEntreConquet{
+  from{opacity:0;transform:translateX(115%) translateY(12px) rotate(4deg)}
+  72%{opacity:1;transform:translateX(-6px) translateY(0) rotate(-2deg)}
+  to{opacity:1;transform:translateX(0) translateY(0) rotate(0)}
+}
+
+@keyframes billigBulleConquet{
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@keyframes apparitionBoutonIntro{
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:390px){
+  .intro-billig-zone{min-height:205px}
+  .intro-billig{width:155px;right:-2px}
+  .intro-billig-bulle{width:57vw;padding:11px 12px;font-size:17px}
+}
+
+@media(max-height:650px){
+  #Intro .photo{max-height:34vh!important;margin-top:6px!important;margin-bottom:4px!important}
+  .intro-billig-zone{min-height:165px}
+  .intro-billig{width:140px}
+  .intro-billig-bulle{padding:9px 11px;font-size:16px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .intro-billig,
+  .intro-billig-bulle,
+  #Intro .bouton{
+    animation:none!important;
+    opacity:1!important;
+    transform:none!important;
+  }
+}
+
 </style>
 </head>
 
@@ -1081,10 +1211,24 @@ body::before{
   <section class="etape active" id="Intro">
     <div class="vignette"></div>
 
-    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpirrepressibles.webp" class="photo" alt="Intro">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpirrepressibles.webp" class="photo" alt="Présentation de l’aventure du Conquet">
+
+    <div class="intro-billig-zone" aria-label="Billig présente l’aventure">
+      <div class="intro-billig-bulle">
+        Salut ! Moi, c’est Billig.<br>
+        Tu viens résoudre le mystère du Conquet avec moi ?
+      </div>
+
+      <div class="intro-billig">
+        <img
+          src="../billig/images/0-webpbilligcourt.webp"
+          alt="Billig, le chien guide, arrive en courant"
+          onerror="this.onerror=null;this.src='../billig/images/0-webpbilligassis.webp';">
+      </div>
+    </div>
 
     <div class="contenu-etape">
-      <button class="bouton" data-suivant="Chapitre1">débuter l'aventure </button>
+      <button class="bouton" data-suivant="Chapitre1">Commencer l’aventure</button>
     </div>
   </section>
 
