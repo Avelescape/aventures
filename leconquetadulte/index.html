@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -253,24 +254,78 @@
       from{ opacity:0; }
       to{ opacity:1; }
     }
+
+
+    /* =========================================================
+       BOUTON RETOUR AU SITE AVELESCAPE
+       Visible sur toutes les scènes
+       Compatible ordinateur, Android et iPhone
+       ========================================================= */
+    .site-retour{
+      position:fixed;
+      top:max(12px, env(safe-area-inset-top));
+      right:max(10px, env(safe-area-inset-right));
+      z-index:999999;
+
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+
+      min-height:38px;
+      padding:7px 12px;
+
+      background:rgba(16,8,10,0.90);
+      color:#F0D47A;
+
+      border:2px solid #D4AF37;
+      border-radius:999px;
+
+      font-family:Georgia, serif;
+      font-size:13px;
+      font-weight:800;
+      line-height:1;
+      text-decoration:none;
+
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.45),
+        inset 0 0 12px rgba(212,175,55,0.14);
+
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+
+      cursor:pointer;
+      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .site-retour:hover{
+      background:#D4AF37;
+      color:#16090d;
+    }
+
+    .site-retour:active{
+      transform:scale(0.96);
+    }
+
+    @media (max-width:480px){
+      .site-retour{
+        top:max(10px, env(safe-area-inset-top));
+        right:max(10px, env(safe-area-inset-right));
+        min-height:34px;
+        padding:6px 10px;
+        font-size:12px;
+      }
+    }
+
   </style>
 </head>
 
 <body>
 
-<header>
-  <div class="nav">
-    <div class="nav-left">
-<a class="brand" href="sitemodif1.html">
-        <img class="feather" src="https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webproseaveltransparent.webp" alt="Avel Escape">
-      </a>
-    </div>
-    <a class="nav-connexion" href="LIEN_ICI du site avelescape">
-      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-4 3.1-7 7-7s7 3 7 7"/></svg>
-      Site
-    </a>
-  </div>
-</header>
+<!-- BOUTON RETOUR AU SITE AVELESCAPE -->
+<a class="site-retour" href="../index.html">
+  <span>site AvelEscape</span>
+</a>
 
 <main class="enquete">
 
