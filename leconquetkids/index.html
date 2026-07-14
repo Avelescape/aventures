@@ -1377,6 +1377,53 @@ body::before{
   font-weight:700!important;
 }
 
+
+/* =========================================================
+   BILLIG — PRÉSENT DANS CHAQUE SCÈNE
+   Ajout automatique : une posture varie selon les scènes.
+   ========================================================= */
+.billig-scene{
+  position:absolute;
+  right:clamp(4px, 2.5vw, 18px);
+  bottom:max(78px, calc(env(safe-area-inset-bottom, 0px) + 68px));
+  width:clamp(92px, 25vw, 145px);
+  height:auto;
+  z-index:24;
+  pointer-events:none;
+  object-fit:contain;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 9px 12px rgba(48,89,101,.28));
+  animation:billigSceneArrive .55s ease both;
+}
+
+.etape.billig-gauche .billig-scene{
+  right:auto;
+  left:clamp(4px, 2.5vw, 18px);
+}
+
+.etape.billig-haut .billig-scene{
+  bottom:auto;
+  top:max(78px, calc(env(safe-area-inset-top, 0px) + 68px));
+}
+
+@keyframes billigSceneArrive{
+  from{opacity:0;transform:translateY(12px) scale(.94)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@media(max-height:700px){
+  .billig-scene{
+    width:clamp(78px, 21vw, 115px);
+    bottom:max(66px, calc(env(safe-area-inset-bottom, 0px) + 58px));
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .billig-scene{animation:none!important}
+}
+
 </style>
 </head>
 
@@ -2267,5 +2314,43 @@ body::before{
 })();
 </script>
 
+<script>
+
+/* =========================================================
+   BILLIG — AJOUT AUTOMATIQUE DANS CHAQUE SCÈNE
+   ========================================================= */
+(function ajouterBilligDansChaqueScene(){
+  const imagesBillig = [
+    "../billig/images/0-webpbilligassis.webp",
+    "../billig/images/0-webpbilligcourt.webp",
+    "../billig/images/0-webpbilligcurieux.webp",
+    "../billig/images/0-webpbilligrenifle.webp",
+    "../billig/images/0-webpbilligallonge.webp",
+    "../billig/images/0-webpbilligloupe.webp"
+  ];
+
+  document.querySelectorAll(".etape").forEach((scene, index) => {
+    /* L'introduction et la scène Pr Cécile ont déjà leur Billig personnalisé. */
+    if(scene.id === "Intro" || scene.querySelector(".billig-professeur")) return;
+    if(scene.querySelector(".billig-scene")) return;
+
+    const billig = document.createElement("img");
+    billig.className = "billig-scene";
+    billig.src = imagesBillig[index % imagesBillig.length];
+    billig.alt = "Billig, le chien guide";
+    billig.loading = "eager";
+    billig.onerror = function(){
+      this.onerror = null;
+      this.src = "../billig/images/0-webpbilligassis.webp";
+    };
+
+    /* Alterne discrètement la position pour moins cacher les textes. */
+    if(index % 2 === 0) scene.classList.add("billig-gauche");
+
+    scene.appendChild(billig);
+  });
+})();
+
+</script>
 </body>
 </html>
