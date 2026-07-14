@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#071B34">
   <title>Enquête immersive</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Patrick+Hand&display=swap" rel="stylesheet">
 
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
@@ -1310,6 +1310,73 @@ body::before{
   }
 }
 
+
+
+/* =========================================================
+   CORRECTION — SCÈNE « PR CÉCILE »
+   Le texte commence sous les deux boutons fixes du haut.
+   ========================================================= */
+#Chapitre1{
+  padding-top:max(96px, calc(env(safe-area-inset-top, 0px) + 84px))!important;
+  padding-bottom:max(28px, env(safe-area-inset-bottom, 0px))!important;
+}
+
+#Chapitre1 .contenu-etape{
+  margin-top:0!important;
+}
+
+@media(max-height:650px){
+  #Chapitre1{
+    padding-top:max(86px, calc(env(safe-area-inset-top, 0px) + 74px))!important;
+  }
+}
+
+
+/* =========================================================
+   BILLIG AVEC LUNETTES — SCÈNE « PR CÉCILE »
+   ========================================================= */
+#Chapitre1 .billig-professeur{
+  display:block;
+  width:clamp(125px, 38vw, 190px);
+  height:auto;
+  margin:4px auto 10px;
+  object-fit:contain;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 10px 14px rgba(48,89,101,.28));
+  position:relative;
+  z-index:20;
+}
+
+#Chapitre1 .bouton{
+  margin-top:4px!important;
+}
+
+@media(max-height:700px){
+  #Chapitre1 .billig-professeur{
+    width:clamp(105px, 30vw, 145px);
+    margin-top:0;
+    margin-bottom:7px;
+  }
+}
+
+
+/* =========================================================
+   LETTRE DU 7 MAI 1874 — POLICE MANUSCRITE ENFANTINE
+   ========================================================= */
+#Chapitre2 .lettre-manuscrite{
+  font-family:'Patrick Hand','Comic Sans MS',cursive!important;
+  font-size:clamp(1.18rem,5.1vw,1.55rem)!important;
+  line-height:1.48!important;
+  letter-spacing:.01em!important;
+  font-weight:400!important;
+}
+
+#Chapitre2 .lettre-manuscrite strong{
+  font-weight:700!important;
+}
+
 </style>
 </head>
 
@@ -1369,6 +1436,12 @@ body::before{
       <span class="ligne-fondu">d’un petit village breton situé</span>
       <span class="ligne-fondu">à la pointe de la Bretagne.</span>
 
+      <img
+        src="../billig/images/0-webplunettes.webp"
+        class="billig-professeur"
+        alt="Billig avec des lunettes"
+      >
+
       <button class="bouton" data-suivant="Chapitre2">Suite</button>
     </div>
   </section>
@@ -1377,20 +1450,20 @@ body::before{
     <div class="vignette"></div>
 
     <div class="lettre-manuscrite">
-      <span class="mot" style="animation-delay:0.05s">Le 7 mai 1874</span><br><br><br>
-      <span class="mot" style="animation-delay:0.24s">Cher Professeur Cécile,</span><br><br><br>
-      <span class="mot" style="animation-delay:1.68s"> Un mal inquiétant s'est déclaré dans notre village.</span><br><br>
-      <span class="mot" style="animation-delay:2.40s">En effet, les villageois, deviennent de plus en plus agressifs: tout est prétexte à bagarre... </span><br><br>
-      
-      <span class="mot" style="animation-delay:4.08s">Les médecins ne s'accordent point sur la cause de cette affection:</span><br>
-      <span class="mot" style="animation-delay:5.28s">L'un craint un terrible virus, l'autre un empoisonnement.</span><br><br>
-      <span class="mot" style="animation-delay:6.48s">Je sollicite humblement votre grand savoir pour découvrir la nature de ce mal qui nous touche.</span><br><br>
-      <span class="mot" style="animation-delay:7.68s">Veuillez agréer, très honoré Professeur, l'expression de mon profond respect.</span><br><br>
-      <span class="mot" style="animation-delay:8.88s"> Le maire du Conquet</span>
+      <span class="mot" style="animation-delay:0.05s">Le 7 mai 1874</span><br><br>
+      <span class="mot" style="animation-delay:0.24s">Cher Professeur Cécile,</span><br><br>
+      <span class="mot" style="animation-delay:1.20s">Quelque chose d'étrange se passe dans notre village.</span><br><br>
+      <span class="mot" style="animation-delay:2.20s">Depuis quelque temps, les habitants se mettent très vite en colère et se disputent pour un rien...</span><br><br>
+      <span class="mot" style="animation-delay:3.50s">Les médecins ne savent pas pourquoi.</span><br>
+      <span class="mot" style="animation-delay:4.30s">L'un pense qu'un virus est responsable. L'autre croit que les habitants ont peut-être été empoisonnés.</span><br><br>
+      <span class="mot" style="animation-delay:5.70s">Nous avons besoin de votre aide pour découvrir ce qui leur arrive.</span><br><br>
+      <span class="mot" style="animation-delay:6.80s">Venez vite au Conquet avant que toutes ces disputes ne deviennent encore plus graves !</span><br><br>
+      <span class="mot" style="animation-delay:8.10s">Nous comptons sur vous.</span><br><br>
+      <span class="mot" style="animation-delay:8.80s">Le maire du Conquet</span>
     </div>
 
     <div class="contenu-etape">
-      <button class="bouton mot-bloc" data-suivant="Chapitre3" style="animation-delay:9.84s">Accepter l'enquête</button>
+      <button class="bouton mot-bloc" data-suivant="Chapitre3" style="animation-delay:9.70s">Accepter l'aventure</button>
     </div>
   </section>
 
