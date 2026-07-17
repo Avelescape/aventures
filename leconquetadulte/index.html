@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#071B34">
   <title>Enquête immersive</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
@@ -209,7 +209,7 @@
     .nav-connexion:active{background:rgba(201,162,39,.28);box-shadow:0 0 16px rgba(201,162,39,.5);}
 
     .lettre-manuscrite{
-      font-family:'Great Vibes', cursive;
+      font-family:'Dancing Script', cursive;
       font-size:clamp(1.1rem, 5vw, 1.6rem);
       color:#2E1B0E;
       text-align:left;
@@ -523,6 +523,57 @@ body,
   }
 }
 
+/* =========================================================
+   BOUTON RETOUR À L'ÉTAPE PRÉCÉDENTE
+   ========================================================= */
+.scene-retour {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  left: max(10px, env(safe-area-inset-left));
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 7px 14px;
+  background: rgba(16, 8, 10, 0.90);
+  color: #F0D47A;
+  border: 2px solid #D4AF37;
+  border-radius: 999px;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.45),
+    inset 0 0 12px rgba(212,175,55,.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.scene-retour.visible{
+  display: inline-flex;
+}
+.scene-retour:hover{
+  background:#D4AF37;
+  color:#16090d;
+}
+.scene-retour:active{
+  transform:scale(.96);
+}
+@media(max-width:480px){
+  .scene-retour{
+    top:max(10px, env(safe-area-inset-top));
+    left:max(10px, env(safe-area-inset-left));
+    min-height:34px;
+    padding:6px 10px;
+    font-size:12px;
+  }
+}
+
 
 </style>
 </head>
@@ -533,6 +584,11 @@ body,
 <a class="site-retour" href="../index.html">
   <span>Site AvelEscape</span>
 </a>
+
+<!-- BOUTON RETOUR À L'ÉTAPE PRÉCÉDENTE -->
+<button id="scene-retour" class="scene-retour" onclick="retourEtape()" aria-label="Retour à l'étape précédente">
+  ← Retour
+</button>
 
 
 <main class="enquete">
@@ -1064,7 +1120,7 @@ body,
 
   <section class="etape" id="chapitre22">
     <div class="vignette"></div>
-    <img src="2-webpsourcier1.webp" class="photo" alt="Kanevedenn">
+    <img src="images/2-webpsourcier1.webp" class="photo" alt="Kanevedenn">
     <div class="contenu-etape">
       <button class="bouton" data-suivant="chapitre23">suite</button>
     </div>
@@ -1205,7 +1261,11 @@ body,
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  function changerEtape(idCible){
+  let historiqueEtapes = [];
+
+  function changerEtape(idCible, options){
+    options = options || {};
+
     const prochaineEtape = document.getElementById(idCible);
 
     if(!prochaineEtape){
@@ -1216,10 +1276,14 @@ body,
     const etapeActive = document.querySelector('.etape.active');
 
     if(etapeActive){
+      if(!options.skipHistory && etapeActive.id !== idCible){
+        historiqueEtapes.push(etapeActive.id);
+      }
       etapeActive.classList.remove('active');
     }
 
     prochaineEtape.classList.add('active');
+    majBoutonRetour();
 
     if(idCible === 'chapitre8'){
       sequenceRepos();
@@ -1227,6 +1291,26 @@ body,
 
     if(idCible === 'chapitre9'){
       sequenceDispute();
+    }
+  }
+
+  function retourEtape(){
+    if(historiqueEtapes.length === 0){
+      return;
+    }
+
+    const idPrecedent = historiqueEtapes.pop();
+    changerEtape(idPrecedent, { skipHistory: true });
+  }
+
+  function majBoutonRetour(){
+    const btn = document.getElementById('scene-retour');
+    if(!btn) return;
+
+    if(historiqueEtapes.length > 0){
+      btn.classList.add('visible');
+    } else {
+      btn.classList.remove('visible');
     }
   }
 
