@@ -59,12 +59,15 @@
       font: 700 13px/1 Arial, sans-serif;
     }
 
-    .return-site:active { transform: scale(.97); }
+    .return-site:active {
+      transform: scale(.97);
+    }
 
+    /* Images du passeport : 1024 × 1536 px, soit un ratio exact de 2 / 3 */
     .passport-stage {
       position: relative;
       width: min(86vw, 390px);
-      aspect-ratio: 0.685;
+      aspect-ratio: 2 / 3;
       perspective: 1500px;
       touch-action: pan-y;
       filter: drop-shadow(0 24px 24px rgba(0, 0, 0, .48));
@@ -91,12 +94,14 @@
       display: block;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       pointer-events: none;
       -webkit-user-drag: none;
     }
 
-    .page { z-index: 1; }
+    .page {
+      z-index: 1;
+    }
 
     .cover {
       z-index: 2;
@@ -110,10 +115,12 @@
       inset: 0;
       opacity: 0;
       pointer-events: none;
-      background: linear-gradient(90deg,
-        rgba(255,255,255,.04),
-        rgba(255,255,255,.38) 48%,
-        rgba(0,0,0,.24));
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, .04),
+        rgba(255, 255, 255, .38) 48%,
+        rgba(0, 0, 0, .24)
+      );
       transform: translateX(110%);
     }
 
@@ -121,9 +128,10 @@
       transform: translateX(-8%) rotateY(-108deg);
       opacity: 0;
       filter: brightness(.72);
-      transition: transform .72s cubic-bezier(.2,.75,.2,1),
-                  opacity .18s linear .5s,
-                  filter .6s ease;
+      transition:
+        transform .72s cubic-bezier(.2, .75, .2, 1),
+        opacity .18s linear .5s,
+        filter .6s ease;
       pointer-events: none;
     }
 
@@ -136,7 +144,9 @@
     .passport.closing .cover {
       transform: translateX(0) rotateY(0);
       opacity: 1;
-      transition: transform .68s cubic-bezier(.2,.75,.2,1), opacity .12s linear;
+      transition:
+        transform .68s cubic-bezier(.2, .75, .2, 1),
+        opacity .12s linear;
     }
 
     .page::after {
@@ -149,7 +159,9 @@
       transition: opacity .4s ease;
     }
 
-    .passport.open .page::after { opacity: 1; }
+    .passport.open .page::after {
+      opacity: 1;
+    }
 
     .hint {
       position: fixed;
@@ -179,9 +191,14 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .hint .arrow { animation: none; }
+      .hint .arrow {
+        animation: none;
+      }
+
       .passport.open .cover,
-      .passport.closing .cover { transition-duration: .01ms; }
+      .passport.closing .cover {
+        transition-duration: .01ms;
+      }
     }
   </style>
 </head>
@@ -229,26 +246,34 @@
       hintText.textContent = isOpen
         ? 'Glissez vers la droite pour refermer'
         : 'Glissez vers la gauche pour ouvrir';
+
       document.querySelector('.hint .arrow').textContent = isOpen ? '→' : '←';
     }
 
     function openPassport() {
       if (isOpen) return;
+
       passport.classList.remove('closing');
       passport.classList.add('open');
       isOpen = true;
       updateHint();
+
       if (navigator.vibrate) navigator.vibrate(20);
     }
 
     function closePassport() {
       if (!isOpen) return;
+
       passport.classList.add('closing');
       passport.classList.remove('open');
       isOpen = false;
       updateHint();
+
       if (navigator.vibrate) navigator.vibrate(15);
-      window.setTimeout(() => passport.classList.remove('closing'), 700);
+
+      window.setTimeout(() => {
+        passport.classList.remove('closing');
+      }, 700);
     }
 
     stage.addEventListener('pointerdown', (event) => {
@@ -260,6 +285,7 @@
 
     stage.addEventListener('pointerup', (event) => {
       if (!tracking) return;
+
       tracking = false;
 
       const dx = event.clientX - startX;
@@ -267,13 +293,15 @@
       const horizontalSwipe = Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.15;
 
       if (!horizontalSwipe) return;
+
       if (dx < 0) openPassport();
       if (dx > 0) closePassport();
     });
 
-    stage.addEventListener('pointercancel', () => { tracking = false; });
+    stage.addEventListener('pointercancel', () => {
+      tracking = false;
+    });
 
-    // Un simple toucher sur le passeport permet aussi de l'ouvrir ou de le fermer.
     stage.addEventListener('click', (event) => {
       if (Math.abs(event.clientX - startX) > 12) return;
       isOpen ? closePassport() : openPassport();
