@@ -192,7 +192,6 @@ input {
 
 #message,
 #puzzle-message,
-#code-message,
 #mot-phare-message,
 #code-ancien-phare-message,
 #message-sommet {
@@ -212,6 +211,8 @@ input {
 #dialogue-text,
 #dialogue-text-phare,
 #dialogue-text-naufrageurs,
+#dialogue-text-moinesuite,
+#dialogue-text-fuient,
 #texte-fin {
   font-size: 16px;
   line-height: 1.4;
@@ -744,6 +745,8 @@ button {
   #dialogue-text,
   #dialogue-text-phare,
   #dialogue-text-naufrageurs,
+  #dialogue-text-moinesuite,
+  #dialogue-text-fuient,
   #texte-fin,
   .missive1-label,
   .missive2-label,
@@ -1116,6 +1119,8 @@ h3 { font-size: clamp(23px, 6.2vw, 31px); line-height: 1.28; }
 #dialogue-text,
 #dialogue-text-phare,
 #dialogue-text-naufrageurs,
+#dialogue-text-moinesuite,
+#dialogue-text-fuient,
 #texte-fin,
 .texte-sommet {
   font-size: clamp(22px, 6vw, 29px);
@@ -1225,11 +1230,12 @@ input:focus {
 
 #message,
 #puzzle-message,
-#code-message,
 #mot-phare-message,
 #code-ancien-phare-message,
 #message-sommet,
-#indice-phare {
+#indice-phare,
+#moine-message,
+#indice-moine {
   color: #ffe08a !important;
   font-size: clamp(20px, 5.5vw, 26px);
   font-weight: 800;
@@ -1449,7 +1455,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-locmaze">
   <div class="locmaze-label">
     <h2>Entrez le mot :</h2>
-    <p>Face à la fontaine, tout semble inutile</p>
+    <p>Face au puits, tout semble inutile</p>
     <p>pas de seau pour l'eau</p>
     <p>pas de saut pour passer</p>
     <p>pas de sot pour comprendre</p>
@@ -1498,7 +1504,8 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-instructionschap2">
   <div class="instructionschap2-label">
-    <p>Il est temps d'aller au phare</p>
+    <p>Prenez le temps d'explorer les abords de la chapelle… Des indications pourraient vous être d'une aide précieuse pour la suite de votre aventure.</p>
+    <p>Une fois votre quête terminée, dirigez-vous vers la porte du phare. </p>
     <button class="btn-primary" onclick="nextScreen()">Cliquez si vous y êtes</button>
   </div>
 </div>
@@ -1510,39 +1517,13 @@ html, body, body *, button, .btn-primary, input, textarea, select {
          alt="Porte du phare">
     <p>Il semble fermé</p>
     <button class="btn-primary" onclick="essayerOuvrir()">
-      Essayez de l’ouvrir
+      Suite
     </button>
-  </div>
-</div>
-
-<div id="screen-portecadenas" class="screen">
-  <div class="porte-label">
-    <img class="chapter-img"
-         src="images/1-webpcadenasportefermee.webp"
-         alt="Cadenas du phare">
-
-    <p>Entrez le code à 4 chiffres</p>
-    <input id="codeInput" type="text" maxlength="4" inputmode="numeric" pattern="[0-9]*">
-    <br>
-    <button class="btn-primary" onclick="verifierCode()">Valider</button>
-    <p id="code-message"></p>
-  </div>
-</div>
-
-<div id="screen-boncode" class="screen">
-  <div class="porte-label">
-    <p>
-      Vous avez trouvé le code.<br>
-      Mais les korrigans, gardiens de ce jeu,<br>
-      n'ouvriront pas le cadenas pour le moment !
-    </p>
   </div>
 </div>
 
 <div id="screen-mauvaiscode" class="screen">
   <div class="porte-label">
-    <p>Ce n'est pas le bon code</p>
-
    <h3>
   Écoutez...<br>
   D'où provient ce chant ?<br>
@@ -1581,11 +1562,34 @@ html, body, body *, button, .btn-primary, input, textarea, select {
     <p id="dialogue-text"></p>
   </div>
 
-  <button id="after-dialogue-btn"
+  <div id="enigme-moine" style="display:none;">
+    
+
+    <input id="moineInput" type="text" maxlength="20">
+    <br>
+
+    <button class="btn-primary" onclick="verifierReponseMoine()">Valider</button>
+    <button class="btn-primary" onclick="afficherIndiceMoine()">Indice</button>
+
+    <p id="moine-message"></p>
+    <p id="indice-moine" style="margin-top:15px; color: var(--or);"></p>
+  </div>
+</div>
+
+<div class="screen" id="screen-moinesuite">
+  <img class="moineloin-img"
+       src="images/1-webpgwenhaelproche.webp"
+       alt="Moine parle">
+
+  <div class="dialogue-box">
+    <p id="dialogue-text-moinesuite"></p>
+  </div>
+
+  <button id="after-dialogue-moinesuite-btn"
           class="btn-primary"
           style="display:none;"
           onclick="showScreen('sceneabbaye')">
-    Continuez vers le petit phare
+    Suite
   </button>
 </div>
 
@@ -1635,7 +1639,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
        alt="Les naufrageurs fuient">
 
   <div class="dialogue-box">
-    <p>Grâce à la cloche, les naufrageurs ont pris peur et fuient.</p>
+    <p id="dialogue-text-fuient">Grâce à la cloche, les naufrageurs ont pris peur et fuient.</p>
   </div>
 
   <button class="btn-primary" onclick="showScreen('suiteaventure')">
@@ -1827,11 +1831,10 @@ const screens = {
   sceaurevele: document.getElementById('screen-sceaurevele'),
   instructionschap2: document.getElementById('screen-instructionschap2'),
   porteloin: document.getElementById('screen-porteloin'),
-  portecadenas: document.getElementById('screen-portecadenas'),
-  boncode: document.getElementById('screen-boncode'),
   mauvaiscode: document.getElementById('screen-mauvaiscode'),
   abbaye: document.getElementById('screen-abbaye'),
   moineloin: document.getElementById('screen-moineloin'),
+  moinesuite: document.getElementById('screen-moinesuite'),
   sceneabbaye: document.getElementById('screen-sceneabbaye'),
   petitphare: document.getElementById('screen-petitphare'),
   naufrageursfuient: document.getElementById('screen-naufrageursfuient'),
@@ -1855,12 +1858,11 @@ const progressMap = {
   puzzle: 27,
   instructionschap2: 30,
   porteloin: 35,
-  portecadenas: 35,
-  boncode: 40,
   mauvaiscode: 40,
   abbaye: 50,
   moineloin: 60,
-  sceneabbaye: 61,
+  moinesuite: 63,
+  sceneabbaye: 66,
   petitphare: 70,
   suiteaventure: 72,
   codeancienphare: 80,
@@ -1918,6 +1920,10 @@ function showScreen(name, addHist = true) {
 
   if (name === 'moineloin') {
     startDialogueMoine();
+  }
+
+  if (name === 'moinesuite') {
+    startDialogueMoineSuite();
   }
 
   if (name === 'sceneabbaye') {
@@ -2168,29 +2174,11 @@ function stopperChant() {
 }
 
 function essayerOuvrir() {
-  showScreen('portecadenas');
+  showScreen('mauvaiscode');
 }
-
-/* CODE PHARE */
-const bonCode = '5381';
 
 function nextScreen() {
   showScreen('porteloin');
-}
-
-function verifierCode() {
-  const input = document.getElementById('codeInput');
-  if (!input) return;
-
-  const codeEntre = input.value.trim();
-
-  if (codeEntre === bonCode) {
-    // Le premier cadenas ouvre maintenant directement l'accès au haut du phare.
-    showScreen('hautphare');
-  } else {
-    vibrerEchec();
-    showScreen('mauvaiscode');
-  }
 }
 
 /* DIALOGUE MOINE */
@@ -2199,8 +2187,8 @@ const dialogueMoine = [
   "Je suis Gwenhaël, un des premiers moines de l'abbaye.",
   "J'ai été désigné par Saint Tanguy, le fondateur de l'abbaye,",
   "pour que mon âme veille sur ce lieu.",
-  "Yannick, le gardien, a disparu.",
-  "Sortez par la porte latérale nord, et allez près du petit phare."
+  "Je vous aiderai si vous répondez à ma question:",
+  "Quel est le prénom de la personne que Saint Tanguy a assassinée avant de devenir moine ?"
 ];
 
 let dialogueIndex = 0;
@@ -2208,14 +2196,20 @@ let dialogueTimeout = null;
 
 function startDialogueMoine() {
   const textElement = document.getElementById('dialogue-text');
-  const btn = document.getElementById('after-dialogue-btn');
+  const enigme = document.getElementById('enigme-moine');
+  const input = document.getElementById('moineInput');
+  const message = document.getElementById('moine-message');
+  const indice = document.getElementById('indice-moine');
 
   if (dialogueTimeout) clearTimeout(dialogueTimeout);
 
   dialogueIndex = 0;
 
   if (textElement) textElement.innerHTML = '';
-  if (btn) btn.style.display = 'none';
+  if (enigme) enigme.style.display = 'none';
+  if (input) input.value = '';
+  if (message) message.innerText = '';
+  if (indice) indice.innerText = '';
 
   afficherDialogueMoine();
 }
@@ -2236,7 +2230,95 @@ function afficherDialogueMoine() {
     if (dialogueIndex < dialogueMoine.length) {
       afficherDialogueMoine();
     } else {
-      const btn = document.getElementById('after-dialogue-btn');
+      const enigme = document.getElementById('enigme-moine');
+      if (enigme) enigme.style.display = 'block';
+    }
+  }, 1000);
+}
+
+/* ÉNIGME DU MOINE */
+function verifierReponseMoine() {
+  const input = document.getElementById('moineInput');
+  const message = document.getElementById('moine-message');
+
+  if (!input || !message) return;
+
+  const reponse = input.value.trim().toLowerCase();
+
+  if (reponse === 'haude') {
+    showScreen('moinesuite');
+  } else {
+    vibrerEchec();
+    message.innerText = 'Réessayez';
+  }
+}
+
+const moineInput = document.getElementById('moineInput');
+if (moineInput) {
+  moineInput.addEventListener('input', function() {
+    const message = document.getElementById('moine-message');
+    if (message) message.innerText = '';
+  });
+
+  moineInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      verifierReponseMoine();
+    }
+  });
+}
+
+function afficherIndiceMoine() {
+  const indice = document.getElementById('indice-moine');
+
+  if (indice) {
+    indice.innerText = "La victime est évoquée et protégée par Notre Dame de Grâce.";
+  }
+}
+
+/* DIALOGUE MOINE - SUITE (après bonne réponse) */
+const dialogueMoineSuite = [
+  "Effectivement, Suite à une querelle de famille, Gurguy fils du seigneur de Tremazan a tué sa soeur Haude...",
+  "Rongé par le remord, il a décidé de se faire moine et se consacra à bâtir ce lieu.", 
+  "Aujourd'hui",
+  "une autre personne est en danger, et il faut agir vite!",
+  "Yannick, le gardien, a disparu...",
+  "Sortez par la porte latérale nord, et allez près du petit phare."
+];
+
+let dialogueIndexMoineSuite = 0;
+let dialogueTimeoutMoineSuite = null;
+
+function startDialogueMoineSuite() {
+  const textElement = document.getElementById('dialogue-text-moinesuite');
+  const btn = document.getElementById('after-dialogue-moinesuite-btn');
+
+  if (dialogueTimeoutMoineSuite) clearTimeout(dialogueTimeoutMoineSuite);
+
+  dialogueIndexMoineSuite = 0;
+
+  if (textElement) textElement.innerHTML = '';
+  if (btn) btn.style.display = 'none';
+
+  afficherDialogueMoineSuite();
+}
+
+function afficherDialogueMoineSuite() {
+  const textElement = document.getElementById('dialogue-text-moinesuite');
+  if (!textElement || dialogueIndexMoineSuite >= dialogueMoineSuite.length) return;
+
+  const line = document.createElement('p');
+  line.classList.add('fade-line');
+  line.innerText = dialogueMoineSuite[dialogueIndexMoineSuite];
+
+  textElement.appendChild(line);
+
+  dialogueTimeoutMoineSuite = setTimeout(() => {
+    dialogueIndexMoineSuite++;
+
+    if (dialogueIndexMoineSuite < dialogueMoineSuite.length) {
+      afficherDialogueMoineSuite();
+    } else {
+      const btn = document.getElementById('after-dialogue-moinesuite-btn');
       if (btn) btn.style.display = 'inline-block';
     }
   }, 1000);
@@ -2723,9 +2805,10 @@ window.goBack = goBack;
 window.verifier = verifier;
 window.nextScreen = nextScreen;
 window.essayerOuvrir = essayerOuvrir;
-window.verifierCode = verifierCode;
 window.verifierMotPhare = verifierMotPhare;
 window.afficherIndicePhare = afficherIndicePhare;
+window.verifierReponseMoine = verifierReponseMoine;
+window.afficherIndiceMoine = afficherIndiceMoine;
 window.verifierCodeAncienPhare = verifierCodeAncienPhare;
 window.clickZoneMecanisme = clickZoneMecanisme;
 window.resetMecanismePhare = resetMecanismePhare;
