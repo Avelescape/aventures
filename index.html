@@ -87,7 +87,8 @@ header{
 .hero::after{display:none}
 .hero-content{
   position:relative;
-  z-index:3;
+  /* Le bouton doit rester cliquable au-dessus des cartes qui chevauchent le héros. */
+  z-index:60;
   padding-top:104px;
   width:min(460px,55%);
 }
@@ -153,19 +154,6 @@ header{
   transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
   animation:passeport-pulse 3.8s ease-in-out infinite;
 }
-.hero-btn-primary::after{
-  content:"";
-  position:absolute;
-  z-index:0;
-  top:-70%;
-  left:-45%;
-  width:28%;
-  height:240%;
-  pointer-events:none;
-  background:linear-gradient(90deg,transparent,rgba(255,236,174,.38),transparent);
-  transform:rotate(18deg) translateX(-260%);
-  animation:passeport-shine 3.8s ease-in-out infinite;
-}
 .hero-btn-primary > *{position:relative;z-index:1}
 .hero-btn-primary:hover,
 .hero-btn-primary:focus-visible{
@@ -189,17 +177,12 @@ header{
   68%{transform:translateY(-2px) scale(1.025)}
   100%{transform:translateY(0) scale(1)}
 }
-@keyframes passeport-shine{
-  0%,58%{transform:rotate(18deg) translateX(-260%)}
-  78%,100%{transform:rotate(18deg) translateX(650%)}
-}
 @keyframes passeport-pulse{
   0%,55%,100%{box-shadow:0 8px 20px rgba(0,0,0,.20)}
   68%{box-shadow:0 10px 24px rgba(0,0,0,.25),0 0 16px rgba(200,154,74,.25)}
 }
 @media (prefers-reduced-motion:reduce){
-  .hero-btn-primary,
-  .hero-btn-primary::after{animation:none}
+  .hero-btn-primary{animation:none}
 }
 .hero-btn-secondary{
   background:#FFF8EE;
