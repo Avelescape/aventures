@@ -177,6 +177,18 @@ header{
   transform:translateY(1px) scale(.985);
   box-shadow:0 5px 12px rgba(0,0,0,.24);
 }
+.hero-btn-primary.is-opening{
+  pointer-events:none;
+  animation:passeport-click .34s cubic-bezier(.2,.8,.25,1) both;
+  border-color:#F9DE8A;
+  box-shadow:0 5px 14px rgba(0,0,0,.30),0 0 0 5px rgba(200,154,74,.22),0 0 28px rgba(247,189,74,.72);
+}
+@keyframes passeport-click{
+  0%{transform:translateY(0) scale(1)}
+  35%{transform:translateY(3px) scale(.965)}
+  68%{transform:translateY(-2px) scale(1.025)}
+  100%{transform:translateY(0) scale(1)}
+}
 @keyframes passeport-shine{
   0%,58%{transform:rotate(18deg) translateX(-260%)}
   78%,100%{transform:rotate(18deg) translateX(650%)}
@@ -574,3 +586,24 @@ function initMap(){
 }
 renderCarousel();
 initMap();
+
+// Retour visuel + vibration avant l'ouverture du passeport.
+const passportButton=document.querySelector('.hero-btn-primary');
+if(passportButton){
+  passportButton.addEventListener('click',event=>{
+    // Laisse les ouvertures dans un nouvel onglet fonctionner normalement.
+    if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||event.button!==0)return;
+    event.preventDefault();
+    if(passportButton.classList.contains('is-opening'))return;
+
+    passportButton.classList.add('is-opening');
+    if(navigator.vibrate)navigator.vibrate(28);
+
+    window.setTimeout(()=>{
+      window.location.href=passportButton.href;
+    },340);
+  });
+}
+</script>
+</body>
+</html>
