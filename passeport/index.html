@@ -1,1 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17110d">
+  <title>Mon passeport AvelEscape</title>
 
+  <style>
+    :root {
+      --cream: #f5efe0;
+      --gold: #d4af37;
+      --orange: #f25303;
+      --night: #17110d;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    body {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: max(74px, calc(env(safe-area-inset-top) + 62px)) 14px
+               max(54px, calc(env(safe-area-inset-bottom) + 42px));
+      color: var(--cream);
+      background:
+        radial-gradient(circle at 50% 35%, rgba(97, 62, 35, .25), transparent 42%),
+        linear-gradient(145deg, #241a14, #100c09 72%);
+      font-family: Georgia, "Times New Roman", serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .return-site {
+      position: fixed;
+      top: max(12px, env(safe-area-inset-top));
+      left: max(12px, env(safe-area-inset-left));
+      z-index: 20;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 9px 15px;
+      border: 1px solid rgba(212, 175, 55, .8);
+      border-radius: 999px;
+      color: #f4dc8e;
+      background: rgba(20, 13, 9, .88);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .34);
+      backdrop-filter: blur(8px);
+      text-decoration: none;
+      font: 700 13px/1 Arial, sans-serif;
+    }
+
+    .return-site:active { transform: scale(.97); }
+
+    .passport-stage {
+      position: relative;
+      width: min(86vw, 390px);
+      aspect-ratio: 0.685;
+      perspective: 1500px;
+      touch-action: pan-y;
+      filter: drop-shadow(0 24px 24px rgba(0, 0, 0, .48));
+    }
+
+    .passport {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .sheet {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: clamp(10px, 3vw, 20px);
+      background: #d8ccb1;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    }
+
+    .sheet img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    .page { z-index: 1; }
+
+    .cover {
+      z-index: 2;
+      transform-origin: left center;
+      will-change: transform, opacity, filter;
+    }
+
+    .cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg,
+        rgba(255,255,255,.04),
+        rgba(255,255,255,.38) 48%,
+        rgba(0,0,0,.24));
+      transform: translateX(110%);
+    }
+
+    .passport.open .cover {
+      transform: translateX(-8%) rotateY(-108deg);
+      opacity: 0;
+      filter: brightness(.72);
+      transition: transform .72s cubic-bezier(.2,.75,.2,1),
+                  opacity .18s linear .5s,
+                  filter .6s ease;
+      pointer-events: none;
+    }
+
+    .passport.open .cover::after {
+      opacity: .7;
+      transform: translateX(-100%);
+      transition: transform .65s ease, opacity .25s ease;
+    }
+
+    .passport.closing .cover {
+      transform: translateX(0) rotateY(0);
+      opacity: 1;
+      transition: transform .68s cubic-bezier(.2,.75,.2,1), opacity .12s linear;
+    }
+
+    .page::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      box-shadow: inset 26px 0 28px rgba(49, 29, 17, .28);
+      transition: opacity .4s ease;
+    }
+
+    .passport.open .page::after { opacity: 1; }
+
+    .hint {
+      position: fixed;
+      left: 50%;
+      bottom: max(14px, env(safe-area-inset-bottom));
+      z-index: 10;
+      width: max-content;
+      max-width: calc(100vw - 28px);
+      transform: translateX(-50%);
+      margin: 0;
+      color: rgba(245, 239, 224, .86);
+      text-align: center;
+      font: 600 13px/1.35 Arial, sans-serif;
+      transition: opacity .25s ease;
+    }
+
+    .hint .arrow {
+      display: inline-block;
+      margin-right: 5px;
+      color: var(--orange);
+      animation: glide 1.6s ease-in-out infinite;
+    }
+
+    @keyframes glide {
+      0%, 100% { transform: translateX(4px); }
+      50% { transform: translateX(-5px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hint .arrow { animation: none; }
+      .passport.open .cover,
+      .passport.closing .cover { transition-duration: .01ms; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="return-site"
+     href="https://avelescape.github.io/aventures/"
+     aria-label="Retourner au site AvelEscape">
+    <span aria-hidden="true">←</span>
+    <span>Site AvelEscape</span>
+  </a>
+
+  <main class="passport-stage" id="passportStage" aria-label="Passeport AvelEscape interactif">
+    <div class="passport" id="passport">
+      <section class="sheet page" aria-label="Première page du passeport">
+        <img src="passeport/images/webppage1.webp"
+             alt="Première page du passeport AvelEscape"
+             draggable="false">
+      </section>
+
+      <section class="sheet cover" aria-label="Couverture du passeport">
+        <img src="passeport/images/webpcouverture.webp"
+             alt="Couverture du passeport AvelEscape"
+             draggable="false">
+      </section>
+    </div>
+  </main>
+
+  <p class="hint" id="hint">
+    <span class="arrow" aria-hidden="true">←</span>
+    <span id="hintText">Glissez vers la gauche pour ouvrir</span>
+  </p>
+
+  <script>
+    const stage = document.getElementById('passportStage');
+    const passport = document.getElementById('passport');
+    const hintText = document.getElementById('hintText');
+
+    let startX = 0;
+    let startY = 0;
+    let tracking = false;
+    let isOpen = false;
+
+    function updateHint() {
+      hintText.textContent = isOpen
+        ? 'Glissez vers la droite pour refermer'
+        : 'Glissez vers la gauche pour ouvrir';
+      document.querySelector('.hint .arrow').textContent = isOpen ? '→' : '←';
+    }
+
+    function openPassport() {
+      if (isOpen) return;
+      passport.classList.remove('closing');
+      passport.classList.add('open');
+      isOpen = true;
+      updateHint();
+      if (navigator.vibrate) navigator.vibrate(20);
+    }
+
+    function closePassport() {
+      if (!isOpen) return;
+      passport.classList.add('closing');
+      passport.classList.remove('open');
+      isOpen = false;
+      updateHint();
+      if (navigator.vibrate) navigator.vibrate(15);
+      window.setTimeout(() => passport.classList.remove('closing'), 700);
+    }
+
+    stage.addEventListener('pointerdown', (event) => {
+      startX = event.clientX;
+      startY = event.clientY;
+      tracking = true;
+      stage.setPointerCapture?.(event.pointerId);
+    });
+
+    stage.addEventListener('pointerup', (event) => {
+      if (!tracking) return;
+      tracking = false;
+
+      const dx = event.clientX - startX;
+      const dy = event.clientY - startY;
+      const horizontalSwipe = Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.15;
+
+      if (!horizontalSwipe) return;
+      if (dx < 0) openPassport();
+      if (dx > 0) closePassport();
+    });
+
+    stage.addEventListener('pointercancel', () => { tracking = false; });
+
+    // Un simple toucher sur le passeport permet aussi de l'ouvrir ou de le fermer.
+    stage.addEventListener('click', (event) => {
+      if (Math.abs(event.clientX - startX) > 12) return;
+      isOpen ? closePassport() : openPassport();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') openPassport();
+      if (event.key === 'ArrowRight') closePassport();
+    });
+  </script>
+</body>
+</html>
