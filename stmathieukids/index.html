@@ -213,7 +213,8 @@ input {
 #dialogue-text,
 #dialogue-text-phare,
 #dialogue-text-naufrageurs,
-#texte-fin {
+#texte-fin,
+#texte-yannickdisparu {
   font-size: 16px;
   line-height: 1.4;
   min-height: 40px;
@@ -751,6 +752,9 @@ h1, h2, h3,
 #dialogue-text-phare,
 #dialogue-text-naufrageurs,
 #texte-fin,
+#texte-yannickdisparu,
+#enigme-distance,
+#enigme-phare,
 .missive1-label,
 .missive2-label,
 .puits-label,
@@ -765,7 +769,8 @@ h1, h2, h3,
   font-weight: 700;
 }
 
-#texte-fin {
+#texte-fin,
+#texte-yannickdisparu {
   color: var(--ink);
 }
 
@@ -1296,6 +1301,9 @@ button {
   #dialogue-text-phare,
   #dialogue-text-naufrageurs,
   #texte-fin,
+  #texte-yannickdisparu,
+  #enigme-distance,
+  #enigme-phare,
   .missive1-label,
   .missive2-label,
   .puits-label,
@@ -1640,6 +1648,9 @@ body:has(#screen-puzzle.active) #billig-helper-global::after {
 #dialogue-text-phare,
 #dialogue-text-naufrageurs,
 #texte-fin,
+#texte-yannickdisparu,
+#enigme-distance,
+#enigme-phare,
 .missive1-label,
 .missive2-label,
 .puits-label,
@@ -1722,6 +1733,9 @@ button {
   #dialogue-text-phare,
   #dialogue-text-naufrageurs,
   #texte-fin,
+  #texte-yannickdisparu,
+  #enigme-distance,
+  #enigme-phare,
   .missive1-label,
   .missive2-label,
   .puits-label,
@@ -1924,8 +1938,10 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 <div class="screen" id="screen-instructionschap2">
   <div class="instructionschap2-label">
-    <p>Il est temps d'aller au phare</p>
-    <button class="btn-primary" onclick="nextScreen()">Clique si tu y es</button>
+    <p>Explore les alentours de la chapelle !<p>
+<p>Un détail, un symbole, une date ou un objet pourrait te donner un indice très utile pour la suite de ton aventure.<p>
+<p> Quand tu auras terminé ton exploration, retrouvons-nous devant la porte du phare !</p>
+    <button class="btn-primary" onclick="nextScreen()">Clique quand tu es devant le phare</button>
   </div>
 </div>
 
@@ -1934,53 +1950,33 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
     <img class="chapter-img"
          src="images/1-webppharefermé.webp"
          alt="Porte du phare">
-    <p>Il semble fermé</p>
+    <p>Il semble fermé...</p>
     <button class="btn-primary" onclick="essayerOuvrir()">
-      Essaye de l’ouvrir
+      Suite
     </button>
-  </div>
-</div>
-
-<div id="screen-portecadenas" class="screen">
-  <div class="porte-label">
-    <img class="chapter-img"
-         src="images/1-webpcadenas.webp"
-         alt="Cadenas du phare">
-
-    <p>Entre le code à 4 chiffres</p>
-    <input id="codeInput" type="text" maxlength="4" inputmode="numeric" pattern="[0-9]*">
-    <br>
-    <button class="btn-primary" onclick="verifierCode()">Valider</button>
-    <p id="code-message"></p>
-  </div>
-</div>
-
-<div id="screen-boncode" class="screen">
-  <div class="porte-label">
-    <p>
-      Quelle chance !!! tu as trouvé le code.<br>
-      Mais les korrigans, gardiens de ce jeu,<br>
-      n'ouvriront pas le cadenas pour le moment !
-    </p>
   </div>
 </div>
 
 <div id="screen-mauvaiscode" class="screen">
   <div class="porte-label">
-    <p>Ce n'est pas le bon code</p>
+    <img class="chapter-img"
+         src="images/1-webpcadenas.webp"
+         alt="Cadenas du phare">
+
+    <p>La porte est verrouillée par un cadenas à code.</p>
 
    <h3 style="color:#000000; text-shadow:1px 1px 2px rgba(255,255,255,0.8);">
-  Écoutez...<br>
+  Écoute...<br>
   D'où provient ce chant ?<br>
   Il semblerait qu'il provienne de l'abbaye.
 </h3>
 
 <h3 style="color:#000000; text-shadow:1px 1px 2px rgba(255,255,255,0.8);">
-  Vous devriez peut-être y aller.
+  Tu devrais peut-être y aller.
 </h3>
 
     <button class="btn-primary" onclick="showScreen('abbaye')">
-      Cliquez lorsque vous êtes à l'abbaye
+      Clique lorsque tu es à l'abbaye
     </button>
   </div>
 </div>
@@ -2007,11 +2003,27 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
     <p id="dialogue-text"></p>
   </div>
 
-  <button id="after-dialogue-btn"
+  <div id="enigme-distance" style="display:none;">
+    <p>Quelle est la distance en Km entre St Mathieu et St Jacques de Compostelle (Espagne) ?</p>
+
+    <input id="distanceInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4">
+    <br>
+
+    <button class="btn-primary" onclick="verifierDistance()">Valider</button>
+    <p id="distance-message"></p>
+  </div>
+</div>
+
+<div class="screen" id="screen-yannickdisparu">
+  <div class="dialogue-box">
+    <div id="texte-yannickdisparu"></div>
+  </div>
+
+  <button id="btn-yannickdisparu"
           class="btn-primary"
           style="display:none;"
           onclick="showScreen('sceneabbaye')">
-    Continuer vers le petit phare
+    Continuer
   </button>
 </div>
 
@@ -2042,7 +2054,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   </div>
 
   <div id="enigme-phare" style="display:none;">
-    <p>Entrez le mot en 6 lettres :</p>
+    <p>Entre le mot en 6 lettres :</p>
 
     <input id="motPhareInput" type="text" maxlength="6">
     <br>
@@ -2075,7 +2087,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
        alt="Ancien phare">
 
   <div class="texte-sommet" style="opacity:1;">
-    <p>Entrez le code à 4 chiffres :</p>
+    <p>Entre le code à 4 chiffres :</p>
 
     <input id="codeAncienPhareInput"
            type="text"
@@ -2100,12 +2112,12 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   </div>
 
   <button class="btn-primary" onclick="showScreen('sommetphare')">
-    Monter en haut du phare
+    Monter virtuellement en haut du phare
   </button>
 </div>
 
 <div class="screen" id="screen-sommetphare">
-  <h1>Actionnez les engrenages et les poids pour rallumer le phare.</h1>
+  <h1>Actionne les engrenages et les poids pour rallumer le phare.</h1>
 
   <div class="meca-scene">
     <div class="meca-game" id="meca-game">
@@ -2247,11 +2259,10 @@ const screens = {
   puzzle: document.getElementById('screen-puzzle'),
   instructionschap2: document.getElementById('screen-instructionschap2'),
   porteloin: document.getElementById('screen-porteloin'),
-  portecadenas: document.getElementById('screen-portecadenas'),
-  boncode: document.getElementById('screen-boncode'),
   mauvaiscode: document.getElementById('screen-mauvaiscode'),
   abbaye: document.getElementById('screen-abbaye'),
   moineloin: document.getElementById('screen-moineloin'),
+  yannickdisparu: document.getElementById('screen-yannickdisparu'),
   sceneabbaye: document.getElementById('screen-sceneabbaye'),
   petitphare: document.getElementById('screen-petitphare'),
   suiteaventure: document.getElementById('screen-suiteaventure'),
@@ -2274,11 +2285,10 @@ const progressMap = {
   puzzle: 27,
   instructionschap2: 30,
   porteloin: 35,
-  portecadenas: 35,
-  boncode: 40,
   mauvaiscode: 40,
   abbaye: 50,
   moineloin: 60,
+  yannickdisparu: 60,
   sceneabbaye: 61,
   petitphare: 70,
   suiteaventure: 72,
@@ -2340,6 +2350,10 @@ function showScreen(name, addHist = true) {
 
   if (name === 'moineloin') {
     startDialogueMoine();
+  }
+
+  if (name === 'yannickdisparu') {
+    lancerTexteYannickDisparu();
   }
 
   if (name === 'sceneabbaye') {
@@ -2621,39 +2635,21 @@ function stopperChant() {
 }
 
 function essayerOuvrir() {
-  showScreen('portecadenas');
+  vibrerEchec();
+  showScreen('mauvaiscode');
 }
-
-/* CODE PHARE */
-const bonCode = '5381';
 
 function nextScreen() {
   showScreen('porteloin');
 }
 
-function verifierCode() {
-  const input = document.getElementById('codeInput');
-  if (!input) return;
-
-  const codeEntre = input.value.trim();
-
-  if (codeEntre === bonCode) {
-    // Le premier cadenas ouvre maintenant directement l'accès au haut du phare.
-    showScreen('hautphare');
-  } else {
-    vibrerEchec();
-    showScreen('mauvaiscode');
-  }
-}
-
 /* DIALOGUE MOINE */
 const dialogueMoine = [
-  "Vous voilà, enfin...",
+  "Te voilà, enfin...",
   "Je suis Gwenhaël, un des premiers moines de l'abbaye.",
   "J'ai été désigné par Saint Tanguy, le fondateur de l'abbaye,",
   "pour que mon âme veille sur ce lieu.",
-  "Yannick, le gardien, a disparu.",
-  "Sortez par la porte latérale nord, et allez près du petit phare."
+  "Réponds à ma question, et je t'aiderai à retrouver Yannick, le gardien du phare."
 ];
 
 let dialogueIndex = 0;
@@ -2661,14 +2657,18 @@ let dialogueTimeout = null;
 
 function startDialogueMoine() {
   const textElement = document.getElementById('dialogue-text');
-  const btn = document.getElementById('after-dialogue-btn');
+  const enigme = document.getElementById('enigme-distance');
+  const input = document.getElementById('distanceInput');
+  const message = document.getElementById('distance-message');
 
   if (dialogueTimeout) clearTimeout(dialogueTimeout);
 
   dialogueIndex = 0;
 
   if (textElement) textElement.innerHTML = '';
-  if (btn) btn.style.display = 'none';
+  if (enigme) enigme.style.display = 'none';
+  if (input) input.value = '';
+  if (message) message.innerText = '';
 
   afficherDialogueMoine();
 }
@@ -2689,10 +2689,73 @@ function afficherDialogueMoine() {
     if (dialogueIndex < dialogueMoine.length) {
       afficherDialogueMoine();
     } else {
-      const btn = document.getElementById('after-dialogue-btn');
-      if (btn) btn.style.display = 'inline-block';
+      const enigme = document.getElementById('enigme-distance');
+      if (enigme) enigme.style.display = 'block';
     }
   }, 1000);
+}
+
+function verifierDistance() {
+  const input = document.getElementById('distanceInput');
+  const message = document.getElementById('distance-message');
+  const enigme = document.getElementById('enigme-distance');
+
+  if (!input || !message) return;
+
+  const reponse = input.value.trim();
+
+  if (reponse === '1958') {
+    if (enigme) enigme.style.display = 'none';
+    showScreen('yannickdisparu');
+  } else {
+    vibrerEchec();
+    message.innerText = "Ce n'est pas la bonne réponse, essaye encore !";
+  }
+}
+
+/* YANNICK A DISPARU */
+const texteYannickDisparu = [
+  "Yannick, le gardien, a disparu.",
+  "Sort par la porte latérale nord, et va près du petit phare."
+];
+
+let indexYannickDisparu = 0;
+let timerYannickDisparu = null;
+
+function lancerTexteYannickDisparu() {
+  const container = document.getElementById('texte-yannickdisparu');
+  const btn = document.getElementById('btn-yannickdisparu');
+
+  if (!container || !btn) return;
+
+  if (timerYannickDisparu) clearTimeout(timerYannickDisparu);
+
+  container.innerHTML = '';
+  indexYannickDisparu = 0;
+  btn.style.display = 'none';
+
+  afficherLigneYannickDisparu();
+}
+
+function afficherLigneYannickDisparu() {
+  const container = document.getElementById('texte-yannickdisparu');
+  const btn = document.getElementById('btn-yannickdisparu');
+
+  if (!container || !btn || indexYannickDisparu >= texteYannickDisparu.length) return;
+
+  const ligne = document.createElement('p');
+  ligne.classList.add('fade-line');
+  ligne.innerText = texteYannickDisparu[indexYannickDisparu];
+
+  container.appendChild(ligne);
+
+  indexYannickDisparu++;
+
+  if (indexYannickDisparu < texteYannickDisparu.length) {
+    timerYannickDisparu = setTimeout(afficherLigneYannickDisparu, 1200);
+  } else {
+    btn.style.display = 'inline-block';
+  }
 }
 
 /* EXPLICATION NAUFRAGEURS */
@@ -2746,11 +2809,11 @@ function afficherDialogueNaufrageurs() {
 
 /* DIALOGUE PETIT PHARE */
 const dialoguePhare = [
-  "Regardez à l'ouest, en contrebas !",
+  "Regarde à l'ouest, en contrebas !",
   "Yannick !!!",
   "Mais il ne nous voit pas...",
-  "Trouvez une solution pour à la fois :",
-  "lui dire qu'on est là",
+  "Trouve une solution pour à la fois :",
+  "lui dire que tu es là",
   "et prévenir le bateau qui approche des récifs."
 ];
 
@@ -2851,12 +2914,12 @@ function afficherIndicePhare() {
 
 /* TEXTE FINAL */
 const texteFin = [
-  "Yannick nous as vu !",
-  "Il nous dit :",
+  "Yannick t'a vu !",
+  "Il te dit :",
   "Le code du cadenas...",
   "c'est l'année de construction de l'ancien phare,",
   "mais à l'envers!",
-  "Dépêchez-vous..."
+  "Dépêche-toi..."
 ];
 
 let indexFin = 0;
@@ -3150,7 +3213,6 @@ window.goBack = goBack;
 window.verifier = verifier;
 window.nextScreen = nextScreen;
 window.essayerOuvrir = essayerOuvrir;
-window.verifierCode = verifierCode;
 window.verifierMotPhare = verifierMotPhare;
 window.afficherIndicePhare = afficherIndicePhare;
 window.verifierCodeAncienPhare = verifierCodeAncienPhare;
