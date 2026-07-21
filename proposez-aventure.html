@@ -7,7 +7,7 @@
 <title>Devenir auteur — AvelEscape</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#071B34;--deep:#031529;--gold:#C89A4A;--orange:#F63D0E;--cream:#FCE7C9;--paper:#FFF8EE;--sand:#D9C3A0;--muted:#4f463b;--ink:#071B34}
+:root{--navy:#071B34;--deep:#031529;--gold:#C89A4A;--orange:#E04412;--orange-dark:#C83209;--cream:#FCE7C9;--paper:#FFF8EE;--sand:#D9C3A0;--muted:#4f463b;--ink:#071B34}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;background:var(--cream)}
 body{font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--ink);max-width:1024px;margin:0 auto;min-height:100vh;box-shadow:0 0 50px rgba(0,0,0,.16)}
@@ -27,7 +27,7 @@ header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#08254
 .hero h1 em .hero-brand{color:var(--orange)}
 .hero-actions{margin-top:30px}
 .btn{min-height:58px;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:0 24px;font-family:Georgia,serif;font-size:19px;font-weight:700;letter-spacing:.3px;box-shadow:0 8px 20px rgba(0,0,0,.22)}
-.btn-primary{background:linear-gradient(180deg,#E04412,#C83209);color:white;border:2px solid rgba(255,248,238,.24)}
+.btn-primary{background:linear-gradient(180deg,var(--orange),var(--orange-dark));color:white;border:2px solid rgba(255,248,238,.24)}
 .retour-site{text-align:center;padding:18px 0;background:var(--cream)}
 .retour-site.top{background:none;padding:0 0 22px;position:relative;z-index:2;text-align:left}
 .btn-retour-site{display:inline-flex;align-items:center;justify-content:center;padding:4px 0;background:transparent;color:rgba(7,27,52,.6);border:none;border-radius:0;font-family:Georgia,serif;font-size:14px;font-weight:500;box-shadow:none;text-decoration:underline;transition:.25s}
@@ -50,13 +50,13 @@ header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#08254
 .author-form{background:var(--paper);border:1px solid var(--sand);border-radius:22px;padding:26px;box-shadow:0 12px 30px rgba(7,27,52,.12)}
 .form-title{font-family:Georgia,serif;font-size:34px;color:var(--navy);margin-bottom:8px}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-block{grid-column:1/-1;margin:10px 0 2px;padding:13px 15px;border-radius:14px;background:linear-gradient(180deg,#C83209,#E04412);color:var(--paper);font-family:Georgia,serif;font-size:20px;font-weight:700;border:1px solid rgba(200,154,74,.45)}
+.form-block{grid-column:1/-1;margin:10px 0 2px;padding:13px 15px;border-radius:14px;background:linear-gradient(180deg,var(--orange-dark),var(--orange));color:var(--paper);font-family:Georgia,serif;font-size:20px;font-weight:700;border:1px solid rgba(200,154,74,.45)}
 .form-group{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
 .form-group.full,.full{grid-column:1/-1}
 label{font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--navy)}
 input,select,textarea{width:100%;border:1.5px solid var(--sand);background:#FCE7C9;color:var(--navy);border-radius:12px;padding:14px;font:500 16px Inter,system-ui,sans-serif;outline:none;min-height:50px}
 textarea{min-height:132px;resize:vertical;line-height:1.45}
-input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 4px rgba(246,61,14,.10);background:var(--paper)}
+input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 4px rgba(224,68,18,.10);background:var(--paper)}
 input[type=file]{padding:12px;background:var(--paper)}
 .form-help{font-size:12px;color:#6D6253;line-height:1.4}
 .help-box{grid-column:1/-1;background:#FCE7C9;border:1px solid rgba(217,195,160,.9);border-radius:14px;padding:14px 16px;color:var(--muted);font-size:14px;line-height:1.55}
@@ -70,7 +70,7 @@ input[type=file]{padding:12px;background:var(--paper)}
 .form-status.success{display:block;background:#e7f6e9;border:1px solid #9bd3a3;color:#123d1a}
 .form-status.error{display:block;background:#fff0ee;border:1px solid #f0a098;color:#7a170c}
 .submit-area{margin:28px 0 10px;text-align:center}
-.submit-btn{width:min(420px,100%);min-height:62px;border:none;border-radius:12px;background:linear-gradient(180deg,#E04412,#C83209);color:#fff;font-family:Georgia,serif;font-size:20px;font-weight:700;cursor:pointer;box-shadow:0 10px 20px rgba(198,50,9,.22)}
+.submit-btn{width:min(420px,100%);min-height:62px;border:none;border-radius:12px;background:linear-gradient(180deg,var(--orange),var(--orange-dark));color:#fff;font-family:Georgia,serif;font-size:20px;font-weight:700;cursor:pointer;box-shadow:0 10px 20px rgba(198,50,9,.22)}
 .submit-btn:disabled{opacity:.65;cursor:wait}
 .note-small{font-size:12px;color:#6D6253;line-height:1.45;text-align:center;margin-top:12px}
 footer{background:var(--navy);color:var(--paper);padding:30px 0;text-align:center;border-top:1px solid rgba(200,154,74,.25)}
