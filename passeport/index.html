@@ -1,316 +1,254 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#17110d">
-  <title>Mon passeport AvelEscape</title>
-
+<section id="avel-ranking-demo" aria-label="Classement interactif des aventuriers">
   <style>
-    :root {
-      --cream: #f5efe0;
-      --gold: #d4af37;
-      --orange: #f25303;
-      --night: #17110d;
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Montserrat:wght@400;500&display=swap');
+    #avel-ranking-demo {
+      color-scheme: light dark;
+      --paper: light-dark(#f5f0e7, #272521);
+      --paper-deep: light-dark(#ece4d7, #302d27);
+      --paper-panel: light-dark(#f8f4ec, #35312a);
+      --gold: light-dark(#c89232, #dfb35d);
+      --avel-orange: #ff3c01;
+      --avel-amber: #d98618;
+      --avel-copper: #a95632;
+      --navy: light-dark(#382d23, #f0e5d5);
+      --muted-navy: light-dark(#746657, #c8b9a5);
+      --page-shadow: light-dark(rgba(71, 58, 42, .22), rgba(0, 0, 0, .38));
+      color: var(--navy);
+      font-family: Montserrat, ui-sans-serif, system-ui, sans-serif;
+      padding: 12px;
     }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      width: 100%;
-      min-height: 100%;
-      margin: 0;
-      overflow: hidden;
-      overscroll-behavior: none;
-    }
-
-    body {
-      min-height: 100svh;
-      display: grid;
-      place-items: center;
-      padding: max(74px, calc(env(safe-area-inset-top) + 62px)) 14px
-               max(54px, calc(env(safe-area-inset-bottom) + 42px));
-      color: var(--cream);
-      background:
-        radial-gradient(circle at 50% 35%, rgba(97, 62, 35, .25), transparent 42%),
-        linear-gradient(145deg, #241a14, #100c09 72%);
-      font-family: Georgia, "Times New Roman", serif;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-
-    .return-site {
-      position: fixed;
-      top: max(12px, env(safe-area-inset-top));
-      left: max(12px, env(safe-area-inset-left));
-      z-index: 20;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 42px;
-      padding: 9px 15px;
-      border: 1px solid rgba(212, 175, 55, .8);
-      border-radius: 999px;
-      color: #f4dc8e;
-      background: rgba(20, 13, 9, .88);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, .34);
-      backdrop-filter: blur(8px);
-      text-decoration: none;
-      font: 700 13px/1 Arial, sans-serif;
-    }
-
-    .return-site:active {
-      transform: scale(.97);
-    }
-
-    /* Images du passeport : 1024 × 1536 px, soit un ratio exact de 2 / 3 */
-    .passport-stage {
+    #avel-ranking-demo .passport {
       position: relative;
-      width: min(86vw, 390px);
-      aspect-ratio: 2 / 3;
-      perspective: 1500px;
-      touch-action: pan-y;
-      filter: drop-shadow(0 24px 24px rgba(0, 0, 0, .48));
-    }
-
-    .passport {
-      position: absolute;
-      inset: 0;
-      transform-style: preserve-3d;
-      will-change: transform;
-    }
-
-    .sheet {
-      position: absolute;
-      inset: 0;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 28px clamp(16px, 5vw, 38px) 24px;
+      border: 1px solid color-mix(in srgb, var(--gold) 78%, transparent);
+      border-radius: 26px;
+      background:
+        repeating-radial-gradient(ellipse at 22% 18%, color-mix(in srgb, var(--gold) 4%, transparent) 0 1px, transparent 1px 9px),
+        linear-gradient(135deg, var(--paper), var(--paper-deep));
+      background-size: 19px 19px, auto;
+      box-shadow: 7px 1px 0 color-mix(in srgb, var(--paper) 92%, var(--gold) 8%), 11px 3px 15px var(--page-shadow);
       overflow: hidden;
-      border-radius: clamp(10px, 3vw, 20px);
-      background: #d8ccb1;
-      transform-style: preserve-3d;
-      backface-visibility: hidden;
     }
-
-    .sheet img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+    #avel-ranking-demo .passport::after {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 1px solid color-mix(in srgb, var(--gold) 72%, transparent);
+      border-radius: 18px;
       pointer-events: none;
-      -webkit-user-drag: none;
     }
-
-    .page {
+    #avel-ranking-demo .heading { text-align: center; position: relative; z-index: 1; }
+    #avel-ranking-demo .avel-logo {
+      display: block;
+      width: min(260px, 72%);
+      height: auto;
+      margin: 0 auto 12px;
+      object-fit: contain;
+    }
+    #avel-ranking-demo h2 {
+      margin: 0;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 500;
+      letter-spacing: .12em;
+    }
+    #avel-ranking-demo .subtitle { margin: 5px 0 18px; letter-spacing: .12em; }
+    #avel-ranking-demo .controls { justify-content: center; margin-bottom: 18px; position: relative; z-index: 1; }
+    #avel-ranking-demo .podium {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      align-items: end;
+      margin-bottom: 18px;
+      position: relative;
       z-index: 1;
     }
-
-    .cover {
-      z-index: 2;
-      transform-origin: left center;
-      will-change: transform, opacity, filter;
-    }
-
-    .cover::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      pointer-events: none;
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, .04),
-        rgba(255, 255, 255, .38) 48%,
-        rgba(0, 0, 0, .24)
-      );
-      transform: translateX(110%);
-    }
-
-    .passport.open .cover {
-      transform: translateX(-8%) rotateY(-108deg);
-      opacity: 0;
-      filter: brightness(.72);
-      transition:
-        transform .72s cubic-bezier(.2, .75, .2, 1),
-        opacity .18s linear .5s,
-        filter .6s ease;
-      pointer-events: none;
-    }
-
-    .passport.open .cover::after {
-      opacity: .7;
-      transform: translateX(-100%);
-      transition: transform .65s ease, opacity .25s ease;
-    }
-
-    .passport.closing .cover {
-      transform: translateX(0) rotateY(0);
-      opacity: 1;
-      transition:
-        transform .68s cubic-bezier(.2, .75, .2, 1),
-        opacity .12s linear;
-    }
-
-    .page::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      pointer-events: none;
-      box-shadow: inset 26px 0 28px rgba(49, 29, 17, .28);
-      transition: opacity .4s ease;
-    }
-
-    .passport.open .page::after {
-      opacity: 1;
-    }
-
-    .hint {
-      position: fixed;
-      left: 50%;
-      bottom: max(14px, env(safe-area-inset-bottom));
-      z-index: 10;
-      width: max-content;
-      max-width: calc(100vw - 28px);
-      transform: translateX(-50%);
-      margin: 0;
-      color: rgba(245, 239, 224, .86);
+    #avel-ranking-demo .podium-place {
       text-align: center;
-      font: 600 13px/1.35 Arial, sans-serif;
-      transition: opacity .25s ease;
+      padding: 14px 6px 10px;
+      border: 1px solid color-mix(in srgb, var(--gold) 52%, transparent);
+      border-radius: 16px 16px 8px 8px;
+      background: color-mix(in srgb, var(--paper-panel) 82%, transparent);
+      transition: transform .35s ease;
     }
-
-    .hint .arrow {
-      display: inline-block;
-      margin-right: 5px;
-      color: var(--orange);
-      animation: glide 1.6s ease-in-out infinite;
+    #avel-ranking-demo .podium-place.first { padding-top: 28px; background: color-mix(in srgb, var(--gold) 14%, var(--paper)); }
+    #avel-ranking-demo .podium-place:hover { transform: translateY(-3px); }
+    #avel-ranking-demo .medal {
+      position: relative;
+      z-index: 0;
+      display: grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 10px;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 28%, rgba(255,255,255,.92), transparent 28%),
+        var(--paper-panel);
+      box-shadow:
+        inset 0 0 0 3px var(--paper-panel),
+        inset 0 0 0 4px currentColor,
+        0 3px 7px rgba(76,42,22,.16);
     }
-
-    @keyframes glide {
-      0%, 100% { transform: translateX(4px); }
-      50% { transform: translateX(-5px); }
+    #avel-ranking-demo .medal::after {
+      content: none;
     }
-
+    #avel-ranking-demo .medal-1 { color: var(--avel-orange); }
+    #avel-ranking-demo .medal-2 { color: var(--avel-amber); }
+    #avel-ranking-demo .medal-3 { color: var(--avel-copper); }
+    #avel-ranking-demo .medal-compass {
+      position: absolute;
+      width: 39px;
+      height: 39px;
+      opacity: .18;
+    }
+    #avel-ranking-demo .medal-number {
+      position: relative;
+      z-index: 1;
+      color: currentColor;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: .02em;
+      text-shadow: 0 1px 0 rgba(255,255,255,.8);
+    }
+    #avel-ranking-demo .podium-name { display: block; margin-top: 4px; font-weight: 500; }
+    #avel-ranking-demo .podium-xp { display: block; margin-top: 3px; color: var(--muted-navy); }
+    #avel-ranking-demo .ranking { position: relative; z-index: 1; display: grid; gap: 6px; }
+    #avel-ranking-demo .rank-row {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
+      transition: transform .3s ease, background .3s ease;
+    }
+    #avel-ranking-demo .rank-row.me {
+      border: 1px solid color-mix(in srgb, var(--gold) 76%, transparent);
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--gold) 13%, var(--paper));
+    }
+    #avel-ranking-demo .rank { font-family: Georgia, serif; color: var(--gold); text-align: center; }
+    #avel-ranking-demo .name { min-width: 0; font-weight: 500; }
+    #avel-ranking-demo .detail { display: block; color: var(--muted-navy); margin-top: 2px; }
+    #avel-ranking-demo .xp { text-align: right; white-space: nowrap; }
+    #avel-ranking-demo .you { margin-left: 5px; }
+    #avel-ranking-demo .action { justify-content: center; margin-top: 18px; position: relative; z-index: 1; }
+    #avel-ranking-demo .gain { min-height: 22px; text-align: center; margin-top: 8px; color: var(--muted-navy); position: relative; z-index: 1; }
+    #avel-ranking-demo .rank-row.rising { transform: scale(1.015); background: color-mix(in srgb, var(--gold) 20%, var(--paper)); }
+    @media (max-width: 460px) {
+      #avel-ranking-demo { padding: 4px; }
+      #avel-ranking-demo .passport { padding: 22px 14px 20px; border-radius: 20px; }
+      #avel-ranking-demo .podium { gap: 5px; }
+      #avel-ranking-demo .podium-place { padding-inline: 3px; }
+      #avel-ranking-demo .rank-row { grid-template-columns: 34px minmax(0, 1fr) auto; padding-inline: 7px; gap: 6px; }
+    }
     @media (prefers-reduced-motion: reduce) {
-      .hint .arrow {
-        animation: none;
-      }
-
-      .passport.open .cover,
-      .passport.closing .cover {
-        transition-duration: .01ms;
-      }
+      #avel-ranking-demo * { transition: none !important; }
     }
   </style>
-</head>
 
-<body>
-  <a class="return-site"
-     href="https://avelescape.github.io/aventures/"
-     aria-label="Retourner au site AvelEscape">
-    <span aria-hidden="true">←</span>
-    <span>Site AvelEscape</span>
-  </a>
+  <div class="passport">
+    <header class="heading">
+      <img class="avel-logo" src="0-pngroseaveltransparent.png" alt="AvelEscape">
+      <h2>LE CERCLE DES AVENTURIERS</h2>
+      <p class="subtitle text-small text-muted">CLASSEMENT AVELESCAPE</p>
+    </header>
 
-  <main class="passport-stage" id="passportStage" aria-label="Passeport AvelEscape interactif">
-    <div class="passport" id="passport">
-      <section class="sheet page" aria-label="Première page du passeport">
-        <img src="images/webppage1.webp"
-             alt="Première page du passeport AvelEscape"
-             draggable="false">
-      </section>
-
-      <section class="sheet cover" aria-label="Couverture du passeport">
-        <img src="images/webpcouverture.webp"
-             alt="Couverture du passeport AvelEscape"
-             draggable="false">
-      </section>
+    <div class="viz-controls controls" aria-label="Période du classement">
+      <button class="btn period" type="button" data-period="general" aria-pressed="true">Général ✓</button>
+      <button class="btn period" type="button" data-period="month" aria-pressed="false">Ce mois</button>
     </div>
-  </main>
 
-  <p class="hint" id="hint">
-    <span class="arrow" aria-hidden="true">←</span>
-    <span id="hintText">Glissez vers la gauche pour ouvrir</span>
-  </p>
+    <div class="podium" aria-label="Podium des trois meilleurs aventuriers"></div>
+    <div class="ranking" aria-live="polite"></div>
+
+    <div class="viz-row action">
+      <button class="btn" id="avel-win-xp" type="button">Simuler une aventure validée</button>
+    </div>
+    <p class="gain text-small" id="avel-gain" aria-live="polite"></p>
+  </div>
 
   <script>
-    const stage = document.getElementById('passportStage');
-    const passport = document.getElementById('passport');
-    const hintText = document.getElementById('hintText');
+    (function () {
+      const root = document.getElementById("avel-ranking-demo");
+      const podium = root.querySelector(".podium");
+      const ranking = root.querySelector(".ranking");
+      const gain = root.querySelector("#avel-gain");
+      const winButton = root.querySelector("#avel-win-xp");
+      const periodButtons = Array.from(root.querySelectorAll(".period"));
+      let period = "general";
+      let simulated = false;
+      const players = [
+        { name: "Isa", level: 8, adventures: 14, general: 3850, month: 760 },
+        { name: "Yannick", level: 7, adventures: 13, general: 3620, month: 920 },
+        { name: "Jérem", level: 7, adventures: 12, general: 3410, month: 680 },
+        { name: "John", level: 6, adventures: 10, general: 2980, month: 590 },
+        { name: "Alex", level: 5, adventures: 8, general: 2540, month: 540, me: true },
+        { name: "Maëlle", level: 5, adventures: 8, general: 2470, month: 510 },
+        { name: "Cécile", level: 4, adventures: 7, general: 2210, month: 430 },
+        { name: "Mehdi", level: 4, adventures: 6, general: 1960, month: 390 }
+      ];
 
-    let startX = 0;
-    let startY = 0;
-    let tracking = false;
-    let isOpen = false;
+      function orderedPlayers() {
+        return players.slice().sort(function (a, b) { return b[period] - a[period]; });
+      }
 
-    function updateHint() {
-      hintText.textContent = isOpen
-        ? 'Glissez vers la droite pour refermer'
-        : 'Glissez vers la gauche pour ouvrir';
+      function render() {
+        const ordered = orderedPlayers();
+        const top = ordered.slice(0, 3);
+        podium.innerHTML = top.map(function (player, index) {
+          const orderClass = index === 0 ? "first" : "";
+          const place = index + 1;
+          const roman = ["I", "II", "III"][index];
+          const compass = '<svg class="medal-compass" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M32 7 37 27 57 32 37 37 32 57 27 37 7 32 27 27Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M32 15 34 30 49 32 34 34 32 49 30 34 15 32 30 30Z" fill="currentColor" opacity=".18"/><circle cx="32" cy="32" r="3" fill="currentColor"/></svg>';
+          return '<div class="podium-place ' + orderClass + '"><span class="medal medal-' + place + '" aria-label="' + place + 'e place">' + compass + '<span class="medal-number">' + roman + '</span></span><span class="podium-name">' + player.name + '</span><span class="podium-xp text-small">' + player[period].toLocaleString("fr-FR") + ' XP</span></div>';
+        }).join("");
+        ranking.innerHTML = ordered.slice(3).map(function (player, index) {
+          const position = index + 4;
+          const meClass = player.me ? " me" : "";
+          const risingClass = player.me && simulated ? " rising" : "";
+          const you = player.me ? '<span class="viz-badge you">Vous</span>' : "";
+          return '<div class="rank-row' + meClass + risingClass + '"><span class="rank">' + position + '</span><span class="name">' + player.name + you + '<span class="detail text-small">Niveau ' + player.level + ' · ' + player.adventures + ' aventures</span></span><span class="xp">' + player[period].toLocaleString("fr-FR") + ' XP</span></div>';
+        }).join("");
+      }
 
-      document.querySelector('.hint .arrow').textContent = isOpen ? '→' : '←';
-    }
+      periodButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          period = button.dataset.period;
+          periodButtons.forEach(function (item) {
+            const active = item === button;
+            item.setAttribute("aria-pressed", String(active));
+            item.textContent = item.dataset.period === "general" ? "Général" : "Ce mois";
+            if (active) item.textContent += " ✓";
+          });
+          render();
+        });
+      });
 
-    function openPassport() {
-      if (isOpen) return;
+      winButton.addEventListener("click", function () {
+        const me = players.find(function (player) { return player.me; });
+        if (!simulated) {
+          me.general += 450;
+          me.month += 450;
+          me.adventures += 1;
+          simulated = true;
+          gain.textContent = "+450 XP · Votre position vient d’être recalculée";
+          winButton.textContent = "Aventure ajoutée";
+          winButton.disabled = true;
+          render();
+          window.setTimeout(function () {
+            const row = ranking.querySelector(".rising");
+            if (row) row.classList.remove("rising");
+          }, 900);
+        }
+      });
 
-      passport.classList.remove('closing');
-      passport.classList.add('open');
-      isOpen = true;
-      updateHint();
-
-      if (navigator.vibrate) navigator.vibrate(20);
-    }
-
-    function closePassport() {
-      if (!isOpen) return;
-
-      passport.classList.add('closing');
-      passport.classList.remove('open');
-      isOpen = false;
-      updateHint();
-
-      if (navigator.vibrate) navigator.vibrate(15);
-
-      window.setTimeout(() => {
-        passport.classList.remove('closing');
-      }, 700);
-    }
-
-    stage.addEventListener('pointerdown', (event) => {
-      startX = event.clientX;
-      startY = event.clientY;
-      tracking = true;
-      stage.setPointerCapture?.(event.pointerId);
-    });
-
-    stage.addEventListener('pointerup', (event) => {
-      if (!tracking) return;
-
-      tracking = false;
-
-      const dx = event.clientX - startX;
-      const dy = event.clientY - startY;
-      const horizontalSwipe = Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.15;
-
-      if (!horizontalSwipe) return;
-
-      if (dx < 0) openPassport();
-      if (dx > 0) closePassport();
-    });
-
-    stage.addEventListener('pointercancel', () => {
-      tracking = false;
-    });
-
-    stage.addEventListener('click', (event) => {
-      if (Math.abs(event.clientX - startX) > 12) return;
-      isOpen ? closePassport() : openPassport();
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft') openPassport();
-      if (event.key === 'ArrowRight') closePassport();
-    });
+      render();
+    })();
   </script>
-</body>
-</html>
+</section>
