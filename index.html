@@ -45,22 +45,15 @@ header{
   padding-top:env(safe-area-inset-top,0px);
 }
 .nav{
-  height:124px;
+  height:132px;
   padding:0 36px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   position:relative;
 }
-.nav-burger{
-  width:46px;height:46px;
-  border:none;background:transparent;
-  display:flex;flex-direction:column;justify-content:center;gap:8px;
-  cursor:pointer;
-}
-.nav-burger span{display:block;width:38px;height:4px;border-radius:4px;background:#F9ECDC}
 .nav-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
-.nav-logo-img{width:380px;height:110px;object-fit:contain}
+.nav-logo-img{width:333px;height:96px;object-fit:contain}
 .nav-connexion{
   height:56px;
   display:flex;align-items:center;gap:14px;
@@ -72,6 +65,7 @@ header{
   font-family:Georgia,serif;
   font-size:22px;
   cursor:pointer;
+  margin-left:auto;
 }
 .nav-connexion svg{width:28px;height:28px}
 
@@ -279,7 +273,7 @@ header{
 /* CARTE INTERACTIVE */
 .map-section{background:var(--cream);padding:10px 0 30px}
 .map-title{font-family:Georgia,serif;color:#071B34;font-size:28px;text-align:center;margin-bottom:16px}
-#adventures-map{width:100%;height:400px;border-radius:16px;overflow:hidden;border:1px solid #D9C3A0;box-shadow:0 8px 24px rgba(7,27,52,.14);background:#EAD9BC}
+#adventures-map{width:100%;height:400px;border-radius:16px;overflow:hidden;border:1px solid #D9C3A0;box-shadow:0 8px 24px rgba(7,27,52,.14);background:#EAD9BC;position:relative;isolation:isolate;z-index:0}
 .map-popup{font-family:Inter,system-ui,sans-serif}
 .map-popup strong{font-family:Georgia,serif;color:var(--navy);font-size:14px}
 .map-popup .map-popup-loc{font-size:11px;color:#6D6253;margin:2px 0 6px}
@@ -305,7 +299,7 @@ header{
 
 /* AVIS + CTA */
 .reviews-section{background:var(--cream);padding:20px 0}.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.review-photo-card{border-radius:12px;overflow:hidden;background:var(--navy);min-height:100px}.review-photo-card img{width:100%;height:100%;object-fit:cover}.review-card{background:#FFF8EE;border:1px solid #D9C3A0;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:5px;min-height:100px}.review-stars{color:var(--orange);font-size:13px;letter-spacing:1px}.review-text{font-size:12px;color:#1D1A16;line-height:1.5;flex:1;font-style:italic}.review-author{font-size:11px;font-weight:700;color:var(--navy)}
-.cta-section{background:var(--navy);overflow:hidden;border:1px solid rgba(201,162,39,.16);border-radius:16px;margin:0 auto 12px;width:80%}.cta-inner{display:grid;grid-template-columns:1fr 2fr;gap:8px;padding:2px 10px;align-items:center}.cta-btn-cgv{display:inline-flex;align-items:center;justify-content:center;background:var(--cream);color:var(--navy);border-radius:10px;padding:12px 18px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-decoration:none;min-height:44px}
+.cta-section{background:var(--navy);overflow:hidden;border:1px solid rgba(201,162,39,.16);border-radius:0;margin:0 0 12px;width:100%}.cta-inner{display:grid;grid-template-columns:1fr 2fr;gap:8px;padding:2px 10px;align-items:center}.cta-btn-cgv{display:inline-flex;align-items:center;justify-content:center;background:transparent;color:rgba(255,255,255,.55);border-radius:6px;padding:6px 8px;font-size:10px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;text-decoration:underline;min-height:32px}
 .cta-inner{
     display:flex;
     justify-content:space-between;
@@ -328,7 +322,7 @@ header{
 
 @media(max-width:760px){
   body{max-width:480px}
-  .nav{height:90px;padding:0 18px}.nav-logo-img{width:260px;height:75px}.nav-burger{width:40px}.nav-burger span{width:27px;height:3px}.nav-connexion{height:42px;padding:0 14px;font-size:14px;gap:8px}.nav-connexion svg{width:20px;height:20px}
+  .nav{height:98px;padding:0 18px}.nav-logo-img{width:243px;height:70px}.nav-connexion{height:42px;padding:0 14px;font-size:14px;gap:8px}.nav-connexion svg{width:20px;height:20px}
   .hero{min-height:545px;background-position:center bottom}.hero::after{display:none}.container{padding:0 28px}
   .kids-banner .container{padding:0 18px;}
   .kids-banner{
@@ -369,8 +363,7 @@ header{
 <body>
 <header>
   <nav class="nav" aria-label="Navigation principale">
-    <button class="nav-burger" aria-label="Menu"><span></span><span></span><span></span></button>
-    <div class="nav-center"><img class="nav-logo-img" src="images-site/0-webpogo-hd" alt="AvelEscape"></div>
+    <div class="nav-center"><img class="nav-logo-img" src="images-site/0-webpogo-hd.webp" alt="AvelEscape"></div>
     <button class="nav-connexion" type="button">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-4 3.1-7 7-7s7 3 7 7"/></svg>
       Connexion
@@ -385,7 +378,6 @@ header{
       <div class="hero-buttons">
         <a class="hero-btn hero-btn-primary" href="passeport/index.html">
           <span class="btn-left">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C89A4A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M9 16h6M9 18h6"/></svg>
             MON PASSEPORT
           </span>
           <span class="arrow">›</span>
@@ -455,6 +447,7 @@ header{
       <div class="reviews-grid">
         <div class="review-photo-card"><img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpgroupesacados.webp" alt="Aventure AvelEscape"></div>
         <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Parfait pour une balade culturelle originale et en famille. Nous avons adoré ! »</p><p class="review-author">Sandra.</p></div>
+        <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Les enfants ont adoré, vivement la prochaine aventure !!! Merci Billig »</p><p class="review-author">Maëlle.</p></div>
         <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Hâte de valider de nouvelles aventures dans mon passeport. »</p><p class="review-author">Nathan.</p></div>
       </div>
     </div>
