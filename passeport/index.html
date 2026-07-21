@@ -1,254 +1,401 @@
-<section id="avel-ranking-demo" aria-label="Classement interactif des aventuriers">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17110d">
+  <title>Mon passeport AvelEscape</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Montserrat:wght@400;500&display=swap');
-    #avel-ranking-demo {
-      color-scheme: light dark;
-      --paper: light-dark(#f5f0e7, #272521);
-      --paper-deep: light-dark(#ece4d7, #302d27);
-      --paper-panel: light-dark(#f8f4ec, #35312a);
-      --gold: light-dark(#c89232, #dfb35d);
-      --avel-orange: #ff3c01;
-      --avel-amber: #d98618;
-      --avel-copper: #a95632;
-      --navy: light-dark(#382d23, #f0e5d5);
-      --muted-navy: light-dark(#746657, #c8b9a5);
-      --page-shadow: light-dark(rgba(71, 58, 42, .22), rgba(0, 0, 0, .38));
-      color: var(--navy);
-      font-family: Montserrat, ui-sans-serif, system-ui, sans-serif;
-      padding: 12px;
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;500;600&display=swap');
+
+    :root {
+      --cream: #f5efe0;
+      --paper: #f4eddf;
+      --paper-deep: #e8ddca;
+      --ink: #382d23;
+      --muted: #776858;
+      --orange: #ff3c01;
+      --amber: #d98618;
+      --copper: #a95632;
+      --gold: #c89232;
+      --night: #17110d;
     }
-    #avel-ranking-demo .passport {
-      position: relative;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 28px clamp(16px, 5vw, 38px) 24px;
-      border: 1px solid color-mix(in srgb, var(--gold) 78%, transparent);
-      border-radius: 26px;
-      background:
-        repeating-radial-gradient(ellipse at 22% 18%, color-mix(in srgb, var(--gold) 4%, transparent) 0 1px, transparent 1px 9px),
-        linear-gradient(135deg, var(--paper), var(--paper-deep));
-      background-size: 19px 19px, auto;
-      box-shadow: 7px 1px 0 color-mix(in srgb, var(--paper) 92%, var(--gold) 8%), 11px 3px 15px var(--page-shadow);
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; min-height: 100%; margin: 0; }
+
+    body {
+      min-height: 100svh;
       overflow: hidden;
+      overscroll-behavior: none;
+      color: var(--cream);
+      background:
+        radial-gradient(circle at 50% 36%, rgba(116,78,42,.18), transparent 42%),
+        linear-gradient(145deg, #241a13, var(--night) 70%);
+      font-family: Montserrat, Arial, sans-serif;
+      touch-action: none;
+      user-select: none;
     }
-    #avel-ranking-demo .passport::after {
-      content: "";
-      position: absolute;
-      inset: 12px;
-      border: 1px solid color-mix(in srgb, var(--gold) 72%, transparent);
-      border-radius: 18px;
-      pointer-events: none;
+
+    .return-site {
+      position: fixed;
+      top: max(12px, env(safe-area-inset-top));
+      left: max(12px, env(safe-area-inset-left));
+      z-index: 100;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 40px;
+      padding: 8px 13px;
+      border: 1px solid rgba(212,175,55,.75);
+      border-radius: 999px;
+      color: #f5df9a;
+      background: rgba(23,17,13,.9);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
     }
-    #avel-ranking-demo .heading { text-align: center; position: relative; z-index: 1; }
-    #avel-ranking-demo .avel-logo {
-      display: block;
-      width: min(260px, 72%);
-      height: auto;
-      margin: 0 auto 12px;
-      object-fit: contain;
-    }
-    #avel-ranking-demo h2 {
-      margin: 0;
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-weight: 500;
-      letter-spacing: .12em;
-    }
-    #avel-ranking-demo .subtitle { margin: 5px 0 18px; letter-spacing: .12em; }
-    #avel-ranking-demo .controls { justify-content: center; margin-bottom: 18px; position: relative; z-index: 1; }
-    #avel-ranking-demo .podium {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      align-items: end;
-      margin-bottom: 18px;
-      position: relative;
-      z-index: 1;
-    }
-    #avel-ranking-demo .podium-place {
-      text-align: center;
-      padding: 14px 6px 10px;
-      border: 1px solid color-mix(in srgb, var(--gold) 52%, transparent);
-      border-radius: 16px 16px 8px 8px;
-      background: color-mix(in srgb, var(--paper-panel) 82%, transparent);
-      transition: transform .35s ease;
-    }
-    #avel-ranking-demo .podium-place.first { padding-top: 28px; background: color-mix(in srgb, var(--gold) 14%, var(--paper)); }
-    #avel-ranking-demo .podium-place:hover { transform: translateY(-3px); }
-    #avel-ranking-demo .medal {
-      position: relative;
-      z-index: 0;
+
+    .stage {
+      width: 100%;
+      min-height: 100svh;
       display: grid;
       place-items: center;
-      width: 56px;
-      height: 56px;
-      margin: 0 auto 10px;
+      padding: max(64px, calc(env(safe-area-inset-top) + 54px)) 14px
+               max(76px, calc(env(safe-area-inset-bottom) + 62px));
+      perspective: 1500px;
+    }
+
+    .passport {
+      position: relative;
+      width: min(430px, 90vw, calc((100svh - 150px) * .6667));
+      aspect-ratio: 2 / 3;
+      filter: drop-shadow(0 24px 28px rgba(0,0,0,.48));
+    }
+
+    .page {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 7px 24px 24px 7px;
+      transform-origin: left center;
+      backface-visibility: hidden;
+      will-change: transform, opacity;
+      background: var(--paper);
+      box-shadow: inset 13px 0 18px rgba(62,38,20,.18), 0 2px 0 rgba(255,255,255,.3);
+    }
+
+    .page.cover-page { border-radius: 18px 25px 25px 18px; }
+    .page img.page-image { width: 100%; height: 100%; display: block; object-fit: contain; pointer-events: none; }
+
+    .page::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: var(--fold, 0);
+      background: linear-gradient(90deg, transparent 55%, rgba(255,255,255,.22) 76%, rgba(38,20,10,.28));
+    }
+
+    .page.is-current { z-index: 3; }
+    .page.is-next { z-index: 2; }
+    .page.is-hidden { z-index: 1; visibility: hidden; }
+    .page.turning { transition: transform .48s cubic-bezier(.22,.75,.18,1), opacity .42s ease; }
+
+    .ranking-page {
+      color: var(--ink);
+      padding: 20px 18px 18px;
+      background:
+        repeating-radial-gradient(ellipse at 22% 18%, rgba(200,146,50,.045) 0 1px, transparent 1px 9px),
+        linear-gradient(135deg, var(--paper), var(--paper-deep));
+      overflow-y: auto;
+      touch-action: pan-y;
+      scrollbar-width: thin;
+    }
+
+    .ranking-page::before {
+      content: "";
+      position: absolute;
+      inset: 11px;
+      border: 1px solid rgba(200,146,50,.58);
+      border-radius: 15px;
+      pointer-events: none;
+    }
+
+    .ranking-content { position: relative; z-index: 1; }
+    .avel-logo { display: block; width: min(230px, 72%); height: auto; margin: 0 auto 7px; }
+    .ranking-page h1 {
+      margin: 0;
+      text-align: center;
+      font: 600 clamp(18px, 5vw, 25px)/1.05 "Cormorant Garamond", Georgia, serif;
+      letter-spacing: .07em;
+    }
+    .subtitle { margin: 4px 0 10px; text-align: center; color: var(--muted); font-size: 9px; letter-spacing: .13em; }
+
+    .periods, .action { display: flex; justify-content: center; gap: 7px; }
+    button {
+      border: 1px solid rgba(200,146,50,.65);
+      border-radius: 999px;
+      padding: 7px 11px;
+      color: var(--ink);
+      background: rgba(255,251,244,.6);
+      font: 600 10px Montserrat, sans-serif;
+      cursor: pointer;
+    }
+    button[aria-pressed="true"], button.primary { color: #fffaf2; border-color: var(--orange); background: var(--orange); }
+    button:disabled { opacity: .62; }
+
+    .podium { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; align-items: end; margin: 10px 0 8px; }
+    .podium-place { padding: 9px 3px 7px; text-align: center; border: 1px solid rgba(200,146,50,.48); border-radius: 13px 13px 7px 7px; background: rgba(255,251,244,.48); }
+    .podium-place.first { padding-top: 17px; background: rgba(255,60,1,.065); }
+
+    .medal {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 43px;
+      height: 43px;
+      margin: 0 auto 6px;
       border: 1px solid currentColor;
       border-radius: 50%;
-      background:
-        radial-gradient(circle at 35% 28%, rgba(255,255,255,.92), transparent 28%),
-        var(--paper-panel);
-      box-shadow:
-        inset 0 0 0 3px var(--paper-panel),
-        inset 0 0 0 4px currentColor,
-        0 3px 7px rgba(76,42,22,.16);
+      background: radial-gradient(circle at 35% 28%, #fff, transparent 30%), rgba(255,251,244,.78);
+      box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px currentColor, 0 3px 6px rgba(70,39,20,.14);
     }
-    #avel-ranking-demo .medal::after {
-      content: none;
-    }
-    #avel-ranking-demo .medal-1 { color: var(--avel-orange); }
-    #avel-ranking-demo .medal-2 { color: var(--avel-amber); }
-    #avel-ranking-demo .medal-3 { color: var(--avel-copper); }
-    #avel-ranking-demo .medal-compass {
-      position: absolute;
-      width: 39px;
-      height: 39px;
-      opacity: .18;
-    }
-    #avel-ranking-demo .medal-number {
-      position: relative;
-      z-index: 1;
-      color: currentColor;
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: 1.45rem;
-      font-weight: 500;
-      line-height: 1;
-      letter-spacing: .02em;
-      text-shadow: 0 1px 0 rgba(255,255,255,.8);
-    }
-    #avel-ranking-demo .podium-name { display: block; margin-top: 4px; font-weight: 500; }
-    #avel-ranking-demo .podium-xp { display: block; margin-top: 3px; color: var(--muted-navy); }
-    #avel-ranking-demo .ranking { position: relative; z-index: 1; display: grid; gap: 6px; }
-    #avel-ranking-demo .rank-row {
-      display: grid;
-      grid-template-columns: 42px minmax(0, 1fr) auto;
+    .medal-1 { color: var(--orange); }
+    .medal-2 { color: var(--amber); }
+    .medal-3 { color: var(--copper); }
+    .medal svg { position: absolute; width: 30px; height: 30px; opacity: .16; }
+    .roman { position: relative; z-index: 1; font: 600 18px/1 "Cormorant Garamond", Georgia, serif; }
+    .podium-name { display: block; overflow: hidden; text-overflow: ellipsis; font-size: 10px; font-weight: 600; }
+    .podium-xp { display: block; margin-top: 2px; color: var(--muted); font-size: 8px; }
+
+    .ranking { display: grid; gap: 3px; }
+    .rank-row { display: grid; grid-template-columns: 27px minmax(0,1fr) auto; align-items: center; gap: 5px; padding: 6px 7px; border-bottom: 1px solid rgba(200,146,50,.25); font-size: 10px; }
+    .rank-row.me { border: 1px solid rgba(255,60,1,.6); border-radius: 9px; background: rgba(255,60,1,.07); }
+    .rank { color: var(--orange); font: 600 14px Georgia, serif; text-align: center; }
+    .player-name { min-width: 0; font-weight: 600; }
+    .detail { display: block; margin-top: 1px; color: var(--muted); font-size: 7px; font-weight: 400; }
+    .xp { white-space: nowrap; font-size: 9px; }
+    .you { margin-left: 4px; padding: 2px 5px; border-radius: 99px; color: white; background: var(--orange); font-size: 6px; }
+    .action { margin-top: 10px; }
+    .gain { min-height: 14px; margin: 5px 0 0; color: var(--muted); text-align: center; font-size: 8px; }
+
+    .navigation {
+      position: fixed;
+      left: 50%;
+      bottom: max(13px, env(safe-area-inset-bottom));
+      z-index: 100;
+      display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-bottom: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
-      transition: transform .3s ease, background .3s ease;
+      gap: 12px;
+      transform: translateX(-50%);
     }
-    #avel-ranking-demo .rank-row.me {
-      border: 1px solid color-mix(in srgb, var(--gold) 76%, transparent);
-      border-radius: 12px;
-      background: color-mix(in srgb, var(--gold) 13%, var(--paper));
+    .nav-button { min-width: 42px; min-height: 38px; color: #f5df9a; border-color: rgba(212,175,55,.7); background: rgba(23,17,13,.9); font-size: 18px; }
+    .counter { min-width: 50px; color: #d8cbb7; text-align: center; font-size: 11px; }
+    .hint { position: fixed; right: 14px; bottom: max(18px, env(safe-area-inset-bottom)); color: rgba(245,239,224,.64); font-size: 9px; }
+
+    @media (max-height: 700px) {
+      .ranking-page { padding: 15px 14px 12px; }
+      .avel-logo { width: 48%; margin-bottom: 3px; }
+      .podium { margin-block: 6px; }
+      .podium-place.first { padding-top: 11px; }
+      .medal { width: 37px; height: 37px; }
+      .rank-row { padding-block: 4px; }
+      .action { margin-top: 6px; }
     }
-    #avel-ranking-demo .rank { font-family: Georgia, serif; color: var(--gold); text-align: center; }
-    #avel-ranking-demo .name { min-width: 0; font-weight: 500; }
-    #avel-ranking-demo .detail { display: block; color: var(--muted-navy); margin-top: 2px; }
-    #avel-ranking-demo .xp { text-align: right; white-space: nowrap; }
-    #avel-ranking-demo .you { margin-left: 5px; }
-    #avel-ranking-demo .action { justify-content: center; margin-top: 18px; position: relative; z-index: 1; }
-    #avel-ranking-demo .gain { min-height: 22px; text-align: center; margin-top: 8px; color: var(--muted-navy); position: relative; z-index: 1; }
-    #avel-ranking-demo .rank-row.rising { transform: scale(1.015); background: color-mix(in srgb, var(--gold) 20%, var(--paper)); }
-    @media (max-width: 460px) {
-      #avel-ranking-demo { padding: 4px; }
-      #avel-ranking-demo .passport { padding: 22px 14px 20px; border-radius: 20px; }
-      #avel-ranking-demo .podium { gap: 5px; }
-      #avel-ranking-demo .podium-place { padding-inline: 3px; }
-      #avel-ranking-demo .rank-row { grid-template-columns: 34px minmax(0, 1fr) auto; padding-inline: 7px; gap: 6px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      #avel-ranking-demo * { transition: none !important; }
-    }
+
+    @media (prefers-reduced-motion: reduce) { .page.turning { transition-duration: .01ms; } }
   </style>
+</head>
+<body>
+  <a class="return-site" href="https://avelescape.github.io/aventures/" aria-label="Retour au site AvelEscape">← <span>Site AvelEscape</span></a>
 
-  <div class="passport">
-    <header class="heading">
-      <img class="avel-logo" src="0-pngroseaveltransparent.png" alt="AvelEscape">
-      <h2>LE CERCLE DES AVENTURIERS</h2>
-      <p class="subtitle text-small text-muted">CLASSEMENT AVELESCAPE</p>
-    </header>
+  <main class="stage" id="stage" aria-label="Passeport AvelEscape interactif">
+    <div class="passport" id="passport">
+      <section class="page cover-page" data-page="0" aria-label="Couverture du passeport">
+        <img class="page-image" src="images/0-webpcouv.webp" alt="Couverture du passeport AvelEscape">
+      </section>
 
-    <div class="viz-controls controls" aria-label="Période du classement">
-      <button class="btn period" type="button" data-period="general" aria-pressed="true">Général ✓</button>
-      <button class="btn period" type="button" data-period="month" aria-pressed="false">Ce mois</button>
+      <section class="page" data-page="1" aria-label="Identité de l’aventurier">
+        <img class="page-image" src="images/0-webpidentité.webp" alt="Page d’identité de l’aventurier">
+      </section>
+
+      <section class="page" data-page="2" aria-label="Mes aventures, première page">
+        <img class="page-image" src="images/0-webpmesaventures.webp" alt="Première page de mes aventures">
+      </section>
+
+      <section class="page" data-page="3" aria-label="Mes aventures, seconde page">
+        <img class="page-image" src="images/0-webpmesaventures.webp" alt="Seconde page de mes aventures">
+      </section>
+
+      <section class="page ranking-page" data-page="4" aria-label="Classement des aventuriers">
+        <div class="ranking-content">
+          <img class="avel-logo" src="images/0-pngroseaveltransparent.png" alt="AvelEscape">
+          <h1>LE CERCLE DES AVENTURIERS</h1>
+          <p class="subtitle">CLASSEMENT AVELESCAPE</p>
+          <div class="periods">
+            <button class="period" type="button" data-period="general" aria-pressed="true">Général ✓</button>
+            <button class="period" type="button" data-period="month" aria-pressed="false">Ce mois</button>
+          </div>
+          <div class="podium" aria-label="Podium"></div>
+          <div class="ranking" aria-live="polite"></div>
+          <div class="action"><button class="primary" id="winXp" type="button">Simuler une aventure validée</button></div>
+          <p class="gain" id="gain" aria-live="polite"></p>
+        </div>
+      </section>
     </div>
+  </main>
 
-    <div class="podium" aria-label="Podium des trois meilleurs aventuriers"></div>
-    <div class="ranking" aria-live="polite"></div>
-
-    <div class="viz-row action">
-      <button class="btn" id="avel-win-xp" type="button">Simuler une aventure validée</button>
-    </div>
-    <p class="gain text-small" id="avel-gain" aria-live="polite"></p>
-  </div>
+  <nav class="navigation" aria-label="Navigation du passeport">
+    <button class="nav-button" id="previous" type="button" aria-label="Page précédente">‹</button>
+    <span class="counter" id="counter">1 / 5</span>
+    <button class="nav-button" id="next" type="button" aria-label="Page suivante">›</button>
+  </nav>
+  <span class="hint">Glissez pour tourner la page</span>
 
   <script>
-    (function () {
-      const root = document.getElementById("avel-ranking-demo");
-      const podium = root.querySelector(".podium");
-      const ranking = root.querySelector(".ranking");
-      const gain = root.querySelector("#avel-gain");
-      const winButton = root.querySelector("#avel-win-xp");
-      const periodButtons = Array.from(root.querySelectorAll(".period"));
-      let period = "general";
-      let simulated = false;
-      const players = [
-        { name: "Isa", level: 8, adventures: 14, general: 3850, month: 760 },
-        { name: "Yannick", level: 7, adventures: 13, general: 3620, month: 920 },
-        { name: "Jérem", level: 7, adventures: 12, general: 3410, month: 680 },
-        { name: "John", level: 6, adventures: 10, general: 2980, month: 590 },
-        { name: "Alex", level: 5, adventures: 8, general: 2540, month: 540, me: true },
-        { name: "Maëlle", level: 5, adventures: 8, general: 2470, month: 510 },
-        { name: "Cécile", level: 4, adventures: 7, general: 2210, month: 430 },
-        { name: "Mehdi", level: 4, adventures: 6, general: 1960, month: 390 }
-      ];
+    (() => {
+      const passport = document.getElementById('passport');
+      const pages = [...passport.querySelectorAll('.page')];
+      const previous = document.getElementById('previous');
+      const next = document.getElementById('next');
+      const counter = document.getElementById('counter');
+      let current = 0;
+      let tracking = false;
+      let startX = 0;
+      let startY = 0;
+      let deltaX = 0;
 
-      function orderedPlayers() {
-        return players.slice().sort(function (a, b) { return b[period] - a[period]; });
-      }
-
-      function render() {
-        const ordered = orderedPlayers();
-        const top = ordered.slice(0, 3);
-        podium.innerHTML = top.map(function (player, index) {
-          const orderClass = index === 0 ? "first" : "";
-          const place = index + 1;
-          const roman = ["I", "II", "III"][index];
-          const compass = '<svg class="medal-compass" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M32 7 37 27 57 32 37 37 32 57 27 37 7 32 27 27Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M32 15 34 30 49 32 34 34 32 49 30 34 15 32 30 30Z" fill="currentColor" opacity=".18"/><circle cx="32" cy="32" r="3" fill="currentColor"/></svg>';
-          return '<div class="podium-place ' + orderClass + '"><span class="medal medal-' + place + '" aria-label="' + place + 'e place">' + compass + '<span class="medal-number">' + roman + '</span></span><span class="podium-name">' + player.name + '</span><span class="podium-xp text-small">' + player[period].toLocaleString("fr-FR") + ' XP</span></div>';
-        }).join("");
-        ranking.innerHTML = ordered.slice(3).map(function (player, index) {
-          const position = index + 4;
-          const meClass = player.me ? " me" : "";
-          const risingClass = player.me && simulated ? " rising" : "";
-          const you = player.me ? '<span class="viz-badge you">Vous</span>' : "";
-          return '<div class="rank-row' + meClass + risingClass + '"><span class="rank">' + position + '</span><span class="name">' + player.name + you + '<span class="detail text-small">Niveau ' + player.level + ' · ' + player.adventures + ' aventures</span></span><span class="xp">' + player[period].toLocaleString("fr-FR") + ' XP</span></div>';
-        }).join("");
-      }
-
-      periodButtons.forEach(function (button) {
-        button.addEventListener("click", function () {
-          period = button.dataset.period;
-          periodButtons.forEach(function (item) {
-            const active = item === button;
-            item.setAttribute("aria-pressed", String(active));
-            item.textContent = item.dataset.period === "general" ? "Général" : "Ce mois";
-            if (active) item.textContent += " ✓";
-          });
-          render();
+      function showPages() {
+        pages.forEach((page, index) => {
+          page.classList.toggle('is-current', index === current);
+          page.classList.toggle('is-next', index === current + 1 || index === current - 1);
+          page.classList.toggle('is-hidden', Math.abs(index - current) > 1);
+          page.style.transform = '';
+          page.style.opacity = '';
+          page.style.setProperty('--fold', 0);
         });
+        previous.disabled = current === 0;
+        next.disabled = current === pages.length - 1;
+        counter.textContent = `${current + 1} / ${pages.length}`;
+      }
+
+      function turn(direction) {
+        const target = current + direction;
+        if (target < 0 || target >= pages.length) return;
+        const page = pages[current];
+        page.classList.add('turning');
+        page.style.transform = `translateX(${direction > 0 ? '-112%' : '112%'}) rotateY(${direction > 0 ? '-35deg' : '35deg'})`;
+        page.style.opacity = '0';
+        if (navigator.vibrate) navigator.vibrate(15);
+        window.setTimeout(() => {
+          page.classList.remove('turning');
+          current = target;
+          showPages();
+        }, 470);
+      }
+
+      passport.addEventListener('pointerdown', event => {
+        if (event.target.closest('button') || event.target.closest('a')) return;
+        tracking = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        deltaX = 0;
+        passport.setPointerCapture?.(event.pointerId);
       });
 
-      winButton.addEventListener("click", function () {
-        const me = players.find(function (player) { return player.me; });
-        if (!simulated) {
-          me.general += 450;
-          me.month += 450;
-          me.adventures += 1;
-          simulated = true;
-          gain.textContent = "+450 XP · Votre position vient d’être recalculée";
-          winButton.textContent = "Aventure ajoutée";
-          winButton.disabled = true;
-          render();
-          window.setTimeout(function () {
-            const row = ranking.querySelector(".rising");
-            if (row) row.classList.remove("rising");
-          }, 900);
+      passport.addEventListener('pointermove', event => {
+        if (!tracking) return;
+        deltaX = event.clientX - startX;
+        const dy = event.clientY - startY;
+        if (Math.abs(dy) > Math.abs(deltaX) * 1.2) return;
+        const allowed = (deltaX < 0 && current < pages.length - 1) || (deltaX > 0 && current > 0);
+        if (!allowed) deltaX *= .18;
+        const progress = Math.min(Math.abs(deltaX) / passport.clientWidth, 1);
+        pages[current].style.transform = `translateX(${deltaX}px) rotateY(${deltaX * .045}deg)`;
+        pages[current].style.setProperty('--fold', progress.toFixed(2));
+      });
+
+      function release(event) {
+        if (!tracking) return;
+        tracking = false;
+        const dy = event.clientY - startY;
+        const horizontal = Math.abs(deltaX) > Math.abs(dy) * 1.15;
+        if (horizontal && Math.abs(deltaX) > 48) turn(deltaX < 0 ? 1 : -1);
+        else {
+          pages[current].classList.add('turning');
+          pages[current].style.transform = '';
+          pages[current].style.setProperty('--fold', 0);
+          window.setTimeout(() => pages[current]?.classList.remove('turning'), 480);
         }
+      }
+
+      passport.addEventListener('pointerup', release);
+      passport.addEventListener('pointercancel', () => { tracking = false; showPages(); });
+      previous.addEventListener('click', () => turn(-1));
+      next.addEventListener('click', () => turn(1));
+      document.addEventListener('keydown', event => {
+        if (event.key === 'ArrowLeft') turn(-1);
+        if (event.key === 'ArrowRight') turn(1);
       });
 
-      render();
+      const players = [
+        { name: 'Isa', level: 8, adventures: 14, general: 3850, month: 760 },
+        { name: 'Yannick', level: 7, adventures: 13, general: 3620, month: 920 },
+        { name: 'Jérem', level: 7, adventures: 12, general: 3410, month: 680 },
+        { name: 'John', level: 6, adventures: 10, general: 2980, month: 590 },
+        { name: 'Alex', level: 5, adventures: 8, general: 2540, month: 540, me: true },
+        { name: 'Maëlle', level: 5, adventures: 8, general: 2470, month: 510 },
+        { name: 'Cécile', level: 4, adventures: 7, general: 2210, month: 430 },
+        { name: 'Mehdi', level: 4, adventures: 6, general: 1960, month: 390 }
+      ];
+      const podium = document.querySelector('.podium');
+      const ranking = document.querySelector('.ranking');
+      const gain = document.getElementById('gain');
+      const winXp = document.getElementById('winXp');
+      const periods = [...document.querySelectorAll('.period')];
+      let period = 'general';
+      let simulated = false;
+      const compass = '<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M32 7 37 27 57 32 37 37 32 57 27 37 7 32 27 27Z" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+
+      function renderRanking() {
+        const ordered = players.slice().sort((a,b) => b[period] - a[period]);
+        podium.innerHTML = ordered.slice(0,3).map((player,index) => {
+          const place = index + 1;
+          const roman = ['I','II','III'][index];
+          return `<div class="podium-place ${index === 0 ? 'first' : ''}"><span class="medal medal-${place}">${compass}<span class="roman">${roman}</span></span><span class="podium-name">${player.name}</span><span class="podium-xp">${player[period].toLocaleString('fr-FR')} XP</span></div>`;
+        }).join('');
+        ranking.innerHTML = ordered.slice(3).map((player,index) => `<div class="rank-row${player.me ? ' me' : ''}"><span class="rank">${index + 4}</span><span class="player-name">${player.name}${player.me ? '<span class="you">Vous</span>' : ''}<span class="detail">Niveau ${player.level} · ${player.adventures} aventures</span></span><span class="xp">${player[period].toLocaleString('fr-FR')} XP</span></div>`).join('');
+      }
+
+      periods.forEach(button => button.addEventListener('click', () => {
+        period = button.dataset.period;
+        periods.forEach(item => {
+          const active = item === button;
+          item.setAttribute('aria-pressed', active);
+          item.textContent = item.dataset.period === 'general' ? 'Général' : 'Ce mois';
+          if (active) item.textContent += ' ✓';
+        });
+        renderRanking();
+      }));
+
+      winXp.addEventListener('click', () => {
+        if (simulated) return;
+        const me = players.find(player => player.me);
+        me.general += 450;
+        me.month += 450;
+        me.adventures += 1;
+        simulated = true;
+        gain.textContent = '+450 XP · Votre position vient d’être recalculée';
+        winXp.textContent = 'Aventure ajoutée';
+        winXp.disabled = true;
+        renderRanking();
+      });
+
+      showPages();
+      renderRanking();
     })();
   </script>
-</section>
+</body>
+</html>
