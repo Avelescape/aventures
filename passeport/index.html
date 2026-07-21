@@ -80,10 +80,32 @@
       overflow: hidden;
       border-radius: 7px 24px 24px 7px;
       transform-origin: left center;
-      backface-visibility: hidden;
+      transform-style: preserve-3d;
+      backface-visibility: visible;
       will-change: transform, opacity;
       background: var(--paper);
       box-shadow: inset 13px 0 18px rgba(62,38,20,.18), 0 2px 0 rgba(255,255,255,.3);
+    }
+
+    .page > * {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      border-radius: inherit;
+      transform: rotateY(180deg) translateZ(1px);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background:
+        repeating-radial-gradient(ellipse at 24% 20%, rgba(139,95,43,.045) 0 1px, transparent 1px 9px),
+        linear-gradient(90deg, #ded1bd 0%, #f5eee1 13%, #eee4d3 100%);
+      box-shadow: inset -15px 0 24px rgba(64,39,21,.2), inset 2px 0 0 rgba(255,255,255,.5);
+      pointer-events: none;
     }
 
     .page.cover-page { border-radius: 18px 25px 25px 18px; }
@@ -94,14 +116,17 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
+      z-index: 9;
       opacity: var(--fold, 0);
-      background: linear-gradient(90deg, transparent 55%, rgba(255,255,255,.22) 76%, rgba(38,20,10,.28));
+      transform: translateZ(2px);
+      background: linear-gradient(90deg, transparent 48%, rgba(255,255,255,.27) 78%, rgba(38,20,10,.4));
     }
 
     .page.is-current { z-index: 3; }
     .page.is-next { z-index: 2; }
     .page.is-hidden { z-index: 1; visibility: hidden; }
-    .page.turning { transition: transform .48s cubic-bezier(.22,.75,.18,1), opacity .42s ease; }
+    .page.turning { transition: transform .72s cubic-bezier(.18,.72,.18,1), filter .72s ease; }
+    .page.is-next { transition: filter .25s ease, transform .25s ease; }
 
     .ranking-page {
       color: var(--ink);
@@ -114,10 +139,10 @@
       scrollbar-width: thin;
     }
 
-    .ranking-page::before {
+    .ranking-content::before {
       content: "";
       position: absolute;
-      inset: 11px;
+      inset: -9px;
       border: 1px solid rgba(200,146,50,.58);
       border-radius: 15px;
       pointer-events: none;
@@ -274,6 +299,9 @@
           page.classList.toggle('is-hidden', Math.abs(index - current) > 1);
           page.style.transform = '';
           page.style.opacity = '';
+          page.style.transformOrigin = '';
+          page.style.filter = '';
+          page.style.zIndex = '';
           page.style.setProperty('--fold', 0);
         });
         previous.disabled = current === 0;
@@ -285,15 +313,22 @@
         const target = current + direction;
         if (target < 0 || target >= pages.length) return;
         const page = pages[current];
+        const revealedPage = pages[target];
+        page.style.transformOrigin = direction > 0 ? 'left center' : 'right center';
+        revealedPage.style.zIndex = '2';
+        revealedPage.style.filter = 'brightness(.82)';
         page.classList.add('turning');
-        page.style.transform = `translateX(${direction > 0 ? '-112%' : '112%'}) rotateY(${direction > 0 ? '-35deg' : '35deg'})`;
-        page.style.opacity = '0';
+        window.requestAnimationFrame(() => {
+          page.style.transform = `rotateY(${direction > 0 ? '-179deg' : '179deg'})`;
+          page.style.setProperty('--fold', 1);
+          revealedPage.style.filter = 'brightness(1)';
+        });
         if (navigator.vibrate) navigator.vibrate(15);
         window.setTimeout(() => {
           page.classList.remove('turning');
           current = target;
           showPages();
-        }, 470);
+        }, 730);
       }
 
       passport.addEventListener('pointerdown', event => {
@@ -313,8 +348,18 @@
         const allowed = (deltaX < 0 && current < pages.length - 1) || (deltaX > 0 && current > 0);
         if (!allowed) deltaX *= .18;
         const progress = Math.min(Math.abs(deltaX) / passport.clientWidth, 1);
-        pages[current].style.transform = `translateX(${deltaX}px) rotateY(${deltaX * .045}deg)`;
-        pages[current].style.setProperty('--fold', progress.toFixed(2));
+        const direction = deltaX < 0 ? 1 : -1;
+        const target = current + direction;
+        const angle = progress * 165 * (direction > 0 ? -1 : 1);
+        const page = pages[current];
+        page.style.transformOrigin = direction > 0 ? 'left center' : 'right center';
+        page.style.transform = `rotateY(${angle}deg)`;
+        page.style.setProperty('--fold', Math.min(progress * 1.35, 1).toFixed(2));
+        if (target >= 0 && target < pages.length) {
+          pages.forEach((item, index) => { if (index !== current) item.style.zIndex = '1'; });
+          pages[target].style.zIndex = '2';
+          pages[target].style.filter = `brightness(${(.82 + progress * .18).toFixed(2)})`;
+        }
       });
 
       function release(event) {
@@ -327,7 +372,8 @@
           pages[current].classList.add('turning');
           pages[current].style.transform = '';
           pages[current].style.setProperty('--fold', 0);
-          window.setTimeout(() => pages[current]?.classList.remove('turning'), 480);
+          pages.forEach(page => { page.style.filter = ''; page.style.zIndex = ''; });
+          window.setTimeout(() => pages[current]?.classList.remove('turning'), 730);
         }
       }
 
