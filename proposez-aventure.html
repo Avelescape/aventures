@@ -23,14 +23,17 @@ header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#08254
 .hero-content{position:relative;z-index:2;max-width:720px}
 .eyebrow{display:inline-flex;align-items:center;gap:10px;color:#F8D99E;font-family:Georgia,serif;font-size:18px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px}
 .hero h1{font-family:Georgia,serif;font-size:clamp(50px,7vw,80px);line-height:.95;letter-spacing:-1px;max-width:690px}
-.hero h1 em{display:block;color:var(--orange);font-style:italic}
+.hero h1 em{display:block;font-style:italic}
+.hero h1 em .hero-brand{color:var(--orange)}
 .hero-actions{margin-top:30px}
 .btn{min-height:58px;display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:0 24px;font-family:Georgia,serif;font-size:19px;font-weight:700;letter-spacing:.3px;box-shadow:0 8px 20px rgba(0,0,0,.22)}
 .btn-primary{background:linear-gradient(180deg,#E04412,#C83209);color:white;border:2px solid rgba(255,248,238,.24)}
 .retour-site{text-align:center;padding:18px 0;background:var(--cream)}
 .retour-site.top{background:none;padding:0 0 22px;position:relative;z-index:2;text-align:left}
-.btn-retour-site{display:inline-flex;align-items:center;justify-content:center;padding:12px 24px;background:var(--cream);color:var(--navy);border:2px solid rgba(200,154,74,.75);border-radius:12px;font-family:Georgia,serif;font-size:18px;font-weight:700;box-shadow:0 8px 18px rgba(0,0,0,.18);transition:.25s}
-.btn-retour-site:hover{transform:translateY(-2px);background:#fff8ee}
+.btn-retour-site{display:inline-flex;align-items:center;justify-content:center;padding:4px 0;background:transparent;color:rgba(7,27,52,.6);border:none;border-radius:0;font-family:Georgia,serif;font-size:14px;font-weight:500;box-shadow:none;text-decoration:underline;transition:.25s}
+.btn-retour-site:hover{color:var(--navy)}
+.retour-site.top .btn-retour-site{color:rgba(252,231,201,.75)}
+.retour-site.top .btn-retour-site:hover{color:#fff8ee}
 .intro{padding:38px 0 12px}
 .intro-card{background:var(--paper);border:1px solid var(--sand);border-radius:22px;padding:28px;box-shadow:0 12px 30px rgba(7,27,52,.12)}
 .intro-card h2{font-family:Georgia,serif;font-size:34px;color:var(--navy);margin-bottom:10px}
@@ -80,7 +83,7 @@ footer p{font-family:Georgia,serif;font-size:16px;color:#FCE7C9}
 <body>
 <header>
   <div class="brand-bar">
-    <a href="index.html" aria-label="Accueil AvelEscape"><img class="brand-logo" src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webproseaveltransparent.webp" alt="AvelEscape"></a>
+    <a href="index.html" aria-label="Accueil AvelEscape"><img class="brand-logo" src="images-site/0-webpogo-hd.webp" alt="AvelEscape"></a>
   </div>
 </header>
 <main>
@@ -88,16 +91,8 @@ footer p{font-family:Georgia,serif;font-size:16px;color:#FCE7C9}
     <div class="container hero-content">
       <div class="retour-site top"><a class="btn-retour-site" href="index.html">← Retour au site</a></div>
       <div class="eyebrow">✦ Devenir auteur ✦</div>
-      <h1>Imaginez la prochaine <em>aventure AvelEscape</em></h1>
+      <h1>Imaginez la prochaine <em>aventure <span class="hero-brand">AvelEscape</span></em></h1>
       <div class="hero-actions"><a class="btn btn-primary" href="#formulaire">Déposer votre idée ›</a></div>
-    </div>
-  </section>
-  <section class="intro">
-    <div class="container">
-      <div class="intro-card">
-        <h2>Des aventures dans des lieux librement accessibles, pour que les joueurs puissent vivre l'expérience AvelEscape sans billet d'entrée supplémentaire.</h2>
-        <div class="place-list"><span>Centre historique</span><span>Village touristique</span><span>Promenade</span><span>Remparts accessibles</span><span>Monument en accès libre</span><span>Site naturel</span><span>Panorama</span><span>Site archéologique accessible</span></div>
-      </div>
     </div>
   </section>
   <section class="form-section" id="formulaire">
@@ -105,7 +100,7 @@ footer p{font-family:Georgia,serif;font-size:16px;color:#FCE7C9}
       <aside class="panel">
         <h2>Ce que vous pouvez proposer</h2>
         <ul>
-          <li>Un lieu librement accessible que vous connaissez, aimez ou souhaitez faire découvrir.</li>
+          <li>Un lieu librement accessible que vous connaissez, aimez ou souhaitez découvrir (Centre historique, Village touristique, site naturel...).</li>
           <li>Une époque, une ambiance, une anecdote ou un fait marquant.</li>
           <li>Des personnages réels, fictifs ou inspirés de l’histoire du lieu.</li>
           <li>Des énigmes d’observation, de logique, de déduction ou de manipulation.</li>
@@ -141,9 +136,7 @@ footer p{font-family:Georgia,serif;font-size:16px;color:#FCE7C9}
           <div class="form-group full"><label for="photos">Photos du lieu</label><input id="photos" type="file" accept="image/*" multiple><div class="form-help">Photos générales, détails observables, repères, éléments visibles depuis l’espace public, croquis ou captures utiles.</div></div>
           <div class="form-group full"><label for="documents">Documents utiles</label><input id="documents" type="file" multiple accept=".jpg,.jpeg,.png,.webp,.pdf,.doc,.docx"><div class="form-help">Formats acceptés : JPG, PNG, WEBP, PDF, DOC et DOCX.</div></div>
           <label class="checkbox-line full"><input type="checkbox" name="usage_etude_photos" required><span>Je certifie être l’auteur des photos et documents transmis, ou disposer des autorisations nécessaires pour les partager. J’autorise AvelEscape à les utiliser dans le cadre de l’étude de cette proposition.</span></label>
-          <div class="help-box"><strong>Vous pouvez ajouter :</strong> plans, cartes, documents historiques, articles, dessins, notes, photographies, croquis ou tout élément permettant de comprendre le potentiel du lieu librement accessible.</div>
           <div class="form-block">Accord sur la proposition</div>
-          <label class="checkbox-line full"><input type="checkbox" name="accord_contact" required><span>J’accepte d’être recontacté(e) par AvelEscape au sujet de ma proposition.</span></label>
           <label class="checkbox-line full"><input type="checkbox" name="exploitation_commerciale" required><span>En soumettant cette proposition, j’autorise AvelEscape à étudier, adapter, modifier, compléter, publier, reproduire et exploiter tout ou partie de ma proposition, y compris à des fins commerciales, sans qu’une rémunération ou une indemnisation ne soit due. Je comprends qu’AvelEscape pourra, s’il le souhaite, remercier certains contributeurs par des avantages non financiers : mention du nom ou pseudo, accès à des missions exclusives, badges, récompenses virtuelles, accès anticipé ou autres avantages. Ces récompenses sont facultatives et ne constituent pas une contrepartie contractuelle.</span></label>
           <div class="reward-box"><h3>Pourquoi proposer une aventure ?</h3><ul><li>Participer au développement d’AvelEscape.</li><li>Faire découvrir un lieu qui vous tient à cœur.</li><li>Voir éventuellement votre nom ou pseudo cité dans une aventure.</li><li>Débloquer des récompenses ou missions exclusives non financières.</li><li>Contribuer à créer de nouvelles expériences de visite.</li></ul></div>
         </div>
@@ -154,7 +147,7 @@ footer p{font-family:Georgia,serif;font-size:16px;color:#FCE7C9}
   </section>
   <div class="retour-site"><div class="container"><a class="btn-retour-site" href="index.html">← Retour au site</a></div></div>
 </main>
-<footer><div class="container"><img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webproseaveltransparent.webp" alt="AvelEscape"><p>Des aventures immersives inspirées par les joueurs.</p></div></footer>
+<footer><div class="container"><img src="images-site/0-webpogo-hd.webp" alt="AvelEscape"><p>Des aventures immersives inspirées par les joueurs.</p></div></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL="https://braybbxyptumhtbfqoho.supabase.co";
