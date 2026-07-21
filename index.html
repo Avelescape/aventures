@@ -279,6 +279,7 @@ header{
 .map-popup strong{font-family:Georgia,serif;color:var(--navy);font-size:14px}
 .map-popup .map-popup-loc{font-size:11px;color:#6D6253;margin:2px 0 6px}
 .map-popup a{display:inline-block;background:var(--orange);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:6px 10px;border-radius:6px}
+.avel-map-marker{background:transparent;border:none}
 @media(max-width:760px){#adventures-map{height:300px}.map-title{font-size:24px}}
 
 /* BANDEAU AVENTURES KIDS */
@@ -556,10 +557,17 @@ function initMap(){
     attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
     maxZoom:18
   }).addTo(map);
+  const navyIcon=L.divIcon({
+    className:'avel-map-marker',
+    html:'<svg width="30" height="42" viewBox="0 0 30 42" xmlns="http://www.w3.org/2000/svg"><path d="M15 0C6.7 0 0 6.7 0 15c0 11.25 15 27 15 27s15-15.75 15-27C30 6.7 23.3 0 15 0z" fill="#071B34" stroke="#C89A4A" stroke-width="1.5"/><circle cx="15" cy="15" r="6" fill="#FCE7C9"/></svg>',
+    iconSize:[30,42],
+    iconAnchor:[15,42],
+    popupAnchor:[0,-38]
+  });
   const markers=[];
   sites.forEach(s=>{
     if(!s.lat||!s.lng)return;
-    const marker=L.marker([s.lat,s.lng]).addTo(map);
+    const marker=L.marker([s.lat,s.lng],{icon:navyIcon}).addTo(map);
     const linkHtml=s.url&&s.url!=='#'?`<a href="#" onclick="openFromMap(event,${s.id})">Voir l'aventure</a>`:'';
     marker.bindPopup(`<div class="map-popup"><strong>${s.title}</strong><div class="map-popup-loc">📍 ${s.city} • ${s.dept}</div>${linkHtml}</div>`);
     markers.push(marker);
