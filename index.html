@@ -45,15 +45,15 @@ header{
   padding-top:env(safe-area-inset-top,0px);
 }
 .nav{
-  height:132px;
+  height:240px;
   padding:0 36px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   position:relative;
 }
-.nav-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
-.nav-logo-img{width:333px;height:96px;object-fit:contain}
+.nav-center{display:flex;align-items:center}
+.nav-logo-img{width:331px;height:221px;object-fit:contain}
 .nav-connexion{
   height:56px;
   display:flex;align-items:center;gap:14px;
@@ -308,7 +308,7 @@ header{
 }
 /* DEVENEZ AUTEUR */
 .cta-btn-author-img img{
-    width:160px;      /* beaucoup plus petit */
+    width:320px;
     height:auto;
     display:block;
     transition:transform .25s;
@@ -322,7 +322,7 @@ header{
 
 @media(max-width:760px){
   body{max-width:480px}
-  .nav{height:98px;padding:0 18px}.nav-logo-img{width:243px;height:70px}.nav-connexion{height:42px;padding:0 14px;font-size:14px;gap:8px}.nav-connexion svg{width:20px;height:20px}
+  .nav{height:150px;padding:0 18px}.nav-logo-img{width:211px;height:141px}.nav-connexion{height:42px;padding:0 14px;font-size:14px;gap:8px}.nav-connexion svg{width:20px;height:20px}
   .hero{min-height:545px;background-position:center bottom}.hero::after{display:none}.container{padding:0 28px}
   .kids-banner .container{padding:0 18px;}
   .kids-banner{
