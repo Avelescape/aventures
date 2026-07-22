@@ -746,16 +746,16 @@ input[type="number"]::-webkit-inner-spin-button {
 <section id="enigme-carnet" class="scene">
   <div class="cadre">
 
-    <!-- TODO: remplacer par l'image réelle de l'énigme -->
-    <img src="images/PLACEHOLDER-enigme-carnet.webp" alt="Indice de l'énigme" class="image-scene">
-
-    <!-- TODO: remplacer par le texte réel de l'énigme -->
-    <p>Texte de l'énigme à définir.</p>
+    <p style="color:var(--or); font-weight:bold;">
+      Combien y a-t-il de contreventements (X en bois qui servent à rigidifier la structure) sur la bâtisse recherchée ?
+    </p>
 
     <input
-      type="text"
+      type="number"
+      inputmode="numeric"
+      pattern="[0-9]*"
       id="reponse-enigme-carnet"
-      placeholder="Entrez le code"
+      placeholder="Nombre de contreventements"
       style="width:200px;">
 
     <div class="navigation">
@@ -898,11 +898,11 @@ function verifierPage5() {
 function verifierEnigmeCarnet() {
   const reponse = document.getElementById("reponse-enigme-carnet").value.trim().toUpperCase();
   const message = document.getElementById("message-enigme-carnet");
-  const CODE_ATTENDU = "CODE_A_DEFINIR"; // TODO: remplacer par le vrai code
+  const CODE_ATTENDU = "18";
 
   if (reponse === CODE_ATTENDU) {
     message.textContent = "Exact. L'aventure continue.";
-    setTimeout(() => changerPage("socle1"), 1500);
+    setTimeout(() => lancerAnimation("trappe.html", "socle1"), 1500);
   } else {
     message.textContent = "Ce n'est pas le bon code.";
   }
