@@ -1,1 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
 
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#17110d">
+
+  <title>La trappe secrète</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <main class="aventure">
+
+    <section class="intro">
+
+      <h1>La cache secrète</h1>
+
+      <p>
+        Résous l’énigme pour découvrir ce qui se cache derrière
+        la croix située au bas de la façade.
+      </p>
+
+    </section>
+
+    <section
+      class="scene"
+      id="scene"
+      aria-label="Façade avec une trappe secrète"
+    >
+
+      <!-- Image complète de la façade -->
+      <img
+        class="scene__fond"
+        id="imageFond"
+        src="images/batiment.webp"
+        alt="Façade ancienne vue de face"
+        draggable="false"
+      >
+
+      <!-- Zone du mécanisme -->
+      <div class="trappe-zone" id="trappeZone">
+
+        <!-- Cavité située derrière la trappe -->
+        <div class="cavite">
+
+          <img
+            class="cavite__image"
+            id="imageCavite"
+            src="images/cavite.webp"
+            alt=""
+            draggable="false"
+          >
+
+          <div class="cavite__ombre"></div>
+
+          <div class="cavite__lumiere"></div>
+
+          <button
+            class="objet-cache"
+            id="objetCache"
+            type="button"
+            aria-label="Examiner le coffre"
+          >
+            <img
+              class="objet-cache__image"
+              id="imageObjet"
+              src="images/coffre.webp"
+              alt="Un coffre caché dans la cavité"
+              draggable="false"
+            >
+          </button>
+
+        </div>
+
+        <!-- Partie de façade qui coulisse -->
+        <div class="trappe-mobile" id="trappeMobile">
+
+          <img
+            class="trappe-mobile__image"
+            id="imageTrappe"
+            src="images/trappe.webp"
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+          >
+
+        </div>
+
+      </div>
+
+      <!-- Message affiché au-dessus de la scène -->
+      <div class="message-scene" id="messageScene" hidden>
+        Trappe déverrouillée
+      </div>
+
+    </section>
+
+    <section class="enigme" id="blocEnigme">
+
+      <p class="enigme__question" id="questionEnigme">
+        Quel roi légendaire est associé à la ville d’Ys ?
+      </p>
+
+      <form class="reponse" id="formulaireReponse">
+
+        <label class="sr-only" for="champReponse">
+          Réponse à l’énigme
+        </label>
+
+        <input
+          class="reponse__champ"
+          id="champReponse"
+          type="text"
+          placeholder="Entre ta réponse"
+          autocomplete="off"
+          autocapitalize="none"
+          spellcheck="false"
+        >
+
+        <button
+          class="reponse__bouton"
+          id="boutonValider"
+          type="submit"
+        >
+          Valider
+        </button>
+
+      </form>
+
+      <p
+        class="enigme__message"
+        id="messageReponse"
+        role="status"
+        aria-live="polite"
+      ></p>
+
+      <button
+        class="bouton-indice"
+        id="boutonIndice"
+        type="button"
+        hidden
+      >
+        Voir un indice
+      </button>
+
+    </section>
+
+    <!-- Fenêtre affichée lorsque le coffre est sélectionné -->
+    <div
+      class="modale"
+      id="modaleObjet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titreModale"
+      hidden
+    >
+
+      <div class="modale__contenu">
+
+        <button
+          class="modale__fermer"
+          id="fermerModale"
+          type="button"
+          aria-label="Fermer"
+        >
+          ×
+        </button>
+
+        <img
+          class="modale__image"
+          id="imageObjetModale"
+          src="images/coffre.webp"
+          alt=""
+        >
+
+        <h2 id="titreModale">
+          Un coffre oublié
+        </h2>
+
+        <p id="texteModale">
+          Derrière la façade se trouvait un coffre soigneusement dissimulé.
+        </p>
+
+        <button
+          class="modale__continuer"
+          id="boutonContinuer"
+          type="button"
+        >
+          Continuer l’aventure
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <audio
+    id="sonTrappe"
+    src="sons/trappe.mp3"
+    preload="auto"
+  ></audio>
+
+  <audio
+    id="sonSucces"
+    src="sons/succes.mp3"
+    preload="auto"
+  ></audio>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
