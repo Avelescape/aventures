@@ -979,9 +979,6 @@ function lancerAnimation(fichier, pageSuivante) {
   overlay.style.display = "flex";
   if (boutonSiteRetour) boutonSiteRetour.style.display = "none";
 
-  // La trappe gère elle-même sa suite via son bouton "Voir le coffre".
-  btnContinuer.style.display = fichier.includes("mecanisme-trappe") ? "none" : "";
-
   btnContinuer.onclick = function () {
     overlay.style.display = "none";
     iframe.src = "";
