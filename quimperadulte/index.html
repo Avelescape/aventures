@@ -823,7 +823,38 @@ input[type="number"]::-webkit-inner-spin-button {
     <img src="images/3-webpcoffreouvert.webp" alt="Contenu du coffredécouvert dans la cache" class="image-scene">
 
     <div class="navigation">
-      <button onclick="changerPage('socle1')">Observer le socle</button>
+       <h1>Vous avez trouvé un socle, mais les pièces ne sont plus là...</h1>
+       <h1>consultons le carnet de M Le Gall</h1>
+      <button onclick="changerPage('le-schiste')">suite</button>
+    </div>
+
+  </div>
+</section>
+
+<section id="le-schiste" class="scene">
+  <div class="cadre">
+
+    <!-- TODO: remplacer par la photo réelle -->
+    <img src="images/3-webpschiste.webp" alt="Le schiste" class="image-scene">
+
+    <div class="navigation">
+      <button onclick="changerPage('socle1')">suite</button>
+    </div>
+
+    <button class="btn-savoir" onclick="changerPage('indice-le-schiste')">🔍 Indice</button>
+
+  </div>
+</section>
+
+<section id="indice-le-schiste" class="scene">
+  <div class="cadre">
+
+    <h1>Indice</h1>
+
+    <p>La maison que vous cherchez est dans une petite ruelle et est devenue une très bonne table quimperoise</p>
+
+    <div class="navigation">
+      <button class="btn-retour" onclick="retour()">← Retour à l'enquête</button>
     </div>
 
   </div>
