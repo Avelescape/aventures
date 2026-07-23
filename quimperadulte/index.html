@@ -66,13 +66,13 @@ body {
 
 h1 {
   margin-top: 0;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: var(--or);
   letter-spacing: 1px;
 }
 
 p {
-  font-size: 1.15rem;
+  font-size: 1.3rem;
   line-height: 1.6;
 }
 
@@ -89,7 +89,7 @@ button {
   margin-top: 18px;
   padding: 16px 22px;
   min-height: 52px;
-  font-size: 1rem;
+  font-size: 1.1rem;
   -webkit-tap-highlight-color: transparent;
   font-family: Georgia, serif;
   color: #1d1208;
@@ -107,7 +107,7 @@ button:active {
 
 input {
   padding: 12px;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   width: 180px;
   text-align: center;
   border-radius: 10px;
@@ -200,7 +200,7 @@ input[type="number"]::-webkit-inner-spin-button {
   margin-top: 22px;
   padding: 10px 18px;
   min-height: 44px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   background: transparent;
   border: 1px solid var(--cuivre);
   color: var(--or);
@@ -228,7 +228,7 @@ input[type="number"]::-webkit-inner-spin-button {
   margin-top: 0;
   padding: 12px 16px;
   min-height: 48px;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   background: linear-gradient(180deg, #4a3f30, #2b2017);
   border: 2px solid var(--pierre);
   color: var(--texte);
@@ -253,11 +253,11 @@ input[type="number"]::-webkit-inner-spin-button {
 
 @media (max-width: 600px) {
   h1 {
-    font-size: 1.55rem;
+    font-size: 2rem;
   }
 
   p {
-    font-size: 1rem;
+    font-size: 1.15rem;
   }
 
   .cadre {
@@ -305,7 +305,7 @@ input[type="number"]::-webkit-inner-spin-button {
   border-radius: 999px;
 
   font-family: Georgia, serif;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
   line-height: 1;
   text-decoration: none;
@@ -337,7 +337,7 @@ input[type="number"]::-webkit-inner-spin-button {
     right: max(10px, env(safe-area-inset-right));
     min-height: 34px;
     padding: 6px 10px;
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 
@@ -391,7 +391,7 @@ input[type="number"]::-webkit-inner-spin-button {
   background: rgba(23,17,13,.9);
   text-decoration: none;
   font-family: Montserrat, Arial, sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   backdrop-filter: blur(8px);
   cursor: pointer;
@@ -487,30 +487,83 @@ input[type="number"]::-webkit-inner-spin-button {
   border: 1px solid rgba(212,175,55,.7);
   border-radius: 999px;
   background: rgba(23,17,13,.9);
-  font-size: 18px;
+  font-size: 20px;
 }
-.carnet-scene .counter { min-width: 50px; color: #d8cbb7; text-align: center; font-size: 11px; }
-.carnet-scene .hint { position: fixed; right: 14px; bottom: max(18px, env(safe-area-inset-bottom)); color: rgba(245,239,224,.64); font-size: 9px; }
+.carnet-scene .counter { min-width: 50px; color: #d8cbb7; text-align: center; font-size: 13px; }
+.carnet-scene .hint { position: fixed; right: 14px; bottom: max(18px, env(safe-area-inset-bottom)); color: rgba(245,239,224,.64); font-size: 11px; }
 
-.carnet-scene .carnet-suite {
+.carnet-scene .carnet-question {
   display: none;
   position: fixed;
   left: 50%;
-  bottom: max(64px, calc(env(safe-area-inset-bottom) + 64px));
+  bottom: max(56px, calc(env(safe-area-inset-bottom) + 56px));
   transform: translateX(-50%);
   z-index: 100;
+  width: min(320px, 86vw);
+  padding: 20px 20px 18px;
+  border: 1px solid rgba(212,175,55,.55);
+  border-radius: 20px;
+  color: #f5efe0;
+  background: rgba(20,15,11,.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: Montserrat, sans-serif;
+  box-shadow: 0 14px 32px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.03);
+  text-align: center;
+  touch-action: auto;
+  user-select: text;
+}
+.carnet-scene .carnet-question.visible { display: block; }
+.carnet-scene .carnet-question::before {
+  content: "✦";
+  display: block;
+  margin-bottom: 8px;
+  color: #d6b15e;
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+.carnet-scene .carnet-question p {
+  margin: 0 0 14px;
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 500;
+  color: #e7dcc3;
+}
+.carnet-scene .carnet-question input {
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 11px;
+  border-radius: 10px;
+  border: 1px solid rgba(212,175,55,.4);
+  font-size: 18px;
+  text-align: center;
+  background: rgba(245,239,224,.96);
+  color: #2a1f14;
+}
+.carnet-scene .carnet-question button {
+  width: 100%;
+  min-height: 44px;
   margin: 0;
-  padding: 12px 22px;
-  border: 1px solid rgba(212,175,55,.75);
+  padding: 10px 16px;
+  border: 1px solid #f0d38a;
   border-radius: 999px;
-  color: #1d1208;
   background: linear-gradient(180deg, #f5df9a, #d6b15e);
-  font: 700 14px Montserrat, sans-serif;
-  white-space: nowrap;
-  box-shadow: 0 6px 18px rgba(0,0,0,.35);
+  color: #1d1208;
+  font: 700 16px Montserrat, sans-serif;
+  letter-spacing: .3px;
+  box-shadow: 0 4px 0 #5b3419;
   cursor: pointer;
 }
-.carnet-scene .carnet-suite.visible { display: inline-flex; align-items: center; }
+.carnet-scene .carnet-question button:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #5b3419;
+}
+.carnet-scene .carnet-question #message-enigme-carnet {
+  margin: 10px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #f5df9a;
+}
 
 @media (prefers-reduced-motion: reduce) { .carnet-scene .page.turning { transition-duration: .01ms; } }
 
@@ -547,7 +600,7 @@ input[type="number"]::-webkit-inner-spin-button {
      Une fois sur place, répondez à la question suivante:
     </p>
 
-    <p style="color:var(--or); font-size:1.25rem; font-weight:bold;">
+    <p style="color:var(--or); font-size:1.4rem; font-weight:bold;">
       En quelle année fut replacée la statue du roi Gradlon ?
     </p>
 
@@ -587,7 +640,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
     <h1>Degemer mat en enklask</h1>
 
-    <p style="color:var(--or); font-size:1.4rem; font-weight:bold;">
+    <p style="color:var(--or); font-size:1.55rem; font-weight:bold;">
       « Sekred ar Roue Gradlon »
     </p>
 
@@ -740,31 +793,17 @@ input[type="number"]::-webkit-inner-spin-button {
     <button class="nav-button" id="next" type="button" aria-label="Page suivante">›</button>
   </nav>
   <span class="hint">Glissez pour tourner la page</span>
-  <button class="carnet-suite" id="carnetSuite" type="button" onclick="changerPage('enigme-carnet')">Continuer l'aventure ›</button>
-</section>
 
-<section id="enigme-carnet" class="scene">
-  <div class="cadre">
-
-    <p style="color:var(--or); font-weight:bold;">
-      Combien y a-t-il de contreventements (X en bois qui servent à rigidifier la structure) sur la bâtisse recherchée ?
-    </p>
-
+  <div class="carnet-question" id="carnetQuestion">
+    <p>Compte les croix de Saint-André en bois qui rigidifient la structure, et tu sauras si tu es au bon endroit.</p>
     <input
       type="number"
       inputmode="numeric"
       pattern="[0-9]*"
       id="reponse-enigme-carnet"
-      placeholder="Nombre de contreventements"
-      style="width:200px;">
-
-    <div class="navigation">
-      <button class="btn-retour" onclick="retour()">← Retour</button>
-      <button onclick="verifierEnigmeCarnet()">Valider</button>
-    </div>
-
+      placeholder="Nombre de croix">
+    <button type="button" onclick="verifierEnigmeCarnet()">Valider</button>
     <p id="message-enigme-carnet"></p>
-
   </div>
 </section>
 
@@ -912,18 +951,29 @@ function lancerAnimation(fichier, pageSuivante) {
   const overlay = document.getElementById("overlay-anim");
   const iframe = document.getElementById("iframe-anim");
   const btnContinuer = document.getElementById("btn-continuer-anim");
+  const boutonSiteRetour = document.querySelector(".site-retour");
 
   iframe.src = fichier;
   overlay.style.display = "flex";
+  if (boutonSiteRetour) boutonSiteRetour.style.display = "none";
+
+  // La trappe gère elle-même sa suite via son bouton "Voir le coffre".
+  btnContinuer.style.display = fichier.includes("mecanisme-trappe") ? "none" : "";
 
   btnContinuer.onclick = function () {
     overlay.style.display = "none";
     iframe.src = "";
+    if (boutonSiteRetour) boutonSiteRetour.style.display = "";
     changerPage(pageSuivante);
   };
 }
 
-afficherPhraseIntro();
+const cibleInitiale = window.location.hash.replace("#", "");
+if (cibleInitiale && document.getElementById(cibleInitiale)) {
+  changerPage(cibleInitiale);
+} else {
+  afficherPhraseIntro();
+}
 </script>
 
 <script>
@@ -955,8 +1005,8 @@ afficherPhraseIntro();
       next.disabled = current === pages.length - 1;
       counter.textContent = `${current + 1} / ${pages.length}`;
 
-      const carnetSuite = document.getElementById('carnetSuite');
-      if (carnetSuite) carnetSuite.classList.toggle('visible', current === pages.length - 1);
+      const carnetQuestion = document.getElementById('carnetQuestion');
+      if (carnetQuestion) carnetQuestion.classList.toggle('visible', current === pages.length - 1);
     }
 
     function turn(direction) {
