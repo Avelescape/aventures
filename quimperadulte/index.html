@@ -363,8 +363,7 @@ input[type="number"]::-webkit-inner-spin-button {
     #15110d;
   color: var(--cream);
   font-family: Montserrat, Arial, sans-serif;
-  overflow: hidden;
-  touch-action: none;
+  touch-action: pan-y;
   user-select: none;
 }
 
@@ -405,11 +404,12 @@ input[type="number"]::-webkit-inner-spin-button {
   padding: max(64px, calc(env(safe-area-inset-top) + 54px)) 14px
            max(76px, calc(env(safe-area-inset-bottom) + 62px));
   perspective: 1500px;
+  --carnet-largeur: min(430px, 90vw, calc((100svh - 150px) * .6667));
 }
 
 .carnet-scene .carnet-book {
   position: relative;
-  width: min(430px, 90vw, calc((100svh - 150px) * .6667));
+  width: var(--carnet-largeur);
   aspect-ratio: 2 / 3;
   filter: drop-shadow(0 24px 28px rgba(0,0,0,.48));
 }
@@ -494,12 +494,8 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .carnet-scene .carnet-question {
   display: none;
-  position: fixed;
-  left: 50%;
-  bottom: max(56px, calc(env(safe-area-inset-bottom) + 56px));
-  transform: translateX(-50%);
-  z-index: 100;
-  width: min(320px, 86vw);
+  width: var(--carnet-largeur);
+  margin: 24px auto max(100px, calc(env(safe-area-inset-bottom) + 100px));
   padding: 20px 20px 18px;
   border: 1px solid rgba(212,175,55,.55);
   border-radius: 20px;
@@ -785,16 +781,8 @@ input[type="number"]::-webkit-inner-spin-button {
         <img class="page-image" src="images/3-webpsoclecarnet5.webp" alt="Seconde page de mes aventures">
       </section>
     </div>
-  </main>
 
-  <nav class="carnet-navigation" aria-label="Navigation du carnet">
-    <button class="nav-button" id="previous" type="button" aria-label="Page précédente">‹</button>
-    <span class="counter" id="counter">1 / 4</span>
-    <button class="nav-button" id="next" type="button" aria-label="Page suivante">›</button>
-  </nav>
-  <span class="hint">Glissez pour tourner la page</span>
-
-  <div class="carnet-question" id="carnetQuestion">
+    <div class="carnet-question" id="carnetQuestion">
     <p>Compte les croix de Saint-André en bois qui rigidifient la structure, et tu sauras si tu es au bon endroit.</p>
     <input
       type="number"
@@ -804,6 +792,40 @@ input[type="number"]::-webkit-inner-spin-button {
       placeholder="Nombre de croix">
     <button type="button" onclick="verifierEnigmeCarnet()">Valider</button>
     <p id="message-enigme-carnet"></p>
+    </div>
+  </main>
+
+  <nav class="carnet-navigation" aria-label="Navigation du carnet">
+    <button class="nav-button" id="previous" type="button" aria-label="Page précédente">‹</button>
+    <span class="counter" id="counter">1 / 4</span>
+    <button class="nav-button" id="next" type="button" aria-label="Page suivante">›</button>
+  </nav>
+  <span class="hint">Glissez pour tourner la page</span>
+</section>
+
+<section id="decouverte-carnet" class="scene">
+  <div class="cadre">
+
+    <!-- TODO: remplacer par la photo réelle de la bâtisse -->
+    <img src="images/PLACEHOLDER-decouverte-carnet.webp" alt="La bâtisse aux croix de Saint-André" class="image-scene">
+
+    <div class="navigation">
+      <button onclick="changerPage('decouverte-socle')">Ouvrir le coffre</button>
+    </div>
+
+  </div>
+</section>
+
+<section id="decouverte-socle" class="scene">
+  <div class="cadre">
+
+    <!-- TODO: remplacer par la photo réelle du contenu du coffre -->
+    <img src="images/PLACEHOLDER-decouverte-socle.webp" alt="Contenu découvert dans la cache" class="image-scene">
+
+    <div class="navigation">
+      <button onclick="changerPage('socle1')">Observer le socle</button>
+    </div>
+
   </div>
 </section>
 
@@ -941,7 +963,7 @@ function verifierEnigmeCarnet() {
 
   if (reponse === CODE_ATTENDU) {
     message.textContent = "Exact. L'aventure continue.";
-    setTimeout(() => lancerAnimation("mecanisme-trappe/index.html", "socle1"), 1500);
+    setTimeout(() => lancerAnimation("mecanisme-trappe/index.html", "decouverte-carnet"), 1500);
   } else {
     message.textContent = "Ce n'est pas le bon code.";
   }
@@ -1005,8 +1027,14 @@ if (cibleInitiale && document.getElementById(cibleInitiale)) {
       next.disabled = current === pages.length - 1;
       counter.textContent = `${current + 1} / ${pages.length}`;
 
+      const derniere = current === pages.length - 1;
       const carnetQuestion = document.getElementById('carnetQuestion');
-      if (carnetQuestion) carnetQuestion.classList.toggle('visible', current === pages.length - 1);
+      if (carnetQuestion) {
+        carnetQuestion.classList.toggle('visible', derniere);
+        if (derniere) {
+          carnetQuestion.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+      }
     }
 
     function turn(direction) {
