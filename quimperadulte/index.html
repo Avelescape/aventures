@@ -731,6 +731,19 @@ input[type="number"]::-webkit-inner-spin-button {
   </div>
 </section>
 
+<section id="image-artefact-schist" class="scene">
+  <div class="cadre">
+
+    <!-- TODO: remplacer par la photo réelle -->
+    <img src="images/PLACEHOLDER-image-artefact-schist.webp" alt="Le panneau de la demeure" class="image-scene">
+
+    <div class="navigation">
+      <button onclick="changerPage('page5')">suite</button>
+    </div>
+
+  </div>
+</section>
+
 <section id="page5" class="scene">
   <div class="cadre">
 
@@ -850,7 +863,7 @@ input[type="number"]::-webkit-inner-spin-button {
   <div class="cadre">
 
     <!-- TODO: remplacer par la photo réelle -->
-    <img src="images/3-webpschiste.webp" alt="Le schiste" class="image-scene">
+    <img src="images/3-webpcarnetschiste.webp" alt="Le schiste" class="image-scene">
     <p>La maison que vous cherchez est dans une petite ruelle et est devenue une très bonne table quimperoise</p>
     <div class="navigation">
       <button onclick="changerPage('artefact-schist')">suite</button>
@@ -979,7 +992,7 @@ function verifierSocle1() {
 
   if (correct) {
     message.textContent = "Exact. Ces deux symboles vous guideront vers la suite.";
-    setTimeout(() => lancerAnimation("animationboite.html", "page5"), 1500);
+    setTimeout(() => changerPage("image-artefact-schist"), 1500);
   } else {
     message.textContent = "Ce n'est pas la bonne combinaison. Observez le panneau attentivement.";
   }
