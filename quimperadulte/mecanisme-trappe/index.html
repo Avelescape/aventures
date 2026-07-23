@@ -12,20 +12,551 @@
 
   <title>La trappe secrète</title>
 
-  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --cream: #f5efe0;
+      --parchment: #ede4ce;
+      --gold: #d4af37;
+      --orange: #f25303;
+      --night: #17110d;
+      --ink: #2a1f14;
+
+      --trappe-x: 0%;
+      --trappe-y: 0%;
+      --trappe-largeur: 10%;
+      --trappe-hauteur: 10%;
+
+      --deplacement-x: 110%;
+      --deplacement-y: 0%;
+
+      --duree-trappe: 1200ms;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      min-height: 100svh;
+
+      padding:
+        max(18px, env(safe-area-inset-top))
+        14px
+        max(30px, env(safe-area-inset-bottom));
+
+      color: var(--cream);
+      background:
+        radial-gradient(circle at top, #293343 0%, var(--night) 68%);
+
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    img,
+    canvas {
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .aventure {
+      width: min(100%, 620px);
+      margin: 0 auto;
+    }
+
+    /* =========================
+       INTRODUCTION
+       ========================= */
+
+    .introduction {
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .introduction h1 {
+      margin: 0 0 10px;
+
+      font-family: Georgia, serif;
+      font-size: clamp(1.8rem, 7vw, 2.6rem);
+    }
+
+    .introduction p {
+      max-width: 520px;
+      margin: 0 auto;
+
+      color: #ddd3b8;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       SCÈNE
+       ========================= */
+
+    .scene {
+      position: relative;
+
+      width: 100%;
+      overflow: hidden;
+
+      border: 2px solid rgba(212, 175, 55, 0.7);
+      border-radius: 18px;
+
+      background: #080604;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 25px 55px rgba(0, 0, 0, 0.56),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+
+      transition:
+        transform 900ms ease,
+        box-shadow 900ms ease;
+    }
+
+    .scene.est-ouverte {
+      transform: scale(1.015);
+
+      cursor: default;
+
+      box-shadow:
+        0 28px 65px rgba(0, 0, 0, 0.62),
+        0 0 30px rgba(212, 175, 55, 0.12);
+    }
+
+    .image-batiment {
+      position: relative;
+      z-index: 1;
+
+      display: block;
+
+      width: 100%;
+      height: auto;
+
+      pointer-events: none;
+    }
+
+    /* =========================
+       ZONE DU MÉCANISME
+       ========================= */
+
+    .zone-mecanisme {
+      position: absolute;
+
+      left: var(--trappe-x);
+      top: var(--trappe-y);
+
+      z-index: 10;
+
+      width: var(--trappe-largeur);
+      height: var(--trappe-hauteur);
+
+      /*
+        La partie de la trappe qui se déplace
+        hors de cette zone est masquée.
+      */
+      overflow: hidden;
+
+      /*
+        Pour les réglages, tu peux remplacer par :
+        outline: 3px solid red;
+      */
+      outline: none;
+
+      background: #090705;
+
+      box-shadow:
+        inset 0 0 12px rgba(0, 0, 0, 0.82);
+    }
+
+    /* =========================
+       CAVITÉ
+       ========================= */
+
+    .cavite {
+      position: absolute;
+      inset: 0;
+
+      z-index: 1;
+
+      overflow: hidden;
+
+      background: #090705;
+    }
+
+    .image-cavite {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: fill;
+
+      pointer-events: none;
+    }
+
+    .ombre-cavite {
+      position: absolute;
+      inset: 0;
+
+      z-index: 2;
+
+      pointer-events: none;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.5),
+          transparent 22%,
+          transparent 78%,
+          rgba(0, 0, 0, 0.5)
+        );
+
+      box-shadow:
+        inset 0 0 14px rgba(0, 0, 0, 0.85);
+    }
+
+    .lumiere-cavite {
+      position: absolute;
+
+      left: 50%;
+      top: 55%;
+
+      z-index: 3;
+
+      width: 150%;
+      height: 150%;
+
+      border-radius: 50%;
+
+      opacity: 0;
+
+      transform:
+        translate(-50%, -50%)
+        scale(0.45);
+
+      pointer-events: none;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(255, 221, 145, 0.48) 0%,
+          rgba(242, 83, 3, 0.14) 40%,
+          transparent 72%
+        );
+
+      transition:
+        opacity 900ms ease 650ms,
+        transform 1000ms ease 650ms;
+    }
+
+    .scene.est-ouverte .lumiere-cavite {
+      opacity: 1;
+
+      transform:
+        translate(-50%, -50%)
+        scale(1);
+    }
+
+    /* =========================
+       TRAPPE CRÉÉE PAR CANVAS
+       ========================= */
+
+    .trappe-mobile {
+      position: absolute;
+      inset: 0;
+
+      z-index: 5;
+
+      width: 100%;
+      height: 100%;
+
+      transform: translate3d(0, 0, 0);
+
+      will-change: transform;
+
+      filter:
+        brightness(1)
+        drop-shadow(0 0 0 transparent);
+
+      transition:
+        transform var(--duree-trappe)
+          cubic-bezier(.62, 0, .25, 1),
+        filter 550ms ease;
+    }
+
+    .canvas-trappe {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      pointer-events: none;
+    }
+
+    .scene.est-ouverte .trappe-mobile {
+      transform:
+        translate3d(
+          var(--deplacement-x),
+          var(--deplacement-y),
+          0
+        );
+
+      filter:
+        brightness(0.78)
+        drop-shadow(-7px 0 5px rgba(0, 0, 0, 0.65));
+    }
+
+    /* =========================
+       ZONE CLIQUABLE DU COFFRE
+       ========================= */
+
+    .bouton-cavite {
+      position: absolute;
+      inset: 0;
+
+      z-index: 8;
+
+      padding: 0;
+      border: 0;
+
+      opacity: 0;
+
+      background: transparent;
+
+      cursor: pointer;
+      pointer-events: none;
+    }
+
+    .scene.est-ouverte .bouton-cavite {
+      pointer-events: auto;
+    }
+
+    /* =========================
+       MESSAGE SUR L’IMAGE
+       ========================= */
+
+    .message-scene {
+      position: absolute;
+
+      left: 50%;
+      top: 16px;
+
+      z-index: 30;
+
+      padding: 10px 15px;
+
+      border: 1px solid rgba(212, 175, 55, 0.78);
+      border-radius: 999px;
+
+      color: #fff3c7;
+      background: rgba(23, 17, 13, 0.92);
+
+      font-size: 0.9rem;
+      font-weight: 800;
+      white-space: nowrap;
+
+      transform: translateX(-50%);
+
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.38);
+
+      animation: apparition-message 500ms ease both;
+    }
+
+    .message-scene[hidden] {
+      display: none;
+    }
+
+    @keyframes apparition-message {
+      from {
+        opacity: 0;
+
+        transform:
+          translateX(-50%)
+          translateY(-12px);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          translateX(-50%)
+          translateY(0);
+      }
+    }
+
+    /* =========================
+       FENÊTRE DU COFFRE
+       ========================= */
+
+    .modale {
+      position: fixed;
+      inset: 0;
+
+      z-index: 100;
+
+      display: grid;
+      place-items: center;
+
+      padding:
+        max(20px, env(safe-area-inset-top))
+        18px
+        max(20px, env(safe-area-inset-bottom));
+
+      background: rgba(7, 5, 3, 0.86);
+
+      backdrop-filter: blur(7px);
+    }
+
+    .modale[hidden] {
+      display: none;
+    }
+
+    .contenu-modale {
+      position: relative;
+
+      width: min(100%, 420px);
+
+      padding: 30px 22px 22px;
+
+      border: 1px solid rgba(212, 175, 55, 0.72);
+      border-radius: 18px;
+
+      text-align: center;
+
+      color: var(--ink);
+      background: var(--parchment);
+
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.62);
+
+      animation: apparition-modale 400ms ease both;
+    }
+
+    @keyframes apparition-modale {
+      from {
+        opacity: 0;
+
+        transform:
+          scale(0.88)
+          translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          scale(1)
+          translateY(0);
+      }
+    }
+
+    .fermer-modale {
+      position: absolute;
+
+      top: 7px;
+      right: 9px;
+
+      width: 42px;
+      height: 42px;
+
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+
+      color: var(--ink);
+      background: transparent;
+
+      font-size: 1.8rem;
+
+      cursor: pointer;
+    }
+
+    .contenu-modale h2 {
+      margin: 5px 0 12px;
+
+      font-family: Georgia, serif;
+      font-size: 1.8rem;
+    }
+
+    .contenu-modale p {
+      margin: 0 0 18px;
+      line-height: 1.55;
+    }
+
+    .bouton-continuer {
+      width: 100%;
+
+      padding: 13px 16px;
+
+      border: 0;
+      border-radius: 10px;
+
+      color: white;
+      background: var(--orange);
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    /* =========================
+       ACCESSIBILITÉ
+       ========================= */
+
+    .sr-only {
+      position: absolute;
+
+      width: 1px;
+      height: 1px;
+
+      padding: 0;
+      margin: -1px;
+
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
   <main class="aventure">
 
-    <section class="intro">
+    <section class="introduction">
 
       <h1>La cache secrète</h1>
 
       <p>
-        Résous l’énigme pour découvrir ce qui se cache derrière
-        la croix située au bas de la façade.
+        Touche la façade pour déclencher le mécanisme
+        dissimulé.
       </p>
 
     </section>
@@ -33,140 +564,87 @@
     <section
       class="scene"
       id="scene"
-      aria-label="Façade avec une trappe secrète"
+      aria-label="Façade d’un bâtiment avec une cache secrète"
     >
 
-      <!-- Image complète de la façade -->
+      <!-- Image complète du bâtiment -->
       <img
-        class="scene__fond"
-        id="imageFond"
+        class="image-batiment"
+        id="imageBatiment"
         src="images/batiment.webp"
-        alt="Façade ancienne vue de face"
+        alt="Façade d’un bâtiment ancien"
         draggable="false"
       >
 
-      <!-- Zone du mécanisme -->
-      <div class="trappe-zone" id="trappeZone">
+      <!-- Zone positionnée automatiquement -->
+      <div
+        class="zone-mecanisme"
+        id="zoneMecanisme"
+      >
 
-        <!-- Cavité située derrière la trappe -->
+        <!-- Cavité avec le coffre intégré -->
         <div class="cavite">
 
           <img
-            class="cavite__image"
+            class="image-cavite"
             id="imageCavite"
             src="images/cavite.webp"
-            alt=""
+            alt="Cavité contenant un coffre"
             draggable="false"
           >
 
-          <div class="cavite__ombre"></div>
-
-          <div class="cavite__lumiere"></div>
-
-          <button
-            class="objet-cache"
-            id="objetCache"
-            type="button"
-            aria-label="Examiner le coffre"
-          >
-            <img
-              class="objet-cache__image"
-              id="imageObjet"
-              src="images/coffre.webp"
-              alt="Un coffre caché dans la cavité"
-              draggable="false"
-            >
-          </button>
+          <div class="ombre-cavite"></div>
+          <div class="lumiere-cavite"></div>
 
         </div>
 
-        <!-- Partie de façade qui coulisse -->
-        <div class="trappe-mobile" id="trappeMobile">
-
-          <img
-            class="trappe-mobile__image"
-            id="imageTrappe"
-            src="images/trappe.webp"
-            alt=""
-            aria-hidden="true"
-            draggable="false"
-          >
-
-        </div>
-
-      </div>
-
-      <!-- Message affiché au-dessus de la scène -->
-      <div class="message-scene" id="messageScene" hidden>
-        Trappe déverrouillée
-      </div>
-
-    </section>
-
-    <section class="enigme" id="blocEnigme">
-
-      <p class="enigme__question" id="questionEnigme">
-        Quel roi légendaire est associé à la ville d’Ys ?
-      </p>
-
-      <form class="reponse" id="formulaireReponse">
-
-        <label class="sr-only" for="champReponse">
-          Réponse à l’énigme
-        </label>
-
-        <input
-          class="reponse__champ"
-          id="champReponse"
-          type="text"
-          placeholder="Entre ta réponse"
-          autocomplete="off"
-          autocapitalize="none"
-          spellcheck="false"
+        <!--
+          La partie du bâtiment utilisée comme trappe
+          sera dessinée automatiquement dans ce canvas.
+        -->
+        <div
+          class="trappe-mobile"
+          id="trappeMobile"
         >
+          <canvas
+            class="canvas-trappe"
+            id="canvasTrappe"
+            aria-hidden="true"
+          ></canvas>
+        </div>
 
         <button
-          class="reponse__bouton"
-          id="boutonValider"
-          type="submit"
-        >
-          Valider
-        </button>
+          class="bouton-cavite"
+          id="boutonCavite"
+          type="button"
+          aria-label="Examiner le coffre"
+        ></button>
 
-      </form>
+      </div>
 
-      <p
-        class="enigme__message"
-        id="messageReponse"
-        role="status"
-        aria-live="polite"
-      ></p>
-
-      <button
-        class="bouton-indice"
-        id="boutonIndice"
-        type="button"
+      <div
+        class="message-scene"
+        id="messageScene"
         hidden
       >
-        Voir un indice
-      </button>
+        La cache est ouverte
+      </div>
 
     </section>
 
-    <!-- Fenêtre affichée lorsque le coffre est sélectionné -->
     <div
       class="modale"
-      id="modaleObjet"
+      id="modale"
       role="dialog"
       aria-modal="true"
       aria-labelledby="titreModale"
       hidden
     >
 
-      <div class="modale__contenu">
+      <div class="contenu-modale">
 
         <button
-          class="modale__fermer"
+          class="fermer-modale"
           id="fermerModale"
           type="button"
           aria-label="Fermer"
@@ -174,27 +652,21 @@
           ×
         </button>
 
-        <img
-          class="modale__image"
-          id="imageObjetModale"
-          src="images/coffre.webp"
-          alt=""
-        >
-
         <h2 id="titreModale">
-          Un coffre oublié
+          Le coffre est découvert
         </h2>
 
         <p id="texteModale">
-          Derrière la façade se trouvait un coffre soigneusement dissimulé.
+          Derrière la trappe se trouvait une cavité contenant
+          le coffre des artefacts.
         </p>
 
         <button
-          class="modale__continuer"
-          id="boutonContinuer"
+          class="bouton-continuer"
+          id="continuer"
           type="button"
         >
-          Continuer l’aventure
+          Ouvrir le coffre
         </button>
 
       </div>
@@ -205,17 +677,478 @@
 
   <audio
     id="sonTrappe"
-    src="sons/trappe.mp3"
+    src="audios/engrenages.mp3"
     preload="auto"
   ></audio>
 
-  <audio
-    id="sonSucces"
-    src="sons/succes.mp3"
-    preload="auto"
-  ></audio>
+  <script>
+    "use strict";
 
-  <script src="script.js"></script>
+    /*
+      =====================================================
+      CONFIGURATION PRINCIPALE
+      =====================================================
+
+      Les coordonnées ci-dessous correspondent aux valeurs
+      que tu as relevées dans GIMP :
+
+      Image complète : 1152 × 2048 px
+      Position : X 511 px, Y 1323 px
+      Taille : 140 × 154 px
+    */
+
+    const CONFIG = {
+      images: {
+        batiment: "images/batiment.webp",
+        cavite: "images/cavite.webp"
+      },
+
+      imageOriginale: {
+        largeur: 1152,
+        hauteur: 2048
+      },
+
+      trappe: {
+        x: 511,
+        y: 1323,
+        largeur: 140,
+        hauteur: 154,
+
+        /*
+          Directions possibles :
+          "droite"
+          "gauche"
+          "haut"
+          "bas"
+        */
+        direction: "droite",
+
+        /*
+          Distance en pourcentage de la taille de la trappe.
+
+          100 = elle se déplace d’une fois sa largeur.
+          110 = elle disparaît complètement.
+        */
+        distance: 110,
+
+        /*
+          Durée de l’animation en millisecondes.
+
+          Plus le nombre est grand, plus la trappe est lente.
+        */
+        vitesse: 1400
+      },
+
+      comportement: {
+        vibrationSucces: true
+      },
+
+      coffre: {
+        titre: "Le coffre est découvert",
+
+        texte:
+          "Derrière la trappe se trouvait une cavité contenant le coffre des artefacts.",
+
+        texteBouton:
+          "Ouvrir le coffre",
+
+        /*
+          Indique ici le lien de la scène suivante.
+
+          Exemple :
+          lienSuite: "scene-suivante.html"
+
+          Laisse vide pour simplement fermer la fenêtre.
+        */
+        lienSuite: ""
+      }
+    };
+
+    /*
+      =====================================================
+      ÉLÉMENTS HTML
+      =====================================================
+    */
+
+    const racine = document.documentElement;
+
+    const scene =
+      document.getElementById("scene");
+
+    const imageBatiment =
+      document.getElementById("imageBatiment");
+
+    const imageCavite =
+      document.getElementById("imageCavite");
+
+    const canvasTrappe =
+      document.getElementById("canvasTrappe");
+
+    const contexteCanvas =
+      canvasTrappe.getContext("2d");
+
+    const messageScene =
+      document.getElementById("messageScene");
+
+    const boutonCavite =
+      document.getElementById("boutonCavite");
+
+    const modale =
+      document.getElementById("modale");
+
+    const fermerModale =
+      document.getElementById("fermerModale");
+
+    const titreModale =
+      document.getElementById("titreModale");
+
+    const texteModale =
+      document.getElementById("texteModale");
+
+    const boutonContinuer =
+      document.getElementById("continuer");
+
+    const sonTrappe =
+      document.getElementById("sonTrappe");
+
+    /*
+      =====================================================
+      ÉTAT DU MÉCANISME
+      =====================================================
+    */
+
+    let trappeOuverte = false;
+    let trappeCreee = false;
+
+    /*
+      =====================================================
+      INITIALISATION
+      =====================================================
+    */
+
+    function initialiser() {
+      appliquerImages();
+      appliquerTextes();
+      positionnerZoneMecanisme();
+      appliquerDirectionEtVitesse();
+
+      if (imageBatiment.complete) {
+        creerTrappeDepuisBatiment();
+      }
+    }
+
+    function appliquerImages() {
+      imageBatiment.src =
+        CONFIG.images.batiment;
+
+      imageCavite.src =
+        CONFIG.images.cavite;
+    }
+
+    function appliquerTextes() {
+      titreModale.textContent =
+        CONFIG.coffre.titre;
+
+      texteModale.textContent =
+        CONFIG.coffre.texte;
+
+      boutonContinuer.textContent =
+        CONFIG.coffre.texteBouton;
+    }
+
+    /*
+      =====================================================
+      POSITION DE LA ZONE
+      =====================================================
+    */
+
+    function positionnerZoneMecanisme() {
+      const image = CONFIG.imageOriginale;
+      const trappe = CONFIG.trappe;
+
+      const xPourcentage =
+        (trappe.x / image.largeur) * 100;
+
+      const yPourcentage =
+        (trappe.y / image.hauteur) * 100;
+
+      const largeurPourcentage =
+        (trappe.largeur / image.largeur) * 100;
+
+      const hauteurPourcentage =
+        (trappe.hauteur / image.hauteur) * 100;
+
+      racine.style.setProperty(
+        "--trappe-x",
+        `${xPourcentage}%`
+      );
+
+      racine.style.setProperty(
+        "--trappe-y",
+        `${yPourcentage}%`
+      );
+
+      racine.style.setProperty(
+        "--trappe-largeur",
+        `${largeurPourcentage}%`
+      );
+
+      racine.style.setProperty(
+        "--trappe-hauteur",
+        `${hauteurPourcentage}%`
+      );
+    }
+
+    /*
+      =====================================================
+      CRÉATION AUTOMATIQUE DE LA TRAPPE
+      =====================================================
+    */
+
+    function creerTrappeDepuisBatiment() {
+      const trappe = CONFIG.trappe;
+
+      /*
+        Le canvas possède exactement les dimensions
+        de la sélection GIMP.
+      */
+      canvasTrappe.width =
+        trappe.largeur;
+
+      canvasTrappe.height =
+        trappe.hauteur;
+
+      contexteCanvas.clearRect(
+        0,
+        0,
+        canvasTrappe.width,
+        canvasTrappe.height
+      );
+
+      /*
+        On prélève directement la zone correspondante
+        dans l’image originale du bâtiment.
+      */
+      contexteCanvas.drawImage(
+        imageBatiment,
+
+        trappe.x,
+        trappe.y,
+        trappe.largeur,
+        trappe.hauteur,
+
+        0,
+        0,
+        trappe.largeur,
+        trappe.hauteur
+      );
+
+      trappeCreee = true;
+    }
+
+    /*
+      =====================================================
+      DIRECTION ET VITESSE
+      =====================================================
+    */
+
+    function appliquerDirectionEtVitesse() {
+      const distance =
+        CONFIG.trappe.distance;
+
+      let deplacementX = 0;
+      let deplacementY = 0;
+
+      switch (CONFIG.trappe.direction) {
+        case "gauche":
+          deplacementX = -distance;
+          break;
+
+        case "haut":
+          deplacementY = -distance;
+          break;
+
+        case "bas":
+          deplacementY = distance;
+          break;
+
+        case "droite":
+        default:
+          deplacementX = distance;
+          break;
+      }
+
+      racine.style.setProperty(
+        "--deplacement-x",
+        `${deplacementX}%`
+      );
+
+      racine.style.setProperty(
+        "--deplacement-y",
+        `${deplacementY}%`
+      );
+
+      racine.style.setProperty(
+        "--duree-trappe",
+        `${CONFIG.trappe.vitesse}ms`
+      );
+    }
+
+    /*
+      =====================================================
+      OUVERTURE DE LA TRAPPE
+      =====================================================
+    */
+
+    function ouvrirTrappe() {
+      if (trappeOuverte || !trappeCreee) {
+        return;
+      }
+
+      trappeOuverte = true;
+
+      scene.classList.add("est-ouverte");
+
+      jouerSonTrappe();
+
+      messageScene.hidden = false;
+
+      if (CONFIG.comportement.vibrationSucces) {
+        vibrer([70, 45, 140]);
+      }
+
+      /*
+        Le coffre devient accessible une fois
+        l’animation presque terminée.
+      */
+      window.setTimeout(() => {
+        boutonCavite.focus();
+      }, CONFIG.trappe.vitesse);
+    }
+
+    /*
+      =====================================================
+      SON DE LA TRAPPE
+      =====================================================
+    */
+
+    function jouerSonTrappe() {
+      if (!sonTrappe) {
+        return;
+      }
+
+      sonTrappe.pause();
+      sonTrappe.currentTime = 0;
+
+      sonTrappe.play().catch((erreur) => {
+        console.log("Son de la trappe bloqué :", erreur);
+      });
+    }
+
+    /*
+      =====================================================
+      VIBRATION
+      =====================================================
+    */
+
+    function vibrer(sequence) {
+      if ("vibrate" in navigator) {
+        navigator.vibrate(sequence);
+      }
+    }
+
+    /*
+      =====================================================
+      FENÊTRE DU COFFRE
+      =====================================================
+    */
+
+    function ouvrirFenetreCoffre() {
+      if (!trappeOuverte) {
+        return;
+      }
+
+      modale.hidden = false;
+      fermerModale.focus();
+    }
+
+    function fermerFenetreCoffre() {
+      modale.hidden = true;
+      boutonCavite.focus();
+    }
+
+    function continuerAventure() {
+      const lien =
+        CONFIG.coffre.lienSuite.trim();
+
+      if (lien) {
+        window.location.href = lien;
+        return;
+      }
+
+      fermerFenetreCoffre();
+    }
+
+    /*
+      =====================================================
+      ÉVÉNEMENTS
+      =====================================================
+    */
+
+    imageBatiment.addEventListener(
+      "load",
+      creerTrappeDepuisBatiment
+    );
+
+    scene.addEventListener(
+      "click",
+      ouvrirTrappe
+    );
+
+    boutonCavite.addEventListener(
+      "click",
+      ouvrirFenetreCoffre
+    );
+
+    fermerModale.addEventListener(
+      "click",
+      fermerFenetreCoffre
+    );
+
+    boutonContinuer.addEventListener(
+      "click",
+      continuerAventure
+    );
+
+    modale.addEventListener(
+      "click",
+      (event) => {
+        if (event.target === modale) {
+          fermerFenetreCoffre();
+        }
+      }
+    );
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (
+          event.key === "Escape" &&
+          !modale.hidden
+        ) {
+          fermerFenetreCoffre();
+        }
+      }
+    );
+
+    /*
+      =====================================================
+      LANCEMENT
+      =====================================================
+    */
+
+    initialiser();
+  </script>
 
 </body>
 </html>
