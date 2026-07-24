@@ -703,10 +703,11 @@ input[type="number"]::-webkit-inner-spin-button {
     <div class="choix-qcm" id="choix-socle1">
       <button class="btn-choix" onclick="toggleChoix(this,'un compas')">Un compas</button>
       <button class="btn-choix" onclick="toggleChoix(this,'un crayon de bois')">Un crayon de bois</button>
+      <button class="btn-choix" onclick="toggleChoix(this,'un plan')">Un plan</button>
       <button class="btn-choix" onclick="toggleChoix(this,'un ciseau')">Un ciseau</button>
       <button class="btn-choix" onclick="toggleChoix(this,'une équerre')">Une équerre</button>
       <button class="btn-choix" onclick="toggleChoix(this,'un mètre')">Un mètre</button>
-      <button class="btn-choix" onclick="toggleChoix(this,'un plan')">Un plan</button>
+    
     </div>
 
     <div class="navigation" style="margin-top:14px;">
@@ -733,9 +734,6 @@ input[type="number"]::-webkit-inner-spin-button {
 
 <section id="image-artefact-schist" class="scene">
   <div class="cadre">
-
-    <!-- TODO: remplacer par la photo réelle -->
-    <img src="images/PLACEHOLDER-image-artefact-schist.webp" alt="Le panneau de la demeure" class="image-scene">
 
     <div class="navigation">
       <button onclick="changerPage('page5')">suite</button>
@@ -851,8 +849,8 @@ input[type="number"]::-webkit-inner-spin-button {
     <img src="images/3-webpcoffreouvert.webp" alt="Contenu du coffredécouvert dans la cache" class="image-scene">
 
     <div class="navigation">
-       <h1>Vous avez trouvé un socle, mais les pièces ne sont plus là...</h1>
-       <h1>consultons le carnet de M Le Gall</h1>
+       <p>Vous avez trouvé un socle, mais les pièces ne sont plus là...</p>
+       <p>consultons le carnet de M Le Gall</p>
       <button onclick="changerPage('le-schiste')">suite</button>
     </div>
 
@@ -864,7 +862,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
     <!-- TODO: remplacer par la photo réelle -->
     <img src="images/3-webpcarnetschiste.webp" alt="Le schiste" class="image-scene">
-    <p>La maison que vous cherchez est dans une petite ruelle et est devenue une très bonne table quimperoise</p>
+    <p>La maison que vous devez trouver est dans une petite ruelle et est devenue une très bonne table quimperoise</p>
     <div class="navigation">
       <button onclick="changerPage('artefact-schist')">suite</button>
     </div>
