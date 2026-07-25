@@ -35,6 +35,56 @@ a{text-decoration:none;color:inherit}
 img{max-width:100%;display:block}
 .container{width:100%;padding:0 7.5%}
 
+/* CODE D'ACCÈS */
+body.gate-locked{overflow:hidden}
+.code-gate{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:linear-gradient(180deg,#082542 0%,#031529 100%);
+}
+.code-gate.hidden{display:none}
+.code-gate-box{
+  width:100%;
+  max-width:340px;
+  background:#FFF8EE;
+  border-radius:18px;
+  padding:32px 28px;
+  text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+.code-gate-box h2{font-family:Georgia,serif;color:var(--navy);font-size:24px;margin-bottom:10px}
+.code-gate-box p{font-family:Inter,system-ui,sans-serif;font-size:14px;color:var(--muted);line-height:1.5;margin-bottom:18px}
+#code-input{
+  width:100%;
+  font-family:Georgia,serif;
+  font-size:28px;
+  letter-spacing:14px;
+  text-align:center;
+  padding:12px;
+  border-radius:10px;
+  border:1.5px solid #D9C3A0;
+  color:var(--navy);
+  margin-bottom:14px;
+}
+#code-submit{
+  width:100%;
+  min-height:48px;
+  border:none;
+  border-radius:9px;
+  background:linear-gradient(180deg,var(--orange),var(--orange-dark));
+  color:#fff;
+  font-family:Georgia,serif;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+.code-error{color:var(--orange-dark);font-size:13px;font-weight:600;margin-top:12px}
+
 /* HEADER */
 header{
   background:linear-gradient(180deg,#082542 0%,#041a31 100%);
@@ -389,6 +439,51 @@ header{
 </style>
 </head>
 <body>
+<div class="code-gate" id="codeGate">
+  <div class="code-gate-box">
+    <h2>Accès réservé</h2>
+    <p>Ce site est en cours de préparation.<br>Merci de saisir le code d'accès.</p>
+    <input type="password" id="codeInput" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="off">
+    <button type="button" id="codeSubmit">Valider</button>
+    <p class="code-error" id="codeError" hidden>Code incorrect, réessayez.</p>
+  </div>
+</div>
+<script>
+(function(){
+  var CODE = "0000";
+  var gate = document.getElementById('codeGate');
+  var input = document.getElementById('codeInput');
+  var submitBtn = document.getElementById('codeSubmit');
+  var error = document.getElementById('codeError');
+
+  function unlock(){
+    gate.classList.add('hidden');
+    document.body.classList.remove('gate-locked');
+    sessionStorage.setItem('avelescapeUnlocked', '1');
+  }
+
+  if (sessionStorage.getItem('avelescapeUnlocked') === '1') {
+    unlock();
+  } else {
+    document.body.classList.add('gate-locked');
+    input.focus();
+  }
+
+  function tryUnlock(){
+    if (input.value.trim() === CODE) {
+      unlock();
+    } else {
+      error.hidden = false;
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  submitBtn.addEventListener('click', tryUnlock);
+  input.addEventListener('keydown', function(e){ if (e.key === 'Enter') tryUnlock(); });
+  input.addEventListener('input', function(){ error.hidden = true; });
+})();
+</script>
 <header>
   <nav class="nav" aria-label="Navigation principale">
     <div class="nav-center"><img class="nav-logo-img" src="images-site/0-webpogo-hd.webp" alt="AvelEscape"></div>
