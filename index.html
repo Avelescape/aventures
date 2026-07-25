@@ -267,13 +267,13 @@ header{
 .bar-drop-wrap{position:static;display:flex}.bar-drop{display:none;position:absolute;top:100%;left:0;right:0;background:#EAD9BC;border:.5px solid #D9C3A0;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:0 0 12px 12px}.bar-drop.open{display:block}.bar-drop-item{display:block;padding:12px 18px;font-size:14px;color:var(--navy);cursor:pointer;border-top:.5px solid rgba(201,184,138,.4);min-height:44px;display:flex;align-items:center}.bar-drop-parent-item{display:flex;align-items:center;justify-content:space-between}.bar-subdrop{display:none}.bar-subdrop.open{display:block}.bar-subdrop-item{display:flex;align-items:center;padding:11px 18px 11px 30px;font-size:13px;color:var(--navy);text-decoration:none;border-top:.5px solid rgba(201,184,138,.25);min-height:44px}
 
 /* ADVENTURES */
-.adventures{background:var(--cream);padding:18px 0 34px}
+.adventures{background:var(--cream);padding:40px 0}
 .carousel-outer{position:relative}.carousel-mask{overflow:hidden}.carousel-track{display:flex;gap:14px;transition:transform .4s cubic-bezier(.4,0,.2,1)}.carousel-nav-btn{display:none}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:5px;margin-top:2px;margin-bottom:0}.carousel-dot{width:6px;height:6px;border-radius:50%;background:var(--sand);cursor:pointer;transition:all .2s;flex-shrink:0;border:0}.carousel-dot.active{background:var(--gold);width:18px;border-radius:3px}.carousel-dot.nearby{width:4px;height:4px;background:#D9C3A0}
 .adv-card{flex:0 0 calc(25% - 11px);background:#FFF8EE;border:1px solid #D9C3A0;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(7,27,52,.14);cursor:pointer}.adv-card:active{transform:scale(.99)}.adv-card-img{height:160px;position:relative;overflow:hidden}.adv-card-img img{width:100%;height:100%;object-fit:cover;display:block}.adv-card-body{padding:14px 14px}.adv-card-title{font-family:Georgia,serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.2}.adv-card-loc{display:flex;align-items:center;gap:5px;font-size:11px;color:#6D6253;margin-bottom:12px;font-weight:500}.adv-card-actions{display:flex;gap:8px}.adv-btn-voir{flex:1;background:var(--orange);color:white;border:none;border-radius:9px;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:42px;transition:background .2s ease}
 .adv-btn-voir:hover{background:var(--orange-dark)}
 
 /* CARTE INTERACTIVE */
-.map-section{background:var(--cream);padding:10px 0 30px}
+.map-section{background:var(--cream);padding:40px 0}
 .map-title{font-family:Georgia,serif;color:#071B34;font-size:28px;text-align:center;margin-bottom:16px}
 #adventures-map{width:100%;height:400px;border-radius:16px;overflow:hidden;border:1px solid #D9C3A0;box-shadow:0 8px 24px rgba(7,27,52,.14);background:#EAD9BC;position:relative;isolation:isolate;z-index:0}
 .map-popup{font-family:Inter,system-ui,sans-serif}
@@ -287,8 +287,8 @@ header{
 .kids-banner{
   background:var(--cream);
   width:100%;
-  margin-top: 20px;
-  padding:0;
+  margin-top: 0;
+  padding:40px 0;
 }
 .kids-banner .container{
   width:100%;
@@ -301,9 +301,9 @@ header{
 }
 
 /* AVIS + CTA */
-.reviews-section{background:var(--cream);padding:0 0 20px}
+.reviews-section{background:var(--cream);padding:40px 0}
 .reviews-eyebrow-wrap{display:flex;align-items:flex-start;justify-content:center;min-height:56px}.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.review-photo-card{border-radius:12px;overflow:hidden;background:var(--navy);min-height:100px}.review-photo-card img{width:100%;height:100%;object-fit:cover}.review-card{background:#FFF8EE;border:1px solid #D9C3A0;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:5px;min-height:100px}.review-stars{color:var(--orange);font-size:13px;letter-spacing:1px}.review-text{font-size:12px;color:#1D1A16;line-height:1.5;flex:1;font-style:italic}.review-author{font-size:11px;font-weight:700;color:var(--navy)}
-.cta-section{background:var(--navy);overflow:hidden;border:1px solid rgba(201,162,39,.16);border-radius:0;margin:48px 0 24px;width:100%;max-width:none}.cta-inner{display:grid;grid-template-columns:1fr 2fr;gap:8px;padding:2px 10px;align-items:center}.cta-btn-cgv{display:inline-flex;align-items:center;justify-content:center;background:transparent;color:rgba(255,255,255,.55);border-radius:6px;padding:6px 8px;font-size:10px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;text-decoration:underline;min-height:32px}
+.cta-section{background:var(--navy);overflow:hidden;border:1px solid rgba(201,162,39,.16);border-radius:0;margin:0 0 40px;width:100%;max-width:none}.cta-inner{display:grid;grid-template-columns:1fr 2fr;gap:8px;padding:2px 10px;align-items:center}.cta-btn-cgv{display:inline-flex;align-items:center;justify-content:center;background:transparent;color:rgba(255,255,255,.55);border-radius:6px;padding:6px 8px;font-size:10px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;text-decoration:underline;min-height:32px}
 .cta-inner{
     display:flex;
     justify-content:space-between;
@@ -328,18 +328,13 @@ header{
   body{max-width:480px}
   .nav{height:80px;padding:0 18px}.nav-logo-img{width:104px;height:70px}.nav-connexion{height:38px;padding:0 14px;font-size:14px;gap:8px}.nav-connexion svg{width:20px;height:20px}
   .hero{min-height:545px;background-position:center bottom}.hero::after{display:none}.container{padding:0 28px}
-  .kids-banner .container{padding:0 18px;}
-  .kids-banner{
-  background:var(--cream);
-  width:100%;
-  margin-top:-20px;
-  padding:0 0 20px;
-}.hero-content{padding-top:72px;width:78%}.hero h1{font-size:58px}.hero-subtitle{font-size:18px;margin-top:18px}.hero-free{font-size:23px;margin-top:18px}.hero-buttons{gap:12px;width:100%;max-width:350px}.hero-btn{min-height:56px;font-size:17px;padding:0 15px}.hero-btn .arrow{font-size:30px}.hero-btn svg{width:24px;height:24px}.comment-cartes{margin-top:-90px;padding:0 18px}.comment-cartes img{border-radius:0}.adventures-intro{margin-top:-38px;padding:24px 28px 20px}.eyebrow{font-size:15px}.eyebrow-reviews::before,.eyebrow-reviews::after{width:20px}.adventures-intro h2{font-size:34px}.adventures-intro p{font-size:17px}.cta-all{min-height:54px;font-size:16px}.adv-card{flex-basis:calc(50% - 7px)}.adv-card-img{height:160px}.adventures{padding:18px 0 0}
+  .hero-content{padding-top:72px;width:78%}.hero h1{font-size:58px}.hero-subtitle{font-size:18px;margin-top:18px}.hero-free{font-size:23px;margin-top:18px}.hero-buttons{gap:12px;width:100%;max-width:350px}.hero-btn{min-height:56px;font-size:17px;padding:0 15px}.hero-btn .arrow{font-size:30px}.hero-btn svg{width:24px;height:24px}.comment-cartes{margin-top:-90px;padding:0 18px}.comment-cartes img{border-radius:0}.adventures-intro{margin-top:-38px;padding:24px 28px 20px}.eyebrow{font-size:15px}.eyebrow-reviews::before,.eyebrow-reviews::after{width:20px}.adventures-intro h2{font-size:34px}.adventures-intro p{font-size:17px}.cta-all{min-height:54px;font-size:16px}.adv-card{flex-basis:calc(50% - 7px)}.adv-card-img{height:160px}.adventures{padding:28px 0}
   .carousel-dots{margin-top:2px;margin-bottom:0}
-  .kids-banner{margin-top:-20px;padding:0 0 20px}
+  .map-section{padding:28px 0}
+  .kids-banner{margin-top:0;padding:28px 0}
   .kids-banner .container{padding:0 18px}
-  .reviews-section{padding:0 0 8px}
-  .cta-section{width:100%;margin:32px 0 20px;border-radius:0}
+  .reviews-section{padding:28px 0}
+  .cta-section{width:100%;margin:0 0 28px;border-radius:0}
   .cta-inner{padding:4px 14px}
   .cta-btn-author-img img{width:160px}
   .reviews-eyebrow-wrap{min-height:44px}
