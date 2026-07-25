@@ -170,13 +170,14 @@ input[type="number"]::-webkit-inner-spin-button {
 .texte-ligne {
   min-height: 360px;
   text-align: center;
+  font-size: 1.5rem;
   line-height: 1.9;
 }
 
 .texte-ligne div {
   margin-bottom: 9px;
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 0.5s ease;
 }
 
 .texte-ligne div.visible {
@@ -297,6 +298,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
   .texte-ligne {
     min-height: 430px;
+    font-size: 1.25rem;
   }
 
   .nav-back {
@@ -867,8 +869,8 @@ const phrasesIntro = [
   "Je me nomme Loïc Kernaët.",
   "Historien amateur et passionné par les secrets de Quimper.",
   "Il y a quelques jours, j'ai découvert un étrange carnet.",
-  "Mais je suis malheureusement trop âgé pour mener cette enquête...",
-  "Je compte sur vous et votre curiosité !"
+  "Mais je suis malheureusement trop âgé pour partir loi_même sur les traces des artefacts qu'il évoque...",
+  "Je compte sur vous, le début de votre quête commencera au croisement entre la rue Keréon et la rue du Roi Gradlon!"
 ];
 
 let phraseActuelle = 0;
@@ -889,7 +891,7 @@ function afficherPhraseIntro() {
 
     phraseActuelle++;
 
-    setTimeout(afficherPhraseIntro, 2300);
+    setTimeout(afficherPhraseIntro, 1400);
   } else {
     setTimeout(() => {
       bouton.style.display = "inline-block";
@@ -897,7 +899,7 @@ function afficherPhraseIntro() {
       setTimeout(() => {
         bouton.classList.add("visible");
       }, 50);
-    }, 900);
+    }, 500);
   }
 }
 
