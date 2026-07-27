@@ -854,8 +854,44 @@ input[type="number"]::-webkit-inner-spin-button {
     <div class="navigation">
        <p>Vous avez trouvé un socle, mais les pièces ne sont plus là...</p>
        <p>consultons le carnet de M Le Gall</p>
-      <button onclick="changerPage('artefact-schist')">suite</button>
+      <button onclick="changerPage('carnet-socle')">suite</button>
     </div>
+
+  </div>
+</section>
+
+<section id="carnet-socle" class="scene">
+  <div class="cadre">
+
+    <img src="images/3-webpsoclecarnet5.webp" alt="Page du carnet de M Le Gall évoquant le socle" class="image-scene">
+
+    <div class="navigation">
+      <button onclick="changerPage('recherche-batisse')">suite</button>
+    </div>
+
+  </div>
+</section>
+
+<section id="recherche-batisse" class="scene">
+  <div class="cadre">
+
+    <p>Le carnet de M. Le Gall évoque une bâtisse portant encore aujourd'hui la trace de ce socle disparu.</p>
+    <p>Retrouvez cette bâtisse dans les rues de Quimper.</p>
+
+    <div class="navigation">
+      <button onclick="changerPage('artefact-schist')">Vous avez trouvé la bâtisse</button>
+    </div>
+
+    <button class="btn-savoir" onclick="changerPage('indice-batisse')">🔍 Indice</button>
+
+  </div>
+</section>
+
+<section id="indice-batisse" class="scene">
+  <div class="cadre">
+
+    <h1>Indice</h1>
+    <p>Cette bâtisse se trouve dans une toute petite ruelle accessible par la rue des boucheries. C'est actuellement une très bonne table de Quimper.</p>
 
   </div>
 </section>
