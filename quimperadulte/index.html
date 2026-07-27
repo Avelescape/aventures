@@ -6,16 +6,27 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Escape Game Quimper</title>
+<meta name="theme-color" content="#211a13">
+<title>Nouvelle enquête</title>
 
 <style>
+/* =========================================================
+   DESIGN — ARCHIVES & CUIVRE
+   Pour les carnets, les bâtisseurs, les fouilles,
+   les villes anciennes et les enquêtes documentaires.
+   ========================================================= */
 :root {
-  --fond: #15110d;
-  --pierre: #3f3a32;
-  --cuivre: #b87333;
-  --or: #d6b15e;
-  --texte: #f2e6cf;
-  --ombre: rgba(0,0,0,0.75);
+  --bg1:#211a13;
+  --bg2:#090706;
+  --panel1:rgba(39,28,18,.96);
+  --panel2:rgba(15,10,7,.96);
+  --accent:#d6b15e;
+  --accent2:#b87333;
+  --soft:#f1d98f;
+  --text:#fff5df;
+  --muted:#d9c8aa;
+  --ink:#21150b;
+  --glow:rgba(214,177,94,.28);
 }
 
 * {
@@ -27,10 +38,10 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at center, rgba(184,115,51,0.18), transparent 40%),
-    linear-gradient(180deg, #211a13, #090706);
+    radial-gradient(circle at center, var(--glow), transparent 40%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
   font-family: Georgia, serif;
-  color: var(--texte);
+  color: var(--text);
   overflow-x: hidden;
 }
 
@@ -43,11 +54,6 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-image:
-    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.78)),
-    url("images/fond-quimper-stonepunk.jpg");
-  background-size: cover;
-  background-position: center;
 }
 
 .scene.active {
@@ -56,76 +62,76 @@ body {
 
 .cadre {
   width: 100%;
-  max-width: 780px;
-  padding: 26px 20px;
-  border: 2px solid var(--cuivre);
-  border-radius: 18px;
-  background: rgba(20, 15, 10, 0.84);
-  box-shadow: 0 0 30px var(--ombre);
+  max-width: 700px;
+  padding: 25px;
+  border: 1px solid var(--accent2);
+  border-radius: 12px;
+  background: var(--panel1);
+  box-shadow: 0 18px 34px rgba(0,0,0,.48), 0 0 20px var(--glow);
 }
 
-h1 {
+h1, h2, h3 {
+  color: var(--accent);
   margin-top: 0;
-  font-size: 2.75rem;
-  color: var(--or);
-  letter-spacing: 1px;
 }
+
+h1 { font-size: clamp(32px, 9.2vw, 48px); line-height: 1.08; }
+h2 { font-size: clamp(28px, 7.4vw, 38px); line-height: 1.12; }
+h3 { font-size: clamp(23px, 6.2vw, 31px); line-height: 1.28; }
 
 p {
-  font-size: 1.45rem;
-  line-height: 1.6;
+  max-width: 700px;
+  margin: 0 auto 20px;
+  font-size: 25px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.dialogue-box {
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 25px;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  background: var(--panel2);
+  box-shadow: 0 0 18px var(--glow);
+}
+
+.dialogue-box p,
+.dialogue-text {
+  font-size: 16px;
+  line-height: 1.4;
+  min-height: 40px;
+  margin-bottom: 0;
 }
 
 .image-scene {
   width: 100%;
   max-width: 620px;
   border-radius: 14px;
-  border: 2px solid var(--pierre);
+  border: 2px solid var(--accent2);
   margin: 18px 0;
   box-shadow: 0 0 25px black;
 }
 
 button {
-  margin-top: 18px;
-  padding: 16px 22px;
+  margin: 12px 6px 0;
+  padding: 14px 22px;
   min-height: 52px;
-  font-size: 1.2rem;
-  -webkit-tap-highlight-color: transparent;
+  font-size: 16px;
   font-family: Georgia, serif;
-  color: #1d1208;
-  background: linear-gradient(180deg, var(--or), var(--cuivre));
-  border: 2px solid #f0d38a;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+  border: 2px solid var(--soft);
   border-radius: 14px;
   cursor: pointer;
   box-shadow: 0 5px 0 #5b3419;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button:active {
   transform: translateY(4px);
   box-shadow: 0 1px 0 #5b3419;
-}
-
-input {
-  padding: 12px;
-  font-size: 1.3rem;
-  width: 180px;
-  text-align: center;
-  border-radius: 10px;
-  border: 2px solid var(--cuivre);
-  margin-top: 15px;
-  background: #f2e6cf;
-  color: #2b1d10;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 .navigation {
@@ -140,93 +146,14 @@ input[type="number"]::-webkit-inner-spin-button {
   min-width: 160px;
 }
 
-.nav-back {
-  position: fixed;
-  top: max(14px, env(safe-area-inset-top));
-  left: max(12px, env(safe-area-inset-left));
-  z-index: 999999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  min-height: 48px;
-  margin: 0;
-  padding: 0;
-  border-radius: 50%;
-  border: 2px solid var(--or);
-  background: rgba(20, 8, 10, 0.92);
-  color: var(--texte);
-  font-family: Georgia, serif;
-  font-size: 24px;
-  cursor: pointer;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
-}
-
-.nav-back.visible {
-  display: flex;
-}
-
-.texte-ligne {
-  min-height: 360px;
-  text-align: center;
-  font-size: 1.5rem;
-  line-height: 1.9;
-}
-
-.texte-ligne div {
-  margin-bottom: 9px;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.texte-ligne div.visible {
-  opacity: 1;
-}
-
-#bouton-intro {
-  opacity: 1;
-}
-
-#messageGradlon,
-#resultat {
-  color: var(--or);
-  font-weight: bold;
-}
-
-#overlay-anim {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  background: #000;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#overlay-anim iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  flex: 1;
-}
-
-#overlay-anim button {
-  position: absolute;
-  bottom: 20px;
-  margin: 0;
-  z-index: 1001;
-}
-
 .btn-savoir {
   margin-top: 22px;
   padding: 10px 18px;
   min-height: 44px;
-  font-size: 1.1rem;
+  font-size: 15px;
   background: transparent;
-  border: 1px solid var(--cuivre);
-  color: var(--or);
+  border: 1px solid var(--accent2);
+  color: var(--accent);
   border-radius: 20px;
   cursor: pointer;
   box-shadow: none;
@@ -234,7 +161,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .btn-savoir:active {
-  background: rgba(184,115,51,0.15);
+  background: var(--glow);
   transform: none;
   box-shadow: none;
 }
@@ -251,10 +178,10 @@ input[type="number"]::-webkit-inner-spin-button {
   margin-top: 0;
   padding: 12px 16px;
   min-height: 48px;
-  font-size: 1.15rem;
+  font-size: 16px;
   background: linear-gradient(180deg, #4a3f30, #2b2017);
-  border: 2px solid var(--pierre);
-  color: var(--texte);
+  border: 2px solid var(--muted);
+  color: var(--text);
   border-radius: 12px;
   cursor: pointer;
   box-shadow: 0 4px 0 #111;
@@ -263,336 +190,95 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .btn-choix.selectionne {
-  background: linear-gradient(180deg, var(--or), var(--cuivre));
-  border-color: #f0d38a;
-  color: #1d1208;
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+  border-color: var(--soft);
+  color: var(--ink);
   box-shadow: 0 4px 0 #5b3419;
 }
 
-.btn-choix:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #111;
+input {
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 6px;
+  border: 1px solid var(--accent2);
+  text-align: center;
+  background: var(--text);
+  color: var(--ink);
+  font-family: Georgia, serif;
 }
 
-@media (max-width: 600px) {
-  h1 {
-    font-size: 2.2rem;
-  }
-
-  p {
-    font-size: 1.3rem;
-  }
-
-  .cadre {
-    padding: 22px 16px;
-  }
-
-  button {
-    width: 100%;
-  }
-
-  .navigation {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .texte-ligne {
-    min-height: 430px;
-    font-size: 1.25rem;
-  }
-
-  .nav-back {
-    width: 44px;
-    height: 44px;
-    min-height: 44px;
-  }
-
-}
-
-
-/* =========================================================
-   BOUTON RETOUR AU SITE AVELESCAPE
-   Visible sur toutes les scènes
-   Compatible ordinateur, Android et iPhone
-   ========================================================= */
+/* Bouton retour au site AvelEscape */
 .site-retour {
   position: fixed;
   top: max(12px, env(safe-area-inset-top));
   right: max(10px, env(safe-area-inset-right));
   z-index: 999999;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   min-height: 38px;
   padding: 7px 12px;
-
   background: rgba(16, 8, 10, 0.90);
-  color: #F0D47A;
-
-  border: 2px solid #D4AF37;
+  color: var(--soft);
+  border: 2px solid var(--accent);
   border-radius: 999px;
-
   font-family: Georgia, serif;
-  font-size: 17px;
+  font-size: 13px;
   font-weight: 800;
   line-height: 1;
   text-decoration: none;
-
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.45),
-    inset 0 0 12px rgba(212, 175, 55, 0.14);
-
+  box-shadow: 0 8px 20px rgba(0,0,0,.45), inset 0 0 12px var(--glow);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
 .site-retour:hover {
-  background: #D4AF37;
-  color: #16090d;
+  background: var(--accent);
+  color: var(--ink);
 }
 
 .site-retour:active {
   transform: scale(0.96);
 }
 
-@media (max-width: 480px) {
-  .site-retour {
-    top: max(10px, env(safe-area-inset-top));
-    right: max(10px, env(safe-area-inset-right));
-    min-height: 34px;
-    padding: 6px 10px;
-    font-size: 16px;
-  }
-}
-
-/* =========================================================
-   CARNET — scène intégrée
-   Styles isolés sous .carnet-scene pour ne pas entrer en
-   collision avec les styles globaux body/button/.navigation
-   du reste du jeu.
-   ========================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;500;600&display=swap');
-
-:root {
-  --cream: #f5efe0;
-  --paper: #f4eddf;
-  --night: #15110d;
-}
-
-.carnet-scene {
-  padding: 0;
-  background-image: none;
-  background:
-    radial-gradient(circle at 50% 36%, rgba(116,78,42,.18), transparent 42%),
-    #15110d;
-  color: var(--cream);
-  font-family: Montserrat, Arial, sans-serif;
-  touch-action: pan-y;
-  user-select: none;
-}
-
-.carnet-scene .carnet-topbar {
+/* Bouton retour à la scène précédente */
+.nav-back {
   position: fixed;
-  top: max(12px, env(safe-area-inset-top));
+  top: max(14px, env(safe-area-inset-top));
   left: max(12px, env(safe-area-inset-left));
-  z-index: 100;
-  display: flex;
-  gap: 8px;
-}
-
-.carnet-scene .return-site,
-.carnet-scene .retour-enquete {
-  position: static;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 40px;
-  padding: 8px 13px;
-  border: 1px solid rgba(212,175,55,.75);
-  border-radius: 999px;
-  color: #f5df9a;
-  background: rgba(23,17,13,.9);
-  text-decoration: none;
-  font-family: Montserrat, Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  backdrop-filter: blur(8px);
-  cursor: pointer;
-}
-
-.carnet-scene .stage {
-  width: 100%;
-  min-height: 100svh;
-  display: grid;
-  place-items: center;
-  padding: max(64px, calc(env(safe-area-inset-top) + 54px)) 14px
-           max(76px, calc(env(safe-area-inset-bottom) + 62px));
-  perspective: 1500px;
-  --carnet-largeur: min(430px, 90vw, calc((100svh - 150px) * .6667));
-}
-
-.carnet-scene .carnet-book {
-  position: relative;
-  width: var(--carnet-largeur);
-  aspect-ratio: 2 / 3;
-  filter: drop-shadow(0 24px 28px rgba(0,0,0,.48));
-}
-
-.carnet-scene .page {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border-radius: 7px 24px 24px 7px;
-  transform-origin: left center;
-  transform-style: preserve-3d;
-  backface-visibility: visible;
-  will-change: transform, opacity;
-  background: var(--paper);
-  box-shadow: inset 13px 0 18px rgba(62,38,20,.18);
-}
-
-.carnet-scene .page > * {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.carnet-scene .page::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-  border-radius: inherit;
-  transform: rotateY(180deg) translateZ(1px);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  background:
-    repeating-radial-gradient(ellipse at 24% 20%, rgba(139,95,43,.045) 0 1px, transparent 1px 9px),
-    linear-gradient(90deg, #ded1bd 0%, #f5eee1 13%, #eee4d3 100%);
-  box-shadow: inset -15px 0 24px rgba(64,39,21,.2), inset 2px 0 0 rgba(255,255,255,.5);
-  pointer-events: none;
-}
-
-.carnet-scene .page.cover-page { border-radius: 18px 25px 25px 18px; }
-.carnet-scene .page img.page-image { width: 100%; height: 100%; display: block; object-fit: contain; pointer-events: none; }
-
-.carnet-scene .page::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9;
-  opacity: var(--fold, 0);
-  transform: translateZ(2px);
-  background: linear-gradient(90deg, transparent 48%, rgba(255,255,255,.27) 78%, rgba(38,20,10,.4));
-}
-
-.carnet-scene .page.is-current { z-index: 3; }
-.carnet-scene .page.is-next { z-index: 2; }
-.carnet-scene .page.is-hidden { z-index: 1; visibility: hidden; }
-.carnet-scene .page.turning { transition: transform .72s cubic-bezier(.18,.72,.18,1), filter .72s ease; }
-.carnet-scene .page.is-next { transition: filter .25s ease, transform .25s ease; }
-
-.carnet-scene .carnet-navigation {
-  position: fixed;
-  left: 50%;
-  bottom: max(13px, env(safe-area-inset-bottom));
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transform: translateX(-50%);
-}
-.carnet-scene .nav-button {
-  min-width: 42px;
-  min-height: 38px;
-  margin-top: 0;
-  padding: 7px 11px;
-  color: #f5df9a;
-  border: 1px solid rgba(212,175,55,.7);
-  border-radius: 999px;
-  background: rgba(23,17,13,.9);
-  font-size: 22px;
-}
-.carnet-scene .counter { min-width: 50px; color: #d8cbb7; text-align: center; font-size: 15px; }
-.carnet-scene .hint { position: fixed; right: 14px; bottom: max(18px, env(safe-area-inset-bottom)); color: rgba(245,239,224,.64); font-size: 13px; }
-
-.carnet-scene .carnet-question {
+  z-index: 999999;
   display: none;
-  width: var(--carnet-largeur);
-  margin: 24px auto max(100px, calc(env(safe-area-inset-bottom) + 100px));
-  padding: 20px 20px 18px;
-  border: 1px solid rgba(212,175,55,.55);
-  border-radius: 20px;
-  color: #f5efe0;
-  background: rgba(20,15,11,.94);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  font-family: Montserrat, sans-serif;
-  box-shadow: 0 14px 32px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.03);
-  text-align: center;
-  touch-action: auto;
-  user-select: text;
-}
-.carnet-scene .carnet-question.visible { display: block; }
-.carnet-scene .carnet-question::before {
-  content: "✦";
-  display: block;
-  margin-bottom: 8px;
-  color: #d6b15e;
-  font-size: 16px;
-  letter-spacing: 2px;
-}
-.carnet-scene .carnet-question p {
-  margin: 0 0 14px;
-  font-size: 17px;
-  line-height: 1.55;
-  font-weight: 500;
-  color: #e7dcc3;
-}
-.carnet-scene .carnet-question input {
-  width: 100%;
-  margin: 0 0 12px;
-  padding: 11px;
-  border-radius: 10px;
-  border: 1px solid rgba(212,175,55,.4);
-  font-size: 19px;
-  text-align: center;
-  background: rgba(245,239,224,.96);
-  color: #2a1f14;
-}
-.carnet-scene .carnet-question button {
-  width: 100%;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
   min-height: 44px;
   margin: 0;
-  padding: 10px 16px;
-  border: 1px solid #f0d38a;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #f5df9a, #d6b15e);
-  color: #1d1208;
-  font: 700 18px Montserrat, sans-serif;
-  letter-spacing: .3px;
-  box-shadow: 0 4px 0 #5b3419;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: rgba(16, 8, 10, 0.92);
+  color: var(--text);
+  font-family: Georgia, serif;
+  font-size: 22px;
   cursor: pointer;
-}
-.carnet-scene .carnet-question button:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #5b3419;
-}
-.carnet-scene .carnet-question #message-enigme-carnet {
-  margin: 10px 0 0;
-  font-size: 16px;
-  font-weight: 700;
-  color: #f5df9a;
+  box-shadow: 0 8px 18px rgba(0,0,0,.45);
 }
 
-@media (prefers-reduced-motion: reduce) { .carnet-scene .page.turning { transition-duration: .01ms; } }
+.nav-back.visible {
+  display: flex;
+}
 
+@media (max-width: 600px) {
+  .cadre { padding: 20px 16px; }
+  button { width: 100%; }
+  .navigation { flex-direction: column; gap: 4px; }
+  .site-retour { min-height: 34px; padding: 6px 10px; font-size: 12px; }
+  .nav-back { width: 40px; height: 40px; min-height: 40px; }
+}
 </style>
 </head>
 
@@ -600,73 +286,33 @@ input[type="number"]::-webkit-inner-spin-button {
 
 <!-- BOUTON RETOUR AU SITE AVELESCAPE -->
 <a class="site-retour" href="../index.html">
-  <span>site AvelEscape</span>
+  <span>Site AvelEscape</span>
 </a>
 
-<!-- BOUTON RETOUR À L'ÉCRAN PRÉCÉDENT -->
+<!-- BOUTON RETOUR À LA SCÈNE PRÉCÉDENTE -->
 <button class="nav-back" id="nav-back" type="button" onclick="retour()" aria-label="Retour">←</button>
 
+<main>
 
-<section id="intro" class="scene active">
-  <div class="cadre">
-    <h1>Le Secret de Gradlon</h1>
-
-    <div id="texte-intro" class="texte-ligne"></div>
-
-    <button id="bouton-intro" onclick="changerPage('page2')">
-      suite
-    </button>
-  </div>
-</section>
-
-
-<section id="page2" class="scene">
-  <div class="cadre">
-    <h1>La cathédrale de Quimper</h1>
-
-    <p>
-     Votre enquête débute devant la cathédrale de Quimper,
-     au croisement entre la rue Keréon et la rue du Roi Gradlon!
-     Une fois sur place, répondez à la question suivante:
-    </p>
-
-    <p style="color:var(--or); font-size:1.55rem; font-weight:bold;">
-      En quelle année fut replacée la statue du roi Gradlon ?
-    </p>
-
-    <input
-      type="number"
-      inputmode="numeric"
-      pattern="[0-9]*"
-      id="anneeGradlon"
-      placeholder="Année">
-
-    <div class="navigation">
-      <button onclick="verifierGradlon()">Valider</button>
+  <section class="scene active" id="intro">
+    <div class="cadre">
+      <h1>Le secret du roi Gradlon</h1>
+      <p>Un carnet a recemment été découvert dans les archives de Quimper. Il évoque des artefacts cachés dans la ville.</p>
+      <h3>Saurez-vous les découvrir? </h3>
+      <h3>quel secret cachent-ils?</h3>
+      <p>Rendez-vous à l'angle de la rue du Roi Gradlon et de la rue Kéréon pour commencer l'aventure.</p>
+      <div class="navigation">
+        <button onclick="changerPage('chapitre1')">Commencer l'enquête</button>
+      </div>
     </div>
+  </section>
 
-    <p id="messageGradlon"></p>
+  <section class="scene" id="chapitre1">
+    <div class="cadre">
+      <p>Cathédrale de Quimper</p>
+       <h1>Degemer mat en enklask</h1>
 
-    <button class="btn-savoir" onclick="changerPage('info-cathedrale')">🏛 En savoir plus sur la cathédrale</button>
-
-  </div>
-</section>
-
-<section id="info-cathedrale" class="scene">
-  <div class="cadre">
-
-    <h1>La cathédrale Saint-Corentin</h1>
-
-
-  </div>
-</section>
-
-<section id="page3" class="scene">
-  <div class="cadre">
-
-    <h1>Degemer mat en enklask</h1>
-
-    <p style="color:var(--or); font-size:1.7rem; font-weight:bold;">
+    <p style="color:var(--accent); font-size:1.7rem; font-weight:bold;">
       « Sekred ar Roue Gradlon »
     </p>
 
@@ -676,269 +322,52 @@ input[type="number"]::-webkit-inner-spin-button {
 
     <img src="images/3-webpstatue1.webp" alt="Statue du roi Gradlon" style="max-width:55%; max-height:35vh; object-fit:contain; border-radius:8px; margin:1rem 0;">
 
-    <div class="navigation">
-      <button onclick="changerPage('carnet')">suite</button>
+      <p style="color:var(--accent); font-weight:bold; margin-top:1.4rem;">
+        En quelle année a été replacée la statue du roi Gradlon ?
+      </p>
+
+      <div class="navigation">
+        <input type="text" id="reponse-gradlon" placeholder="Année" inputmode="numeric" autocomplete="off">
+        <button onclick="verifierGradlon()">Valider</button>
+      </div>
+
+      <p id="message-gradlon"></p>
+
+      <button class="btn-savoir" id="indice-gradlon-btn" style="display:none;" onclick="changerPage('indice1')">🔍 Indice</button>
     </div>
+  </section>
 
-    <button class="btn-savoir" onclick="changerPage('info-gradlon')">👑 En savoir plus sur Gradlon</button>
-
-  </div>
-</section>
-
-<section id="info-gradlon" class="scene">
-  <div class="cadre">
-
-    <h1>Gradlon roi de Cornouaille</h1>
-
-
-  </div>
-</section>
-
-<section id="artefact-schist" class="scene">
-  <div class="cadre">
-
-    <p>Ce bâtiment est aujourd'hui la plus ancienne construction civile du Finistère.</p>
-
-    <p style="color:var(--or); font-weight:bold; margin-top:1.4rem;">
-      Quels sont les deux objets présents sur le panneau indiquant la particularité de la demeure ?
-    </p>
-
-    <div class="choix-qcm" id="choix-socle1">
-      <button class="btn-choix" onclick="toggleChoix(this,'un compas')">Un compas</button>
-      <button class="btn-choix" onclick="toggleChoix(this,'un crayon de bois')">Un crayon de bois</button>
-      <button class="btn-choix" onclick="toggleChoix(this,'un plan')">Un plan</button>
-      <button class="btn-choix" onclick="toggleChoix(this,'un ciseau')">Un ciseau</button>
-      <button class="btn-choix" onclick="toggleChoix(this,'une équerre')">Une équerre</button>
-      <button class="btn-choix" onclick="toggleChoix(this,'un mètre')">Un mètre</button>
-    
+  <section class="scene" id="indice1">
+    <div class="cadre">
+      <h3>Indice</h3>
+      <p>Observez bien les alentour</p>
+      <div class="navigation">
+        <button onclick="changerPage('chapitre1')">découvrir le carnet</button>
+      </div>
     </div>
+  </section>
 
-    <div class="navigation" style="margin-top:14px;">
-      <button onclick="verifierSocle1()">Valider</button>
+  <section class="scene" id="chapitre2">
+    <div class="cadre">
+      <!-- TODO: ajouter l'image et le texte du chapitre 2 -->
+      <p>Bravo, vous avez trouvé la bonne réponse !</p>
+      <div class="navigation">
+        <button onclick="window.location.href='carnet.html'">Consulter le carnet</button>
+      </div>
     </div>
+  </section>
 
-    <p id="message-socle1"></p>
-
-    <button class="btn-savoir" onclick="changerPage('indice-socle1')">🔍 Indice</button>
-
-  </div>
-</section>
-
-<section id="indice-socle1" class="scene">
-  <div class="cadre">
-
-    <h1>Indice</h1>
-
-    <p>Vous pourrez y accéder en empruntant une ruelle</p>
-
-
-  </div>
-</section>
-
-<section id="image-artefact-schist" class="scene">
-  <div class="cadre">
-
-    <div class="navigation">
-      <button onclick="changerPage('page5')">suite</button>
+  <section class="scene" id="chapitre3">
+    <div class="cadre">
+      <!-- TODO: ajouter l'image et le texte du chapitre 3 -->
+      <p>Chapitre 3 — contenu à venir.</p>
     </div>
+  </section>
 
-  </div>
-</section>
-
-<section id="page5" class="scene">
-  <div class="cadre">
-
-    <p style="font-style:italic; color:var(--or);">
-      Le métal se plie sous le marteau, mais la pierre conserve les souvenirs.
-      Ignore la sainte. Observe les initiales des ouvriers qui l'encadrent.
-      Lorsque les deux fragments n'en feront qu'un, le métal te sera révélé.
-    </p>
-
-    <input
-      type="text"
-      id="reponse-page5"
-      placeholder="Votre réponse"
-      style="width:200px;">
-
-    <div class="navigation">
-      <button onclick="verifierPage5()">Valider</button>
-    </div>
-
-    <p id="message-page5"></p>
-
-    <button class="btn-savoir" onclick="changerPage('indice-page5')">🔍 Indice</button>
-
-  </div>
-</section>
-
-<section id="indice-page5" class="scene">
-  <div class="cadre">
-
-    <h1>Indice</h1>
-
-    <p>Le métal fut caché non loin du lieu où l'on maniait davantage les couteaux que les marteaux. Les marchands ont disparu, mais le nom de la rue demeure. Trouve-la et observe les murs.</p>
-
-
-  </div>
-</section>
-
-<section id="carnet" class="scene carnet-scene">
-  <div class="carnet-topbar">
-    <a class="return-site" href="https://avelescape.github.io/aventures/" aria-label="Retour au site AvelEscape">← <span>Site AvelEscape</span></a>
-    <button type="button" class="retour-enquete" onclick="retour()" aria-label="Retour à l'enquête">← <span>Retour</span></button>
-  </div>
-
-  <main class="stage" aria-label="Carnet AvelEscape interactif">
-    <div class="carnet-book" id="carnetBook">
-      <section class="page cover-page" data-page="0" aria-label="Couverture du carnet">
-        <img class="page-image" src="images/3-webpcarnet1.webp" alt="Couverture du carnet contremaître">
-      </section>
-
-      <section class="page" data-page="1" aria-label="Identité de l’aventurier">
-        <img class="page-image" src="images/3-webpcarnet2.webp" alt="journée chantier ">
-      </section>
-
-      <section class="page" data-page="2" aria-label="Mes aventures, première page">
-        <img class="page-image" src="images/3-webpcarnet3.webp" alt="Première page de mes aventures">
-      </section>
-
-      <section class="page" data-page="3" aria-label="Mes aventures, seconde page">
-        <img class="page-image" src="images/3-webpcarnet4.webp" alt="Seconde page de mes aventures">
-      </section>
- 
-      <section class="page" data-page="3" aria-label="Mes aventures, seconde page">
-        <img class="page-image" src="images/3-webpcarnetsocle.webp" alt="Seconde page de mes aventures">
-      </section>
-    </div>
-
-    <div class="carnet-question" id="carnetQuestion">
-    <p>Compte les croix de Saint-André en bois qui rigidifient la structure, et tu sauras si tu es au bon endroit.</p>
-    <input
-      type="number"
-      inputmode="numeric"
-      pattern="[0-9]*"
-      id="reponse-enigme-carnet"
-      placeholder="Nombre de croix">
-    <button type="button" onclick="verifierEnigmeCarnet()">Valider</button>
-    <p id="message-enigme-carnet"></p>
-    </div>
-  </main>
-
-  <nav class="carnet-navigation" aria-label="Navigation du carnet">
-    <button class="nav-button" id="previous" type="button" aria-label="Page précédente">‹</button>
-    <span class="counter" id="counter">1 / 4</span>
-    <button class="nav-button" id="next" type="button" aria-label="Page suivante">›</button>
-  </nav>
-  <span class="hint">Glissez pour tourner la page</span>
-</section>
-
-<section id="decouverte-carnet" class="scene">
-  <div class="cadre">
-
-   
-    <img src="images/3-webpcoffrecavite.webp" alt="zoom cavité" class="image-scene">
-
-    <div class="navigation">
-      <button onclick="changerPage('decouverte-socle')">Ouvrir le coffre</button>
-    </div>
-
-  </div>
-</section>
-
-<section id="decouverte-socle" class="scene">
-  <div class="cadre">
-
-    <!-- TODO: remplacer par la photo réelle du contenu du coffre -->
-    <img src="images/3-webpcoffreouvert.webp" alt="Contenu du coffredécouvert dans la cache" class="image-scene">
-
-    <div class="navigation">
-       <p>Vous avez trouvé un socle, mais les pièces ne sont plus là...</p>
-       <p>consultons le carnet de M Le Gall</p>
-      <button onclick="changerPage('carnet-socle')">suite</button>
-    </div>
-
-  </div>
-</section>
-
-<section id="carnet-socle" class="scene">
-  <div class="cadre">
-
-    <img src="images/3-webpsoclecarnet5.webp" alt="Page du carnet de M Le Gall évoquant le socle" class="image-scene">
-
-    <div class="navigation">
-      <button onclick="changerPage('recherche-batisse')">suite</button>
-    </div>
-
-  </div>
-</section>
-
-<section id="recherche-batisse" class="scene">
-  <div class="cadre">
-
-    <p>Le carnet de M. Le Gall évoque une bâtisse portant encore aujourd'hui la trace de ce socle disparu.</p>
-    <p>Retrouvez cette bâtisse dans les rues de Quimper.</p>
-
-    <div class="navigation">
-      <button onclick="changerPage('artefact-schist')">Vous avez trouvé la bâtisse</button>
-    </div>
-
-    <button class="btn-savoir" onclick="changerPage('indice-batisse')">🔍 Indice</button>
-
-  </div>
-</section>
-
-<section id="indice-batisse" class="scene">
-  <div class="cadre">
-
-    <h1>Indice</h1>
-    <p>Cette bâtisse se trouve dans une toute petite ruelle accessible par la rue des boucheries. C'est actuellement une très bonne table de Quimper.</p>
-
-  </div>
-</section>
-
-<div id="overlay-anim">
-  <iframe id="iframe-anim" src="" allowfullscreen></iframe>
-  <button id="btn-continuer-anim">Continuer →</button>
-</div>
+</main>
 
 <script>
-const phrasesIntro = [
-  "Je me nomme Loïc Kernaët.",
-  "Historien amateur et passionné par les secrets de Quimper.",
-  "Il y a quelques jours, j'ai découvert un étrange carnet.",
-  "Mais je suis malheureusement trop âgé pour partir moi-même sur les traces des artefacts qu'il évoque...",
-  "Je compte sur vous!"
-];
-
-let phraseActuelle = 0;
-let historiquePages = ["intro"];
-
-function afficherPhraseIntro() {
-  const zone = document.getElementById("texte-intro");
-  const bouton = document.getElementById("bouton-intro");
-
-  if (phraseActuelle < phrasesIntro.length) {
-    const ligne = document.createElement("div");
-    ligne.textContent = phrasesIntro[phraseActuelle];
-    zone.appendChild(ligne);
-
-    setTimeout(() => {
-      ligne.classList.add("visible");
-    }, 50);
-
-    phraseActuelle++;
-
-    setTimeout(afficherPhraseIntro, 1400);
-  } else {
-    setTimeout(() => {
-      bouton.style.display = "inline-block";
-
-      setTimeout(() => {
-        bouton.classList.add("visible");
-      }, 50);
-    }, 500);
-  }
-}
+let historiquePages = [];
 
 function pageActive() {
   const active = document.querySelector(".scene.active");
@@ -948,9 +377,7 @@ function pageActive() {
 function mettreAJourNavBack() {
   const navBack = document.getElementById("nav-back");
   if (!navBack) return;
-  // La scène du carnet a déjà son propre bouton retour thématique.
-  const surCarnet = document.querySelector(".scene.active.carnet-scene");
-  navBack.classList.toggle("visible", historiquePages.length > 0 && !surCarnet);
+  navBack.classList.toggle("visible", historiquePages.length > 0);
 }
 
 function changerPage(id) {
@@ -983,213 +410,29 @@ function retour() {
   }
 }
 
-const choixSocle1 = new Set();
-
-function toggleChoix(btn, valeur) {
-  if (choixSocle1.has(valeur)) {
-    choixSocle1.delete(valeur);
-    btn.classList.remove("selectionne");
-  } else {
-    if (choixSocle1.size >= 2) return;
-    choixSocle1.add(valeur);
-    btn.classList.add("selectionne");
+(function activerScèneDepuisAncre() {
+  const id = window.location.hash.slice(1);
+  if (id && document.getElementById(id)) {
+    document.querySelectorAll(".scene").forEach(page => {
+      page.classList.remove("active");
+    });
+    document.getElementById(id).classList.add("active");
   }
-}
-
-function verifierSocle1() {
-  const message = document.getElementById("message-socle1");
-  const bonnes = ["une équerre", "un plan"];
-  const correct = bonnes.every(r => choixSocle1.has(r)) && choixSocle1.size === 2;
-
-  if (correct) {
-    message.textContent = "Exact. Ces deux symboles vous guideront vers la suite.";
-    setTimeout(() => lancerAnimation("mecanisme-panneau/index.html", "image-artefact-schist"), 1500);
-  } else {
-    message.textContent = "Ce n'est pas la bonne combinaison. Observez le panneau attentivement.";
-  }
-}
+})();
 
 function verifierGradlon() {
-  const reponse = document.getElementById("anneeGradlon").value;
-  const message = document.getElementById("messageGradlon");
+  const reponse = document.getElementById("reponse-gradlon").value.trim();
+  const message = document.getElementById("message-gradlon");
+  const btnIndice = document.getElementById("indice-gradlon-btn");
 
   if (reponse === "1858") {
-    message.innerHTML = "Exact.";
-    setTimeout(() => changerPage("page3"), 1500);
+    message.textContent = "";
+    changerPage('chapitre2');
   } else {
-    message.innerHTML = "Cette date ne correspond pas. Observez bien les alentours.";
+    message.textContent = "Ce n'est pas la bonne réponse.";
+    btnIndice.style.display = "inline-block";
   }
 }
-
-function verifierPage5() {
-  const reponse = document.getElementById("reponse-page5").value.trim().toUpperCase();
-  const message = document.getElementById("message-page5");
-
-  if (reponse === "JSSZ") {
-    message.textContent = "Exact. Le métal se révèle.";
-    setTimeout(() => changerPage("page6"), 1500);
-  } else {
-    message.textContent = "Ce n'est pas la bonne combinaison. Observez attentivement les initiales.";
-  }
-}
-
-function verifierEnigmeCarnet() {
-  const reponse = document.getElementById("reponse-enigme-carnet").value.trim().toUpperCase();
-  const message = document.getElementById("message-enigme-carnet");
-  const CODE_ATTENDU = "18";
-
-  if (reponse === CODE_ATTENDU) {
-    message.textContent = "Exact. L'aventure continue.";
-    setTimeout(() => lancerAnimation("mecanisme-trappe/index.html", "decouverte-carnet"), 1500);
-  } else {
-    message.textContent = "Ce n'est pas le bon code.";
-  }
-}
-
-function lancerAnimation(fichier, pageSuivante) {
-  const overlay = document.getElementById("overlay-anim");
-  const iframe = document.getElementById("iframe-anim");
-  const btnContinuer = document.getElementById("btn-continuer-anim");
-  const boutonSiteRetour = document.querySelector(".site-retour");
-
-  iframe.src = fichier;
-  overlay.style.display = "flex";
-  if (boutonSiteRetour) boutonSiteRetour.style.display = "none";
-
-  btnContinuer.onclick = function () {
-    overlay.style.display = "none";
-    iframe.src = "";
-    if (boutonSiteRetour) boutonSiteRetour.style.display = "";
-    changerPage(pageSuivante);
-  };
-}
-
-const cibleInitiale = window.location.hash.replace("#", "");
-if (cibleInitiale && document.getElementById(cibleInitiale)) {
-  changerPage(cibleInitiale);
-} else {
-  afficherPhraseIntro();
-}
-</script>
-
-<script>
-  (() => {
-    const carnetBook = document.getElementById('carnetBook');
-    const pages = [...carnetBook.querySelectorAll('.page')];
-    const previous = document.getElementById('previous');
-    const next = document.getElementById('next');
-    const counter = document.getElementById('counter');
-    let current = 0;
-    let tracking = false;
-    let startX = 0;
-    let startY = 0;
-    let deltaX = 0;
-
-    function showPages() {
-      pages.forEach((page, index) => {
-        page.classList.toggle('is-current', index === current);
-        page.classList.toggle('is-next', index === current + 1 || index === current - 1);
-        page.classList.toggle('is-hidden', Math.abs(index - current) > 1);
-        page.style.transform = '';
-        page.style.opacity = '';
-        page.style.transformOrigin = '';
-        page.style.filter = '';
-        page.style.zIndex = '';
-        page.style.setProperty('--fold', 0);
-      });
-      previous.disabled = current === 0;
-      next.disabled = current === pages.length - 1;
-      counter.textContent = `${current + 1} / ${pages.length}`;
-
-      const derniere = current === pages.length - 1;
-      const carnetQuestion = document.getElementById('carnetQuestion');
-      if (carnetQuestion) {
-        carnetQuestion.classList.toggle('visible', derniere);
-        if (derniere) {
-          carnetQuestion.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }
-      }
-    }
-
-    function turn(direction) {
-      const target = current + direction;
-      if (target < 0 || target >= pages.length) return;
-      const page = pages[current];
-      const revealedPage = pages[target];
-      page.style.transformOrigin = direction > 0 ? 'left center' : 'right center';
-      revealedPage.style.zIndex = '2';
-      revealedPage.style.filter = 'brightness(.82)';
-      page.classList.add('turning');
-      window.requestAnimationFrame(() => {
-        page.style.transform = `rotateY(${direction > 0 ? '-179deg' : '179deg'})`;
-        page.style.setProperty('--fold', 1);
-        revealedPage.style.filter = 'brightness(1)';
-      });
-      if (navigator.vibrate) navigator.vibrate(15);
-      window.setTimeout(() => {
-        page.classList.remove('turning');
-        current = target;
-        showPages();
-      }, 730);
-    }
-
-    carnetBook.addEventListener('pointerdown', event => {
-      if (event.target.closest('button') || event.target.closest('a')) return;
-      tracking = true;
-      startX = event.clientX;
-      startY = event.clientY;
-      deltaX = 0;
-      carnetBook.setPointerCapture?.(event.pointerId);
-    });
-
-    carnetBook.addEventListener('pointermove', event => {
-      if (!tracking) return;
-      deltaX = event.clientX - startX;
-      const dy = event.clientY - startY;
-      if (Math.abs(dy) > Math.abs(deltaX) * 1.2) return;
-      const allowed = (deltaX < 0 && current < pages.length - 1) || (deltaX > 0 && current > 0);
-      if (!allowed) deltaX *= .18;
-      const progress = Math.min(Math.abs(deltaX) / carnetBook.clientWidth, 1);
-      const direction = deltaX < 0 ? 1 : -1;
-      const target = current + direction;
-      const angle = progress * 165 * (direction > 0 ? -1 : 1);
-      const page = pages[current];
-      page.style.transformOrigin = direction > 0 ? 'left center' : 'right center';
-      page.style.transform = `rotateY(${angle}deg)`;
-      page.style.setProperty('--fold', Math.min(progress * 1.35, 1).toFixed(2));
-      if (target >= 0 && target < pages.length) {
-        pages.forEach((item, index) => { if (index !== current) item.style.zIndex = '1'; });
-        pages[target].style.zIndex = '2';
-        pages[target].style.filter = `brightness(${(.82 + progress * .18).toFixed(2)})`;
-      }
-    });
-
-    function release(event) {
-      if (!tracking) return;
-      tracking = false;
-      const dy = event.clientY - startY;
-      const horizontal = Math.abs(deltaX) > Math.abs(dy) * 1.15;
-      if (horizontal && Math.abs(deltaX) > 48) turn(deltaX < 0 ? 1 : -1);
-      else {
-        pages[current].classList.add('turning');
-        pages[current].style.transform = '';
-        pages[current].style.setProperty('--fold', 0);
-        pages.forEach(page => { page.style.filter = ''; page.style.zIndex = ''; });
-        window.setTimeout(() => pages[current]?.classList.remove('turning'), 730);
-      }
-    }
-
-    carnetBook.addEventListener('pointerup', release);
-    carnetBook.addEventListener('pointercancel', () => { tracking = false; showPages(); });
-    previous.addEventListener('click', () => turn(-1));
-    next.addEventListener('click', () => turn(1));
-    document.addEventListener('keydown', event => {
-      if (event.key === 'ArrowLeft') turn(-1);
-      if (event.key === 'ArrowRight') turn(1);
-    });
-
-    showPages();
-  })();
 </script>
 
 </body>
