@@ -1,1 +1,424 @@
 
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17110d">
+  <title>Mon histoire</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+    :root {
+      --night: #17110d;
+      --gold: #d4af37;
+      --text: #f5df9a;
+      --paper: #f4eddf;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      min-height: 100svh;
+      overflow: hidden;
+      overscroll-behavior: none;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 50% 36%, rgba(116, 78, 42, .18), transparent 42%),
+        linear-gradient(145deg, #241a13, var(--night) 70%);
+      font-family: Montserrat, Arial, sans-serif;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .return-site {
+      position: fixed;
+      top: max(12px, env(safe-area-inset-top));
+      right: max(10px, env(safe-area-inset-right));
+      z-index: 100;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 40px;
+      padding: 8px 13px;
+      border: 1px solid rgba(212, 175, 55, .75);
+      border-radius: 999px;
+      color: var(--text);
+      background: rgba(23, 17, 13, .9);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+    }
+
+    .return-site[hidden] { display: none; }
+
+    .nav-back {
+      position: fixed;
+      top: max(14px, env(safe-area-inset-top));
+      left: max(12px, env(safe-area-inset-left));
+      z-index: 100;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 45px;
+      height: 45px;
+      min-height: 45px;
+      padding: 0;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      background: rgba(20, 8, 10, .92);
+      color: var(--text);
+      font-size: 24px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .stage {
+      width: 100%;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: max(64px, calc(env(safe-area-inset-top) + 54px)) 14px
+               max(76px, calc(env(safe-area-inset-bottom) + 62px));
+      perspective: 1500px;
+    }
+
+    .book {
+      position: relative;
+      width: min(430px, 90vw, calc((100svh - 150px) * .6667));
+      aspect-ratio: 2 / 3;
+      filter: drop-shadow(0 24px 28px rgba(0, 0, 0, .48));
+    }
+
+    .page {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 7px 24px 24px 7px;
+      transform-origin: left center;
+      transform-style: preserve-3d;
+      backface-visibility: visible;
+      will-change: transform, opacity;
+      background: var(--paper);
+      box-shadow: inset 13px 0 18px rgba(62, 38, 20, .18), 0 2px 0 rgba(255, 255, 255, .3);
+    }
+
+    .page > * {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    /* Le verso visible durant le tournage : il donne l'impression d'une vraie feuille. */
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      border-radius: inherit;
+      transform: rotateY(180deg) translateZ(1px);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background:
+        repeating-radial-gradient(ellipse at 24% 20%, rgba(139, 95, 43, .045) 0 1px, transparent 1px 9px),
+        linear-gradient(90deg, #ded1bd 0%, #f5eee1 13%, #eee4d3 100%);
+      box-shadow: inset -15px 0 24px rgba(64, 39, 21, .2), inset 2px 0 0 rgba(255, 255, 255, .5);
+      pointer-events: none;
+    }
+
+    .page.cover-page { border-radius: 18px 25px 25px 18px; }
+
+    .page-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .page::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      opacity: var(--fold, 0);
+      transform: translateZ(2px);
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent 48%, rgba(255, 255, 255, .27) 78%, rgba(38, 20, 10, .4));
+    }
+
+    .page.is-current { z-index: 3; }
+    .page.is-next { z-index: 2; }
+    .page.is-hidden { z-index: 1; visibility: hidden; }
+    .page.turning { transition: transform .72s cubic-bezier(.18, .72, .18, 1), filter .72s ease; }
+
+    .navigation {
+      position: fixed;
+      left: 50%;
+      bottom: max(13px, env(safe-area-inset-bottom));
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateX(-50%);
+    }
+
+    .nav-button {
+      min-width: 42px;
+      min-height: 38px;
+      border: 1px solid rgba(212, 175, 55, .7);
+      border-radius: 999px;
+      color: var(--text);
+      background: rgba(23, 17, 13, .9);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .nav-button:disabled { opacity: .38; cursor: default; }
+
+    .counter {
+      min-width: 50px;
+      color: #d8cbb7;
+      text-align: center;
+      font-size: 11px;
+    }
+
+    .hint {
+      position: fixed;
+      right: 14px;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      color: rgba(245, 239, 224, .64);
+      font-size: 9px;
+    }
+
+    .continue-link {
+      position: fixed;
+      left: 50%;
+      bottom: max(60px, calc(env(safe-area-inset-bottom) + 48px));
+      transform: translateX(-50%);
+      z-index: 100;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border: 1px solid rgba(212, 175, 55, .75);
+      border-radius: 999px;
+      color: var(--night);
+      background: var(--gold);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, .4);
+    }
+
+    .continue-link[hidden] { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .page.turning { transition-duration: .01ms; }
+    }
+  </style>
+</head>
+<body>
+  <a class="nav-back" href="2707.html#chapitre1" aria-label="Retour au chapitre">←</a>
+  <a class="return-site" id="returnSite" href="#">← <span id="returnLabel">Retour au site</span></a>
+
+  <main class="stage" aria-label="Livre interactif">
+    <!-- Les pages sont créées automatiquement à partir de la configuration ci-dessous. -->
+    <div class="book" id="book"></div>
+  </main>
+
+  <nav class="navigation" aria-label="Navigation du livre">
+    <button class="nav-button" id="previous" type="button" aria-label="Page précédente">‹</button>
+    <span class="counter" id="counter"></span>
+    <button class="nav-button" id="next" type="button" aria-label="Page suivante">›</button>
+  </nav>
+  <span class="hint">Glissez pour tourner la page</span>
+  <a class="continue-link" id="continueLink" href="2707.html#chapitre3" hidden>Suite →</a>
+
+  <script>
+    /*
+      ────────────────────────────────────────────────────────────────────────
+      À MODIFIER POUR UNE NOUVELLE HISTOIRE
+      - Remplace l'image de "cover" par ta couverture.
+      - Ajoute, retire ou remplace des lignes dans "pages".
+      - Le nombre de pages et le compteur se mettent à jour automatiquement.
+      - Toutes les images ci-dessous sont placées dans le dossier "images".
+      ────────────────────────────────────────────────────────────────────────
+    */
+    const STORY = {
+      title: 'Mon histoire',
+      returnUrl: 'https://avelescape.github.io/aventures/', // Mets '' pour cacher le bouton de retour.
+      returnLabel: 'Site AvelEscape',
+      cover: {
+        src: 'images/3-webpcarnet1.webp',
+        alt: 'Couverture du carnet contremaître'
+      },
+      pages: [
+        { src: 'images/3-webpcarnet2.webp', alt: 'Page 1' },
+        { src: 'images/3-webpcarnet3.webp', alt: 'Page 2' },
+        { src: 'images/3-webpcarnet4.webp', alt: 'Page 3' }
+      ]
+    };
+
+    (() => {
+      document.title = STORY.title;
+
+      const book = document.getElementById('book');
+      const previous = document.getElementById('previous');
+      const next = document.getElementById('next');
+      const counter = document.getElementById('counter');
+      const returnSite = document.getElementById('returnSite');
+      const returnLabel = document.getElementById('returnLabel');
+      const continueLink = document.getElementById('continueLink');
+      const allPages = [STORY.cover, ...STORY.pages];
+
+      if (STORY.returnUrl) {
+        returnSite.href = STORY.returnUrl;
+        returnLabel.textContent = STORY.returnLabel;
+      } else {
+        returnSite.hidden = true;
+      }
+
+      allPages.forEach((pageData, index) => {
+        const page = document.createElement('section');
+        page.className = `page${index === 0 ? ' cover-page' : ''}`;
+        page.dataset.page = index;
+        page.setAttribute('aria-label', index === 0 ? 'Couverture' : `Page ${index}`);
+
+        const image = document.createElement('img');
+        image.className = 'page-image';
+        image.src = pageData.src;
+        image.alt = pageData.alt || (index === 0 ? 'Couverture' : `Page ${index}`);
+        page.append(image);
+        book.append(page);
+      });
+
+      const pages = [...book.querySelectorAll('.page')];
+      let current = 0;
+      let tracking = false;
+      let startX = 0;
+      let startY = 0;
+      let deltaX = 0;
+
+      function showPages() {
+        pages.forEach((page, index) => {
+          page.classList.toggle('is-current', index === current);
+          page.classList.toggle('is-next', index === current + 1 || index === current - 1);
+          page.classList.toggle('is-hidden', Math.abs(index - current) > 1);
+          page.style.transform = '';
+          page.style.filter = '';
+          page.style.zIndex = '';
+          page.style.setProperty('--fold', 0);
+        });
+        previous.disabled = current === 0;
+        next.disabled = current === pages.length - 1;
+        counter.textContent = `${current + 1} / ${pages.length}`;
+        continueLink.hidden = current !== pages.length - 1;
+      }
+
+      function turn(direction) {
+        const target = current + direction;
+        if (target < 0 || target >= pages.length) return;
+
+        const page = pages[current];
+        const revealedPage = pages[target];
+        page.style.transformOrigin = direction > 0 ? 'left center' : 'right center';
+        revealedPage.style.zIndex = '2';
+        revealedPage.style.filter = 'brightness(.82)';
+        page.classList.add('turning');
+
+        window.requestAnimationFrame(() => {
+          page.style.transform = `rotateY(${direction > 0 ? '-179deg' : '179deg'})`;
+          page.style.setProperty('--fold', 1);
+          revealedPage.style.filter = 'brightness(1)';
+        });
+
+        if (navigator.vibrate) navigator.vibrate(15);
+        window.setTimeout(() => {
+          page.classList.remove('turning');
+          current = target;
+          showPages();
+        }, 730);
+      }
+
+      book.addEventListener('pointerdown', event => {
+        if (event.target.closest('a, button')) return;
+        tracking = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        deltaX = 0;
+        book.setPointerCapture?.(event.pointerId);
+      });
+
+      book.addEventListener('pointermove', event => {
+        if (!tracking) return;
+        deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
+        if (Math.abs(deltaY) > Math.abs(deltaX) * 1.2) return;
+
+        const allowed = (deltaX < 0 && current < pages.length - 1) || (deltaX > 0 && current > 0);
+        if (!allowed) deltaX *= .18;
+
+        const progress = Math.min(Math.abs(deltaX) / book.clientWidth, 1);
+        const direction = deltaX < 0 ? 1 : -1;
+        const target = current + direction;
+        const angle = progress * 165 * (direction > 0 ? -1 : 1);
+        const page = pages[current];
+        page.style.transformOrigin = direction > 0 ? 'left center' : 'right center';
+        page.style.transform = `rotateY(${angle}deg)`;
+        page.style.setProperty('--fold', Math.min(progress * 1.35, 1).toFixed(2));
+
+        if (target >= 0 && target < pages.length) {
+          pages.forEach((item, index) => {
+            if (index !== current) item.style.zIndex = '1';
+          });
+          pages[target].style.zIndex = '2';
+          pages[target].style.filter = `brightness(${(.82 + progress * .18).toFixed(2)})`;
+        }
+      });
+
+      function release(event) {
+        if (!tracking) return;
+        tracking = false;
+        const deltaY = event.clientY - startY;
+        const horizontal = Math.abs(deltaX) > Math.abs(deltaY) * 1.15;
+
+        if (horizontal && Math.abs(deltaX) > 48) {
+          turn(deltaX < 0 ? 1 : -1);
+        } else {
+          pages[current].classList.add('turning');
+          pages[current].style.transform = '';
+          pages[current].style.setProperty('--fold', 0);
+          pages.forEach(page => {
+            page.style.filter = '';
+            page.style.zIndex = '';
+          });
+          window.setTimeout(() => pages[current]?.classList.remove('turning'), 730);
+        }
+      }
+
+      book.addEventListener('pointerup', release);
+      book.addEventListener('pointercancel', () => {
+        tracking = false;
+        showPages();
+      });
+      previous.addEventListener('click', () => turn(-1));
+      next.addEventListener('click', () => turn(1));
+      document.addEventListener('keydown', event => {
+        if (event.key === 'ArrowLeft') turn(-1);
+        if (event.key === 'ArrowRight') turn(1);
+      });
+
+      showPages();
+    })();
+  </script>
+</body>
+</html>
