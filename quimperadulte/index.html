@@ -317,6 +317,32 @@ input {
   .site-retour { min-height: 34px; padding: 6px 10px; font-size: 12px; }
   .nav-back { width: 40px; height: 40px; min-height: 40px; }
 }
+
+/* Overlay d'animation (mécanismes, trappes...) */
+#overlay-anim {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#overlay-anim iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  flex: 1;
+}
+
+#overlay-anim button {
+  position: absolute;
+  bottom: 20px;
+  margin: 0;
+  z-index: 1001;
+}
 </style>
 </head>
 
@@ -411,14 +437,34 @@ input {
       <p>"La pierre, le bois, le verre et l'ardoise s'y unissent dans une parfaite harmonie"</p>
 
       <div class="navigation">
+        <button onclick="changerPage('chapitre3-1')">Suite →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="chapitre3-1">
+    <div class="cadre">
+    <h3>Etes-vous devant la bâtisse évoquée?</h3>
+      <p>Réponsez à cette question:</p>
+      <h3>Combien de croix de Saint André voyez-vous sur le bâtiment?</h3>
+      <p>"Ces croix, sont des contreventements destinés à rigidifier les murs""</p>
+
+      <div class="navigation">
+        <input type="text" id="reponse-chapitre3-1" placeholder="Nombre de croix" inputmode="numeric" autocomplete="off">
+        <button onclick="verifierChapitre3_1()">Valider</button>
         <button onclick="retour()">← Retour</button>
       </div>
+
+      <p id="message-chapitre3-1"></p>
+
+      <button class="btn-savoir" id="indice-chapitre3-1-btn" style="display:none;" onclick="changerPage('indice3')">🔍 Indice</button>
     </div>
   </section>
 
   <section class="scene" id="indice3">
     <div class="cadre">
       <h3>Indice</h3>
+      <!-- TODO: ajouter l'image images/indice3.webp -->
       <img src="images/indice3.webp" alt="Indice chapitre 3" style="max-width:55%; max-height:35vh; object-fit:contain; border-radius:8px; margin:1rem 0;">
       <div class="navigation">
         <button onclick="changerPage('chapitre3')">Retour à l'enquête</button>
@@ -426,7 +472,32 @@ input {
     </div>
   </section>
 
+  <section class="scene" id="chapitre3-2">
+    <div class="cadre">
+      <h3>Vous êtes au bon endroit</h3>
+      <p>Un mécanisme semble dissimulé dans la façade.</p>
+      <div class="navigation">
+        <button onclick="lancerAnimation('mecanisme-panneau/index.html', 'chapitre4')">Examiner la façade</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="chapitre4">
+    <div class="cadre">
+      <!-- TODO: ajouter l'image et le texte du chapitre 4 -->
+      <p>Le panneau a pivoté, révélant la suite de l'enquête.</p>
+      <div class="navigation">
+        <button onclick="retour()">← Retour</button>
+      </div>
+    </div>
+  </section>
+
 </main>
+
+<div id="overlay-anim">
+  <iframe id="iframe-anim" src="" allowfullscreen></iframe>
+  <button id="btn-continuer-anim">Continuer →</button>
+</div>
 
 <script>
 let historiquePages = [];
@@ -506,6 +577,38 @@ function verifierGradlon() {
     message.textContent = "Ce n'est pas la bonne réponse.";
     btnIndice.style.display = "inline-block";
   }
+}
+
+function verifierChapitre3_1() {
+  const reponse = document.getElementById("reponse-chapitre3-1").value.trim();
+  const message = document.getElementById("message-chapitre3-1");
+  const btnIndice = document.getElementById("indice-chapitre3-1-btn");
+
+  if (reponse === "18") {
+    message.textContent = "Exact, vous êtes au bon endroit !";
+    setTimeout(() => changerPage('chapitre3-2'), 1200);
+  } else {
+    message.textContent = "Ce n'est pas la bonne réponse.";
+    btnIndice.style.display = "inline-block";
+  }
+}
+
+function lancerAnimation(fichier, pageSuivante) {
+  const overlay = document.getElementById("overlay-anim");
+  const iframe = document.getElementById("iframe-anim");
+  const btnContinuer = document.getElementById("btn-continuer-anim");
+  const boutonSiteRetour = document.querySelector(".site-retour");
+
+  iframe.src = fichier;
+  overlay.style.display = "flex";
+  if (boutonSiteRetour) boutonSiteRetour.style.display = "none";
+
+  btnContinuer.onclick = function () {
+    overlay.style.display = "none";
+    iframe.src = "";
+    if (boutonSiteRetour) boutonSiteRetour.style.display = "";
+    changerPage(pageSuivante);
+  };
 }
 </script>
 
