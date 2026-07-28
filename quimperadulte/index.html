@@ -272,6 +272,44 @@ input {
   display: flex;
 }
 
+/* Image miniature cliquable (agrandissement en plein écran) */
+.img-vignette {
+  width: 140px;
+  max-width: 40%;
+  border-radius: 10px;
+  border: 2px solid var(--accent2);
+  box-shadow: 0 6px 16px rgba(0,0,0,.45);
+  cursor: zoom-in;
+  transition: transform 0.15s;
+}
+
+.img-vignette:active {
+  transform: scale(0.96);
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(5, 3, 2, 0.92);
+  cursor: zoom-out;
+}
+
+.lightbox.visible {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
+  box-shadow: 0 0 40px rgba(0,0,0,.6);
+}
+
 @media (max-width: 600px) {
   .cadre { padding: 20px 16px; }
   button { width: 100%; }
@@ -291,6 +329,10 @@ input {
 
 <!-- BOUTON RETOUR À LA SCÈNE PRÉCÉDENTE -->
 <button class="nav-back" id="nav-back" type="button" onclick="retour()" aria-label="Retour">←</button>
+
+<div class="lightbox" id="lightbox" onclick="fermerLightbox()">
+  <img id="lightbox-img" src="" alt="">
+</div>
 
 <main>
 
@@ -361,7 +403,7 @@ input {
 
   <section class="scene" id="chapitre3">
     <div class="cadre">
-      <img src="images/3-webpcarnetsocle-341x512.webp" alt="Statue du roi Gradlon">
+      <img src="images/3-webpcarnetsocle-341x512.webp" alt="page du carnet évoquant le socle" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
       <h1>Le socle</h1>
       <p>Le socle et sa boîte ont été dissimulés par le contremaître dans la facade d'une demeure au moyen d'un mécanisme secret</p>
       <h3>La bâtissse se trouve à quelques pas de la Place au beurre</h3>
@@ -414,6 +456,18 @@ function changerPage(id) {
   document.getElementById(id).classList.add("active");
   window.scrollTo(0, 0);
   mettreAJourNavBack();
+}
+
+function ouvrirLightbox(src, alt) {
+  const lightbox = document.getElementById("lightbox");
+  const img = document.getElementById("lightbox-img");
+  img.src = src;
+  img.alt = alt || "";
+  lightbox.classList.add("visible");
+}
+
+function fermerLightbox() {
+  document.getElementById("lightbox").classList.remove("visible");
 }
 
 function retour() {
