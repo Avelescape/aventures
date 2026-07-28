@@ -339,6 +339,10 @@
         estOuvert ? "true" : "false"
       );
 
+      if (estOuvert && window.parent && window.parent !== window) {
+        window.parent.postMessage("mecanisme-ouvert", "*");
+      }
+
       /*
         Petite vibration sur les téléphones compatibles.
       */
