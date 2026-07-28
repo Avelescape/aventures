@@ -1009,6 +1009,10 @@
 
       scene.classList.add("est-ouverte");
 
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage("mecanisme-ouvert", "*");
+      }
+
       jouerSonTrappe();
 
       messageScene.hidden = false;
