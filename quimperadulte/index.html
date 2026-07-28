@@ -329,6 +329,7 @@ input {
       <div class="navigation">
         <input type="text" id="reponse-gradlon" placeholder="Année" inputmode="numeric" autocomplete="off">
         <button onclick="verifierGradlon()">Valider</button>
+        <button onclick="retour()">← Retour</button>
       </div>
 
       <p id="message-gradlon"></p>
@@ -353,6 +354,7 @@ input {
       <p>Bravo, vous avez trouvé la bonne réponse !</p>
       <div class="navigation">
         <button onclick="window.location.href='carnet/index.html'">Consulter le carnet</button>
+        <button onclick="retour()">← Retour</button>
       </div>
     </div>
   </section>
@@ -360,13 +362,15 @@ input {
   <section class="scene" id="chapitre3">
     <div class="cadre">
       <img src="images/3-webpcarnetsocle-341x512.webp" alt="Statue du roi Gradlon">
-      <h1>Le socle.</h1>
-      <p>Le socle et sa boîte ont été dissimulé par le contremaître dans la facade d'une demeure au moyen d'un mécanisme secret</p>
+      <h1>Le socle</h1>
+      <p>Le socle et sa boîte ont été dissimulés par le contremaître dans la facade d'une demeure au moyen d'un mécanisme secret</p>
       <h3>La bâtissse se trouve à quelques pas de la Place au beurre</h3>
-      <p>"Elle se pare d'un bleu adouci par la brume de cornouaille"</p>
-      <p>La pierre, le bois, le verre et l'ardoise s'y unissent dans une parfaite harmonie"</p>
+      <p>"Elle se pare d'un bleu adouci par la brume de cornouaille."</p>
+      <p>"La pierre, le bois, le verre et l'ardoise s'y unissent dans une parfaite harmonie"</p>
 
-      <button class="btn-savoir" onclick="changerPage('indice3')">🔍 Indice</button>
+      <div class="navigation">
+        <button onclick="retour()">← Retour</button>
+      </div>
     </div>
   </section>
 
