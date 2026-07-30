@@ -409,6 +409,39 @@ input {
   filter: drop-shadow(0 0 10px rgba(245, 194, 75, 0.8));
 }
 
+/* Étape 1 (lettres) active par défaut : les poids sont visibles mais inertes. */
+.meca-zone[data-poids] {
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* Étape 2 (poids) : on active les poids et on désactive les lettres déjà validées. */
+#meca-game.meca-etape-2 .meca-zone[data-poids] {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#meca-game.meca-etape-2 .meca-zone[data-lettre] {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.meca-etape-label {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+  color: var(--ivoire);
+  background: rgba(0, 0, 0, 0.45);
+  padding: 6px 16px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
 .meca-zone-label {
   font-family: Georgia, serif;
   font-size: 64px;
@@ -1692,7 +1725,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   </div>
 
   <button class="btn-primary" onclick="showScreen('sommetphare')">
-    Montez virtuellement au sommet du phare
+    Montez au sommet du phare
   </button>
 </div>
 
@@ -1705,20 +1738,24 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
       <button class="meca-reset" onclick="resetMecanismePhare()">Réinitialiser</button>
 
+      <div id="meca-etape-label" class="meca-etape-label">Étape 1 : entrez l'ordre des lettres</div>
+
       <div id="meca-gearA" class="meca-gear meca-gear-small"></div>
       <div id="meca-gearB" class="meca-gear meca-gear-big"></div>
       <div id="meca-gearC" class="meca-gear meca-gear-small"></div>
       <div id="meca-gearD" class="meca-gear meca-gear-big"></div>
 
+      <!-- ÉTAPE 1 : coordonnées provisoires, à recaler une fois l'image finale en place -->
       <svg class="meca-zones" viewBox="0 0 1152 2048" preserveAspectRatio="none">
-        <rect class="meca-zone" x="370" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('A', this)" />
-        <rect class="meca-zone" x="520" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('B', this)" />
-        <rect class="meca-zone" x="680" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('C', this)" />
-        <rect class="meca-zone" x="850" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('D', this)" />
+        <rect class="meca-zone" data-lettre="A" x="370" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('A', this)" />
+        <rect class="meca-zone" data-lettre="B" x="520" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('B', this)" />
+        <rect class="meca-zone" data-lettre="C" x="680" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('C', this)" />
+        <rect class="meca-zone" data-lettre="D" x="850" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('D', this)" />
 
-        <rect class="meca-zone" x="500" y="1500" width="130" height="280" rx="15" onclick="clickZoneMecanisme('E', this)" />
-        <rect class="meca-zone" x="680" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('F', this)" />
-        <rect class="meca-zone" x="820" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('G', this)" />
+        <!-- ÉTAPE 2 : 3 poids, inactifs tant que l'étape 1 n'est pas résolue -->
+        <rect class="meca-zone" data-poids="20" x="500" y="1500" width="130" height="280" rx="15" onclick="clickPoidsMecanisme('20', this)" />
+        <rect class="meca-zone" data-poids="30" x="680" y="1400" width="130" height="400" rx="15" onclick="clickPoidsMecanisme('30', this)" />
+        <rect class="meca-zone" data-poids="40" x="820" y="1400" width="130" height="400" rx="15" onclick="clickPoidsMecanisme('40', this)" />
 
       </svg>
 
@@ -1742,6 +1779,9 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
   <audio id="sonSuccesMecanisme" src="audios/engrenages.mp3" preload="auto"></audio>
   <audio id="sonZoneMecanisme" src="audios/ABCDEFG.mp3" preload="auto"></audio>
+  <!-- Fichiers à fournir : je ne peux pas générer d'audio -->
+  <audio id="sonEtapeMecanisme" src="audios/victoire-etape.mp3" preload="auto"></audio>
+  <audio id="sonErreurMecanisme" src="audios/erreur.mp3" preload="auto"></audio>
 </div>
 
 
@@ -1773,7 +1813,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
        src="images/1-webfin.webp"
        alt="Fin de l'aventure">
        <p>Bravo, vous avez sauvé Yannick et les marins!</p>
-       <p>Grâce à votre perspicacité, les naufrageurs ne sont pas arrivés à leur fin,</p>
+       <p>C'est grâce à vous et à votre perspicacité, les naufrageurs ne sont pas arrivés à leur fin,</p>
        <p>cette fois-çi...</p>
        <p>Peut-être les retrouverons-nous dans une de nos prochaines aventures ?</p>
        <p>...</p>
@@ -2562,13 +2602,17 @@ if (codeAncienPhareInput) {
 
 
 /* SOMMET DU PHARE - MÉCANISME HTML */
-const codeCorrectMecanisme = ["D", "A", "B", "C", "F"];
+// TODO : remplacer par le vrai code trouvé sur le sceau.
+const ordreLettresCorrect = ["A", "B", "C", "D"];
+// TODO : remplacer par le vrai poids (déduit du signal "1 éclat / 15s").
+const poidsCorrect = "30";
 
 const imageMecanismeEteinte = "images/1-webplentilleeteinte.webp";
 const imageMecanismeAllumee = "images/1-webplentilleallume.webp";
 const imageMecanismeFaisceau = "images/1-webplentillefaisceau.webp";
 
-let sequenceMecanisme = [];
+let indexLettreAttendue = 0;
+let etapeMecanisme = 1; // 1 = lettres, 2 = poids
 let nbErreursMecanisme = 0;
 let mecanismeSolved = false;
 let phareIntervalMecanisme = null;
@@ -2599,36 +2643,82 @@ function jouerSonZoneMecanisme() {
   });
 }
 
+function jouerSonEtapeMecanisme() {
+  const son = document.getElementById("sonEtapeMecanisme");
+  if (!son) return;
+
+  son.pause();
+  son.currentTime = 0;
+
+  son.play().catch(error => {
+    console.log("Son d'étape bloqué :", error);
+  });
+}
+
+function jouerSonErreurMecanisme() {
+  const son = document.getElementById("sonErreurMecanisme");
+  if (!son) return;
+
+  son.pause();
+  son.currentTime = 0;
+
+  son.play().catch(error => {
+    console.log("Son d'erreur bloqué :", error);
+  });
+}
+
 function clickZoneMecanisme(letter, zoneEl) {
-  if (mecanismeSolved) return;
+  if (mecanismeSolved || etapeMecanisme !== 1) return;
 
-  jouerSonZoneMecanisme();
-  hideMessageMecanisme();
-  sequenceMecanisme.push(letter);
+  const lettreAttendue = ordreLettresCorrect[indexLettreAttendue];
 
-  if (zoneEl) zoneEl.classList.add('meca-zone-selected');
+  if (letter === lettreAttendue) {
+    jouerSonZoneMecanisme();
+    hideMessageMecanisme();
+    if (zoneEl) zoneEl.classList.add('meca-zone-selected');
+    indexLettreAttendue++;
 
-  // IMPORTANT : on ne vérifie pas le code à chaque clic.
-  // On laisse d'abord le joueur cliquer sur toutes les zones nécessaires.
-  if (sequenceMecanisme.length < codeCorrectMecanisme.length) {
+    if (indexLettreAttendue === ordreLettresCorrect.length) {
+      passerEtapePoids();
+    }
     return;
   }
 
-  const codeEntre = sequenceMecanisme.join("");
-  const codeAttendu = codeCorrectMecanisme.join("");
+  echecMecanisme("Mauvais ordre. Le mécanisme se bloque.");
+  indexLettreAttendue = 0;
+  reinitialiserZonesMecanisme();
+}
 
-  if (codeEntre === codeAttendu) {
+function passerEtapePoids() {
+  etapeMecanisme = 2;
+  jouerSonEtapeMecanisme();
+
+  const game = document.getElementById("meca-game");
+  const label = document.getElementById("meca-etape-label");
+
+  if (game) game.classList.add("meca-etape-2");
+  if (label) label.textContent = "Étape 2 : choisissez le bon poids";
+
+  showMessageMecanisme("Le mécanisme frémit... il attend maintenant le bon poids.");
+}
+
+function clickPoidsMecanisme(valeur, zoneEl) {
+  if (mecanismeSolved || etapeMecanisme !== 2) return;
+
+  if (valeur === poidsCorrect) {
+    if (zoneEl) zoneEl.classList.add('meca-zone-selected');
     successMecanisme();
     return;
   }
 
-  // Ici seulement, après une séquence complète, on compte 1 échec.
-  nbErreursMecanisme++;
-  vibrerEchec();
-  sequenceMecanisme = [];
-  reinitialiserZonesMecanisme();
+  echecMecanisme("Ce poids ne convient pas.");
+}
 
-  showMessageMecanisme("Mauvais ordre. Le mécanisme se bloque.");
+function echecMecanisme(message) {
+  jouerSonErreurMecanisme();
+  vibrerEchec();
+  nbErreursMecanisme++;
+  showMessageMecanisme(message);
   mettreAJourBoutonsIndicesMecanisme();
 }
 
@@ -2734,15 +2824,18 @@ function lancerFaisceauMecanisme() {
 }
 
 function resetMecanismePhare() {
-  sequenceMecanisme = [];
+  indexLettreAttendue = 0;
+  etapeMecanisme = 1;
   nbErreursMecanisme = 0;
   mecanismeSolved = false;
 
   const game = document.getElementById("meca-game");
   const fond = document.getElementById("meca-fond");
   const suite = document.getElementById("meca-suite");
+  const label = document.getElementById("meca-etape-label");
 
-  if (game) game.classList.remove("meca-active");
+  if (game) game.classList.remove("meca-active", "meca-etape-2");
+  if (label) label.textContent = "Étape 1 : entrez l'ordre des lettres";
 
   clearInterval(phareIntervalMecanisme);
   clearTimeout(faisceauTimeoutMecanisme);
@@ -2811,6 +2904,7 @@ window.verifierReponseMoine = verifierReponseMoine;
 window.afficherIndiceMoine = afficherIndiceMoine;
 window.verifierCodeAncienPhare = verifierCodeAncienPhare;
 window.clickZoneMecanisme = clickZoneMecanisme;
+window.clickPoidsMecanisme = clickPoidsMecanisme;
 window.resetMecanismePhare = resetMecanismePhare;
 window.suiteMecanismePhare = suiteMecanismePhare;
 window.mettreAJourBoutonsIndicesMecanisme = mettreAJourBoutonsIndicesMecanisme;
