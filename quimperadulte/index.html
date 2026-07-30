@@ -470,15 +470,6 @@ input {
     </div>
   </section>
 
-  <section class="scene" id="chapitre3-2">
-    <div class="cadre">
-      <h3>Vous êtes au bon endroit</h3>
-      <div class="navigation">
-        <button onclick="lancerAnimation('mecanisme-trappe/index.html', 'chapitre3-3')">Examiner la façade</button>
-      </div>
-    </div>
-  </section>
-
   <section class="scene" id="chapitre3-3">
     <div class="cadre">
       <img src="images/3-webpcoffrecavite.webp" alt="cavite secrete dans le mûr" class="image-scene">
@@ -502,7 +493,44 @@ input {
 
   <section class="scene" id="chapitre4">
     <div class="cadre">
-      <!-- TODO: ajouter l'image et le texte du chapitre 4 -->
+      <img src="images/3-webpcarnetschiste.webp" alt="page carnet M Le Gall - artefact schiste" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
+    <h1>Le schiste</h1>
+      <p>Sébastien, le tailleur de pierres a également caché l'artefact dans le mûr de sa maison.</p>
+      <h3>La bâtissse se trouve dans une toute petite ruelle,</h3>
+      <h3>et de veiller sur la cachette.</h3>
+      <p>Elle est actuellement la plus vieille bâtisse civile du Finistère,</p>
+      <p>et une excellent table à Quimper</p>
+      <div class="navigation">
+        <button onclick="changerPage('chapitre4-1')">Vous pensez l'avoir trouvé →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="chapitre4-1">
+    <div class="cadre">
+      <h3>Quels sont les objets présents sur le panneau précisant que la maison est la plus ancienne du Finistère ?</h3>
+      <p>Sélectionnez deux réponses.</p>
+
+      <div class="choix-qcm" id="choix-chapitre4-1">
+        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Marteau')">Marteau</button>
+        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Plan')">Plan</button>
+        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Compas')">Compas</button>
+        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Equerre')">Equerre</button>
+        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Echelle')">Echelle</button>
+        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Truelle')">Truelle</button>
+      </div>
+
+      <div class="navigation">
+        <button onclick="verifierChapitre4_1()">Valider</button>
+      </div>
+
+      <p id="message-chapitre4-1"></p>
+    </div>
+  </section>
+
+  <section class="scene" id="chapitre4-2">
+    <div class="cadre">
+      <!-- TODO: ajouter l'image et le texte du chapitre 4-2 -->
       <p>La suite de l'enquête reste à écrire.</p>
       <div class="navigation">
         <button onclick="retour()">← Retour</button>
@@ -597,6 +625,32 @@ function verifierGradlon() {
   }
 }
 
+const choixChapitre4_1 = new Set();
+
+function toggleChoixChapitre4_1(btn, valeur) {
+  if (choixChapitre4_1.has(valeur)) {
+    choixChapitre4_1.delete(valeur);
+    btn.classList.remove("selectionne");
+  } else {
+    if (choixChapitre4_1.size >= 2) return;
+    choixChapitre4_1.add(valeur);
+    btn.classList.add("selectionne");
+  }
+}
+
+function verifierChapitre4_1() {
+  const message = document.getElementById("message-chapitre4-1");
+  const bonnes = ["Plan", "Equerre"];
+  const correct = bonnes.every(r => choixChapitre4_1.has(r)) && choixChapitre4_1.size === 2;
+
+  if (correct) {
+    message.textContent = "Exact !";
+    setTimeout(() => lancerAnimation('mecanisme-panneau/index.html', 'chapitre4-2'), 1200);
+  } else {
+    message.textContent = "Ce n'est pas la bonne combinaison.";
+  }
+}
+
 function verifierChapitre3_1() {
   const reponse = document.getElementById("reponse-chapitre3-1").value.trim();
   const message = document.getElementById("message-chapitre3-1");
@@ -604,7 +658,7 @@ function verifierChapitre3_1() {
 
   if (reponse === "18") {
     message.textContent = "Exact, vous êtes au bon endroit !";
-    setTimeout(() => changerPage('chapitre3-2'), 1200);
+    setTimeout(() => lancerAnimation('mecanisme-trappe/index.html', 'chapitre3-3'), 1200);
   } else {
     message.textContent = "Ce n'est pas la bonne réponse.";
     btnIndice.style.display = "inline-block";
@@ -619,11 +673,21 @@ function lancerAnimation(fichier, pageSuivante) {
 
   iframe.src = fichier;
   overlay.style.display = "flex";
+  btnContinuer.style.display = "none";
   if (boutonSiteRetour) boutonSiteRetour.style.display = "none";
+
+  function surMessageMecanisme(event) {
+    if (event.data === "mecanisme-ouvert") {
+      btnContinuer.style.display = "inline-flex";
+      window.removeEventListener("message", surMessageMecanisme);
+    }
+  }
+  window.addEventListener("message", surMessageMecanisme);
 
   btnContinuer.onclick = function () {
     overlay.style.display = "none";
     iframe.src = "";
+    window.removeEventListener("message", surMessageMecanisme);
     if (boutonSiteRetour) boutonSiteRetour.style.display = "";
     changerPage(pageSuivante);
   };
