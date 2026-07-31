@@ -1780,7 +1780,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
       </svg>
 
       <button id="meca-suite" class="meca-suite" onclick="suiteMecanismePhare()">
-        suivant
+        Suite
       </button>
 
     </div>
@@ -2724,20 +2724,7 @@ function clickPoidsMecanisme(valeur, zoneEl) {
 
   if (valeur === poidsCorrect) {
     if (zoneEl) zoneEl.classList.add('meca-zone-selected');
-    mecanismeSolved = true;
-    jouerSuccesMecanisme();
-
-    const fond = document.getElementById("meca-fond");
-    if (fond) fond.style.backgroundImage = `url("${imageMecanismeAllumee}")`;
-
-    setTimeout(() => {
-      if (fond) fond.style.backgroundImage = `url("${imageMecanismeFaisceau}")`;
-    }, 600);
-
-    setTimeout(() => {
-      suiteMecanismePhare();
-    }, 900);
-
+    successMecanisme();
     return;
   }
 
@@ -2828,7 +2815,7 @@ function successMecanisme() {
   clearTimeout(faisceauTimeoutMecanisme);
   clearTimeout(timerSuiteMecanisme);
 
-  phareIntervalMecanisme = setInterval(lancerFaisceauMecanisme, 5000);
+  phareIntervalMecanisme = setInterval(lancerFaisceauMecanisme, 10000);
 
   const suite = document.getElementById("meca-suite");
   if (suite) suite.style.display = "block";
@@ -2848,7 +2835,7 @@ function lancerFaisceauMecanisme() {
     if (mecanismeSolved) {
       fond.style.backgroundImage = `url("${imageMecanismeAllumee}")`;
     }
-  }, 1000);
+  }, 400);
 }
 
 function resetMecanismePhare() {
