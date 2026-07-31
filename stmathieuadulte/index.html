@@ -442,6 +442,25 @@ input {
   white-space: nowrap;
 }
 
+.meca-sequence-affichage {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  display: none;
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 6px;
+  color: var(--or);
+  background: rgba(0, 0, 0, 0.55);
+  border: 2px solid var(--or);
+  padding: 8px 20px;
+  border-radius: 14px;
+  white-space: nowrap;
+}
+
 .meca-zone-label {
   font-family: Georgia, serif;
   font-size: 64px;
@@ -1739,7 +1758,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
       <!-- Bouton réinitialiser retiré temporairement -->
       <!-- <button class="meca-reset" onclick="resetMecanismePhare()">Réinitialiser</button> -->
 
-      <div id="meca-etape-label" class="meca-etape-label">Étape 1 : entrez l'ordre des lettres</div>
+      <div id="meca-sequence-affichage" class="meca-sequence-affichage"></div>
 
       <div id="meca-gearA" class="meca-gear meca-gear-small"></div>
       <div id="meca-gearB" class="meca-gear meca-gear-big"></div>
@@ -2606,7 +2625,7 @@ const imageMecanismeEteinte = "images/1-webplentilleeteinte.webp";
 const imageMecanismeAllumee = "images/1-webplentilleallume.webp";
 const imageMecanismeFaisceau = "images/1-webplentillefaisceau.webp";
 
-let indexLettreAttendue = 0;
+let sequenceLettres = [];
 let etapeMecanisme = 1; // 1 = lettres, 2 = poids
 let nbErreursMecanisme = 0;
 let mecanismeSolved = false;
@@ -2650,25 +2669,43 @@ function jouerSonErreurMecanisme() {
   });
 }
 
+function afficherSequenceLettres() {
+  const affichage = document.getElementById("meca-sequence-affichage");
+  if (!affichage) return;
+
+  if (sequenceLettres.length === 0) {
+    affichage.style.display = "none";
+    affichage.textContent = "";
+    return;
+  }
+
+  affichage.textContent = sequenceLettres.join(" - ");
+  affichage.style.display = "block";
+}
+
 function clickZoneMecanisme(letter, zoneEl) {
   if (mecanismeSolved || etapeMecanisme !== 1) return;
 
-  const lettreAttendue = ordreLettresCorrect[indexLettreAttendue];
+  jouerSonZoneMecanisme();
+  hideMessageMecanisme();
+  if (zoneEl) zoneEl.classList.add('meca-zone-selected');
+  sequenceLettres.push(letter);
+  afficherSequenceLettres();
 
-  if (letter === lettreAttendue) {
-    jouerSonZoneMecanisme();
-    hideMessageMecanisme();
-    if (zoneEl) zoneEl.classList.add('meca-zone-selected');
-    indexLettreAttendue++;
+  if (sequenceLettres.length < ordreLettresCorrect.length) {
+    return;
+  }
 
-    if (indexLettreAttendue === ordreLettresCorrect.length) {
-      passerEtapePoids();
-    }
+  const bonOrdre = sequenceLettres.every((l, i) => l === ordreLettresCorrect[i]);
+  sequenceLettres = [];
+  afficherSequenceLettres();
+
+  if (bonOrdre) {
+    passerEtapePoids();
     return;
   }
 
   echecMecanisme("Mauvais ordre. Le mécanisme se bloque.");
-  indexLettreAttendue = 0;
   reinitialiserZonesMecanisme();
 }
 
@@ -2676,10 +2713,8 @@ function passerEtapePoids() {
   etapeMecanisme = 2;
 
   const game = document.getElementById("meca-game");
-  const label = document.getElementById("meca-etape-label");
 
   if (game) game.classList.add("meca-etape-2");
-  if (label) label.textContent = "Étape 2 : choisissez le bon poids";
 
   showMessageMecanisme("Le mécanisme frémit... il attend maintenant le bon poids.");
 }
@@ -2804,7 +2839,8 @@ function lancerFaisceauMecanisme() {
 }
 
 function resetMecanismePhare() {
-  indexLettreAttendue = 0;
+  sequenceLettres = [];
+  afficherSequenceLettres();
   etapeMecanisme = 1;
   nbErreursMecanisme = 0;
   mecanismeSolved = false;
@@ -2812,10 +2848,8 @@ function resetMecanismePhare() {
   const game = document.getElementById("meca-game");
   const fond = document.getElementById("meca-fond");
   const suite = document.getElementById("meca-suite");
-  const label = document.getElementById("meca-etape-label");
 
   if (game) game.classList.remove("meca-active", "meca-etape-2");
-  if (label) label.textContent = "Étape 1 : entrez l'ordre des lettres";
 
   clearInterval(phareIntervalMecanisme);
   clearTimeout(faisceauTimeoutMecanisme);
