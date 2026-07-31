@@ -416,17 +416,6 @@ input {
     </div>
   </section>
 
-  <section class="scene" id="chapitre2">
-    <div class="cadre">
-      <!-- TODO: ajouter l'image et le texte du chapitre 2 -->
-      <p>Bravo, vous avez trouvé la bonne réponse !</p>
-      <div class="navigation">
-        <button onclick="window.location.href='carnet/index.html'">Consulter le carnet</button>
-        <button onclick="retour()">← Retour</button>
-      </div>
-    </div>
-  </section>
-
   <section class="scene" id="chapitre3">
     <div class="cadre">
       <img src="images/3-webpcarnetsocle-341x512.webp" alt="page du carnet évoquant le socle" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
@@ -618,7 +607,7 @@ function verifierGradlon() {
 
   if (reponse === "1858") {
     message.textContent = "";
-    changerPage('chapitre2');
+    window.location.href = 'carnet/index.html';
   } else {
     message.textContent = "Ce n'est pas la bonne réponse.";
     btnIndice.style.display = "inline-block";
@@ -644,8 +633,8 @@ function verifierChapitre4_1() {
   const correct = bonnes.every(r => choixChapitre4_1.has(r)) && choixChapitre4_1.size === 2;
 
   if (correct) {
-    message.textContent = "Exact !";
-    setTimeout(() => lancerAnimation('mecanisme-panneau/index.html', 'chapitre4-2'), 1200);
+    message.textContent = "";
+    lancerAnimation('mecanisme-panneau/index.html', 'chapitre4-2');
   } else {
     message.textContent = "Ce n'est pas la bonne combinaison.";
   }
