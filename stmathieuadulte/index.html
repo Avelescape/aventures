@@ -1550,7 +1550,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-so">
   <div class="so-label">
     <p>Un autre façon de trouver le mot...</p>
-     <h1>pas très loin de vous, côté route, il y a un panneau en français</h1>
+     <h1>Pas très loin de vous, côté route, il y a un panneau en français</h1>
     <p>Première lettre de la 7eme ligne</p>
     <p>Première lettre de la 12eme ligne</p>
     <p>Dernière lettre de la 19eme ligne</p>
@@ -2365,7 +2365,7 @@ function afficherIndiceMoine() {
 const dialogueMoineSuite = [
   "Effectivement, Suite à une querelle de famille, Gurguy fils du seigneur de Tremazan a tué sa soeur Haude...",
   "Rongé par le remord, il a décidé de se faire moine et se consacra à bâtir ce lieu.", 
-  "Aujourd'hui",
+  "Aujourd'hui,",
   "une autre personne est en danger, et il faut vite agir!",
   "Yannick, le gardien, a disparu...",
   "Sortez par la porte latérale nord, et allez près du petit phare."
@@ -2413,7 +2413,7 @@ function afficherDialogueMoineSuite() {
 /* EXPLICATION NAUFRAGEURS */
 const dialogueNaufrageurs = [
   "La nuit, les navigateurs se repèrent grâce aux phares ou aux lumières des ports.",
-  "Les naufrageurs allument des feux sur la côte",
+  "Les naufrageurs allument des feux sur la côte,",
   "et les marins croient voir un port sûr ou l'indication d'une route maritime.",
   "Mais ils dirigent leur navire vers les récifs.",
   "Cela provoque un échouement ou un naufrage.",
@@ -2837,9 +2837,11 @@ function successMecanisme() {
 
   const game = document.getElementById("meca-game");
   const fond = document.getElementById("meca-fond");
+  const zones = document.querySelector('.meca-zones');
 
   if (game) game.classList.add("meca-active");
   if (fond) fond.style.backgroundImage = `url("${imageMecanismeAllumee}")`;
+  if (zones) zones.style.display = "none";
 
   clearInterval(phareIntervalMecanisme);
   clearTimeout(faisceauTimeoutMecanisme);
@@ -2878,8 +2880,10 @@ function resetMecanismePhare() {
   const game = document.getElementById("meca-game");
   const fond = document.getElementById("meca-fond");
   const suite = document.getElementById("meca-suite");
+  const zones = document.querySelector('.meca-zones');
 
   if (game) game.classList.remove("meca-active", "meca-etape-2");
+  if (zones) zones.style.display = "";
 
   clearInterval(phareIntervalMecanisme);
   clearTimeout(faisceauTimeoutMecanisme);
