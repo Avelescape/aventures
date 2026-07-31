@@ -2338,7 +2338,7 @@ const dialogueMoineSuite = [
   "Effectivement, Suite à une querelle de famille, Gurguy fils du seigneur de Tremazan a tué sa soeur Haude...",
   "Rongé par le remord, il a décidé de se faire moine et se consacra à bâtir ce lieu.", 
   "Aujourd'hui",
-  "une autre personne est en danger, et il faut agir vite!",
+  "une autre personne est en danger, et il faut vite agir!",
   "Yannick, le gardien, a disparu...",
   "Sortez par la porte latérale nord, et allez près du petit phare."
 ];
@@ -2726,7 +2726,18 @@ function clickPoidsMecanisme(valeur, zoneEl) {
     if (zoneEl) zoneEl.classList.add('meca-zone-selected');
     mecanismeSolved = true;
     jouerSuccesMecanisme();
-    suiteMecanismePhare();
+
+    const fond = document.getElementById("meca-fond");
+    if (fond) fond.style.backgroundImage = `url("${imageMecanismeAllumee}")`;
+
+    setTimeout(() => {
+      if (fond) fond.style.backgroundImage = `url("${imageMecanismeFaisceau}")`;
+    }, 600);
+
+    setTimeout(() => {
+      suiteMecanismePhare();
+    }, 900);
+
     return;
   }
 
