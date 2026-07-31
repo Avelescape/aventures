@@ -1318,8 +1318,8 @@ input:focus {
 
 .meca-reset {
   color: #fff3cf;
-  background: linear-gradient(180deg, #a5232c 0%, var(--adult-red-2) 100%);
-  border: 2px solid #ffb3ab;
+  background: linear-gradient(180deg, var(--adult-gold-light) 0%, var(--adult-bronze) 100%);
+  border: 2px solid var(--adult-gold);
   border-radius: 14px;
   font-family: Georgia, serif;
   font-weight: 800;
@@ -1736,7 +1736,8 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
       <div id="meca-fond" class="meca-fond"></div>
 
-      <button class="meca-reset" onclick="resetMecanismePhare()">Réinitialiser</button>
+      <!-- Bouton réinitialiser retiré temporairement -->
+      <!-- <button class="meca-reset" onclick="resetMecanismePhare()">Réinitialiser</button> -->
 
       <div id="meca-etape-label" class="meca-etape-label">Étape 1 : entrez l'ordre des lettres</div>
 
@@ -1779,9 +1780,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
   <audio id="sonSuccesMecanisme" src="audios/engrenages.mp3" preload="auto"></audio>
   <audio id="sonZoneMecanisme" src="audios/ABCDEFG.mp3" preload="auto"></audio>
-  <!-- Fichiers à fournir : je ne peux pas générer d'audio -->
-  <audio id="sonEtapeMecanisme" src="audios/victoire-etape.mp3" preload="auto"></audio>
-  <audio id="sonErreurMecanisme" src="audios/erreur.mp3" preload="auto"></audio>
+  <audio id="sonErreurMecanisme" src="audios/bruit echec.mp3" preload="auto"></audio>
 </div>
 
 
@@ -2486,10 +2485,7 @@ function verifierMotPhare() {
         cloche.play().catch(() => {});
     }
 
-    // court instant pour entendre la cloche sonner avant de continuer
-    setTimeout(() => {
-        showScreen("naufrageursfuient");
-    }, 1500);
+    showScreen("naufrageursfuient");
 }
  else {
     vibrerEchec();
@@ -2602,8 +2598,7 @@ if (codeAncienPhareInput) {
 
 
 /* SOMMET DU PHARE - MÉCANISME HTML */
-// TODO : remplacer par le vrai code trouvé sur le sceau.
-const ordreLettresCorrect = ["A", "B", "C", "D"];
+const ordreLettresCorrect = ["D", "A", "B", "C"];
 // TODO : remplacer par le vrai poids (déduit du signal "1 éclat / 15s").
 const poidsCorrect = "30";
 
@@ -2643,18 +2638,6 @@ function jouerSonZoneMecanisme() {
   });
 }
 
-function jouerSonEtapeMecanisme() {
-  const son = document.getElementById("sonEtapeMecanisme");
-  if (!son) return;
-
-  son.pause();
-  son.currentTime = 0;
-
-  son.play().catch(error => {
-    console.log("Son d'étape bloqué :", error);
-  });
-}
-
 function jouerSonErreurMecanisme() {
   const son = document.getElementById("sonErreurMecanisme");
   if (!son) return;
@@ -2691,7 +2674,6 @@ function clickZoneMecanisme(letter, zoneEl) {
 
 function passerEtapePoids() {
   etapeMecanisme = 2;
-  jouerSonEtapeMecanisme();
 
   const game = document.getElementById("meca-game");
   const label = document.getElementById("meca-etape-label");
@@ -2800,10 +2782,8 @@ function successMecanisme() {
 
   phareIntervalMecanisme = setInterval(lancerFaisceauMecanisme, 5000);
 
-  timerSuiteMecanisme = setTimeout(() => {
-    const suite = document.getElementById("meca-suite");
-    if (suite) suite.style.display = "block";
-  }, 5000);
+  const suite = document.getElementById("meca-suite");
+  if (suite) suite.style.display = "block";
 }
 
 function lancerFaisceauMecanisme() {
