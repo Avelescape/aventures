@@ -2622,7 +2622,7 @@ const ordreLettresCorrect = ["D", "A", "B", "C"];
 const poidsCorrect = "30";
 
 const imageMecanismeEteinte = "images/1-webplentilleeteinte.webp";
-const imageMecanismeAllumee = "images/1-webplentilleallume.webp";
+const imageMecanismeAllumee = "images/1-webplentilleallumee.webp";
 const imageMecanismeFaisceau = "images/1-webplentillefaisceau.webp";
 
 let sequenceLettres = [];
@@ -2698,7 +2698,6 @@ function clickZoneMecanisme(letter, zoneEl) {
 
   const bonOrdre = sequenceLettres.every((l, i) => l === ordreLettresCorrect[i]);
   sequenceLettres = [];
-  afficherSequenceLettres();
 
   if (bonOrdre) {
     passerEtapePoids();
@@ -2711,6 +2710,7 @@ function clickZoneMecanisme(letter, zoneEl) {
 
 function passerEtapePoids() {
   etapeMecanisme = 2;
+  afficherSequenceLettres();
 
   const game = document.getElementById("meca-game");
 
