@@ -378,8 +378,10 @@
 
   <script>
     const scene = document.getElementById("scene");
+    const artefact = document.querySelector(".artefact");
 
     let animationEnCours = false;
+    let sceneSuivanteLancee = false;
 
     function basculerPanneau() {
       if (animationEnCours || scene.classList.contains("ouverte")) {
@@ -414,6 +416,26 @@
         scene.classList.add("envolee");
       }, 2600);
     }
+
+    /*
+      Une fois l’artefact complètement sorti de l’écran
+      (fin de la transition d’envol), on enchaîne sur
+      la scène suivante.
+    */
+    artefact.addEventListener("transitionend", (event) => {
+      if (sceneSuivanteLancee) {
+        return;
+      }
+      if (event.propertyName !== "opacity") {
+        return;
+      }
+      if (!scene.classList.contains("envolee")) {
+        return;
+      }
+
+      sceneSuivanteLancee = true;
+      window.location.href = "mecanisme-collection/index.html";
+    });
 
     scene.addEventListener("pointerup", basculerPanneau);
 
