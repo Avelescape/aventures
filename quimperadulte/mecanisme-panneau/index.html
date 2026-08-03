@@ -33,6 +33,11 @@
       /* Réglages de l’animation */
       --angle-ouverture: 105deg;
       --duree-ouverture: 1400ms;
+
+      /* Envol de l’artefact hors de la cavité */
+      --artefact-largeur: 14%;
+      --delai-envol: 2600ms;
+      --duree-envol: 1900ms;
     }
 
     * {
@@ -107,6 +112,34 @@
       height: var(--panneau-hauteur);
 
       pointer-events: none;
+    }
+
+    /*
+      Artefact niché dans la cavité, qui s’envole
+      hors de l’écran par le milieu du haut.
+      Positionné au centre de la cavité (calculé depuis
+      les variables du panneau), indépendamment du panneau
+      lui-même pour ne pas être limité à sa boîte.
+    */
+    .artefact {
+      position: absolute;
+      z-index: 6;
+
+      left: calc(var(--panneau-x) + var(--panneau-largeur) / 2);
+      top: calc(var(--panneau-y) + var(--panneau-hauteur) / 2);
+
+      width: var(--artefact-largeur);
+
+      transform: translate(-50%, -50%) scale(0.4);
+      opacity: 0;
+
+      pointer-events: none;
+
+      filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.55));
+
+      transition:
+        opacity 500ms ease,
+        transform 500ms ease;
     }
 
     /* Cavité cachant le panneau présent sur l’image du mur */
@@ -257,11 +290,36 @@
       transform: translate(-50%, 12px);
     }
 
+    .scene.ouverte .artefact {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+
+      transition:
+        opacity 500ms ease 550ms,
+        transform 500ms ease 550ms;
+    }
+
+    /* L’artefact s’échappe par le milieu du haut de l’écran */
+    .scene.envolee .artefact {
+      left: 50%;
+      top: -25%;
+
+      opacity: 0;
+      transform: translate(-50%, -30%) scale(0.55) rotate(-10deg);
+
+      transition:
+        left var(--duree-envol) cubic-bezier(0.3, 0.6, 0.35, 1),
+        top var(--duree-envol) cubic-bezier(0.3, 0.6, 0.35, 1),
+        transform var(--duree-envol) cubic-bezier(0.3, 0.6, 0.35, 1),
+        opacity var(--duree-envol) ease-in;
+    }
+
     /* Respect du réglage d’accessibilité du téléphone */
     @media (prefers-reduced-motion: reduce) {
       .panneau,
       .cavite,
       .ombre-cavite,
+      .artefact,
       .indication {
         transition-duration: 1ms;
         animation: none !important;
@@ -314,6 +372,14 @@
 
     </div>
 
+    <!-- Artefact qui s'envole hors de la cavité -->
+    <img
+      class="artefact"
+      src="images/3-webpdisquedeschiste.webp"
+      alt="Disque de schiste"
+      draggable="false"
+    >
+
     <p class="indication">
       Touchez l’écran
     </p>
@@ -349,6 +415,14 @@
       window.setTimeout(() => {
         animationEnCours = false;
       }, 1500);
+
+      /*
+        Après quelques secondes, l’artefact s’envole
+        hors de la cavité et sort de l’écran par le haut.
+      */
+      window.setTimeout(() => {
+        scene.classList.add("envolee");
+      }, 2600);
     }
 
     scene.addEventListener("pointerup", basculerPanneau);
