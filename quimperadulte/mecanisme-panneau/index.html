@@ -109,6 +109,21 @@
       pointer-events: none;
     }
 
+    /* Cavité cachant le panneau présent sur l’image du mur */
+    .cavite {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+
+      width: 100%;
+      height: 100%;
+
+      display: block;
+      object-fit: cover;
+
+      opacity: 0;
+    }
+
     /* Ombre intérieure de la cavité */
     .ombre-cavite {
       position: absolute;
@@ -228,6 +243,11 @@
         drop-shadow(16px 15px 9px rgba(0, 0, 0, 0.55));
     }
 
+    .scene.ouverte .cavite {
+      opacity: 1;
+      transform: scale(1);
+    }
+
     .scene.ouverte .ombre-cavite {
       opacity: 1;
     }
@@ -240,6 +260,7 @@
     /* Respect du réglage d’accessibilité du téléphone */
     @media (prefers-reduced-motion: reduce) {
       .panneau,
+      .cavite,
       .ombre-cavite,
       .indication {
         transition-duration: 1ms;
@@ -260,7 +281,7 @@
     aria-pressed="false"
   >
 
-    <!-- Image complète du mur, cavité déjà visible derrière l'emplacement du panneau -->
+    <!-- Image complète du mur -->
     <img
       class="mur"
       src="images/3-webpmur.webp"
@@ -269,6 +290,14 @@
     >
 
     <div class="mecanisme">
+
+      <!-- Image de la cavité -->
+      <img
+        class="cavite"
+        src="images/3-webpcavite.webp"
+        alt="Une cavité cachée derrière le panneau"
+        draggable="false"
+      >
 
       <div class="ombre-cavite"></div>
 
