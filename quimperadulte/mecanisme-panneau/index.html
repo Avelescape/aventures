@@ -326,20 +326,16 @@
     let animationEnCours = false;
 
     function basculerPanneau() {
-      if (animationEnCours) {
+      if (animationEnCours || scene.classList.contains("ouverte")) {
         return;
       }
 
       animationEnCours = true;
 
-      const estOuvert = scene.classList.toggle("ouverte");
+      scene.classList.add("ouverte");
+      scene.setAttribute("aria-pressed", "true");
 
-      scene.setAttribute(
-        "aria-pressed",
-        estOuvert ? "true" : "false"
-      );
-
-      if (estOuvert && window.parent && window.parent !== window) {
+      if (window.parent && window.parent !== window) {
         window.parent.postMessage("mecanisme-ouvert", "*");
       }
 
@@ -347,7 +343,7 @@
         Petite vibration sur les téléphones compatibles.
       */
       if ("vibrate" in navigator) {
-        navigator.vibrate(estOuvert ? [40, 35, 70] : 40);
+        navigator.vibrate([40, 35, 70]);
       }
 
       window.setTimeout(() => {
