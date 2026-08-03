@@ -115,31 +115,30 @@
     }
 
     /*
-      Artefact niché dans la cavité, qui s’envole
-      hors de l’écran par le milieu du haut.
-      Positionné au centre de la cavité (calculé depuis
-      les variables du panneau), indépendamment du panneau
-      lui-même pour ne pas être limité à sa boîte.
+      Artefact niché dans la cavité dès le départ,
+      mais invisible car recouvert par le panneau fermé
+      (z-index sous .panneau). Il apparaît naturellement
+      quand celui-ci pivote, puis s’envole hors de l’écran
+      par le milieu du haut. Positionné au centre de la
+      cavité (calculé depuis les variables du panneau),
+      indépendamment de celui-ci pour ne pas être limité
+      à sa boîte lors de l’envol.
     */
     .artefact {
       position: absolute;
-      z-index: 6;
+      z-index: 3;
 
       left: calc(var(--panneau-x) + var(--panneau-largeur) / 2);
       top: calc(var(--panneau-y) + var(--panneau-hauteur) / 2);
 
       width: var(--artefact-largeur);
 
-      transform: translate(-50%, -50%) scale(0.4);
-      opacity: 0;
+      transform: translate(-50%, -50%);
+      opacity: 1;
 
       pointer-events: none;
 
       filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.55));
-
-      transition:
-        opacity 500ms ease,
-        transform 500ms ease;
     }
 
     /* Cavité cachant le panneau présent sur l’image du mur */
@@ -288,15 +287,6 @@
     .scene.ouverte .indication {
       opacity: 0;
       transform: translate(-50%, 12px);
-    }
-
-    .scene.ouverte .artefact {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-
-      transition:
-        opacity 500ms ease 550ms,
-        transform 500ms ease 550ms;
     }
 
     /* L’artefact s’échappe par le milieu du haut de l’écran */
