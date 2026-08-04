@@ -393,10 +393,6 @@
       scene.classList.add("ouverte");
       scene.setAttribute("aria-pressed", "true");
 
-      if (window.parent && window.parent !== window) {
-        window.parent.postMessage("mecanisme-ouvert", "*");
-      }
-
       /*
         Petite vibration sur les téléphones compatibles.
       */
@@ -434,7 +430,7 @@
       }
 
       sceneSuivanteLancee = true;
-      window.location.href = ".../mecanisme-collection/index.html";
+      window.location.href = "../mecanisme-collection/index.html";
     });
 
     scene.addEventListener("pointerup", basculerPanneau);
