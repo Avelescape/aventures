@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Artefacts découverts</title>
   <style>
-    :root { --duree-vol: 1500ms; }
+    :root { --duree-vol: 1500ms; --accent2: #a85f3d; }
     * { box-sizing: border-box; }
     html, body { width: 100%; min-height: 100%; margin: 0; }
     body {
@@ -70,9 +70,69 @@
     }
     @keyframes pose { from { opacity: 0; scale: .35; } to { opacity: 1; scale: 1; } }
     @media (prefers-reduced-motion: reduce) { :root { --duree-vol: 1ms; } }
+
+    /* Bouton retour au site AvelEscape */
+    .site-retour {
+      position: fixed;
+      top: max(12px, env(safe-area-inset-top));
+      right: max(10px, env(safe-area-inset-right));
+      z-index: 999999;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 7px 12px;
+      background: rgba(23, 37, 44, 0.90);
+      color: #f1e4ce;
+      border: 2px solid var(--accent2);
+      border-radius: 999px;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .site-retour:hover { background: var(--accent2); color: #17252c; }
+    .site-retour:active { transform: scale(0.96); }
+
+    /* Bouton "Suite", révélé une fois l'artefact posé dans son logement */
+    .bouton-suite {
+      position: fixed;
+      z-index: 25;
+      left: 50%;
+      bottom: max(80px, calc(env(safe-area-inset-bottom) + 80px));
+      transform: translate(-50%, 10px);
+      padding: 12px 30px;
+      border: 2px solid var(--accent2);
+      border-radius: 999px;
+      background: rgba(23, 37, 44, .92);
+      color: #f1e4ce;
+      font-family: Georgia, serif;
+      font-size: clamp(.95rem, 3.5vw, 1.15rem);
+      font-weight: 700;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s ease, transform .4s ease;
+      box-shadow: 0 8px 22px rgba(0,0,0,.5);
+    }
+    .bouton-suite.visible { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+    .bouton-suite:active { transform: translate(-50%, 0) scale(.96); }
   </style>
 </head>
 <body>
+
+  <!-- BOUTON RETOUR AU SITE AVELESCAPE -->
+  <a class="site-retour" href="../index.html">
+    <span>Site AvelEscape</span>
+  </a>
+
   <main class="scene" id="scene" tabindex="0" aria-label="Coffret d'artefacts">
     <img class="coffret" src="images/3-webpboite.webp" alt="Coffret ouvert avec quatre logements">
     <div class="logement" data-index="0"></div>
@@ -82,6 +142,7 @@
   </main>
   <img class="artefact-volant" id="artefact-volant" alt="">
   <h1 class="titre">Artefacts découverts</h1>
+  <button class="bouton-suite" id="bouton-suite" type="button">Suite →</button>
 
   <script>
     const CONFIG = {
@@ -103,6 +164,7 @@
 
     const scene = document.getElementById("scene");
     const volant = document.getElementById("artefact-volant");
+    const boutonSuite = document.getElementById("bouton-suite");
     const logements = [...document.querySelectorAll(".logement")];
     let peutContinuer = false;
 
@@ -164,10 +226,12 @@
       afficherArtefactDans(cible, artefact, true);
       sauvegarderActuel();
       peutContinuer = true;
+      boutonSuite.classList.add("visible");
       if (CONFIG.vibration && navigator.vibrate) navigator.vibrate([35, 40, 70]);
     }
 
     function continuer() { if (peutContinuer) location.href = CONFIG.pageSuivante; }
+    boutonSuite.addEventListener("click", continuer);
     scene.addEventListener("click", continuer);
     scene.addEventListener("keydown", e => {
       if (e.key === "Enter" || e.key === " ") continuer();
