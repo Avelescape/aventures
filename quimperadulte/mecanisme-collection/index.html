@@ -1,383 +1,180 @@
 <!doctype html>
-<!-- VERSION MILIEU HAUT : départ centré en haut de l’écran -->
 <html lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#17252c">
   <title>Artefacts découverts</title>
-
   <style>
-    :root {
-      --ivoire: #e3d9ca;
-      --pierre: #c8bbaa;
-      --ardoise: #586b7b;
-      --charpente: #344753;
-      --nuit: #17252c;
-      --charbon: #1b2022;
-      --gris-pierre: #756f68;
-      --cuivre: #a85f3d;
-      --brume: #91a0a8;
-      --duree-entree: 1100ms;
-    }
-
+    :root { --duree-vol: 1500ms; }
     * { box-sizing: border-box; }
-
-    html, body {
-      width: 100%;
-      min-height: 100%;
-      margin: 0;
-      background: var(--nuit);
-      font-family: Georgia, "Times New Roman", serif;
-    }
-
+    html, body { width: 100%; min-height: 100%; margin: 0; }
     body {
       min-height: 100svh;
-      overflow-x: hidden;
-      color: var(--ivoire);
-    }
-
-    button { font: inherit; }
-
-    .decouverte {
-      position: relative;
-      min-height: 100svh;
       display: grid;
-      grid-template-rows: 1fr auto;
+      place-items: center;
       overflow: hidden;
-      isolation: isolate;
-      background:
-        linear-gradient(155deg, rgba(88,107,123,.32) 0%, transparent 42%),
-        linear-gradient(25deg, #344753 0%, var(--nuit) 56%, var(--charbon) 100%);
+      background: #17252c;
+      font-family: Georgia, "Times New Roman", serif;
     }
+    .scene { position: relative; width: min(100vw, 100svh, 900px); aspect-ratio: 1; }
+    .coffret { display: block; width: 100%; height: 100%; object-fit: contain; }
 
-    .decouverte::before {
-      content: "";
+    /* Coordonnées relevées sur l'image 1254 × 1254. */
+    .logement {
       position: absolute;
-      inset: 0;
-      z-index: -2;
-      opacity: .28;
-      background-image:
-        repeating-linear-gradient(23deg, transparent 0 7px, rgba(255,255,255,.025) 8px 9px);
-    }
-
-    .scene {
-      min-height: 0;
-      display: grid;
-      place-items: center;
-      align-content: center;
-      padding: max(24px, env(safe-area-inset-top)) 18px 20px;
-      text-align: center;
-    }
-
-    h1 {
-      margin: 0;
-      max-width: 1000px;
-      font-size: clamp(2rem, 7vw, 4rem);
-      font-weight: normal;
-      line-height: 1.02;
-      text-wrap: balance;
-      text-shadow: 0 3px 20px rgba(0,0,0,.8);
-      opacity: 0;
-      translate: 0 12px;
-      animation: titre .8s ease .42s forwards;
-    }
-
-    .objet {
-      position: fixed;
-      left: 50%;
-      right: auto;
-      top: 12px;
-      z-index: 20;
-      display: block;
-      width: min(56vw, 360px);
-      height: auto;
-      pointer-events: none;
-      filter:
-        drop-shadow(0 14px 13px rgba(0,0,0,.72))
-        drop-shadow(0 0 22px rgba(145,160,168,.28));
-      opacity: 0;
-      transform-origin: top left;
-      will-change: transform;
-    }
-
-    .collection {
-      position: relative;
-      padding: 17px max(14px, env(safe-area-inset-right))
-        max(18px, env(safe-area-inset-bottom))
-        max(14px, env(safe-area-inset-left));
-      border-top: 1px solid rgba(145, 160, 168, .36);
-      background:
-        linear-gradient(rgba(27,32,34,.94), rgba(23,37,44,.98)),
-        var(--nuit);
-      box-shadow: 0 -15px 55px rgba(0,0,0,.42);
-      opacity: 0;
-      translate: 0 28px;
-      animation: tiroir .55s ease .1s forwards;
-    }
-
-    .emplacements {
-      width: min(100%, 720px);
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: clamp(6px, 1.5vw, 12px);
-    }
-
-    .emplacement {
-      position: relative;
-      display: grid;
-      place-items: center;
+      left: 75.92%;
+      width: 14.75%;
       aspect-ratio: 1;
-      border: 1px solid rgba(145,160,168,.42);
+      translate: -50% -50%;
       border-radius: 50%;
-      background:
-        radial-gradient(circle, rgba(255,255,255,.055), rgba(0,0,0,.28) 67%),
-        var(--charbon);
-      box-shadow: inset 0 2px 8px rgba(0,0,0,.75);
+      display: grid;
+      place-items: center;
+      pointer-events: none;
     }
-
-    .emplacement::before {
-      content: "?";
-      color: rgba(227,217,202,.24);
-      font: normal clamp(1rem, 4vw, 1.8rem) Georgia, serif;
-    }
-
-    .emplacement.recu {
-      border-color: var(--cuivre);
-      box-shadow:
-        inset 0 2px 8px rgba(0,0,0,.75),
-        0 0 17px rgba(168,95,61,.42);
-      animation: valider .6s ease both;
-    }
-
-    .emplacement.recu::before { display: none; }
-
-    .emplacement img {
-      width: 90%;
-      height: 90%;
+    .logement:nth-of-type(1) { top: 29.19%; }
+    .logement:nth-of-type(2) { top: 44.10%; }
+    .logement:nth-of-type(3) { top: 59.25%; }
+    .logement:nth-of-type(4) { top: 74.08%; }
+    .logement img {
+      width: 86%;
+      height: 86%;
       object-fit: contain;
+      border-radius: 50%;
       opacity: 0;
-      scale: .2;
+      filter: drop-shadow(0 5px 5px rgb(0 0 0 / .65));
     }
-
-    .emplacement.recu img {
-      animation: ranger .55s cubic-bezier(.2,1.45,.35,1) forwards;
+    .logement.rempli img { animation: pose .5s cubic-bezier(.2,1.5,.35,1) forwards; }
+    .artefact-volant {
+      position: fixed;
+      z-index: 10;
+      width: min(36vw, 260px);
+      height: auto;
+      left: 50%;
+      top: -10px;
+      translate: -50% 0;
+      opacity: 0;
+      pointer-events: none;
+      will-change: transform, opacity;
+      filter: drop-shadow(0 12px 10px rgb(0 0 0 / .7));
     }
-
-    @keyframes titre {
-      to { opacity: 1; translate: 0 0; }
+    .titre {
+      position: fixed;
+      z-index: 20;
+      left: 0; right: 0; bottom: max(18px, env(safe-area-inset-bottom));
+      margin: 0;
+      color: #f1e4ce;
+      text-align: center;
+      font-size: clamp(1.3rem, 5vw, 2.5rem);
+      text-shadow: 0 3px 8px #000;
+      pointer-events: none;
     }
-
-    @keyframes apparaitre {
-      to { opacity: 1; }
-    }
-
-    @keyframes tiroir {
-      to { opacity: 1; translate: 0 0; }
-    }
-
-    @keyframes ranger {
-      to { opacity: 1; scale: 1; }
-    }
-
-    @keyframes valider {
-      50% { scale: 1.15; }
-      100% { scale: 1; }
-    }
-
-    @media (max-height: 700px) {
-      .scene { padding-bottom: 8px; }
-      .collection { padding-top: 10px; }
-    }
-
-    @media (max-width: 520px) {
-      .emplacements { gap: 5px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        animation-delay: 0ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-      }
-    }
+    @keyframes pose { from { opacity: 0; scale: .35; } to { opacity: 1; scale: 1; } }
+    @media (prefers-reduced-motion: reduce) { :root { --duree-vol: 1ms; } }
   </style>
 </head>
-
 <body>
-  <main class="decouverte" aria-labelledby="titre-artefact" tabindex="0">
-    <section class="scene">
-      <h1 id="titre-artefact">Artefacts découverts</h1>
-
-      <img
-        class="objet"
-        id="artefact-volant"
-        src="images/3-webpdisquedeschiste.webp"
-        alt="Disque de schiste gravé d’une rose des vents"
-      >
-
-    </section>
-
-    <section class="collection" aria-label="Collection d’artefacts">
-      <div class="emplacements">
-        <div class="emplacement" id="emplacement-schiste">
-          <img src="images/3-webpdisquedeschiste.webp" alt="Schiste obtenu">
-        </div>
-        <div class="emplacement"></div>
-        <div class="emplacement"></div>
-        <div class="emplacement"></div>
-      </div>
-    </section>
+  <main class="scene" id="scene" tabindex="0" aria-label="Coffret d'artefacts">
+    <img class="coffret" src="images/3-webpcoffretvuedudessus.webp" alt="Coffret ouvert avec quatre logements">
+    <div class="logement" data-index="0"></div>
+    <div class="logement" data-index="1"></div>
+    <div class="logement" data-index="2"></div>
+    <div class="logement" data-index="3"></div>
   </main>
+  <img class="artefact-volant" id="artefact-volant" alt="">
+  <h1 class="titre">Artefacts découverts</h1>
 
   <script>
-    /* ==============================================================
-       RÉGLAGES À MODIFIER POUR INTÉGRER CETTE PAGE À TON AVENTURE
-       ============================================================== */
     const CONFIG = {
+      /* Pour les pages suivantes, remplacer l'identifiant et le logement (0 à 3). */
+      artefactActuel: "schiste",
+      logementActuel: 0,
       pageSuivante: "etape-suivante.html",
-      sauvegarderDansLeNavigateur: true,
+      delaiAvantVol: 450,
       vibration: true,
-      son: true
+      sauvegarder: true,
+      cleCollection: "avelescape-quimper-artefacts",
+      artefacts: {
+        schiste: { image: "images/3-webpdisquedeschiste.webp", nom: "Disque de schiste" },
+        argile:   { image: "images/artefact-argile.webp", nom: "Artefact d’argile" },
+        cuir:     { image: "images/artefact-cuir.webp", nom: "Artefact de cuir" },
+        metal:    { image: "images/artefact-metal.webp", nom: "Artefact de métal" }
+      }
     };
 
-    const CLE_COLLECTION = "avelescape-quimper-artefacts";
-
-    // Enregistre le schiste dans la collection du joueur.
-    function sauvegarderArtefact() {
-      if (!CONFIG.sauvegarderDansLeNavigateur) return;
-
-      try {
-        const collection = JSON.parse(localStorage.getItem(CLE_COLLECTION) || "[]");
-        if (!collection.includes("schiste")) collection.push("schiste");
-        localStorage.setItem(CLE_COLLECTION, JSON.stringify(collection));
-      } catch (erreur) {
-        console.warn("La progression n’a pas pu être sauvegardée.", erreur);
-      }
-    }
-
-    // Petit son de découverte créé par le navigateur : aucun fichier MP3 requis.
-    function jouerSonDecouverte() {
-      if (!CONFIG.son) return;
-
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audio = new AudioContext();
-        const gain = audio.createGain();
-        gain.connect(audio.destination);
-        gain.gain.setValueAtTime(0.0001, audio.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.16, audio.currentTime + 0.04);
-        gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 1.15);
-
-        [220, 329.63, 440].forEach((frequence, index) => {
-          const oscillateur = audio.createOscillator();
-          oscillateur.type = "sine";
-          oscillateur.frequency.value = frequence;
-          oscillateur.connect(gain);
-          oscillateur.start(audio.currentTime + index * 0.12);
-          oscillateur.stop(audio.currentTime + 1.2);
-        });
-      } catch (erreur) {
-        // Certains mobiles bloquent le son automatique : l’animation continue.
-      }
-    }
-
-    let animationEnCours = null;
+    const scene = document.getElementById("scene");
+    const volant = document.getElementById("artefact-volant");
+    const logements = [...document.querySelectorAll(".logement")];
     let peutContinuer = false;
 
-    function animerVersLaCollection() {
-      const disque = document.getElementById("artefact-volant");
-      const emplacement = document.getElementById("emplacement-schiste");
+    function collectionSauvegardee() {
+      if (!CONFIG.sauvegarder) return [];
+      try { return JSON.parse(localStorage.getItem(CONFIG.cleCollection) || "[]"); }
+      catch { return []; }
+    }
 
-      animationEnCours?.cancel();
-      peutContinuer = false;
-      emplacement.classList.remove("recu");
-      disque.style.opacity = "0";
+    function afficherArtefactDans(logement, artefact, anime = false) {
+      const image = document.createElement("img");
+      image.src = artefact.image;
+      image.alt = artefact.nom;
+      logement.replaceChildren(image);
+      if (anime) logement.classList.add("rempli");
+      else { image.style.opacity = "1"; image.style.scale = "1"; }
+    }
 
-      const cible = emplacement.getBoundingClientRect();
-      const tailleDisque = disque.getBoundingClientRect().width;
-      const tailleFinale = cible.width * 0.9;
-      const echelleFinale = tailleFinale / tailleDisque;
-
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        emplacement.classList.add("recu");
-        peutContinuer = true;
-        return;
-      }
-
-      // L’image est fixée directement à la fenêtre, sans conteneur intermédiaire.
-      // Sa largeur réduite est prise en compte pour le centrer exactement.
-      const echelleDepart = 0.62;
-      disque.style.right = "auto";
-      disque.style.left = `${(window.innerWidth - tailleDisque * echelleDepart) / 2}px`;
-      disque.style.top = "12px";
-      disque.style.transform = "none";
-      void disque.offsetWidth;
-
-      const depart = disque.getBoundingClientRect();
-      const arriveeBordGauche = cible.left + cible.width * 0.05;
-      const arriveeHaut = cible.top + cible.height * 0.05;
-      const deplacementX = arriveeBordGauche - depart.left;
-      const deplacementY = arriveeHaut - depart.top;
-
-      animationEnCours = disque.animate([
-        {
-          opacity: 0,
-          transform: `translate(0, 0) scale(${echelleDepart}) rotate(0deg)`
-        },
-        {
-          opacity: 1,
-          transform: `translate(0, 0) scale(${echelleDepart}) rotate(0deg)`,
-          offset: 0.18
-        },
-        {
-          opacity: 1,
-          transform: `translate(${deplacementX}px, ${deplacementY}px) scale(${echelleFinale}) rotate(0deg)`
+    function restaurerCollection() {
+      collectionSauvegardee().forEach(entree => {
+        const artefact = CONFIG.artefacts[entree.id];
+        const logement = logements[entree.logement];
+        if (artefact && logement && entree.id !== CONFIG.artefactActuel) {
+          afficherArtefactDans(logement, artefact);
         }
-      ], {
-        duration: 1950,
-        easing: "cubic-bezier(.22,.72,.28,1)",
-        fill: "forwards"
-      });
-
-      animationEnCours.finished.then(() => {
-        disque.style.opacity = "0";
-        animationEnCours.cancel();
-        animationEnCours = null;
-        emplacement.classList.add("recu");
-        peutContinuer = true;
-
-        if (CONFIG.vibration && navigator.vibrate) {
-          navigator.vibrate([35, 40, 70]);
-        }
-      }).catch(() => {
-        // L’annulation est normale lorsque le joueur appuie sur « Rejouer ».
       });
     }
 
-    function lancerDecouverte() {
-      sauvegarderArtefact();
-
-      // Le son automatique peut être refusé par iPhone/Android avant un toucher.
-      setTimeout(jouerSonDecouverte, 250);
-      setTimeout(animerVersLaCollection, 500);
+    function sauvegarderActuel() {
+      if (!CONFIG.sauvegarder) return;
+      const collection = collectionSauvegardee().filter(x => x.id !== CONFIG.artefactActuel);
+      collection.push({ id: CONFIG.artefactActuel, logement: CONFIG.logementActuel });
+      localStorage.setItem(CONFIG.cleCollection, JSON.stringify(collection));
     }
 
-    const ecran = document.querySelector(".decouverte");
+    async function lancerAnimation() {
+      const artefact = CONFIG.artefacts[CONFIG.artefactActuel];
+      const cible = logements[CONFIG.logementActuel];
+      if (!artefact || !cible) return;
 
-    ecran.addEventListener("click", () => {
-      if (peutContinuer) window.location.href = CONFIG.pageSuivante;
+      volant.src = artefact.image;
+      volant.alt = artefact.nom;
+      await volant.decode().catch(() => {});
+      const depart = volant.getBoundingClientRect();
+      const arrivee = cible.getBoundingClientRect();
+      const echelle = (arrivee.width * .86) / depart.width;
+      const dx = arrivee.left + arrivee.width / 2 - (depart.left + depart.width / 2);
+      const dy = arrivee.top + arrivee.height / 2 - (depart.top + depart.height / 2);
+
+      const animation = volant.animate([
+        { opacity: 0, transform: "translate(0, -25px) scale(.7)" },
+        { opacity: 1, transform: "translate(0, 0) scale(1)", offset: .18 },
+        { opacity: 1, transform: `translate(${dx}px, ${dy}px) scale(${echelle})` }
+      ], { duration: parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--duree-vol")),
+           easing: "cubic-bezier(.22,.72,.28,1)", fill: "forwards" });
+
+      await animation.finished.catch(() => {});
+      volant.style.opacity = "0";
+      afficherArtefactDans(cible, artefact, true);
+      sauvegarderActuel();
+      peutContinuer = true;
+      if (CONFIG.vibration && navigator.vibrate) navigator.vibrate([35, 40, 70]);
+    }
+
+    function continuer() { if (peutContinuer) location.href = CONFIG.pageSuivante; }
+    scene.addEventListener("click", continuer);
+    scene.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") continuer();
     });
 
-    ecran.addEventListener("keydown", (evenement) => {
-      if (peutContinuer && (evenement.key === "Enter" || evenement.key === " ")) {
-        window.location.href = CONFIG.pageSuivante;
-      }
-    });
-
-    lancerDecouverte();
+    restaurerCollection();
+    setTimeout(lancerAnimation, CONFIG.delaiAvantVol);
   </script>
 </body>
 </html>
