@@ -149,7 +149,7 @@
       /* Pour les pages suivantes, remplacer l'identifiant et le logement (0 à 3). */
       artefactActuel: "schiste",
       logementActuel: 0,
-      pageSuivante: "etape-suivante.html",
+      pageSuivante: "index.html#chapitre4-2",
       delaiAvantVol: 450,
       vibration: true,
       sauvegarder: true,
@@ -227,6 +227,9 @@
       sauvegarderActuel();
       peutContinuer = true;
       boutonSuite.classList.add("visible");
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage("mecanisme-ouvert", "*");
+      }
       if (CONFIG.vibration && navigator.vibrate) navigator.vibrate([35, 40, 70]);
     }
 
