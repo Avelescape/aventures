@@ -521,12 +521,18 @@ input {
     <div class="cadre">
       <!-- TODO: remplacer par la vraie page du carnet -->
       <img src="images/3-webpcarnet1.webp" alt="Page du carnet" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
-      <h1>Le premier artefact</h1>
-      <!-- TODO: remplacer par le vrai texte du chapitre 4-2 -->
-      <p>Le disque de schiste rejoint le coffret. D'autres artefacts restent à découvrir.</p>
+      <h1>Artéfact de métal</h1>
+      <p>"Le forgeron a caché l'artéfact et a indiqué : Le métal se plie sous le marteau, mais la pierre garde les souvenir"</p>
+      <p>"Il faudra ignorer la sainte mais observer les initiales de mes amis ouvriers"</p>
+
       <div class="navigation">
-        <button onclick="changerPage('chapitre5')">Suite →</button>
+        <input type="text" id="reponse-chapitre4-2" placeholder="• • • •" maxlength="4" inputmode="text" autocomplete="off" style="text-transform:uppercase; letter-spacing:6px; text-align:center;">
+        <button onclick="verifierChapitre4_2()">Valider</button>
       </div>
+
+      <p id="message-chapitre4-2"></p>
+
+      <button class="btn-savoir" id="indice-chapitre4-2-btn" style="display:none;" onclick="location.href='indice-metal.html'">🔍 Indice</button>
     </div>
   </section>
 
@@ -650,6 +656,20 @@ function verifierChapitre4_1() {
     lancerAnimation('mecanisme-panneau/index.html', 'chapitre4-2');
   } else {
     message.textContent = "Ce n'est pas la bonne combinaison.";
+  }
+}
+
+function verifierChapitre4_2() {
+  const reponse = document.getElementById("reponse-chapitre4-2").value.trim().toUpperCase();
+  const message = document.getElementById("message-chapitre4-2");
+  const btnIndice = document.getElementById("indice-chapitre4-2-btn");
+
+  if (reponse === "JSSZ") {
+    message.textContent = "";
+    lancerAnimation('mecanisme-metal/index.html', 'chapitre5');
+  } else {
+    message.textContent = "Ce n'est pas la bonne réponse.";
+    btnIndice.style.display = "inline-block";
   }
 }
 
