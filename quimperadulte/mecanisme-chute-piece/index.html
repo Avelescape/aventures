@@ -3,7 +3,193 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Déc<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Découverte de l’artefact de métal</title>
+  <style>
+    :root {
+      --creme: #f5efe0;
+      --marine: #0f1d30;
+      --bordure: #c9b88a;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      color: var(--creme);
+      background: var(--marine);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .interface {
+      width: min(100%, 560px);
+    }
+
+    .scene {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(201, 184, 138, 0.45);
+      border-radius: 12px;
+      background: #172431;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
+    }
+
+    .photo {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .artefact {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 68%;
+      width: 23%;
+      height: auto;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(0.78);
+      filter: drop-shadow(0 7px 7px rgba(0, 0, 0, 0.72));
+      will-change: left, top, opacity, transform;
+    }
+
+    /*
+      Ce PNG transparent ne contient que la pierre arrondie, mais conserve
+      les dimensions exactes de la photographie. Il masque l'artefact au départ.
+    */
+    .pierre-premier-plan {
+      position: absolute;
+      z-index: 3;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .scene.animation-artefact .artefact {
+      animation: chute-et-collecte 4.2s forwards;
+    }
+
+    @keyframes chute-et-collecte {
+      0% {
+        left: 50%;
+        top: 68%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.72) rotate(-8deg);
+        filter: brightness(0.55) drop-shadow(0 3px 3px rgba(0, 0, 0, 0.8));
+      }
+
+      5% { opacity: 1; }
+
+      /* Chute douce jusqu’à la plaque */
+      40% {
+        left: 50%;
+        top: 83%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(7deg);
+        filter: brightness(1) drop-shadow(0 7px 7px rgba(0, 0, 0, 0.65));
+      }
+
+      /* Léger rebond */
+      47% {
+        left: 50%;
+        top: 82.1%;
+        transform: translate(-50%, -50%) scale(1) rotate(-3deg);
+      }
+
+      /* Arrêt au niveau de la plaque de rue */
+      58% {
+        left: 50%;
+        top: 83%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+      }
+
+      /* Arc rapide vers l’angle supérieur droit */
+      69% {
+        left: 69%;
+        top: 74%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.88) rotate(95deg);
+      }
+
+      83% {
+        left: 90%;
+        top: 42%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.58) rotate(265deg);
+      }
+
+      100% {
+        left: 108%;
+        top: -7%;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.22) rotate(550deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scene.animation-artefact .artefact {
+        animation-duration: 1.5s;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="interface">
+    <div class="scene" id="scene">
+      <img class="photo" src="images/3-pngvierge.png" alt="Statue de la rue des Boucheries">
+      <img class="artefact" src="images/3-pngartefactmetal.png" alt="Artefact de métal">
+      <img class="pierre-premier-plan" src="images/pierre-premier-plan.png" alt="">
+    </div>
+
+  </main>
+
+  <script>
+    const scene = document.querySelector("#scene");
+
+    function enigmeReussie() {
+      scene.classList.remove("animation-artefact");
+
+      // Force le navigateur à remettre l’animation au début.
+      void scene.offsetWidth;
+
+      scene.classList.add("animation-artefact");
+
+      if (navigator.vibrate) {
+        navigator.vibrate([60, 40, 100]);
+      }
+
+      // Enregistre l’artefact dans la collection du joueur.
+      localStorage.setItem("artefactMetal", "trouve");
+    }
+
+    /* Lance automatiquement la scène lorsque toutes les images sont chargées. */
+    window.addEventListener("load", () => {
+      window.setTimeout(enigmeReussie, 250);
+    });
+  </script>
+</body>
+</html>ouverte de l’artefact de métal</title>
   <style>
     :root {
       --creme: #f5efe0;
