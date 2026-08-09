@@ -145,11 +145,13 @@
   <button class="bouton-suite" id="bouton-suite" type="button">Continuer la quête</button>
 
   <script>
+    /* Réglages par défaut, surchargés par l'URL : ?artefact=metal&logement=1&suite=chapitre5 */
+    const parametres = new URLSearchParams(location.search);
+
     const CONFIG = {
-      /* Pour les pages suivantes, remplacer l'identifiant et le logement (0 à 3). */
-      artefactActuel: "schiste",
-      logementActuel: 0,
-      pageSuivante: "index.html#chapitre4-2",
+      artefactActuel: parametres.get("artefact") || "schiste",
+      logementActuel: Number(parametres.get("logement") ?? 0),
+      pageSuivante: `../index.html#${parametres.get("suite") || "chapitre4-2"}`,
       delaiAvantVol: 450,
       vibration: true,
       sauvegarder: true,
