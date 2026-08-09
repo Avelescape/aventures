@@ -1,1 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#211a13">
+<title>Indice — Artéfact de métal</title>
+
+<style>
+:root {
+  --bg1:#1c2836;
+  --bg2:#0f171f;
+  --panel1:rgba(28,40,54,.96);
+  --accent:#c17a4f;
+  --accent2:#3c4f63;
+  --text:#f2ece0;
+  --glow:rgba(60,79,99,.32);
+}
+
+* { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 18px;
+  background:
+    radial-gradient(circle at center, var(--glow), transparent 40%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+  font-family: Georgia, serif;
+  color: var(--text);
+}
+
+.cadre {
+  width: 100%;
+  max-width: 700px;
+  padding: 25px;
+  border: 1px solid var(--accent2);
+  border-radius: 12px;
+  background: var(--panel1);
+  box-shadow: 0 18px 34px rgba(0,0,0,.48), 0 0 20px var(--glow);
+  text-align: center;
+}
+
+h3 { color: var(--accent); margin-top: 0; font-size: clamp(23px, 6.2vw, 31px); line-height: 1.28; }
+
+p { max-width: 700px; margin: 0 auto 20px; font-size: 25px; line-height: 1.5; color: var(--text); }
+
+button {
+  margin: 12px 6px 0;
+  padding: 14px 22px;
+  min-height: 52px;
+  font-size: 16px;
+  font-family: Georgia, serif;
+  color: var(--text);
+  background: var(--accent2);
+  border: 2px solid rgba(242,236,224,.18);
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #17212b;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active { transform: translateY(4px); box-shadow: 0 1px 0 #17212b; }
+
+@media (max-width: 600px) {
+  .cadre { padding: 20px 16px; }
+  button { width: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+  <div class="cadre">
+    <h3>Indice</h3>
+    <p>L'artefact de métal fut caché dans une rue où l'on maniait davantage les couteaux que les marteaux, sous les yeux de la Sainte Vierge</p>
+    <button onclick="location.href='../index.html#chapitre4-2'">Retour à l'enquête</button>
+  </div>
+
+</body>
+</html>
 
