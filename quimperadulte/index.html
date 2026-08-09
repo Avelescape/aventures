@@ -484,18 +484,18 @@ input {
     <div class="cadre">
       <img src="images/3-webpcarnetschiste.webp" alt="page carnet M Le Gall - artefact schiste" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
     <h1>Le schiste</h1>
-      <p>Sébastien, le tailleur de pierres a également caché un artefact dans un mûr de sa maison.</p>
+      <p>Sébastien, le tailleur de pierres a également caché un artefact dans un des mûrs de sa maison.</p>
       <h3>La bâtissse (la plus ancienne du Finistère) se trouve dans une toute petite ruelle</h3>
       <div class="navigation">
-        <button onclick="changerPage('chapitre4-1')">Vous pensez l'avoir trouvé? →</button>
+        <button onclick="changerPage('chapitre4-1')">Vous pensez l'avoir trouvée ? →</button>
       </div>
     </div>
   </section>
 
   <section class="scene" id="chapitre4-1">
     <div class="cadre">
-      <h3>Quels sont les objets présents sur le panneau précisant que la maison est la plus ancienne du Finistère ?</h3>
-      <p>Sélectionnez deux réponses.</p>
+      <p>Quels sont les objets présents sur le panneau précisant que la maison est la plus ancienne du Finistère ?</p>
+      <h3>Sélectionnez deux réponses.</h3>
 
       <div class="choix-qcm" id="choix-chapitre4-1">
         <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Marteau')">Marteau</button>
@@ -518,9 +518,9 @@ input {
     <div class="cadre">
       <!-- TODO: remplacer par la vraie page du carnet -->
       <img src="images/3-webpcarnet1.webp" alt="Page du carnet" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
-      <h1>Artéfact de métal</h1>
+      <h1>Artefact de métal</h1>
       <p>Le forgeron qui a été désigné pour cacher l'artefact de métal a indiqué : </p>
-      <p>"Il faudra ignorer la sainte vierge et son enfant mais repérer les initiales de mes amis ouvriers"</p>
+      <p>"Il faudra ignorer la Sainte Vierge et son enfant mais repérer les initiales de mes amis ouvriers"</p>
 
       <div class="navigation">
         <input type="text" id="reponse-chapitre4-2" placeholder="• • • •" maxlength="4" inputmode="text" autocomplete="off" style="text-transform:uppercase; letter-spacing:6px; text-align:center;">
@@ -663,7 +663,7 @@ function verifierChapitre4_2() {
 
   if (reponse === "JSSZ") {
     message.textContent = "";
-    lancerAnimation('mecanisme-metal/index.html', 'chapitre5');
+    lancerAnimation('mecanisme-chute-piece/index.html', 'chapitre5');
   } else {
     message.textContent = "Ce n'est pas la bonne réponse.";
     btnIndice.style.display = "inline-block";
