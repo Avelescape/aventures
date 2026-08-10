@@ -535,7 +535,74 @@ input {
 
   <section class="scene" id="chapitre5">
     <div class="cadre">
-      <!-- TODO: ajouter l'image et le texte du chapitre 5 -->
+      <!-- TODO: remplacer par la vraie page du carnet -->
+      <img src="images/3-webpcarnet1.webp" alt="Page du carnet" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
+      <h1>Le prochain artefact</h1>
+      <!-- TODO: remplacer par le vrai texte du chapitre 5 -->
+      <p>L'artefact de métal rejoint le coffret. D'autres artefacts restent à découvrir.</p>
+      <div class="navigation">
+        <button onclick="changerPage('chapitre6')">Suite →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="chapitre6">
+    <div class="cadre">
+      <p>L'artefact de cuir a été confié au tanneur installé le long de l'Odet.</p>
+      <h3>Quel est le nom de la passerelle de l'Ancienne Tannerie ?</h3>
+
+      <div class="navigation">
+        <input type="text" id="reponse-chapitre6" placeholder="Nom de la passerelle" autocomplete="off">
+        <button onclick="verifierChapitre6()">Valider</button>
+      </div>
+
+      <p id="message-chapitre6"></p>
+
+      <button class="btn-savoir" id="indice-chapitre6-btn" style="display:none;" onclick="changerPage('indice6')">🔍 Indice</button>
+    </div>
+  </section>
+
+  <section class="scene" id="indice6">
+    <div class="cadre">
+      <h3>Indice</h3>
+      <p>Et si vous vous promeniez sur le pont de Sainte Catherine?</p>
+      <div class="navigation">
+        <button onclick="changerPage('chapitre6')">Retour à l'enquête</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="chapitre7">
+    <div class="cadre">
+      <!-- TODO: remplacer par la vraie page du carnet -->
+      <img src="images/3-webpcarnet1.webp" alt="Page du carnet" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
+      <p>M. Le Gall nous indique dans son carnet que la dernière pièce, l'artefact d'argile, est dissimulée près de la cathédrale, sur la façade de l'échoppe d'un célèbre faïencier de Quimper.</p>
+      <h3>Quel est son nom ?</h3>
+
+      <div class="navigation">
+        <input type="text" id="reponse-chapitre7" placeholder="Nom du faïencier" autocomplete="off">
+        <button onclick="verifierChapitre7()">Valider</button>
+      </div>
+
+      <p id="message-chapitre7"></p>
+
+      <button class="btn-savoir" id="indice-chapitre7-btn" style="display:none;" onclick="changerPage('indice7')">🔍 Indice</button>
+    </div>
+  </section>
+
+  <section class="scene" id="indice7">
+    <div class="cadre">
+      <h3>Indice</h3>
+      <p>Son échoppe se trouve dans un renfoncement de la place où s'élève la cathédrale.</p>
+      <div class="navigation">
+        <button onclick="changerPage('chapitre7')">Retour à l'enquête</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="chapitre8">
+    <div class="cadre">
+      <!-- TODO: ajouter l'image et le texte du chapitre 8 -->
       <p>La suite de l'enquête reste à écrire.</p>
       <div class="navigation">
         <button onclick="retour()">← Retour</button>
@@ -664,6 +731,34 @@ function verifierChapitre4_2() {
   if (reponse === "JSSZ") {
     message.textContent = "";
     lancerAnimation('mecanisme-chute-piece/index.html', 'chapitre5');
+  } else {
+    message.textContent = "Ce n'est pas la bonne réponse.";
+    btnIndice.style.display = "inline-block";
+  }
+}
+
+function verifierChapitre6() {
+  const reponse = document.getElementById("reponse-chapitre6").value.trim().toUpperCase();
+  const message = document.getElementById("message-chapitre6");
+  const btnIndice = document.getElementById("indice-chapitre6-btn");
+
+  if (reponse === "GUEVEL") {
+    message.textContent = "";
+    lancerAnimation('mecanisme-collection/index.html?artefact=cuir&logement=2&suite=chapitre7', 'chapitre7');
+  } else {
+    message.textContent = "Ce n'est pas la bonne réponse.";
+    btnIndice.style.display = "inline-block";
+  }
+}
+
+function verifierChapitre7() {
+  const reponse = document.getElementById("reponse-chapitre7").value.trim().toUpperCase();
+  const message = document.getElementById("message-chapitre7");
+  const btnIndice = document.getElementById("indice-chapitre7-btn");
+
+  if (reponse === "HENRIOT") {
+    message.textContent = "";
+    changerPage('chapitre8');
   } else {
     message.textContent = "Ce n'est pas la bonne réponse.";
     btnIndice.style.display = "inline-block";
