@@ -17,8 +17,8 @@
     .artefact{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(circle,#8f7556 0 32%,#513e2d 33% 44%,#281f19 72%);overflow:hidden}
     .disque{width:58%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 28%,#d99e63,#9b5b32 63%,#63361f);border:7px ridge #bd7a46;box-shadow:0 10px 25px #000b,inset 0 0 22px #48210f}
     .disque::before{content:"☘";font-family:serif;font-size:clamp(70px,21vw,125px);color:#58301d;text-shadow:1px 2px #e1ac71;transform:rotate(8deg)}
-    .voile{position:absolute;inset:0;background:linear-gradient(135deg,#46362a,#261d17);transition:opacity .8s;pointer-events:none;opacity:.78}
-    .grille{position:absolute;inset:5px;display:grid;grid-template-columns:repeat(6,var(--cell));grid-template-rows:repeat(7,var(--cell));touch-action:none}
+    .voile{position:absolute;inset:0;background:linear-gradient(135deg,#46362a,#261d17);transition:transform .55s cubic-bezier(.22,.75,.25,1),opacity .8s;pointer-events:none;opacity:.78;will-change:transform}
+    .grille{position:absolute;inset:5px;display:grid;grid-template-columns:repeat(6,var(--cell));grid-template-rows:repeat(7,var(--cell));touch-action:none;transition:transform .55s cubic-bezier(.22,.75,.25,1);will-change:transform}
     .case{position:relative;display:grid;place-items:center;border:0;background:transparent;padding:3px;cursor:pointer}
     .assiette{width:88%;height:88%;border-radius:50%;display:grid;place-items:center;background:#f7f0df;border:4px double #2f6093;box-shadow:0 4px 7px #0007,inset 0 0 0 3px #e6d9be;transition:transform .18s,opacity .22s,filter .2s;font:bold clamp(17px,5vw,27px) Georgia;color:#24547d}
     .assiette[data-type="1"]{border-color:#a43c34;color:#a43c34}.assiette[data-type="2"]{border-color:#2d6c51;color:#2d6c51}.assiette[data-type="3"]{border-color:#76528e;color:#76528e}.assiette[data-type="4"]{border-color:#b27a27;color:#9b641c}
@@ -40,7 +40,7 @@
 <body>
   <main class="jeu">
     <h1>L’atelier du faïencier</h1>
-    <p class="consigne">Alignez au moins trois assiettes identiques. En se brisant, elles révéleront l’artefact caché.</p>
+    <p class="consigne">Faites glisser une assiette vers une case voisine. Les rangées descendront peu à peu pour révéler l’artefact.</p>
     <div class="barre"><div class="progression" id="progression"></div></div>
     <div class="scene" id="scene">
       <div class="artefact"><div class="disque"></div></div><div class="voile" id="voile"></div>
@@ -51,7 +51,7 @@
   <div class="finale" id="finale"><div class="carte"><div class="mini-disque"></div><h2>Artefact d’argile découvert !</h2><p>Les dernières assiettes tombent en éclats et dévoilent la pièce cachée.</p><button class="rejouer" onclick="location.reload()">Rejouer</button></div></div>
 <script>
 const L=6,H=7,OBJECTIF=20,SYM=['✦','❖','☘','✤','⚜'];
-let plateau=[],selection=null,casses=0,bloque=false;
+let plateau=[],selection=null,casses=0,bloque=false,geste=null,ignorerClic=false;
 const grille=document.querySelector('#grille'),message=document.querySelector('#message');
 const voisin=(a,b)=>Math.abs(a%L-b%L)+Math.abs(Math.floor(a/L)-Math.floor(b/L))===1;
 function typeAleatoire(){return Math.floor(Math.random()*SYM.length)}
@@ -61,7 +61,7 @@ function creerPlateau(){
 }
 function dessiner(){
   grille.innerHTML='';
-  plateau.forEach((t,i)=>{const c=document.createElement('button');c.className='case';c.dataset.i=i;c.setAttribute('aria-label','Assiette bretonne');c.innerHTML=`<span class="assiette" data-type="${t}">${SYM[t]}</span>`;c.onclick=()=>choisir(i);grille.append(c)});
+  plateau.forEach((t,i)=>{const c=document.createElement('button');c.className='case';c.dataset.i=i;c.setAttribute('aria-label','Assiette bretonne');c.innerHTML=`<span class="assiette" data-type="${t}">${SYM[t]}</span>`;c.onclick=()=>{if(ignorerClic){ignorerClic=false;return}choisir(i)};grille.append(c)});
 }
 function choisir(i){
   if(bloque)return;
@@ -95,12 +95,26 @@ async function resoudre(){
 function tomber(){
   for(let x=0;x<L;x++){let valeurs=[];for(let y=H-1;y>=0;y--){let v=plateau[y*L+x];if(v!==null)valeurs.push(v)}for(let y=H-1;y>=0;y--)plateau[y*L+x]=valeurs[H-1-y]??typeAleatoire()}
 }
-function majProgression(){const p=Math.min(1,casses/OBJECTIF);progression.style.width=p*100+'%';voile.style.opacity=.78*(1-p)}
+function majProgression(){const p=Math.min(1,casses/OBJECTIF);progression.style.width=p*100+'%';voile.style.transform=`translateY(${p*101}%)`;grille.style.transform=`translateY(${p*101}%)`}
 function eclats(i){const c=grille.children[i];for(let n=0;n<5;n++){let e=document.createElement('i');e.className='eclat';e.style.setProperty('--x',(Math.random()*80-40)+'px');e.style.setProperty('--y',(Math.random()*80-40)+'px');c.append(e)}}
 function aUnCoup(){for(let i=0;i<plateau.length;i++)for(const d of[1,L]){let j=i+d;if(j>=plateau.length||(d===1&&Math.floor(i/L)!==Math.floor(j/L)))continue;echanger(i,j);let ok=trouverMatchs().size>0;echanger(i,j);if(ok)return true}return false}
 function garantirCoup(){if(!aUnCoup()){do{plateau.sort(()=>Math.random()-.5)}while(trouverMatchs().size||!aUnCoup())}}
-function terminer(){bloque=true;grille.style.transition='opacity .8s';grille.style.opacity='0';voile.style.opacity='0';message.textContent='L’artefact apparaît…';setTimeout(()=>finale.classList.add('visible'),1400)}
+function terminer(){bloque=true;grille.style.transform='translateY(105%)';voile.style.transform='translateY(105%)';voile.style.opacity='0';message.textContent='L’artefact apparaît…';setTimeout(()=>finale.classList.add('visible'),1400)}
 const pause=ms=>new Promise(r=>setTimeout(r,ms));
+grille.addEventListener('pointerdown',e=>{
+  if(bloque)return;const c=e.target.closest('.case');if(!c)return;
+  geste={i:+c.dataset.i,x:e.clientX,y:e.clientY,id:e.pointerId};c.setPointerCapture?.(e.pointerId);
+});
+grille.addEventListener('pointerup',e=>{
+  if(!geste||geste.id!==e.pointerId||bloque)return;
+  const dx=e.clientX-geste.x,dy=e.clientY-geste.y,minimum=18;
+  if(Math.max(Math.abs(dx),Math.abs(dy))<minimum){geste=null;return}
+  let cible=geste.i;
+  if(Math.abs(dx)>Math.abs(dy))cible+=dx>0?1:-1;else cible+=dy>0?L:-L;
+  const depart=geste.i;geste=null;ignorerClic=true;
+  if(cible>=0&&cible<plateau.length&&voisin(depart,cible))jouerEchange(depart,cible);
+});
+grille.addEventListener('pointercancel',()=>geste=null);
 creerPlateau();
 </script>
 </body>
