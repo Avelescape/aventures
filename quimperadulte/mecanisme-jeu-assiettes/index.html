@@ -13,8 +13,7 @@
     .consigne{margin:0 auto 14px;max-width:430px;line-height:1.35;color:#e9ddc5}
     .scene{position:relative;margin:auto;width:calc(var(--cell) * 6 + 20px);height:calc(var(--cell) * 7 + 20px);max-width:100%;border:5px solid #a4773d;border-radius:18px;overflow:hidden;background:#33281f;box-shadow:0 18px 45px #0009,inset 0 0 0 2px #dfbd7b}
     .artefact{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(circle,#8f7556 0 32%,#513e2d 33% 44%,#281f19 72%);overflow:hidden}
-    .disque{width:58%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 28%,#d99e63,#9b5b32 63%,#63361f);border:7px ridge #bd7a46;box-shadow:0 10px 25px #000b,inset 0 0 22px #48210f;will-change:transform,opacity}
-    .disque::before{content:"☘";font-family:serif;font-size:clamp(70px,21vw,125px);color:#58301d;text-shadow:1px 2px #e1ac71;transform:rotate(8deg)}
+    .disque{width:58%;aspect-ratio:1;border-radius:50%;background:url('images/3-webpartefactargile.webp') center/contain no-repeat;filter:drop-shadow(0 10px 16px #000b);will-change:transform,opacity}
     .scene.envol{overflow:visible;z-index:3}
     .scene.envol .artefact{overflow:visible;background:transparent}
     .scene.envol .disque{animation:envolArtefact 2.1s cubic-bezier(.22,.72,.28,1) forwards;z-index:4}
@@ -27,8 +26,7 @@
     .voile{position:absolute;inset:0;background:linear-gradient(135deg,#46362a,#261d17);transition:transform .55s cubic-bezier(.22,.75,.25,1),opacity .8s;pointer-events:none;opacity:.78;will-change:transform}
     .grille{position:absolute;inset:5px;display:grid;grid-template-columns:repeat(6,var(--cell));grid-template-rows:repeat(7,var(--cell));touch-action:none;overscroll-behavior:contain;user-select:none;-webkit-user-select:none;transition:transform .55s cubic-bezier(.22,.75,.25,1);will-change:transform}
     .case{position:relative;display:grid;place-items:center;border:0;background:transparent;padding:3px;cursor:pointer;touch-action:none}
-    .assiette{width:88%;height:88%;border-radius:50%;display:grid;place-items:center;background:#f7f0df;border:4px double #2f6093;box-shadow:0 4px 7px #0007,inset 0 0 0 3px #e6d9be;transition:transform .18s,opacity .22s,filter .2s;font:bold clamp(17px,5vw,27px) Georgia;color:#24547d}
-    .assiette[data-type="1"]{border-color:#a43c34;color:#a43c34}.assiette[data-type="2"]{border-color:#2d6c51;color:#2d6c51}.assiette[data-type="3"]{border-color:#76528e;color:#76528e}.assiette[data-type="4"]{border-color:#b27a27;color:#9b641c}
+    .assiette{width:94%;height:94%;border-radius:50%;display:block;background-image:var(--image-assiette);background-position:center;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 4px 4px #0008);transition:transform .18s,opacity .22s,filter .2s;pointer-events:none}
     .assiette.selection{transform:scale(1.12);filter:drop-shadow(0 0 7px #fff)}
     .assiette.glissee{transition:none;transform:translate(var(--glisse-x,0),var(--glisse-y,0)) scale(1.12);filter:drop-shadow(0 5px 8px #0009);z-index:2}
     .assiette.cassee{animation:casse .45s forwards}
@@ -39,10 +37,10 @@
     .finale{position:fixed;inset:0;display:grid;place-items:center;padding:24px;background:#09101bd9;opacity:0;pointer-events:none;transition:.6s;z-index:5}
     .finale.visible{opacity:1;pointer-events:auto}
     .carte{width:min(90vw,430px);padding:28px 22px;border:2px solid #cfaa67;border-radius:18px;background:#202b3c;box-shadow:0 22px 55px #000;text-align:center}
-    .mini-disque{width:180px;max-width:65%;aspect-ratio:1;margin:0 auto 18px;border-radius:50%;background:url('images/3-webpartefactargile.webp') center/contain no-repeat,radial-gradient(circle,#d99e63,#7b4125);box-shadow:0 12px 28px #0008}
+    .mini-disque{width:180px;max-width:65%;aspect-ratio:1;margin:0 auto 18px;border-radius:50%;background:url('images/3-webpartefactargile.webp') center/contain no-repeat;filter:drop-shadow(0 12px 15px #0008)}
     button.rejouer{border:1px solid #dfbd7b;border-radius:30px;padding:12px 22px;background:#b65c2e;color:white;font:17px Georgia;cursor:pointer}
     .secousse{animation:secousse .25s}@keyframes secousse{25%{translate:-7px}75%{translate:7px}}
-    @media(max-width:390px){:root{--cell:14.3vw}.scene{border-width:4px}.grille{inset:4px}.assiette{border-width:3px}}
+    @media(max-width:390px){:root{--cell:14.3vw}.scene{border-width:4px}.grille{inset:4px}}
   </style>
 </head>
 <body>
@@ -57,18 +55,25 @@
   </main>
   <div class="finale" id="finale"><div class="carte"><div class="mini-disque"></div><h2>Artefact d’argile découvert !</h2><p>Les dernières assiettes tombent en éclats et dévoilent la pièce cachée.</p><button class="rejouer" onclick="location.reload()">Rejouer</button></div></div>
 <script>
-const L=6,H=7,OBJECTIF=20,SYM=['✦','❖','☘','✤','⚜'];
+const L=6,H=7,OBJECTIF=20;
+const ASSIETTES=[
+  'images/3-webpassiette1.webp',
+  'images/3-webpassiette2.webp',
+  'images/3-webpassiette3.webp',
+  'images/3-webpassiette4.webp',
+  'images/3-webpassiette5.webp'
+];
 let plateau=[],selection=null,casses=0,bloque=false,geste=null,ignorerClic=false;
 const grille=document.querySelector('#grille'),message=document.querySelector('#message'),scene=document.querySelector('#scene'),voile=document.querySelector('#voile');
 const voisin=(a,b)=>Math.abs(a%L-b%L)+Math.abs(Math.floor(a/L)-Math.floor(b/L))===1;
-function typeAleatoire(){return Math.floor(Math.random()*SYM.length)}
+function typeAleatoire(){return Math.floor(Math.random()*ASSIETTES.length)}
 function creerPlateau(){
   do{plateau=Array.from({length:L*H},typeAleatoire)}while(trouverMatchs().size);
   garantirCoup(); dessiner();
 }
 function dessiner(){
   grille.innerHTML='';
-  plateau.forEach((t,i)=>{const c=document.createElement('button');c.className='case';c.dataset.i=i;c.setAttribute('aria-label','Assiette bretonne');c.innerHTML=`<span class="assiette" data-type="${t}">${SYM[t]}</span>`;c.onclick=()=>{if(ignorerClic){ignorerClic=false;return}choisir(i)};grille.append(c)});
+  plateau.forEach((t,i)=>{const c=document.createElement('button');c.className='case';c.dataset.i=i;c.setAttribute('aria-label',`Assiette bretonne, série ${t+1}`);c.innerHTML=`<span class="assiette" data-type="${t}" style="--image-assiette:url('${ASSIETTES[t]}')"></span>`;c.onclick=()=>{if(ignorerClic){ignorerClic=false;return}choisir(i)};grille.append(c)});
 }
 function choisir(i){
   if(bloque)return;
