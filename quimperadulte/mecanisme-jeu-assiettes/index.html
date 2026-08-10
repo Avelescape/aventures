@@ -1,812 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#211a13">
-<title>Nouvelle enquête</title>
-
-<style>
-/* =========================================================
-   DESIGN — ARCHIVES & CUIVRE
-   Pour les carnets, les bâtisseurs, les fouilles,
-   les villes anciennes et les enquêtes documentaires.
-   ========================================================= */
-:root {
-  --bg1:#1c2836;
-  --bg2:#0f171f;
-  --panel1:rgba(28,40,54,.96);
-  --panel2:rgba(15,23,31,.96);
-  --accent:#c17a4f;
-  --accent2:#3c4f63;
-  --soft:#e8dfc8;
-  --text:#f2ece0;
-  --muted:#aeb9c4;
-  --ink:#24303d;
-  --glow:rgba(60,79,99,.32);
-}
-
-* {
-  box-sizing: border-box;
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background:
-    radial-gradient(circle at center, var(--glow), transparent 40%),
-    linear-gradient(180deg, var(--bg1), var(--bg2));
-  font-family: Georgia, serif;
-  color: var(--text);
-  overflow-x: hidden;
-}
-
-.scene {
-  min-height: 100vh;
-  min-height: 100dvh;
-  padding: 24px 18px;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.scene.active {
-  display: flex;
-}
-
-.cadre {
-  width: 100%;
-  max-width: 700px;
-  padding: 25px;
-  border: 1px solid var(--accent2);
-  border-radius: 12px;
-  background: var(--panel1);
-  box-shadow: 0 18px 34px rgba(0,0,0,.48), 0 0 20px var(--glow);
-}
-
-h1, h2, h3 {
-  color: var(--accent);
-  margin-top: 0;
-}
-
-h1 { font-size: clamp(32px, 9.2vw, 48px); line-height: 1.08; }
-h2 { font-size: clamp(28px, 7.4vw, 38px); line-height: 1.12; }
-h3 { font-size: clamp(23px, 6.2vw, 31px); line-height: 1.28; }
-
-p {
-  max-width: 700px;
-  margin: 0 auto 20px;
-  font-size: 25px;
-  line-height: 1.5;
-  color: var(--text);
-}
-
-.dialogue-box {
-  max-width: 700px;
-  margin: 20px auto;
-  padding: 25px;
-  border: 1px solid var(--accent);
-  border-radius: 12px;
-  background: var(--panel2);
-  box-shadow: 0 0 18px var(--glow);
-}
-
-.dialogue-box p,
-.dialogue-text {
-  font-size: 16px;
-  line-height: 1.4;
-  min-height: 40px;
-  margin-bottom: 0;
-}
-
-.image-scene {
-  width: 100%;
-  max-width: 620px;
-  border-radius: 14px;
-  border: 2px solid var(--accent2);
-  margin: 18px 0;
-  box-shadow: 0 0 25px black;
-}
-
-button {
-  margin: 12px 6px 0;
-  padding: 14px 22px;
-  min-height: 52px;
-  font-size: 16px;
-  font-family: Georgia, serif;
-  color: var(--text);
-  background: var(--accent2);
-  border: 2px solid rgba(242,236,224,.18);
-  border-radius: 14px;
-  cursor: pointer;
-  box-shadow: 0 5px 0 #17212b;
-  -webkit-tap-highlight-color: transparent;
-}
-
-button:active {
-  transform: translateY(4px);
-  box-shadow: 0 1px 0 #17212b;
-}
-
-.navigation {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-
-.navigation button {
-  min-width: 160px;
-}
-
-.btn-savoir {
-  margin-top: 22px;
-  padding: 10px 18px;
-  min-height: 44px;
-  font-size: 15px;
-  background: transparent;
-  border: 1px solid var(--accent2);
-  color: var(--accent);
-  border-radius: 20px;
-  cursor: pointer;
-  box-shadow: none;
-  letter-spacing: 0.5px;
-}
-
-.btn-savoir:active {
-  background: var(--glow);
-  transform: none;
-  box-shadow: none;
-}
-
-.choix-qcm {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 12px;
-}
-
-.btn-choix {
-  margin-top: 0;
-  padding: 12px 16px;
-  min-height: 48px;
-  font-size: 16px;
-  background: var(--soft);
-  border: 2px solid rgba(36,48,61,.18);
-  color: var(--ink);
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 4px 0 rgba(0,0,0,.25);
-  transition: background 0.2s, border-color 0.2s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.btn-choix.selectionne {
-  background: var(--accent2);
-  border-color: var(--accent2);
-  color: var(--text);
-  box-shadow: 0 4px 0 #17212b;
-}
-
-input {
-  padding: 12px;
-  font-size: 18px;
-  border-radius: 6px;
-  border: 1px solid var(--accent2);
-  text-align: center;
-  background: var(--text);
-  color: var(--ink);
-  font-family: Georgia, serif;
-}
-
-/* Bouton retour au site AvelEscape */
-.site-retour {
-  position: fixed;
-  top: max(12px, env(safe-area-inset-top));
-  right: max(10px, env(safe-area-inset-right));
-  z-index: 999999;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 38px;
-  padding: 7px 12px;
-  background: rgba(28, 40, 54, 0.90);
-  color: var(--text);
-  border: 2px solid var(--accent2);
-  border-radius: 999px;
-  font-family: Georgia, serif;
-  font-size: 13px;
-  font-weight: 800;
-  line-height: 1;
-  text-decoration: none;
-  box-shadow: 0 8px 20px rgba(0,0,0,.45), inset 0 0 12px var(--glow);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.site-retour:hover {
-  background: var(--accent2);
-  color: var(--text);
-}
-
-.site-retour:active {
-  transform: scale(0.96);
-}
-
-/* Bouton retour à la scène précédente */
-.nav-back {
-  position: fixed;
-  top: max(14px, env(safe-area-inset-top));
-  left: max(12px, env(safe-area-inset-left));
-  z-index: 999999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  min-height: 44px;
-  margin: 0;
-  padding: 0;
-  border-radius: 50%;
-  border: 2px solid var(--accent2);
-  background: rgba(28, 40, 54, 0.92);
-  color: var(--text);
-  font-family: Georgia, serif;
-  font-size: 22px;
-  cursor: pointer;
-  box-shadow: 0 8px 18px rgba(0,0,0,.45);
-}
-
-.nav-back.visible {
-  display: flex;
-}
-
-/* Image miniature cliquable (agrandissement en plein écran) */
-.img-vignette {
-  width: 140px;
-  max-width: 40%;
-  border-radius: 10px;
-  border: 2px solid var(--accent2);
-  box-shadow: 0 6px 16px rgba(0,0,0,.45);
-  cursor: zoom-in;
-  transition: transform 0.15s;
-}
-
-.img-vignette:active {
-  transform: scale(0.96);
-}
-
-.lightbox {
-  position: fixed;
-  inset: 0;
-  z-index: 1000000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(5, 3, 2, 0.92);
-  cursor: zoom-out;
-}
-
-.lightbox.visible {
-  display: flex;
-}
-
-.lightbox img {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 10px;
-  box-shadow: 0 0 40px rgba(0,0,0,.6);
-}
-
-@media (max-width: 600px) {
-  .cadre { padding: 20px 16px; }
-  button { width: 100%; }
-  .navigation { flex-direction: column; gap: 4px; }
-  .site-retour { min-height: 34px; padding: 6px 10px; font-size: 12px; }
-  .nav-back { width: 40px; height: 40px; min-height: 40px; }
-}
-
-/* Overlay d'animation (mécanismes, trappes...) */
-#overlay-anim {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  background: #000;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#overlay-anim iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  flex: 1;
-}
-
-#overlay-anim button {
-  position: absolute;
-  bottom: 20px;
-  margin: 0;
-  z-index: 1001;
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>L’artefact d’argile</title>
+  <style>
+    :root{--creme:#f4ead5;--encre:#243247;--or:#b98a44;--cell:clamp(48px,14vw,78px)}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{margin:0;min-height:100svh;display:grid;place-items:center;padding:18px;background:radial-gradient(circle at 50% 20%,#37465a,#111827 72%);font-family:Georgia,serif;color:var(--creme);overflow-x:hidden}
+    .jeu{width:min(94vw,520px);text-align:center}
+    h1{margin:0 0 6px;font-size:clamp(25px,7vw,38px);font-weight:500}
+    .consigne{margin:0 auto 14px;max-width:430px;line-height:1.35;color:#e9ddc5}
+    .barre{height:13px;border:1px solid #c7a76c;border-radius:99px;overflow:hidden;background:#0d1522;margin:0 4px 14px}
+    .progression{height:100%;width:0;background:linear-gradient(90deg,#9c5a31,#e3b66c);transition:width .35s}
+    .scene{position:relative;margin:auto;width:calc(var(--cell) * 6 + 10px);height:calc(var(--cell) * 7 + 10px);max-width:100%;border:5px solid #a4773d;border-radius:18px;overflow:hidden;background:#33281f;box-shadow:0 18px 45px #0009,inset 0 0 0 2px #dfbd7b}
+    .artefact{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(circle,#8f7556 0 32%,#513e2d 33% 44%,#281f19 72%);overflow:hidden}
+    .disque{width:58%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 28%,#d99e63,#9b5b32 63%,#63361f);border:7px ridge #bd7a46;box-shadow:0 10px 25px #000b,inset 0 0 22px #48210f}
+    .disque::before{content:"☘";font-family:serif;font-size:clamp(70px,21vw,125px);color:#58301d;text-shadow:1px 2px #e1ac71;transform:rotate(8deg)}
+    .voile{position:absolute;inset:0;background:linear-gradient(135deg,#46362a,#261d17);transition:opacity .8s;pointer-events:none;opacity:.78}
+    .grille{position:absolute;inset:5px;display:grid;grid-template-columns:repeat(6,var(--cell));grid-template-rows:repeat(7,var(--cell));touch-action:none}
+    .case{position:relative;display:grid;place-items:center;border:0;background:transparent;padding:3px;cursor:pointer}
+    .assiette{width:88%;height:88%;border-radius:50%;display:grid;place-items:center;background:#f7f0df;border:4px double #2f6093;box-shadow:0 4px 7px #0007,inset 0 0 0 3px #e6d9be;transition:transform .18s,opacity .22s,filter .2s;font:bold clamp(17px,5vw,27px) Georgia;color:#24547d}
+    .assiette[data-type="1"]{border-color:#a43c34;color:#a43c34}.assiette[data-type="2"]{border-color:#2d6c51;color:#2d6c51}.assiette[data-type="3"]{border-color:#76528e;color:#76528e}.assiette[data-type="4"]{border-color:#b27a27;color:#9b641c}
+    .assiette.selection{transform:scale(1.12);filter:drop-shadow(0 0 7px #fff)}
+    .assiette.cassee{animation:casse .45s forwards}
+    @keyframes casse{25%{transform:scale(1.16) rotate(-7deg);filter:brightness(1.7)}100%{transform:scale(.1) rotate(30deg);opacity:0}}
+    .eclat{position:absolute;width:8px;height:8px;background:#faf2df;clip-path:polygon(50% 0,100% 100%,0 75%);animation:eclat .6s forwards;pointer-events:none}
+    @keyframes eclat{to{translate:var(--x) var(--y);rotate:180deg;opacity:0}}
+    .message{min-height:30px;margin:12px 0 0;font-size:18px;color:#f2d7a4}
+    .finale{position:fixed;inset:0;display:grid;place-items:center;padding:24px;background:#09101bd9;opacity:0;pointer-events:none;transition:.6s;z-index:5}
+    .finale.visible{opacity:1;pointer-events:auto}
+    .carte{width:min(90vw,430px);padding:28px 22px;border:2px solid #cfaa67;border-radius:18px;background:#202b3c;box-shadow:0 22px 55px #000;text-align:center}
+    .mini-disque{width:180px;max-width:65%;aspect-ratio:1;margin:0 auto 18px;border-radius:50%;background:url('images/artefact-argile.png') center/contain no-repeat,radial-gradient(circle,#d99e63,#7b4125);box-shadow:0 12px 28px #0008}
+    button.rejouer{border:1px solid #dfbd7b;border-radius:30px;padding:12px 22px;background:#b65c2e;color:white;font:17px Georgia;cursor:pointer}
+    .secousse{animation:secousse .25s}@keyframes secousse{25%{translate:-7px}75%{translate:7px}}
+    @media(max-width:390px){:root{--cell:14.3vw}.scene{border-width:4px}.grille{inset:4px}.assiette{border-width:3px}}
+  </style>
 </head>
-
 <body>
-
-<!-- BOUTON RETOUR AU SITE AVELESCAPE -->
-<a class="site-retour" href="../index.html">
-  <span>Site AvelEscape</span>
-</a>
-
-<!-- BOUTON RETOUR À LA SCÈNE PRÉCÉDENTE -->
-<button class="nav-back" id="nav-back" type="button" onclick="retour()" aria-label="Retour">←</button>
-
-<div class="lightbox" id="lightbox" onclick="fermerLightbox()">
-  <img id="lightbox-img" src="" alt="">
-</div>
-
-<main>
-
-  <section class="scene active" id="intro">
-    <div class="cadre">
-      <h1>Le secret du roi Gradlon</h1>
-      <p>Un carnet a recemment été découvert dans les archives de Quimper. Il évoque des artefacts cachés dans la ville.</p>
-      <h3>Saurez-vous les découvrir? </h3>
-      <h3>quel secret cachent-ils?</h3>
-      <p>Rendez-vous à l'angle de la rue du Roi Gradlon et de la rue Kéréon pour commencer l'aventure.</p>
-      <div class="navigation">
-        <button onclick="changerPage('chapitre1')">Commencer l'enquête</button>
-      </div>
+  <main class="jeu">
+    <h1>L’atelier du faïencier</h1>
+    <p class="consigne">Alignez au moins trois assiettes identiques. En se brisant, elles révéleront l’artefact caché.</p>
+    <div class="barre"><div class="progression" id="progression"></div></div>
+    <div class="scene" id="scene">
+      <div class="artefact"><div class="disque"></div></div><div class="voile" id="voile"></div>
+      <div class="grille" id="grille" aria-label="Grille de jeu"></div>
     </div>
-  </section>
-
-  <section class="scene" id="chapitre1">
-    <div class="cadre">
-      <p>Cathédrale de Quimper</p>
-       <h1>Degemer mat en enklask</h1>
-
-    <p style="color:var(--accent); font-size:1.7rem; font-weight:bold;">
-      « Sekred ar Roue Gradlon »
-    </p>
-
-    <p>Bienvenue dans l'enquête</p>
-
-    <p style="font-style:italic;">« Le secret du Roi Gradlon »</p>
-
-    <img src="images/3-webpstatue1.webp" alt="Statue du roi Gradlon" style="max-width:55%; max-height:35vh; object-fit:contain; border-radius:8px; margin:1rem 0;">
-
-      <p style="color:var(--accent); font-weight:bold; margin-top:1.4rem;">
-        En quelle année a été replacée la statue du roi Gradlon ?
-      </p>
-
-      <div class="navigation">
-        <input type="text" id="reponse-gradlon" placeholder="Année" inputmode="numeric" autocomplete="off">
-        <button onclick="verifierGradlon()">Valider</button>
-        <button onclick="retour()">← Retour</button>
-      </div>
-
-      <p id="message-gradlon"></p>
-
-      <button class="btn-savoir" id="indice-gradlon-btn" style="display:none;" onclick="changerPage('indice1')">🔍 Indice</button>
-    </div>
-  </section>
-
-  <section class="scene" id="indice1">
-    <div class="cadre">
-      <h3>Indice</h3>
-      <p>Observez bien les alentour</p>
-      <div class="navigation">
-        <button onclick="changerPage('chapitre1')">découvrir le carnet</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="scene" id="chapitre3">
-    <div class="cadre">
-      <img src="images/3-webpcarnetsocle-341x512.webp" alt="page du carnet évoquant le socle" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
-      <h1>Le socle</h1>
-      <p>Le socle et sa boîte ont été dissimulés par le contremaître dans la facade d'une demeure au moyen d'un mécanisme secret</p>
-      <h3>La bâtissse se trouve à quelques pas de la Place au beurre</h3>
-      <p>"Elle se pare d'un bleu adouci par la brume de cornouaille."</p>
-      <p>"La pierre, le bois, le verre et l'ardoise s'y unissent dans une parfaite harmonie"</p>
-
-      <div class="navigation">
-        <button onclick="changerPage('chapitre3-1')">Suite →</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="scene" id="chapitre3-1">
-    <div class="cadre">
-    <p> Avez-vous trouvé la bâtisse évoquée?</p>
-      <h3>Combien de croix de Saint André voyez-vous sur le bâtiment?</h3>
-      <p>"Ces croix, sont également appelés contreventements et sont destinés à rigidifier les murs"</p>
-
-      <div class="navigation">
-        <input type="text" id="reponse-chapitre3-1" placeholder="Nombre de croix" inputmode="numeric" autocomplete="off">
-        <button onclick="verifierChapitre3_1()">Valider</button>
-      </div>
-
-      <p id="message-chapitre3-1"></p>
-
-      <button class="btn-savoir" id="indice-chapitre3-1-btn" style="display:none;" onclick="changerPage('indice3')">🔍 Indice</button>
-    </div>
-  </section>
-
-  <section class="scene" id="indice3">
-    <div class="cadre">
-      <h3>Indice</h3>
-      <!-- TODO: ajouter l'image images/indice3.webp -->
-      <img src="images/indice3.webp" alt="Indice chapitre 3" style="max-width:55%; max-height:35vh; object-fit:contain; border-radius:8px; margin:1rem 0;">
-      <div class="navigation">
-        <button onclick="changerPage('chapitre3-1')">Retour à l'enquête</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="scene" id="chapitre3-3">
-    <div class="cadre">
-      <img src="images/3-webpcoffrecavite.webp" alt="cavite secrete dans le mûr" class="image-scene">
-
-      <div class="navigation">
-        <button onclick="changerPage('chapitre3-4')">Ouvrir le coffre</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="scene" id="chapitre3-4">
-    <div class="cadre">
-      <img src="images/3-webpcoffreouvert.webp" alt="boîte ouverte" class="image-scene"><!-- TODO: ajouter l'image et le texte du chapitre 3-4 -->
-      <p>le socle est bien là, mais les artefacts sont absents.</p>
-      <h3>Consultons la suite du carnet de M Le Gall pour les retrouver.</h3>
-      <div class="navigation">
-        <button onclick="changerPage('chapitre4')">Suite →</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="scene" id="chapitre4">
-    <div class="cadre">
-      <img src="images/3-webpcarnetschiste.webp" alt="page carnet M Le Gall - artefact schiste" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
-    <h1>Le schiste</h1>
-      <p>Sébastien, le tailleur de pierres a également caché un artefact dans un des mûrs de sa maison.</p>
-      <h3>La bâtissse (la plus ancienne du Finistère) se trouve dans une toute petite ruelle</h3>
-      <div class="navigation">
-        <button onclick="changerPage('chapitre4-1')">Vous pensez l'avoir trouvée ? →</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="scene" id="chapitre4-1">
-    <div class="cadre">
-      <p>Quels sont les objets présents sur le panneau précisant que la maison est la plus ancienne du Finistère ?</p>
-      <h3>Sélectionnez deux réponses.</h3>
-
-      <div class="choix-qcm" id="choix-chapitre4-1">
-        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Marteau')">Marteau</button>
-        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Plan')">Plan</button>
-        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Compas')">Compas</button>
-        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Equerre')">Equerre</button>
-        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Echelle')">Echelle</button>
-        <button class="btn-choix" onclick="toggleChoixChapitre4_1(this,'Truelle')">Truelle</button>
-      </div>
-
-      <div class="navigation">
-        <button onclick="verifierChapitre4_1()">Valider</button>
-      </div>
-
-      <p id="message-chapitre4-1"></p>
-    </div>
-  </section>
-
-  <section class="scene" id="chapitre4-2">
-    <div class="cadre">
-      <!-- TODO: remplacer par la vraie page du carnet -->
-      <img src="images/3-webpcarnet1.webp" alt="Page du carnet" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
-      <h1>Artefact de métal</h1>
-      <p>Le forgeron qui a été désigné pour cacher l'artefact de métal a indiqué : </p>
-      <p>"Il faudra ignorer la Sainte Vierge et son enfant mais repérer les initiales de mes amis ouvriers"</p>
-
-      <div class="navigation">
-        <input type="text" id="reponse-chapitre4-2" placeholder="• • • •" maxlength="4" inputmode="text" autocomplete="off" style="text-transform:uppercase; letter-spacing:6px; text-align:center;">
-        <button onclick="verifierChapitre4_2()">Valider</button>
-      </div>
-
-      <p id="message-chapitre4-2"></p>
-
-      <button class="btn-savoir" id="indice-chapitre4-2-btn" style="display:none;" onclick="location.href='indice-metal/index.html'">🔍 Indice</button>
-    </div>
-  </section>
-
-  <section class="scene" id="chapitre5">
-    <div class="cadre">
-      <!-- TODO: remplacer par la vraie page du carnet -->
-      <img src="images/3-webpcarnet1.webp" alt="Page du carnet" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
-      <h1>Le prochain artefact</h1>
-      <!-- TODO: remplacer par le vrai texte du chapitre 5 -->
-      <p>L'artefact de métal rejoint le coffret. D'autres artefacts restent à découvrir.</p>
-      <div class="navigation">
-        <button onclick="changerPage('chapitre6')">Suite →</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="scene" id="chapitre6">
-    <div class="cadre">
-      <p>L'artefact de cuir a été confié au tanneur installé le long de l'Odet.</p>
-      <h3>Quel est le nom de la passerelle de l'Ancienne Tannerie ?</h3>
-
-      <div class="navigation">
-        <input type="text" id="reponse-chapitre6" placeholder="Nom de la passerelle" autocomplete="off">
-        <button onclick="verifierChapitre6()">Valider</button>
-      </div>
-
-      <p id="message-chapitre6"></p>
-
-      <button class="btn-savoir" id="indice-chapitre6-btn" style="display:none;" onclick="changerPage('indice6')">🔍 Indice</button>
-    </div>
-  </section>
-
-  <section class="scene" id="indice6">
-    <div class="cadre">
-      <h3>Indice</h3>
-      <p>Et si vous vous promeniez sur le pont de Sainte Catherine?</p>
-      <div class="navigation">
-        <button onclick="changerPage('chapitre6')">Retour à l'enquête</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="scene" id="chapitre7">
-    <div class="cadre">
-      <!-- TODO: remplacer par la vraie page du carnet -->
-      <img src="images/3-webpcarnet1.webp" alt="Page du carnet" class="img-vignette" onclick="ouvrirLightbox(this.src, this.alt)">
-      <p>M. Le Gall nous indique dans son carnet que la dernière pièce, l'artefact d'argile, est dissimulée près de la cathédrale, sur la façade de l'échoppe d'un célèbre faïencier de Quimper.</p>
-      <h3>Quel est son nom ?</h3>
-
-      <div class="navigation">
-        <input type="text" id="reponse-chapitre7" placeholder="Nom du faïencier" autocomplete="off">
-        <button onclick="verifierChapitre7()">Valider</button>
-      </div>
-
-      <p id="message-chapitre7"></p>
-
-      <button class="btn-savoir" id="indice-chapitre7-btn" style="display:none;" onclick="changerPage('indice7')">🔍 Indice</button>
-    </div>
-  </section>
-
-  <section class="scene" id="indice7">
-    <div class="cadre">
-      <h3>Indice</h3>
-      <p>Son échoppe se trouve dans un renfoncement de la place où s'élève la cathédrale.</p>
-      <div class="navigation">
-        <button onclick="changerPage('chapitre7')">Retour à l'enquête</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="scene" id="chapitre8">
-    <div class="cadre">
-      <!-- TODO: ajouter l'image et le texte du chapitre 8 -->
-      <p>La suite de l'enquête reste à écrire.</p>
-      <div class="navigation">
-        <button onclick="retour()">← Retour</button>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<div id="overlay-anim">
-  <iframe id="iframe-anim" src="" allowfullscreen></iframe>
-  <button id="btn-continuer-anim">Continuer →</button>
-</div>
-
+    <p class="message" id="message">Touchez une assiette puis une assiette voisine.</p>
+  </main>
+  <div class="finale" id="finale"><div class="carte"><div class="mini-disque"></div><h2>Artefact d’argile découvert !</h2><p>Les dernières assiettes tombent en éclats et dévoilent la pièce cachée.</p><button class="rejouer" onclick="location.reload()">Rejouer</button></div></div>
 <script>
-let historiquePages = [];
-
-function pageActive() {
-  const active = document.querySelector(".scene.active");
-  return active ? active.id : "intro";
+const L=6,H=7,OBJECTIF=20,SYM=['✦','❖','☘','✤','⚜'];
+let plateau=[],selection=null,casses=0,bloque=false;
+const grille=document.querySelector('#grille'),message=document.querySelector('#message');
+const voisin=(a,b)=>Math.abs(a%L-b%L)+Math.abs(Math.floor(a/L)-Math.floor(b/L))===1;
+function typeAleatoire(){return Math.floor(Math.random()*SYM.length)}
+function creerPlateau(){
+  do{plateau=Array.from({length:L*H},typeAleatoire)}while(trouverMatchs().size);
+  garantirCoup(); dessiner();
 }
-
-function mettreAJourNavBack() {
-  const navBack = document.getElementById("nav-back");
-  if (!navBack) return;
-  navBack.classList.toggle("visible", historiquePages.length > 0);
+function dessiner(){
+  grille.innerHTML='';
+  plateau.forEach((t,i)=>{const c=document.createElement('button');c.className='case';c.dataset.i=i;c.setAttribute('aria-label','Assiette bretonne');c.innerHTML=`<span class="assiette" data-type="${t}">${SYM[t]}</span>`;c.onclick=()=>choisir(i);grille.append(c)});
 }
-
-function changerPage(id) {
-  const pageActuelle = pageActive();
-
-  if (pageActuelle !== id) {
-    historiquePages.push(pageActuelle);
+function choisir(i){
+  if(bloque)return;
+  if(selection===null){selection=i;marquer();return}
+  if(selection===i){selection=null;marquer();return}
+  if(!voisin(selection,i)){selection=i;marquer();return}
+  jouerEchange(selection,i);
+}
+function marquer(){document.querySelectorAll('.assiette').forEach((e,i)=>e.classList.toggle('selection',i===selection))}
+function echanger(a,b){[plateau[a],plateau[b]]=[plateau[b],plateau[a]]}
+async function jouerEchange(a,b){
+  bloque=true;selection=null;echanger(a,b);dessiner();await pause(170);
+  if(!trouverMatchs().size){echanger(a,b);dessiner();scene.classList.add('secousse');message.textContent='Cet échange ne crée pas d’alignement.';if(navigator.vibrate)navigator.vibrate(60);setTimeout(()=>scene.classList.remove('secousse'),260);bloque=false;return}
+  await resoudre();bloque=false;
+}
+function trouverMatchs(){
+  const m=new Set();
+  for(let y=0;y<H;y++)for(let x=0;x<L-2;x++){let i=y*L+x;if(plateau[i]!=null&&plateau[i]===plateau[i+1]&&plateau[i]===plateau[i+2]){let k=x;while(k<L&&plateau[y*L+k]===plateau[i])m.add(y*L+k++)}}
+  for(let x=0;x<L;x++)for(let y=0;y<H-2;y++){let i=y*L+x;if(plateau[i]!=null&&plateau[i]===plateau[i+L]&&plateau[i]===plateau[i+2*L]){let k=y;while(k<H&&plateau[k*L+x]===plateau[i])m.add(k++*L+x)}}
+  return m;
+}
+async function resoudre(){
+  let m;
+  while((m=trouverMatchs()).size){
+    m.forEach(i=>{document.querySelectorAll('.assiette')[i]?.classList.add('cassee');eclats(i)});casses+=m.size;majProgression();if(navigator.vibrate)navigator.vibrate([35,30,60]);await pause(450);
+    m.forEach(i=>plateau[i]=null);tomber();dessiner();await pause(220);
+    if(casses>=OBJECTIF){terminer();return}
   }
-
-  document.querySelectorAll(".scene").forEach(page => {
-    page.classList.remove("active");
-  });
-
-  document.getElementById(id).classList.add("active");
-  window.scrollTo(0, 0);
-  mettreAJourNavBack();
+  garantirCoup();dessiner();message.textContent=`${Math.min(casses,OBJECTIF)} / ${OBJECTIF} assiettes brisées`;
 }
-
-function ouvrirLightbox(src, alt) {
-  const lightbox = document.getElementById("lightbox");
-  const img = document.getElementById("lightbox-img");
-  img.src = src;
-  img.alt = alt || "";
-  lightbox.classList.add("visible");
+function tomber(){
+  for(let x=0;x<L;x++){let valeurs=[];for(let y=H-1;y>=0;y--){let v=plateau[y*L+x];if(v!==null)valeurs.push(v)}for(let y=H-1;y>=0;y--)plateau[y*L+x]=valeurs[H-1-y]??typeAleatoire()}
 }
-
-function fermerLightbox() {
-  document.getElementById("lightbox").classList.remove("visible");
-}
-
-function retour() {
-  if (historiquePages.length > 0) {
-    const pagePrecedente = historiquePages.pop();
-
-    document.querySelectorAll(".scene").forEach(page => {
-      page.classList.remove("active");
-    });
-
-    document.getElementById(pagePrecedente).classList.add("active");
-    window.scrollTo(0, 0);
-    mettreAJourNavBack();
-  }
-}
-
-(function activerScèneDepuisAncre() {
-  const id = window.location.hash.slice(1);
-  if (id && document.getElementById(id)) {
-    document.querySelectorAll(".scene").forEach(page => {
-      page.classList.remove("active");
-    });
-    document.getElementById(id).classList.add("active");
-  }
-})();
-
-function verifierGradlon() {
-  const reponse = document.getElementById("reponse-gradlon").value.trim();
-  const message = document.getElementById("message-gradlon");
-  const btnIndice = document.getElementById("indice-gradlon-btn");
-
-  if (reponse === "1858") {
-    message.textContent = "";
-    window.location.href = 'carnet/index.html';
-  } else {
-    message.textContent = "Ce n'est pas la bonne réponse.";
-    btnIndice.style.display = "inline-block";
-  }
-}
-
-const choixChapitre4_1 = new Set();
-
-function toggleChoixChapitre4_1(btn, valeur) {
-  if (choixChapitre4_1.has(valeur)) {
-    choixChapitre4_1.delete(valeur);
-    btn.classList.remove("selectionne");
-  } else {
-    if (choixChapitre4_1.size >= 2) return;
-    choixChapitre4_1.add(valeur);
-    btn.classList.add("selectionne");
-  }
-}
-
-function verifierChapitre4_1() {
-  const message = document.getElementById("message-chapitre4-1");
-  const bonnes = ["Plan", "Equerre"];
-  const correct = bonnes.every(r => choixChapitre4_1.has(r)) && choixChapitre4_1.size === 2;
-
-  if (correct) {
-    message.textContent = "";
-    lancerAnimation('mecanisme-panneau/index.html', 'chapitre4-2');
-  } else {
-    message.textContent = "Ce n'est pas la bonne combinaison.";
-  }
-}
-
-function verifierChapitre4_2() {
-  const reponse = document.getElementById("reponse-chapitre4-2").value.trim().toUpperCase();
-  const message = document.getElementById("message-chapitre4-2");
-  const btnIndice = document.getElementById("indice-chapitre4-2-btn");
-
-  if (reponse === "JSSZ") {
-    message.textContent = "";
-    lancerAnimation('mecanisme-chute-piece/index.html', 'chapitre5');
-  } else {
-    message.textContent = "Ce n'est pas la bonne réponse.";
-    btnIndice.style.display = "inline-block";
-  }
-}
-
-function verifierChapitre6() {
-  const reponse = document.getElementById("reponse-chapitre6").value.trim().toUpperCase();
-  const message = document.getElementById("message-chapitre6");
-  const btnIndice = document.getElementById("indice-chapitre6-btn");
-
-  if (reponse === "GUEVEL") {
-    message.textContent = "";
-    lancerAnimation('mecanisme-collection/index.html?artefact=cuir&logement=2&suite=chapitre7', 'chapitre7');
-  } else {
-    message.textContent = "Ce n'est pas la bonne réponse.";
-    btnIndice.style.display = "inline-block";
-  }
-}
-
-function verifierChapitre7() {
-  const reponse = document.getElementById("reponse-chapitre7").value.trim().toUpperCase();
-  const message = document.getElementById("message-chapitre7");
-  const btnIndice = document.getElementById("indice-chapitre7-btn");
-
-  if (reponse === "HENRIOT") {
-    message.textContent = "";
-    lancerAnimation('mecanisme-jeu-assiettes/index.html', 'chapitre8');
-  } else {
-    message.textContent = "Ce n'est pas la bonne réponse.";
-    btnIndice.style.display = "inline-block";
-  }
-}
-
-function verifierChapitre3_1() {
-  const reponse = document.getElementById("reponse-chapitre3-1").value.trim();
-  const message = document.getElementById("message-chapitre3-1");
-  const btnIndice = document.getElementById("indice-chapitre3-1-btn");
-
-  if (reponse === "18") {
-    message.textContent = "Exact, vous êtes au bon endroit !";
-    setTimeout(() => lancerAnimation('mecanisme-trappe/index.html', 'chapitre3-3'), 1200);
-  } else {
-    message.textContent = "Ce n'est pas la bonne réponse.";
-    btnIndice.style.display = "inline-block";
-  }
-}
-
-function lancerAnimation(fichier, pageSuivante) {
-  const overlay = document.getElementById("overlay-anim");
-  const iframe = document.getElementById("iframe-anim");
-  const btnContinuer = document.getElementById("btn-continuer-anim");
-  const boutonSiteRetour = document.querySelector(".site-retour");
-
-  iframe.src = fichier;
-  overlay.style.display = "flex";
-  btnContinuer.style.display = "none";
-  if (boutonSiteRetour) boutonSiteRetour.style.display = "none";
-
-  function surMessageMecanisme(event) {
-    if (event.data === "mecanisme-ouvert") {
-      btnContinuer.style.display = "inline-flex";
-      window.removeEventListener("message", surMessageMecanisme);
-    }
-  }
-  window.addEventListener("message", surMessageMecanisme);
-
-  btnContinuer.onclick = function () {
-    overlay.style.display = "none";
-    iframe.src = "";
-    window.removeEventListener("message", surMessageMecanisme);
-    if (boutonSiteRetour) boutonSiteRetour.style.display = "";
-    changerPage(pageSuivante);
-  };
-}
+function majProgression(){const p=Math.min(1,casses/OBJECTIF);progression.style.width=p*100+'%';voile.style.opacity=.78*(1-p)}
+function eclats(i){const c=grille.children[i];for(let n=0;n<5;n++){let e=document.createElement('i');e.className='eclat';e.style.setProperty('--x',(Math.random()*80-40)+'px');e.style.setProperty('--y',(Math.random()*80-40)+'px');c.append(e)}}
+function aUnCoup(){for(let i=0;i<plateau.length;i++)for(const d of[1,L]){let j=i+d;if(j>=plateau.length||(d===1&&Math.floor(i/L)!==Math.floor(j/L)))continue;echanger(i,j);let ok=trouverMatchs().size>0;echanger(i,j);if(ok)return true}return false}
+function garantirCoup(){if(!aUnCoup()){do{plateau.sort(()=>Math.random()-.5)}while(trouverMatchs().size||!aUnCoup())}}
+function terminer(){bloque=true;grille.style.transition='opacity .8s';grille.style.opacity='0';voile.style.opacity='0';message.textContent='L’artefact apparaît…';setTimeout(()=>finale.classList.add('visible'),1400)}
+const pause=ms=>new Promise(r=>setTimeout(r,ms));
+creerPlateau();
 </script>
-
 </body>
 </html>
