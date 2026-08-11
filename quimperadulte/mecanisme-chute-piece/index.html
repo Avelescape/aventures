@@ -2,186 +2,201 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>L’artefact d’argile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Découverte de l’artefact de métal</title>
   <style>
-    :root{--creme:#f4ead5;--encre:#243247;--or:#b98a44;--cell:clamp(64px,18vw,96px)}
-    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    body{margin:0;min-height:100svh;display:grid;place-items:center;padding:18px;background:radial-gradient(circle at 50% 20%,#37465a,#111827 72%);font-family:Georgia,serif;color:var(--creme);overflow-x:hidden}
-    .jeu{width:min(96vw,620px);text-align:center}
-    h1{margin:0 0 6px;font-size:clamp(25px,7vw,38px);font-weight:500}
-    .consigne{margin:0 auto 14px;max-width:430px;line-height:1.35;color:#e9ddc5}
-    .scene{position:relative;margin:auto;width:calc(var(--cell) * 6 + 20px);height:calc(var(--cell) * 7 + 20px);max-width:100%;border:5px solid #a4773d;border-radius:18px;overflow:hidden;background:#33281f;box-shadow:0 18px 45px #0009,inset 0 0 0 2px #dfbd7b}
-    .artefact{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(circle,#8f7556 0 32%,#513e2d 33% 44%,#281f19 72%);overflow:hidden}
-    .disque{width:58%;aspect-ratio:1;border-radius:50%;background:url('images/3-webpartefactargile.webp') center/contain no-repeat;filter:drop-shadow(0 10px 16px #000b);will-change:transform,opacity}
-    .scene.envol{overflow:visible;z-index:3}
-    .scene.envol .artefact{overflow:visible;background:transparent}
-    .scene.envol .disque{animation:envolArtefact 2.1s cubic-bezier(.22,.72,.28,1) forwards;z-index:4}
-    @keyframes envolArtefact{
-      0%{transform:translate(0,0) scale(1);opacity:1}
-      32%{transform:translate(0,0) scale(1.38);opacity:1}
-      48%{transform:translate(0,0) scale(1.26);opacity:1}
-      100%{transform:translate(65vw,-65vh) scale(.08) rotate(24deg);opacity:0}
+    :root {
+      --creme: #f5efe0;
+      --marine: #0f1d30;
+      --bordure: #c9b88a;
     }
-    .voile{position:absolute;inset:0;background:linear-gradient(135deg,#46362a,#261d17);transition:transform .55s cubic-bezier(.22,.75,.25,1),opacity .8s;pointer-events:none;opacity:.78;will-change:transform}
-    .grille{position:absolute;inset:5px;display:grid;grid-template-columns:repeat(6,var(--cell));grid-template-rows:repeat(7,var(--cell));touch-action:none;overscroll-behavior:contain;user-select:none;-webkit-user-select:none;transition:transform .55s cubic-bezier(.22,.75,.25,1);will-change:transform}
-    .case{position:relative;display:grid;place-items:center;border:0;background:transparent;padding:3px;cursor:pointer;touch-action:none}
-    .assiette{width:94%;height:94%;border-radius:50%;display:block;background-image:var(--image-assiette);background-position:center;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 4px 4px #0008);transition:transform .18s,opacity .22s,filter .2s;pointer-events:none}
-    .assiette.selection{transform:scale(1.12);filter:drop-shadow(0 0 7px #fff)}
-    .assiette.glissee{transition:none;transform:translate(var(--glisse-x,0),var(--glisse-y,0)) scale(1.12);filter:drop-shadow(0 5px 8px #0009);z-index:2}
-    .assiette.cassee{animation:casse .45s forwards}
-    @keyframes casse{25%{transform:scale(1.16) rotate(-7deg);filter:brightness(1.7)}100%{transform:scale(.1) rotate(30deg);opacity:0}}
-    .eclat{position:absolute;width:8px;height:8px;background:#faf2df;clip-path:polygon(50% 0,100% 100%,0 75%);animation:eclat .6s forwards;pointer-events:none}
-    @keyframes eclat{to{translate:var(--x) var(--y);rotate:180deg;opacity:0}}
-    .message{min-height:30px;margin:12px 0 0;font-size:18px;color:#f2d7a4}
-    .finale{position:fixed;inset:0;display:grid;place-items:center;padding:24px;background:#09101bd9;opacity:0;pointer-events:none;transition:.6s;z-index:5}
-    .finale.visible{opacity:1;pointer-events:auto}
-    .carte{width:min(90vw,430px);padding:28px 22px;border:2px solid #cfaa67;border-radius:18px;background:#202b3c;box-shadow:0 22px 55px #000;text-align:center}
-    .mini-disque{width:180px;max-width:65%;aspect-ratio:1;margin:0 auto 18px;border-radius:50%;background:url('images/3-webpartefactargile.webp') center/contain no-repeat;filter:drop-shadow(0 12px 15px #0008)}
-    button.rejouer{border:1px solid #dfbd7b;border-radius:30px;padding:12px 22px;background:#b65c2e;color:white;font:17px Georgia;cursor:pointer}
-    .secousse{animation:secousse .25s}@keyframes secousse{25%{translate:-7px}75%{translate:7px}}
-    @media(max-width:390px){:root{--cell:17vw}.scene{border-width:4px}.grille{inset:4px}}
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      color: var(--creme);
+      background: var(--marine);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .interface {
+      width: min(100%, 560px);
+    }
+
+    .scene {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(201, 184, 138, 0.45);
+      border-radius: 12px;
+      background: #172431;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
+    }
+
+    .photo {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .artefact {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 68%;
+      width: 23%;
+      height: auto;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(0.78);
+      filter: drop-shadow(0 7px 7px rgba(0, 0, 0, 0.72));
+      will-change: left, top, opacity, transform;
+    }
+
+    /*
+      Ce PNG transparent ne contient que la pierre arrondie, mais conserve
+      les dimensions exactes de la photographie. Il masque l'artefact au départ.
+    */
+    .pierre-premier-plan {
+      position: absolute;
+      z-index: 3;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .scene.animation-artefact .artefact {
+      animation: chute-et-collecte 4.2s forwards;
+    }
+
+    @keyframes chute-et-collecte {
+      0% {
+        left: 50%;
+        top: 68%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.72) rotate(-8deg);
+        filter: brightness(0.55) drop-shadow(0 3px 3px rgba(0, 0, 0, 0.8));
+      }
+
+      5% { opacity: 1; }
+
+      /* Chute douce jusqu’à la plaque */
+      40% {
+        left: 50%;
+        top: 83%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(7deg);
+        filter: brightness(1) drop-shadow(0 7px 7px rgba(0, 0, 0, 0.65));
+      }
+
+      /* Léger rebond */
+      47% {
+        left: 50%;
+        top: 82.1%;
+        transform: translate(-50%, -50%) scale(1) rotate(-3deg);
+      }
+
+      /* Arrêt au niveau de la plaque de rue */
+      58% {
+        left: 50%;
+        top: 83%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+      }
+
+      /* Arc rapide vers l’angle supérieur droit */
+      69% {
+        left: 69%;
+        top: 74%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.88) rotate(95deg);
+      }
+
+      83% {
+        left: 90%;
+        top: 42%;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.58) rotate(265deg);
+      }
+
+      100% {
+        left: 108%;
+        top: -7%;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.22) rotate(550deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scene.animation-artefact .artefact {
+        animation-duration: 1.5s;
+      }
+    }
   </style>
 </head>
 <body>
-  <main class="jeu">
-    <h1>L’atelier du faïencier</h1>
-    <p class="consigne">Faites glisser une assiette vers une case voisine. Les rangées descendront peu à peu pour révéler l’artefact.</p>
+  <main class="interface">
     <div class="scene" id="scene">
-      <div class="artefact"><div class="disque"></div></div><div class="voile" id="voile"></div>
-      <div class="grille" id="grille" aria-label="Grille de jeu"></div>
+      <img class="photo" src="images/3-webpvierge.webp" alt="Statue de la rue des Boucheries">
+      <img class="artefact" id="artefact" src="images/3-webpartefactmetal.webp" alt="Artefact de métal">
+      <img class="pierre-premier-plan" src="images/3-webppierrepremierplan.webp" alt="">
     </div>
-    <p class="message" id="message">Touchez une assiette puis une assiette voisine.</p>
   </main>
-  <div class="finale" id="finale"><div class="carte"><div class="mini-disque"></div><h2>Artefact d’argile découvert !</h2><p>Les dernières assiettes tombent en éclats et dévoilent la pièce cachée.</p><button class="rejouer" onclick="location.reload()">Rejouer</button></div></div>
-<script>
-const L=6,H=7,OBJECTIF=20;
-const ASSIETTES=[
-  'images/3-webpassiette1.webp',
-  'images/3-webpassiette2.webp',
-  'images/3-webpassiette3.webp',
-  'images/3-webpassiette4.webp',
-  'images/3-webpassiette5.webp'
-];
-let plateau=[],selection=null,casses=0,bloque=false,geste=null,ignorerClic=false;
-const grille=document.querySelector('#grille'),message=document.querySelector('#message'),scene=document.querySelector('#scene'),voile=document.querySelector('#voile');
-const voisin=(a,b)=>Math.abs(a%L-b%L)+Math.abs(Math.floor(a/L)-Math.floor(b/L))===1;
-function typeAleatoire(){return Math.floor(Math.random()*ASSIETTES.length)}
-function creerPlateau(){
-  do{plateau=Array.from({length:L*H},typeAleatoire)}while(trouverMatchs().size);
-  garantirCoup(); dessiner();
-}
-function dessiner(){
-  grille.innerHTML='';
-  plateau.forEach((t,i)=>{const c=document.createElement('button');c.className='case';c.dataset.i=i;c.setAttribute('aria-label',`Assiette bretonne, série ${t+1}`);c.innerHTML=`<span class="assiette" data-type="${t}" style="--image-assiette:url('${ASSIETTES[t]}')"></span>`;c.onclick=()=>{if(ignorerClic){ignorerClic=false;return}choisir(i)};grille.append(c)});
-}
-function choisir(i){
-  if(bloque)return;
-  if(selection===null){selection=i;marquer();return}
-  if(selection===i){selection=null;marquer();return}
-  if(!voisin(selection,i)){selection=i;marquer();return}
-  jouerEchange(selection,i);
-}
-function marquer(){document.querySelectorAll('.assiette').forEach((e,i)=>e.classList.toggle('selection',i===selection))}
-function echanger(a,b){[plateau[a],plateau[b]]=[plateau[b],plateau[a]]}
-function creerAlignementGaranti(i){
-  const y=Math.floor(i/L),x=i%L;
-  const debut=Math.max(0,Math.min(L-3,x-1));
-  const type=plateau[i];
-  for(let n=0;n<3;n++)plateau[y*L+debut+n]=type;
-}
-async function jouerEchange(a,b){
-  bloque=true;selection=null;echanger(a,b);dessiner();await pause(170);
-  if(!trouverMatchs().size){
-    creerAlignementGaranti(b);
-    dessiner();
-    await pause(150);
-  }
-  await resoudre();bloque=false;
-}
-function trouverMatchs(){
-  const m=new Set();
-  for(let y=0;y<H;y++)for(let x=0;x<L-2;x++){let i=y*L+x;if(plateau[i]!=null&&plateau[i]===plateau[i+1]&&plateau[i]===plateau[i+2]){let k=x;while(k<L&&plateau[y*L+k]===plateau[i])m.add(y*L+k++)}}
-  for(let x=0;x<L;x++)for(let y=0;y<H-2;y++){let i=y*L+x;if(plateau[i]!=null&&plateau[i]===plateau[i+L]&&plateau[i]===plateau[i+2*L]){let k=y;while(k<H&&plateau[k*L+x]===plateau[i])m.add(k++*L+x)}}
-  return m;
-}
-async function resoudre(){
-  let m;
-  while((m=trouverMatchs()).size){
-    m.forEach(i=>{document.querySelectorAll('.assiette')[i]?.classList.add('cassee');eclats(i)});casses+=m.size;majProgression();if(navigator.vibrate)navigator.vibrate([35,30,60]);await pause(450);
-    m.forEach(i=>plateau[i]=null);tomber();dessiner();await pause(220);
-    if(casses>=OBJECTIF){terminer();return}
-  }
-  garantirCoup();dessiner();message.textContent=`${Math.min(casses,OBJECTIF)} / ${OBJECTIF} assiettes brisées`;
-}
-function tomber(){
-  for(let x=0;x<L;x++){let valeurs=[];for(let y=H-1;y>=0;y--){let v=plateau[y*L+x];if(v!==null)valeurs.push(v)}for(let y=H-1;y>=0;y--)plateau[y*L+x]=valeurs[H-1-y]??typeAleatoire()}
-}
-function majProgression(){
-  const p=Math.min(1,casses/OBJECTIF);
-  const rangsDescendus=Math.min(H,Math.floor(p*H));
-  grille.style.transform=`translateY(calc(var(--cell) * ${rangsDescendus}))`;
-  voile.style.transform=`translateY(calc(var(--cell) * ${rangsDescendus}))`;
-}
-function eclats(i){const c=grille.children[i];for(let n=0;n<5;n++){let e=document.createElement('i');e.className='eclat';e.style.setProperty('--x',(Math.random()*80-40)+'px');e.style.setProperty('--y',(Math.random()*80-40)+'px');c.append(e)}}
-function aUnCoup(){for(let i=0;i<plateau.length;i++)for(const d of[1,L]){let j=i+d;if(j>=plateau.length||(d===1&&Math.floor(i/L)!==Math.floor(j/L)))continue;echanger(i,j);let ok=trouverMatchs().size>0;echanger(i,j);if(ok)return true}return false}
-function garantirCoup(){if(!aUnCoup()){do{plateau.sort(()=>Math.random()-.5)}while(trouverMatchs().size||!aUnCoup())}}
-function terminer(){
-  bloque=true;
-  grille.style.transform='translateY(0)';
-  grille.style.transition='none';
-  voile.style.transform='translateY(105%)';voile.style.opacity='0';
-  message.textContent='L’artefact d’argile est découvert !';
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    document.querySelectorAll('.assiette').forEach((assiette,i)=>{
-      setTimeout(()=>{assiette.classList.add('cassee');eclats(i)},Math.random()*130);
+
+  <script>
+    const scene = document.querySelector("#scene");
+    const artefact = document.querySelector("#artefact");
+    let sceneSuivanteLancee = false;
+
+    function enigmeReussie() {
+      scene.classList.remove("animation-artefact");
+
+      // Force le navigateur à remettre l’animation au début.
+      void scene.offsetWidth;
+
+      scene.classList.add("animation-artefact");
+
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage("mecanisme-ouvert", "*");
+      }
+
+      if (navigator.vibrate) {
+        navigator.vibrate([60, 40, 100]);
+      }
+
+      // Enregistre l’artefact dans la collection du joueur.
+      localStorage.setItem("artefactMetal", "trouve");
+    }
+
+    /*
+      Une fois l’artefact arrivé au bord de l’écran (fin de l’animation
+      de chute), on enchaîne directement sur le coffret.
+    */
+    artefact.addEventListener("animationend", () => {
+      if (sceneSuivanteLancee) return;
+      sceneSuivanteLancee = true;
+      window.location.href = "../mecanisme-collection/index.html?artefact=metal&logement=1&suite=chapitre5";
     });
-    if(navigator.vibrate)navigator.vibrate([70,35,90,35,130]);
-  }));
-  setTimeout(()=>{grille.style.opacity='0';scene.classList.add('envol')},850);
-  setTimeout(()=>message.textContent='Artefact ajouté à votre collection.',2950);
-}
-const pause=ms=>new Promise(r=>setTimeout(r,ms));
-function finirGeste(){
-  if(!geste)return;
-  geste.assiette?.classList.remove('glissee');
-  geste.assiette?.style.removeProperty('--glisse-x');
-  geste.assiette?.style.removeProperty('--glisse-y');
-  geste=null;
-}
-grille.addEventListener('pointerdown',e=>{
-  if(bloque||!e.isPrimary)return;
-  const c=e.target.closest('.case');if(!c)return;
-  e.preventDefault();
-  const assiette=c.querySelector('.assiette');
-  geste={i:+c.dataset.i,x:e.clientX,y:e.clientY,id:e.pointerId,assiette};
-  assiette.classList.add('glissee');
-  grille.setPointerCapture?.(e.pointerId);
-});
-grille.addEventListener('pointermove',e=>{
-  if(!geste||geste.id!==e.pointerId||bloque)return;
-  e.preventDefault();
-  const dx=e.clientX-geste.x,dy=e.clientY-geste.y;
-  geste.assiette.style.setProperty('--glisse-x',`${Math.max(-35,Math.min(35,dx))}px`);
-  geste.assiette.style.setProperty('--glisse-y',`${Math.max(-35,Math.min(35,dy))}px`);
-  if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;
-  let cible=geste.i;
-  if(Math.abs(dx)>Math.abs(dy))cible+=dx>0?1:-1;else cible+=dy>0?L:-L;
-  const depart=geste.i;
-  finirGeste();
-  ignorerClic=true;
-  if(cible>=0&&cible<plateau.length&&voisin(depart,cible))jouerEchange(depart,cible);
-});
-grille.addEventListener('pointerup',e=>{
-  if(!geste||geste.id!==e.pointerId)return;
-  const depart=geste.i;
-  finirGeste();
-  ignorerClic=true;
-  choisir(depart);
-});
-grille.addEventListener('pointercancel',finirGeste);
-grille.addEventListener('lostpointercapture',finirGeste);
-creerPlateau();
-</script>
+
+    /* Lance automatiquement la scène lorsque toutes les images sont chargées. */
+    window.addEventListener("load", () => {
+      window.setTimeout(enigmeReussie, 250);
+    });
+  </script>
 </body>
 </html>
