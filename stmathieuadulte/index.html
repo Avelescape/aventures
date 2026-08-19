@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1849,7 +1847,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen active" id="screen-intro">
   <img class="intro-img"
        src="images/1-webpaffiche.webp"
-       alt="intro"
+       alt="Affiche de l'aventure Le Mystère du Phare"
        onclick="startAventure(event)">
 
   <p class="intro-date">17 février · Anno Domini 1840</p>
@@ -1864,7 +1862,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   <p class="intro-title-breton">Kevrin ar Tour-tan</p>
 
   <p class="intro-location">Pointe de Saint-Mathieu, Bretagne</p>
-  <button class="btn-primary" onclick="startAventure(event)">Commencer l'enquête</button>
+  <button class="btn-primary" onclick="startAventure(event)">Commencer l'aventure</button>
 </div>
 
 <div class="screen" id="screen-missive1">
@@ -1874,18 +1872,18 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   </div>
 
   <img src="images/1-webpenveloppe1.webp"
-       alt="missive1 scellée"
+       alt="Enveloppe scellée d'un cachet de cire"
        class="missive1-image"
        onclick="showScreen('missive2')">
 </div>
 
 <div class="screen" id="screen-missive2">
   <div class="missive2-label">
-    <p>Le cachet de cire est brisé...</p>
+    <p>Le cachet de cire est brisé…</p>
   </div>
 
   <img src="images/1-webpenveloppe2.webp"
-       alt="missive2 ouverte"
+       alt="Enveloppe ouverte"
        class="missive2-image"
        onclick="showScreen('lettre')">
 </div>
@@ -1894,7 +1892,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   <div class="lettre-container">
     <img class="lettre-img"
          src="images/1-webpisalettre.webp"
-         alt="lettre"
+         alt="Lettre d'Isabella"
          onclick="showScreen('puits')">
 
     <button class="btn-primary" onclick="showScreen('puits')">
@@ -1906,7 +1904,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-puits">
   <div class="puits-label">
     <p>Vous êtes devant le puits de Saint-Mathieu.</p>
-    <p>Personne...</p>
+    <p>Personne…</p>
     <p>Isabella vous a pourtant demandé de l'y rejoindre.</p>
     <p>Peut-être vous a-t-elle laissé un indice ?</p>
 
@@ -1918,11 +1916,11 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-locmaze">
   <div class="locmaze-label">
     <h2>Entrez le mot :</h2>
-    <p>Face au puits, tout semble inutile</p>
-    <p>pas de seau pour l'eau</p>
-    <p>pas de saut pour passer</p>
-    <p>pas de sot pour comprendre</p>
-    <p>seul compte celui qui scelle</p>
+    <p>Face au puits, tout semble inutile :</p>
+    <p>pas de seau pour l'eau,</p>
+    <p>pas de saut pour passer,</p>
+    <p>pas de sot pour comprendre…</p>
+    <p>Seul compte celui qui scelle.</p>
     <input type="text" id="reponse">
 
      <button class="btn-primary" onclick="verifier()">Valider</button>
@@ -1933,13 +1931,13 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-so">
   <div class="so-label">
-    <p>Une autre façon de trouver le mot...</p>
-     <h1>Pas très loin de vous, côté route, il y a un panneau en français</h1>
-    <p>Première lettre de la 7e ligne</p>
-    <p>Première lettre de la 12e ligne</p>
-    <p>Dernière lettre de la 19e ligne</p>
-    <p>Première lettre de la 21e ligne</p>
-    <p>Première lettre de la 1re ligne</p>
+    <p>Une autre façon de trouver le mot…</p>
+     <h1>Non loin de vous, du côté de la route, se trouve un panneau en français.</h1>
+    <p>Première lettre de la 7e ligne.</p>
+    <p>Première lettre de la 12e ligne.</p>
+    <p>Dernière lettre de la 19e ligne.</p>
+    <p>Première lettre de la 21e ligne.</p>
+    <p>Première lettre de la 1re ligne.</p>
 
     
 
@@ -1969,7 +1967,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-instructionschap2">
   <div class="instructionschap2-label">
     <p>Prenez le temps d'explorer les abords de la chapelle… Des indications pourraient vous être d'une aide précieuse pour la suite de votre aventure.</p>
-    <p>Une fois votre quête terminée, dirigez-vous vers la porte du phare. </p>
+    <p>Une fois votre exploration terminée, dirigez-vous vers la porte du phare.</p>
     <button class="btn-primary" onclick="nextScreen()">Cliquez si vous y êtes</button>
   </div>
 </div>
@@ -1979,7 +1977,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
     <img class="chapter-img"
          src="images/1-webpphareloin.webp"
          alt="Porte du phare">
-    <p>Il semble fermé</p>
+    <p>Il semble fermé.</p>
     <button class="btn-primary" onclick="essayerOuvrir()">
       Suite
     </button>
@@ -1989,7 +1987,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div id="screen-mauvaiscode" class="screen">
   <div class="porte-label">
    <h3>
-  Écoutez...<br>
+  Écoutez…<br>
   D'où provient ce chant ?<br>
   Il semble provenir de l'abbaye.
 </h3>
@@ -2060,7 +2058,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-sceneabbaye">
   <img class="chapter-img"
        src="images/1-webptroisnaufrageurs.webp"
-       alt="naufrageurs">
+       alt="Trois naufrageurs près de l'abbaye">
 
   <div class="dialogue-box">
     <p id="dialogue-text-naufrageurs"></p>
@@ -2128,7 +2126,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-codeancienphare">
   <img class="chapter-img"
        src="images/1-webpcadenasportefermee.webp"
-       alt="porte du phare">
+       alt="Porte verrouillée du phare">
 
   <div class="texte-sommet" style="opacity:1;">
     <p>Entrez le code à 4 chiffres :</p>
@@ -2230,7 +2228,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
     </div>
 
     <div class="phare-aide" id="phare-aide">
-      Posez le doigt sur la manivelle et faites-la tourner
+      Posez le doigt sur la manivelle et effectuez quatre tours.
     </div>
 
     <button class="phare-continuer" id="phare-continuer" type="button">
@@ -2271,7 +2269,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 <div class="screen" id="screen-indicemecanisme2">
   <div class="indice-mecanisme-page">
     <h2>Deuxième indice</h2>
-    <p>L'identité certifiée est sur le sceau...</p>
+    <p>L'identité certifiée figure sur le sceau…</p>
     <button class="btn-primary" onclick="showScreen('sommetphare')">
       Retour au mécanisme
     </button>
@@ -2286,11 +2284,11 @@ html, body, body *, button, .btn-primary, input, textarea, select {
        src="images/1-webfin.webp"
        alt="Fin de l'aventure">
        <p>Bravo, vous avez sauvé Yannick et les marins !</p>
-       <p>Grâce à vous et à votre perspicacité, les naufrageurs ne sont pas parvenus à leurs fins,</p>
-       <p>cette fois-ci…</p>
+       <p>Grâce à votre perspicacité, les naufrageurs ne sont pas parvenus à leurs fins…</p>
+       <p>Cette fois-ci.</p>
        <p>Peut-être les retrouverons-nous dans l'une de nos prochaines aventures ?</p>
        <p class="fin-kenavo">Kenavo !</p>
-       <p>Your support helps Gregorian Chanting (@GregorianChanting) keep the ancient voice of monastic devotion alive.</p>
+       <p>Votre soutien aide Gregorian Chanting (@GregorianChanting) à faire vivre la voix ancestrale du chant monastique.</p>
 
  <div style="height:220px;"></div>
 
@@ -2793,12 +2791,12 @@ function nextScreen() {
 
 /* DIALOGUE MOINE */
 const dialogueMoine = [
-  "Vous voilà, enfin...",
+  "Vous voilà enfin…",
   "Je suis Gwenhaël, l'un des premiers moines de l'abbaye.",
   "J'ai été désigné par saint Tanguy, le fondateur de l'abbaye,",
   "pour que mon âme veille sur ce lieu.",
   "Je vous aiderai si vous répondez à ma question :",
-  "Quel est le prénom de la personne que saint Tanguy a assassinée avant de devenir moine ?"
+  "Quel est le prénom de la personne que saint Tanguy a tuée avant de devenir moine ?"
 ];
 
 let dialogueIndex = 0;
@@ -2889,10 +2887,9 @@ function afficherIndiceMoine() {
 const dialogueMoineSuite = [
   "Effectivement, suite à une querelle de famille, Gurguy, fils du seigneur de Trémazan, a tué sa sœur Haude…",
   "Rongé par le remords, il décida de se faire moine et se consacra à la construction de ce lieu.", 
-  "Aujourd'hui,",
-  "une autre personne est en danger et il faut vite agir !",
-  "Yannick, le gardien, a disparu...",
-  "Sortez par la porte latérale nord, et allez près du petit phare."
+  "Aujourd'hui, une autre personne est en danger : il faut agir vite !",
+  "Yannick, le gardien, a disparu…",
+  "Sortez par la porte latérale nord et rendez-vous près du petit phare."
 ];
 
 let dialogueIndexMoineSuite = 0;
@@ -2937,11 +2934,11 @@ function afficherDialogueMoineSuite() {
 /* EXPLICATION NAUFRAGEURS */
 const dialogueNaufrageurs = [
   "La nuit, les navigateurs se repèrent grâce aux phares ou aux lumières des ports.",
-  "Les naufrageurs allument des feux sur la côte",
+  "Les naufrageurs allument des feux sur la côte,",
   "et les marins croient voir un port sûr ou l'indication d'une route maritime.",
   "Mais ces feux dirigent les navires vers les récifs.",
   "Cela provoque un échouement ou un naufrage.",
-  "Puis les naufrageurs pillent l’épave..."
+  "Puis les naufrageurs pillent l’épave…"
 
 ];
 
@@ -2988,10 +2985,10 @@ function afficherDialogueNaufrageurs() {
 const dialoguePhare = [
   "Regardez à l'ouest, en contrebas.",
   "Yannick !",
-  "Mais il ne nous voit pas...",
-  "Trouvez une solution permettant à la fois :",
-  "lui dire qu'on est là,",
-  "et prévenir le bateau qu'il s'approche des récifs."
+  "Mais il ne nous voit pas…",
+  "Trouvez une solution permettant à la fois",
+  "de lui signaler notre présence",
+  "et d'avertir le bateau qu'il s'approche des récifs."
 ];
 
 let dialogueIndexPhare = 0;
