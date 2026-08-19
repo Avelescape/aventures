@@ -2139,14 +2139,14 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
     <img
       class="phare-engrenage phare-engrenage-3"
-      src="images/1-pngengrenage.png"
+      src="images/1-webpengrenage.webp"
       alt=""
       draggable="false"
     >
 
     <img
       class="phare-engrenage phare-engrenage-4"
-      src="images/1-pngengrenagegrand.png"
+      src="images/1-webpengrenagegrand.webp"
       alt=""
       draggable="false"
     >
@@ -2165,7 +2165,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
       <img
         class="phare-manivelle"
-        src="images/1-pngmanivelle.png"
+        src="images/1-webpmanivelle.webp"
         alt=""
         draggable="false"
       >
@@ -3427,10 +3427,10 @@ function retourSite() {
         instantané, y compris lors de la première apparition.
       */
       const fondNormal = new Image();
-      fondNormal.src = "images/1-png2.png";
+      fondNormal.src = "images/1-webp2.webp";
 
       const fondEclair = new Image();
-      fondEclair.src = "images/1-png1.png";
+      fondEclair.src = "images/1-webp1.webp";
 
       let minuteriePremierEclair = null;
       let minuterieEclairsSuivants = null;
@@ -3745,10 +3745,10 @@ function retourSite() {
         */
         function montrerEclair() {
           clearTimeout(minuterieRetourFond);
-          fond.src = "images/1-png1.png";
+          fond.src = "images/1-webp1.webp";
 
           minuterieRetourFond = setTimeout(() => {
-            fond.src = "images/1-png2.png";
+            fond.src = "images/1-webp2.webp";
           }, 400);
         }
 
