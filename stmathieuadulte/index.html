@@ -1,3 +1,4 @@
+```
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -224,22 +225,6 @@ input {
   font-size: 16px;
   line-height: 1.4;
   min-height: 40px;
-}
-
-.fade-line {
-  opacity: 0;
-  animation: fadeIn 0.6s ease forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 #puzzle-board {
@@ -1809,7 +1794,29 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 .reprise-dialogue h2 { margin-top: 0; }
 .reprise-dialogue button { width: min(330px, calc(100% - 24px)); }
-.reprise-dialogue .btn-secondary { background: transparent; }
+.reprise-dialogue .btn-secondary {
+  color: var(--ivoire);
+  background: rgba(42, 10, 16, 0.92);
+  border: 2px solid var(--or);
+  text-shadow: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 4px 0 #16090d,
+    0 12px 22px rgba(0, 0, 0, 0.35);
+}
+
+.reprise-dialogue .btn-secondary:hover {
+  color: #16090d;
+  background: var(--or);
+}
+
+.reprise-dialogue .btn-secondary:active {
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 2px 0 #16090d,
+    0 7px 14px rgba(0, 0, 0, 0.35);
+}
 
 </style>
 </head>
@@ -2799,9 +2806,6 @@ const dialogueMoine = [
   "Quel est le prénom de la personne que saint Tanguy a tuée avant de devenir moine ?"
 ];
 
-let dialogueIndex = 0;
-let dialogueTimeout = null;
-
 function startDialogueMoine() {
   const textElement = document.getElementById('dialogue-text');
   const enigme = document.getElementById('enigme-moine');
@@ -2809,39 +2813,18 @@ function startDialogueMoine() {
   const message = document.getElementById('moine-message');
   const indice = document.getElementById('indice-moine');
 
-  if (dialogueTimeout) clearTimeout(dialogueTimeout);
-
-  dialogueIndex = 0;
-
   if (textElement) textElement.innerHTML = '';
-  if (enigme) enigme.style.display = 'none';
   if (input) input.value = '';
   if (message) message.innerText = '';
   if (indice) indice.innerText = '';
-
-  afficherDialogueMoine();
-}
-
-function afficherDialogueMoine() {
-  const textElement = document.getElementById('dialogue-text');
-  if (!textElement || dialogueIndex >= dialogueMoine.length) return;
-
-  const line = document.createElement('p');
-  line.classList.add('fade-line');
-  line.innerText = dialogueMoine[dialogueIndex];
-
-  textElement.appendChild(line);
-
-  dialogueTimeout = setTimeout(() => {
-    dialogueIndex++;
-
-    if (dialogueIndex < dialogueMoine.length) {
-      afficherDialogueMoine();
-    } else {
-      const enigme = document.getElementById('enigme-moine');
-      if (enigme) enigme.style.display = 'block';
-    }
-  }, 1000);
+  if (textElement) {
+    dialogueMoine.forEach(texte => {
+      const ligne = document.createElement('p');
+      ligne.innerText = texte;
+      textElement.appendChild(ligne);
+    });
+  }
+  if (enigme) enigme.style.display = 'block';
 }
 
 /* ÉNIGME DU MOINE */
@@ -2892,43 +2875,19 @@ const dialogueMoineSuite = [
   "Sortez par la porte latérale nord et rendez-vous près du petit phare."
 ];
 
-let dialogueIndexMoineSuite = 0;
-let dialogueTimeoutMoineSuite = null;
-
 function startDialogueMoineSuite() {
   const textElement = document.getElementById('dialogue-text-moinesuite');
   const btn = document.getElementById('after-dialogue-moinesuite-btn');
 
-  if (dialogueTimeoutMoineSuite) clearTimeout(dialogueTimeoutMoineSuite);
-
-  dialogueIndexMoineSuite = 0;
-
   if (textElement) textElement.innerHTML = '';
-  if (btn) btn.style.display = 'none';
-
-  afficherDialogueMoineSuite();
-}
-
-function afficherDialogueMoineSuite() {
-  const textElement = document.getElementById('dialogue-text-moinesuite');
-  if (!textElement || dialogueIndexMoineSuite >= dialogueMoineSuite.length) return;
-
-  const line = document.createElement('p');
-  line.classList.add('fade-line');
-  line.innerText = dialogueMoineSuite[dialogueIndexMoineSuite];
-
-  textElement.appendChild(line);
-
-  dialogueTimeoutMoineSuite = setTimeout(() => {
-    dialogueIndexMoineSuite++;
-
-    if (dialogueIndexMoineSuite < dialogueMoineSuite.length) {
-      afficherDialogueMoineSuite();
-    } else {
-      const btn = document.getElementById('after-dialogue-moinesuite-btn');
-      if (btn) btn.style.display = 'inline-block';
-    }
-  }, 1000);
+  if (textElement) {
+    dialogueMoineSuite.forEach(texte => {
+      const ligne = document.createElement('p');
+      ligne.innerText = texte;
+      textElement.appendChild(ligne);
+    });
+  }
+  if (btn) btn.style.display = 'inline-block';
 }
 
 /* EXPLICATION NAUFRAGEURS */
@@ -2942,43 +2901,19 @@ const dialogueNaufrageurs = [
 
 ];
 
-let dialogueIndexNaufrageurs = 0;
-let dialogueTimeoutNaufrageurs = null;
-
 function startDialogueNaufrageurs() {
   const textElement = document.getElementById('dialogue-text-naufrageurs');
   const btn = document.getElementById('after-naufrageurs-btn');
 
-  if (dialogueTimeoutNaufrageurs) clearTimeout(dialogueTimeoutNaufrageurs);
-
-  dialogueIndexNaufrageurs = 0;
-
   if (textElement) textElement.innerHTML = '';
-  if (btn) btn.style.display = 'none';
-
-  afficherDialogueNaufrageurs();
-}
-
-function afficherDialogueNaufrageurs() {
-  const textElement = document.getElementById('dialogue-text-naufrageurs');
-  if (!textElement || dialogueIndexNaufrageurs >= dialogueNaufrageurs.length) return;
-
-  const line = document.createElement('p');
-  line.classList.add('fade-line');
-  line.innerText = dialogueNaufrageurs[dialogueIndexNaufrageurs];
-
-  textElement.appendChild(line);
-
-  dialogueTimeoutNaufrageurs = setTimeout(() => {
-    dialogueIndexNaufrageurs++;
-
-    if (dialogueIndexNaufrageurs < dialogueNaufrageurs.length) {
-      afficherDialogueNaufrageurs();
-    } else {
-      const btn = document.getElementById('after-naufrageurs-btn');
-      if (btn) btn.style.display = 'inline-block';
-    }
-  }, 1200);
+  if (textElement) {
+    dialogueNaufrageurs.forEach(texte => {
+      const ligne = document.createElement('p');
+      ligne.innerText = texte;
+      textElement.appendChild(ligne);
+    });
+  }
+  if (btn) btn.style.display = 'inline-block';
 }
 
 /* DIALOGUE PETIT PHARE */
@@ -2991,9 +2926,6 @@ const dialoguePhare = [
   "et d'avertir le bateau qu'il s'approche des récifs."
 ];
 
-let dialogueIndexPhare = 0;
-let dialogueTimeoutPhare = null;
-
 function startDialoguePhare() {
   const textElement = document.getElementById('dialogue-text-phare');
   const enigme = document.getElementById('enigme-phare');
@@ -3001,39 +2933,18 @@ function startDialoguePhare() {
   const message = document.getElementById('mot-phare-message');
   const indice = document.getElementById('indice-phare');
 
-  if (dialogueTimeoutPhare) clearTimeout(dialogueTimeoutPhare);
-
-  dialogueIndexPhare = 0;
-
   if (textElement) textElement.innerHTML = '';
-  if (enigme) enigme.style.display = 'none';
   if (input) input.value = '';
   if (message) message.innerText = '';
   if (indice) indice.innerText = '';
-
-  afficherDialoguePhare();
-}
-
-function afficherDialoguePhare() {
-  const textElement = document.getElementById('dialogue-text-phare');
-  if (!textElement || dialogueIndexPhare >= dialoguePhare.length) return;
-
-  const line = document.createElement('p');
-  line.classList.add('fade-line');
-  line.innerText = dialoguePhare[dialogueIndexPhare];
-
-  textElement.appendChild(line);
-
-  dialogueTimeoutPhare = setTimeout(() => {
-    dialogueIndexPhare++;
-
-    if (dialogueIndexPhare < dialoguePhare.length) {
-      afficherDialoguePhare();
-    } else {
-      const enigme = document.getElementById('enigme-phare');
-      if (enigme) enigme.style.display = 'block';
-    }
-  }, 1000);
+  if (textElement) {
+    dialoguePhare.forEach(texte => {
+      const ligne = document.createElement('p');
+      ligne.innerText = texte;
+      textElement.appendChild(ligne);
+    });
+  }
+  if (enigme) enigme.style.display = 'block';
 }
 
 /* ÉNIGME DU PETIT PHARE */
@@ -3094,43 +3005,19 @@ const texteFin = [
   "Dépêchez-vous…"
 ];
 
-let indexFin = 0;
-let timerFin = null;
-
 function lancerTexteFin() {
   const container = document.getElementById('texte-fin');
   const btn = document.getElementById('btn-suite');
 
   if (!container || !btn) return;
 
-  if (timerFin) clearTimeout(timerFin);
-
   container.innerHTML = '';
-  indexFin = 0;
-  btn.style.display = 'none';
-
-  afficherLigneFin();
-}
-
-function afficherLigneFin() {
-  const container = document.getElementById('texte-fin');
-  const btn = document.getElementById('btn-suite');
-
-  if (!container || !btn || indexFin >= texteFin.length) return;
-
-  const ligne = document.createElement('p');
-  ligne.classList.add('fade-line');
-  ligne.innerText = texteFin[indexFin];
-
-  container.appendChild(ligne);
-
-  indexFin++;
-
-  if (indexFin < texteFin.length) {
-    timerFin = setTimeout(afficherLigneFin, 1200);
-  } else {
-    btn.style.display = 'inline-block';
-  }
+  texteFin.forEach(texte => {
+    const ligne = document.createElement('p');
+    ligne.innerText = texte;
+    container.appendChild(ligne);
+  });
+  btn.style.display = 'inline-block';
 }
 
 /* CODE ANCIEN PHARE */
@@ -4013,3 +3900,4 @@ function retourSite() {
 
 </body>
 </html>
+```
