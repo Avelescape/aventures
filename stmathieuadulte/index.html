@@ -116,9 +116,18 @@ button:hover {
 
 .intro-title {
   font-size: clamp(26px, 10vw, 48px);
-  margin: 20px 0;
+  margin: 20px 0 6px;
   color: var(--ivoire);
   text-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
+}
+
+.intro-title-breton {
+  margin: 0 0 20px;
+  color: var(--ivoire);
+  font-size: clamp(16px, 4.5vw, 22px);
+  font-style: italic;
+  font-weight: normal;
+  opacity: 0.9;
 }
 
 .intro-date,
@@ -1440,6 +1449,14 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   margin-top:35px;
 }
 
+#screen-finaventure .fin-kenavo {
+  margin-top: 34px;
+  color: var(--or);
+  font-size: clamp(34px, 9vw, 52px);
+  font-style: italic;
+  font-weight: bold;
+}
+
 
 /* SOMMET DU PHARE — code de la manivelle intégré */
 
@@ -1835,7 +1852,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
        alt="intro"
        onclick="startAventure(event)">
 
-  <p class="intro-date">17 Février · Anno Domini 1840</p>
+  <p class="intro-date">17 février · Anno Domini 1840</p>
 
   <div class="intro-sep">
     <div class="intro-sep-line"></div>
@@ -1844,6 +1861,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   </div>
 
   <h1 class="intro-title">Le Mystère<br>du Phare</h1>
+  <p class="intro-title-breton">Kevrin ar Tour-tan</p>
 
   <p class="intro-location">Pointe de Saint-Mathieu, Bretagne</p>
   <button class="btn-primary" onclick="startAventure(event)">Commencer l'enquête</button>
@@ -1915,13 +1933,13 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-so">
   <div class="so-label">
-    <p>Un autre façon de trouver le mot...</p>
+    <p>Une autre façon de trouver le mot...</p>
      <h1>Pas très loin de vous, côté route, il y a un panneau en français</h1>
-    <p>Première lettre de la 7eme ligne</p>
-    <p>Première lettre de la 12eme ligne</p>
-    <p>Dernière lettre de la 19eme ligne</p>
-    <p>Première lettre de la 21eme ligne</p>
-    <p>Première lettre de la 1ere ligne</p>
+    <p>Première lettre de la 7e ligne</p>
+    <p>Première lettre de la 12e ligne</p>
+    <p>Dernière lettre de la 19e ligne</p>
+    <p>Première lettre de la 21e ligne</p>
+    <p>Première lettre de la 1re ligne</p>
 
     
 
@@ -1973,7 +1991,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
    <h3>
   Écoutez...<br>
   D'où provient ce chant ?<br>
-  Il semblerait qu'il provienne de l'abbaye.
+  Il semble provenir de l'abbaye.
 </h3>
 
 <h3>
@@ -1990,7 +2008,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   <div class="abbaye-container">
     <img class="abbaye-img"
          src="images/1-webpmoineloin.webp"
-         alt="Moine apparait dans l'abbaye"
+         alt="Moine apparaît dans l'abbaye"
          onclick="showScreen('moineloin')">
 
     <button class="btn-primary" onclick="showScreen('moineloin')">
@@ -2085,7 +2103,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
        alt="Les naufrageurs fuient">
 
   <div class="dialogue-box">
-    <p id="dialogue-text-fuient">Grâce à la cloche, les naufrageurs ont pris peur et fuient.</p>
+  <p id="dialogue-text-fuient">Grâce à la cloche, les naufrageurs prennent peur et s'enfuient.</p>
   </div>
 
   <button class="btn-primary" onclick="showScreen('suiteaventure')">
@@ -2242,7 +2260,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-indicemecanisme1">
   <div class="indice-mecanisme-page">
-    <h2>1er indice</h2>
+    <h2>Premier indice</h2>
     <p>Le code est l'identité certifiée du phare.</p>
     <button class="btn-primary" onclick="showScreen('sommetphare')">
       Retour au mécanisme
@@ -2252,7 +2270,7 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="screen" id="screen-indicemecanisme2">
   <div class="indice-mecanisme-page">
-    <h2>2ème indice</h2>
+    <h2>Deuxième indice</h2>
     <p>L'identité certifiée est sur le sceau...</p>
     <button class="btn-primary" onclick="showScreen('sommetphare')">
       Retour au mécanisme
@@ -2267,11 +2285,11 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   <img class="chapter-img"
        src="images/1-webfin.webp"
        alt="Fin de l'aventure">
-       <p>Bravo, vous avez sauvé Yannick et les marins!</p>
-       <p>C'est grâce à vous et à votre perspicacité, les naufrageurs ne sont pas arrivés à leur fin,</p>
-       <p>cette fois-çi...</p>
-       <p>Peut-être les retrouverons-nous dans une de nos prochaines aventures ?</p>
-       <p>...</p>
+       <p>Bravo, vous avez sauvé Yannick et les marins !</p>
+       <p>Grâce à vous et à votre perspicacité, les naufrageurs ne sont pas parvenus à leurs fins,</p>
+       <p>cette fois-ci…</p>
+       <p>Peut-être les retrouverons-nous dans l'une de nos prochaines aventures ?</p>
+       <p class="fin-kenavo">Kenavo !</p>
        <p>Your support helps Gregorian Chanting (@GregorianChanting) keep the ancient voice of monastic devotion alive.</p>
 
  <div style="height:220px;"></div>
@@ -2477,6 +2495,11 @@ function showScreen(name, addHist = true) {
   currentScreen = name;
   enregistrerProgression(name);
 
+  /* Chaque nouvelle scène repart en haut de la page.
+     Cela évite que la scène finale paraisse vide sur certains mobiles. */
+  window.scrollTo(0, 0);
+  requestAnimationFrame(() => window.scrollTo(0, 0));
+
 
   const chantAudio = document.getElementById('chant-audio');
 
@@ -2550,7 +2573,7 @@ function verifier() {
     showScreen('puzzle');
   } else {
     vibrerEchec();
-    message.innerText = "Ce n'est pas la bonne réponse, essaye encore !";
+    message.innerText = "Ce n'est pas la bonne réponse, essayez encore !";
   }
 }
 
@@ -2771,11 +2794,11 @@ function nextScreen() {
 /* DIALOGUE MOINE */
 const dialogueMoine = [
   "Vous voilà, enfin...",
-  "Je suis Gwenhaël, un des premiers moines de l'abbaye.",
-  "J'ai été désigné par Saint Tanguy, le fondateur de l'abbaye,",
+  "Je suis Gwenhaël, l'un des premiers moines de l'abbaye.",
+  "J'ai été désigné par saint Tanguy, le fondateur de l'abbaye,",
   "pour que mon âme veille sur ce lieu.",
-  "Je vous aiderai si vous répondez à ma question:",
-  "Quel est le prénom de la personne que Saint Tanguy a assassinée avant de devenir moine ?"
+  "Je vous aiderai si vous répondez à ma question :",
+  "Quel est le prénom de la personne que saint Tanguy a assassinée avant de devenir moine ?"
 ];
 
 let dialogueIndex = 0;
@@ -2858,16 +2881,16 @@ function afficherIndiceMoine() {
   const indice = document.getElementById('indice-moine');
 
   if (indice) {
-    indice.innerText = "La victime est évoquée et protégée par Notre Dame de Grâce.";
+    indice.innerText = "La victime est évoquée et protégée par Notre-Dame-de-Grâce.";
   }
 }
 
 /* DIALOGUE MOINE - SUITE (après bonne réponse) */
 const dialogueMoineSuite = [
-  "Effectivement, Suite à une querelle de famille, Gurguy fils du seigneur de Tremazan a tué sa soeur Haude...",
-  "Rongé par le remord, il a décidé de se faire moine et se consacra à bâtir ce lieu.", 
+  "Effectivement, suite à une querelle de famille, Gurguy, fils du seigneur de Trémazan, a tué sa sœur Haude…",
+  "Rongé par le remords, il décida de se faire moine et se consacra à la construction de ce lieu.", 
   "Aujourd'hui,",
-  "une autre personne est en danger, et il faut vite agir!",
+  "une autre personne est en danger et il faut vite agir !",
   "Yannick, le gardien, a disparu...",
   "Sortez par la porte latérale nord, et allez près du petit phare."
 ];
@@ -2914,9 +2937,9 @@ function afficherDialogueMoineSuite() {
 /* EXPLICATION NAUFRAGEURS */
 const dialogueNaufrageurs = [
   "La nuit, les navigateurs se repèrent grâce aux phares ou aux lumières des ports.",
-  "Les naufrageurs allument des feux sur la côte,",
+  "Les naufrageurs allument des feux sur la côte",
   "et les marins croient voir un port sûr ou l'indication d'une route maritime.",
-  "Mais ils dirigent leur navire vers les récifs.",
+  "Mais ces feux dirigent les navires vers les récifs.",
   "Cela provoque un échouement ou un naufrage.",
   "Puis les naufrageurs pillent l’épave..."
 
@@ -2963,10 +2986,10 @@ function afficherDialogueNaufrageurs() {
 
 /* DIALOGUE PETIT PHARE */
 const dialoguePhare = [
-  "Regardez à l'ouest, en contrebas",
-  "Yannick !!!",
+  "Regardez à l'ouest, en contrebas.",
+  "Yannick !",
   "Mais il ne nous voit pas...",
-  "Trouvez une solution pour à la fois:",
+  "Trouvez une solution permettant à la fois :",
   "lui dire qu'on est là,",
   "et prévenir le bateau qu'il s'approche des récifs."
 ];
@@ -3065,13 +3088,13 @@ function afficherIndicePhare() {
 
 /* TEXTE FINAL */
 const texteFin = [
-  "Yannick nous a vu !",
-  "Il nous dit :",
-  "retournez au phare,",
-  "le code du cadenas...",
+  "Yannick nous a vus !",
+  "Il nous crie :",
+  "« Retournez au phare !",
+  "Le code du cadenas…",
   "C'est l'année de construction du phare,",
-  "mais à l'envers!",
-  "Dépêchez-vous..."
+  "mais à l'envers ! »",
+  "Dépêchez-vous…"
 ];
 
 let indexFin = 0;
@@ -3946,13 +3969,28 @@ function retourSite() {
         terminerRotation
       );
 
-      boutonContinuer.addEventListener("click", () => {
+      let dernierAppuiContinuer = 0;
+
+      function ouvrirSceneFinale(evenement) {
+        if (evenement) {
+          evenement.preventDefault();
+          evenement.stopPropagation();
+        }
+
+        const maintenant = Date.now();
+        if (maintenant - dernierAppuiContinuer < 500) return;
+        dernierAppuiContinuer = maintenant;
+
         clearTimeout(minuteriePremierEclair);
         clearTimeout(minuterieRetourFond);
         clearInterval(minuterieEclairsSuivants);
         sonEngrenages.pause();
         showScreen("finaventure");
-      });
+      }
+
+      /* pointerup fiabilise l'appui tactile ; click conserve souris et clavier. */
+      boutonContinuer.addEventListener("pointerup", ouvrirSceneFinale, { passive: false });
+      boutonContinuer.addEventListener("click", ouvrirSceneFinale);
 
       /*
         Recalcule l’axe après un changement
