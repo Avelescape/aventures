@@ -1440,6 +1440,333 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   margin-top:35px;
 }
 
+
+/* SOMMET DU PHARE — code de la manivelle intégré */
+
+    :root {
+      /*
+        Position calculée à partir des coordonnées GIMP :
+
+        Centre du disque :
+        X = 618 px
+        Y = 709 px
+
+        Dimensions de la photo :
+        943 × 1668 px
+      */
+
+      --manivelle-x: 54.08%;
+      --manivelle-y: 34.31%;
+      --manivelle-largeur: 35%;
+    }
+
+    
+    #screen-sommetphare * { box-sizing: border-box; }
+    #screen-sommetphare {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      overflow: hidden;
+      background: #080604;
+      color: white;
+      font-family: Georgia, serif;
+      overscroll-behavior: none;
+    }
+  
+
+    /*
+      La scène conserve exactement les proportions
+      de l’image originale : 943 × 1668 pixels.
+    */
+    .phare-scene {
+      position: relative;
+
+      width: min(
+        100vw,
+        calc(100svh * 943 / 1668)
+      );
+
+      aspect-ratio: 943 / 1668;
+
+      overflow: hidden;
+      background: #130b04;
+      isolation: isolate;
+    }
+
+    /*
+      L’image remplit exactement la scène.
+      Elle n’est jamais recadrée.
+    */
+    .phare-fond {
+      position: absolute;
+      inset: 0;
+
+      display: block;
+      width: 100%;
+      height: 100%;
+
+      object-fit: fill;
+
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    .phare-voile {
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+
+      background:
+        linear-gradient(
+          #0003 0 10%,
+          transparent 22% 73%,
+          #0005
+        );
+
+      pointer-events: none;
+    }
+
+    .phare-consigne {
+      position: absolute;
+      z-index: 6;
+
+      top: max(
+        14px,
+        env(safe-area-inset-top)
+      );
+
+      left: 50%;
+      transform: translateX(-50%);
+
+      width: max-content;
+      max-width: 88%;
+
+      padding: 9px 15px;
+
+      border: 1px solid #e8bd69aa;
+      border-radius: 999px;
+
+      background: #160d07d9;
+      box-shadow: 0 4px 18px #0009;
+
+      color: #ffe7ad;
+      text-align: center;
+
+      font-size: clamp(14px, 4vw, 19px);
+      letter-spacing: 0.02em;
+
+      transition: opacity 0.35s;
+    }
+
+    .phare-compteur {
+      position: absolute;
+      z-index: 6;
+
+      top: 18%;
+      right: 4%;
+
+      width: 72px;
+      padding: 9px 5px;
+
+      border: 1px solid #d7a84e;
+      border-radius: 9px;
+
+      background: #160d07dc;
+      box-shadow: 0 5px 20px #000a;
+
+      text-align: center;
+      color: #ffe4a1;
+    }
+
+    .phare-compteur strong {
+      display: block;
+      font: 700 25px/1 Arial, sans-serif;
+    }
+
+    .phare-compteur small {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /*
+      La manivelle est positionnée par rapport
+      aux proportions de la photo du phare.
+    */
+    .phare-manivelle-zone {
+      position: absolute;
+      z-index: 5;
+
+      left: var(--manivelle-x);
+      top: var(--manivelle-y);
+      width: var(--manivelle-largeur);
+
+      /*
+        Dimensions de l’image de la manivelle :
+        1774 × 887 pixels.
+      */
+      aspect-ratio: 1774 / 887;
+
+      /*
+        Le centre du disque se trouve à 19,75 %
+        de la largeur de l’image de la manivelle.
+      */
+      transform-origin: 19.75% 50%;
+
+      touch-action: none;
+      cursor: grab;
+
+      filter: drop-shadow(0 7px 5px #000b);
+
+      will-change: transform;
+    }
+
+    .phare-manivelle-zone:active {
+      cursor: grabbing;
+    }
+
+    /*
+      Quatre engrenages positionnés à partir des
+      coordonnées relevées dans GIMP.
+      Ils sont visibles dès le début, mais immobiles.
+    */
+    .phare-engrenage {
+      position: absolute;
+      z-index: 4;
+
+      left: var(--engrenage-x);
+      top: var(--engrenage-y);
+      width: var(--engrenage-largeur);
+      height: auto;
+
+      display: block;
+      transform: translate(-50%, -50%) rotate(0deg);
+      transform-origin: 50% 50%;
+
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+
+      filter: drop-shadow(0 5px 5px #000a);
+      will-change: transform;
+    }
+
+    .phare-engrenage-1 {
+      --engrenage-x: 63.73%;
+      --engrenage-y: 59.05%;
+      --engrenage-largeur: 20%;
+    }
+
+    .phare-engrenage-2 {
+      --engrenage-x: 62.99%;
+      --engrenage-y: 50.96%;
+      --engrenage-largeur: 20%;
+    }
+
+    .phare-engrenage-3 {
+      --engrenage-x: 50.48%;
+      --engrenage-y: 50.60%;
+      --engrenage-largeur: 20%;
+    }
+
+    .phare-engrenage-4 {
+      --engrenage-x: 38.18%;
+      --engrenage-y: 47.78%;
+      --engrenage-largeur: 20%;
+    }
+
+    .phare-engrenages-actifs .phare-engrenage-1,
+    .phare-engrenages-actifs .phare-engrenage-3 {
+      animation: rotation-engrenage-horaire 2.4s linear infinite;
+    }
+
+    .phare-engrenages-actifs .phare-engrenage-2,
+    .phare-engrenages-actifs .phare-engrenage-4 {
+      animation: rotation-engrenage-antihoraire 3.15s linear infinite;
+    }
+
+    @keyframes rotation-engrenage-horaire {
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    @keyframes rotation-engrenage-antihoraire {
+      to {
+        transform: translate(-50%, -50%) rotate(-360deg);
+      }
+    }
+
+    .phare-manivelle {
+      display: block;
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    .phare-aide {
+      position: absolute;
+      z-index: 6;
+
+      left: 50%;
+
+      bottom: max(
+        18px,
+        env(safe-area-inset-bottom)
+      );
+
+      transform: translateX(-50%);
+
+      width: max-content;
+      max-width: 90%;
+
+      padding: 8px 13px;
+
+      border-radius: 7px;
+
+      background: #0d0805d9;
+      color: #f2d69e;
+
+      font-size: clamp(12px, 3.4vw, 16px);
+      text-align: center;
+
+      pointer-events: none;
+
+      transition: opacity 0.4s;
+    }
+
+    .phare-continuer {
+      position: absolute;
+      z-index: 8;
+      left: 50%;
+      bottom: max(22px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      display: none;
+      min-width: 170px;
+      padding: 12px 24px;
+      border: 1px solid #e8bd69;
+      border-radius: 999px;
+      background: #160d07e8;
+      box-shadow: 0 5px 22px #000b;
+      color: #ffe7ad;
+      font: 700 clamp(15px, 4vw, 19px)/1.2 Georgia, serif;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #screen-sommetphare * {
+        transition: none !important;
+      }
+    }
+  
 </style>
 </head>
 
@@ -1758,7 +2085,11 @@ html, body, body *, button, .btn-primary, input, textarea, select {
     <br>
 
     <button class="btn-primary" onclick="verifierCodeAncienPhare()">Valider</button>
+    <button class="btn-primary" onclick="afficherIndiceCodeAncienPhare()">Indice</button>
     <p id="code-ancien-phare-message"></p>
+    <p id="indice-code-ancien-phare" style="display:none; margin-top:15px; color:var(--or);">
+      Vous trouverez la date sur un panneau décrivant l’ancien phare.
+    </p>
   </div>
 </div>
 
@@ -1776,60 +2107,99 @@ html, body, body *, button, .btn-primary, input, textarea, select {
   </button>
 </div>
 
+
 <div class="screen" id="screen-sommetphare">
+<main class="phare-scene" id="phare-scene">
 
-  <div class="meca-scene">
-    <div class="meca-game" id="meca-game">
+    <!-- Image du phare -->
+    <img
+      class="phare-fond"
+      id="phare-fond"
+      src="images/1-png3.png"
+      alt="Salle du mécanisme du phare"
+      draggable="false"
+    >
 
-      <div id="meca-fond" class="meca-fond"></div>
+    <div class="phare-voile"></div>
 
-      <!-- Bouton réinitialiser retiré temporairement -->
-      <!-- <button class="meca-reset" onclick="resetMecanismePhare()">Réinitialiser</button> -->
+    <!-- Deux exemplaires de chacun des deux engrenages -->
+    <img
+      class="phare-engrenage phare-engrenage-1"
+      src="images/1-pngengrenage.png"
+      alt=""
+      draggable="false"
+    >
 
-      <div id="meca-sequence-affichage" class="meca-sequence-affichage"></div>
+    <img
+      class="phare-engrenage phare-engrenage-2"
+      src="images/1-pngengrenagegrand.png"
+      alt=""
+      draggable="false"
+    >
 
-      <div id="meca-gearA" class="meca-gear meca-gear-small"></div>
-      <div id="meca-gearB" class="meca-gear meca-gear-big"></div>
-      <div id="meca-gearC" class="meca-gear meca-gear-small"></div>
-      <div id="meca-gearD" class="meca-gear meca-gear-big"></div>
+    <img
+      class="phare-engrenage phare-engrenage-3"
+      src="images/1-pngengrenage.png"
+      alt=""
+      draggable="false"
+    >
 
-      <!-- ÉTAPE 1 : coordonnées provisoires, à recaler une fois l'image finale en place -->
-      <svg class="meca-zones" viewBox="0 0 1152 2048" preserveAspectRatio="none">
-        <rect class="meca-zone" data-lettre="A" x="370" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('A', this)" />
-        <rect class="meca-zone" data-lettre="B" x="520" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('B', this)" />
-        <rect class="meca-zone" data-lettre="C" x="680" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('C', this)" />
-        <rect class="meca-zone" data-lettre="D" x="850" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('D', this)" />
+    <img
+      class="phare-engrenage phare-engrenage-4"
+      src="images/1-pngengrenagegrand.png"
+      alt=""
+      draggable="false"
+    >
 
-        <!-- ÉTAPE 2 : 3 poids, inactifs tant que l'étape 1 n'est pas résolue -->
-        <rect class="meca-zone" data-poids="20" x="500" y="1500" width="130" height="280" rx="15" onclick="clickPoidsMecanisme('20', this)" />
-        <rect class="meca-zone" data-poids="30" x="680" y="1400" width="130" height="400" rx="15" onclick="clickPoidsMecanisme('30', this)" />
-        <rect class="meca-zone" data-poids="40" x="820" y="1400" width="130" height="400" rx="15" onclick="clickPoidsMecanisme('40', this)" />
+    <!-- Manivelle interactive -->
+    <div
+      class="phare-manivelle-zone"
+      id="phare-manivelle"
+      role="slider"
+      tabindex="0"
+      aria-label="Manivelle du phare"
+      aria-valuemin="0"
+      aria-valuemax="4"
+      aria-valuenow="0"
+    >
 
-      </svg>
-
-      <button id="meca-suite" class="meca-suite" onclick="suiteMecanismePhare()">
-        Suite
-      </button>
+      <img
+        class="phare-manivelle"
+        src="images/1-pngmanivelle.png"
+        alt=""
+        draggable="false"
+      >
 
     </div>
-  </div>
 
-  <div id="meca-message" class="meca-message"></div>
+    <div class="phare-aide" id="phare-aide">
+      Posez le doigt sur la manivelle et faites-la tourner
+    </div>
 
-  <div class="meca-indices">
-    <button id="meca-indice1-btn" class="meca-indice-btn" hidden onclick="showScreen('indicemecanisme1')">
-      1er indice
+    <button class="phare-continuer" id="phare-continuer" type="button">
+      Continuer
     </button>
-    <button id="meca-indice2-btn" class="meca-indice-btn" hidden onclick="showScreen('indicemecanisme2')">
-      2ème indice
-    </button>
-  </div>
 
-  <audio id="sonSuccesMecanisme" src="audios/engrenages.mp3" preload="auto"></audio>
-  <audio id="sonZoneMecanisme" src="audios/ABCDEFG.mp3" preload="auto"></audio>
-  <audio id="sonErreurMecanisme" src="audios/bruitechec.mp3" preload="auto"></audio>
+  </main>
+
+  <!--
+    Placez le son du mécanisme dans :
+    audios/engrenages.mp3
+  -->
+  <audio
+    id="phare-son-engrenages"
+    src="audios/engrenages.mp3"
+    preload="auto"
+    loop
+  ></audio>
+
+  <!-- Son joué une fois à chaque tour complet. -->
+  <audio
+    id="phare-son-tour"
+    src="audios/clac.mp3"
+    preload="auto"
+  ></audio>
 </div>
-
 
 <div class="screen" id="screen-indicemecanisme1">
   <div class="indice-mecanisme-page">
@@ -2629,6 +2999,11 @@ function verifierCodeAncienPhare() {
   }
 }
 
+function afficherIndiceCodeAncienPhare() {
+  const indice = document.getElementById('indice-code-ancien-phare');
+  if (indice) indice.style.display = 'block';
+}
+
 const codeAncienPhareInput = document.getElementById('codeAncienPhareInput');
 if (codeAncienPhareInput) {
   codeAncienPhareInput.addEventListener('input', function() {
@@ -2951,6 +3326,7 @@ window.afficherIndicePhare = afficherIndicePhare;
 window.verifierReponseMoine = verifierReponseMoine;
 window.afficherIndiceMoine = afficherIndiceMoine;
 window.verifierCodeAncienPhare = verifierCodeAncienPhare;
+window.afficherIndiceCodeAncienPhare = afficherIndiceCodeAncienPhare;
 window.clickZoneMecanisme = clickZoneMecanisme;
 window.clickPoidsMecanisme = clickPoidsMecanisme;
 window.resetMecanismePhare = resetMecanismePhare;
@@ -2998,6 +3374,470 @@ document.addEventListener('DOMContentLoaded', function() {
 function retourSite() {
   window.location.href = "../index.html";
 }
+
+/* SOMMET DU PHARE — comportement de la manivelle intégré */
+
+    (() => {
+      /*
+        Nombre de tours à réaliser.
+      */
+      const TOURS_REQUIS = 4;
+
+      /*
+        Vitesse maximale : 180 degrés par seconde,
+        soit environ un tour toutes les deux secondes.
+      */
+      const VITESSE_MAX_DEGRES_SECONDE = 180;
+
+      /*
+        Dimensions exactes de la photo du phare.
+      */
+      const LARGEUR_PHOTO = 943;
+      const HAUTEUR_PHOTO = 1668;
+
+      /*
+        Coordonnées relevées dans GIMP.
+      */
+      const AXE_GIMP_X = 618;
+      const AXE_GIMP_Y = 709;
+
+      const scene =
+        document.querySelector("#phare-scene");
+
+      const manivelle =
+        document.querySelector("#phare-manivelle");
+
+      const aide =
+        document.querySelector("#phare-aide");
+
+      const fond =
+        document.querySelector("#phare-fond");
+
+      const sonEngrenages =
+        document.querySelector("#phare-son-engrenages");
+
+      const sonTour =
+        document.querySelector("#phare-son-tour");
+
+      const boutonContinuer =
+        document.querySelector("#phare-continuer");
+
+      /*
+        Précharge les deux fonds afin que le changement soit
+        instantané, y compris lors de la première apparition.
+      */
+      const fondNormal = new Image();
+      fondNormal.src = "images/1-png2.png";
+
+      const fondEclair = new Image();
+      fondEclair.src = "images/1-png1.png";
+
+      let minuteriePremierEclair = null;
+      let minuterieEclairsSuivants = null;
+      let minuterieRetourFond = null;
+
+      let actif = false;
+      let dernierAngle = 0;
+      let dernierInstant = 0;
+
+      let rotation = 0;
+      let progression = 0;
+      let tours = 0;
+
+      let fini = false;
+
+      let pivotX = 0;
+      let pivotY = 0;
+
+      /*
+        Variables utilisées pour créer les sons.
+        Aucun fichier audio n’est nécessaire.
+      */
+      let audioCtx;
+      let sortieAudio;
+      let angleDernierClic = 0;
+
+      /*
+        Un clic est produit tous les 15 degrés de rotation.
+        Diminuez cette valeur pour avoir davantage de clics.
+      */
+      const PAS_CLIC_METALLIQUE = 15;
+
+      function preparerAudio() {
+        if (!audioCtx) {
+          const AudioContextMobile =
+            window.AudioContext || window.webkitAudioContext;
+
+          if (!AudioContextMobile) {
+            return false;
+          }
+
+          audioCtx = new AudioContextMobile();
+
+          /* Compression finale : son fort sans saturation excessive. */
+          sortieAudio = audioCtx.createDynamicsCompressor();
+          sortieAudio.threshold.value = -18;
+          sortieAudio.knee.value = 8;
+          sortieAudio.ratio.value = 8;
+          sortieAudio.attack.value = 0.002;
+          sortieAudio.release.value = 0.12;
+          sortieAudio.connect(audioCtx.destination);
+        }
+
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+
+        return true;
+      }
+
+      /*
+        Petit claquement métallique créé avec Web Audio.
+        Aucun fichier sonore externe n'est nécessaire.
+      */
+      function jouerClicMetallique(intensite = 1) {
+        if (!preparerAudio()) return;
+
+        const maintenant = audioCtx.currentTime;
+        const oscillateur = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filtre = audioCtx.createBiquadFilter();
+
+        oscillateur.type = "square";
+        oscillateur.frequency.setValueAtTime(720, maintenant);
+        oscillateur.frequency.exponentialRampToValueAtTime(240, maintenant + 0.045);
+        filtre.type = "bandpass";
+        filtre.frequency.value = 620;
+        filtre.Q.value = 2.2;
+        gain.gain.setValueAtTime(Math.min(0.55, 0.38 + intensite * 0.07), maintenant);
+        gain.gain.exponentialRampToValueAtTime(0.001, maintenant + 0.075);
+
+        oscillateur.connect(filtre).connect(gain).connect(sortieAudio);
+        oscillateur.start(maintenant);
+        oscillateur.stop(maintenant + 0.08);
+      }
+
+      /* Joue le fichier audio une fois à chaque tour complet. */
+      function jouerClacDeTour() {
+        sonTour.pause();
+        sonTour.currentTime = 0;
+
+        const lectureTour = sonTour.play();
+
+        if (lectureTour) {
+          lectureTour.catch(() => {
+            // Le jeu reste fonctionnel si le fichier est absent.
+          });
+        }
+      }
+
+      /*
+        Calcule l’emplacement du centre de rotation
+        à partir des coordonnées relevées dans GIMP.
+      */
+      function calculerPositionAxe() {
+        const sceneRect =
+          scene.getBoundingClientRect();
+
+        const echelleX =
+          sceneRect.width / LARGEUR_PHOTO;
+
+        const echelleY =
+          sceneRect.height / HAUTEUR_PHOTO;
+
+        pivotX =
+          sceneRect.left +
+          AXE_GIMP_X * echelleX;
+
+        pivotY =
+          sceneRect.top +
+          AXE_GIMP_Y * echelleY;
+      }
+
+      /*
+        Calcule l’angle du doigt autour
+        du centre du disque.
+      */
+      function obtenirAngleDuDoigt(evenement) {
+        return (
+          Math.atan2(
+            evenement.clientY - pivotY,
+            evenement.clientX - pivotX
+          ) *
+          180 /
+          Math.PI
+        );
+      }
+
+      /*
+        Le joueur pose son doigt
+        sur la manivelle.
+      */
+      function commencerRotation(evenement) {
+        if (fini) {
+          return;
+        }
+
+        evenement.preventDefault();
+
+        calculerPositionAxe();
+
+        actif = true;
+
+        dernierAngle =
+          obtenirAngleDuDoigt(evenement);
+
+        dernierInstant = evenement.timeStamp;
+
+        manivelle.setPointerCapture(
+          evenement.pointerId
+        );
+
+        preparerAudio();
+        angleDernierClic = rotation;
+
+        aide.style.opacity = "0.25";
+      }
+
+      /*
+        Le joueur tourne la manivelle.
+      */
+      function faireTourner(evenement) {
+        if (!actif || fini) {
+          return;
+        }
+
+        evenement.preventDefault();
+
+        const nouvelAngle =
+          obtenirAngleDuDoigt(evenement);
+
+        let difference =
+          nouvelAngle - dernierAngle;
+
+        const tempsEcoule = Math.max(
+          1,
+          evenement.timeStamp - dernierInstant
+        );
+
+        /*
+          Empêche le saut de rotation lorsque
+          l’angle passe de 180° à -180°.
+        */
+        if (difference > 180) {
+          difference -= 360;
+        }
+
+        if (difference < -180) {
+          difference += 360;
+        }
+
+        /*
+          Empêche le joueur de faire tourner la manivelle
+          plus vite que la vitesse maximale autorisée.
+        */
+        const deplacementMaximum =
+          VITESSE_MAX_DEGRES_SECONDE *
+          tempsEcoule /
+          1000;
+
+        difference = Math.max(
+          -deplacementMaximum,
+          Math.min(deplacementMaximum, difference)
+        );
+
+        dernierAngle = nouvelAngle;
+        dernierInstant = evenement.timeStamp;
+
+        rotation += difference;
+
+        /* Clics métalliques calés sur la rotation réelle. */
+        if (
+          Math.abs(rotation - angleDernierClic) >=
+          PAS_CLIC_METALLIQUE
+        ) {
+          jouerClicMetallique(
+            Math.min(2, Math.abs(difference) / 8)
+          );
+          angleDernierClic = rotation;
+        }
+
+        /*
+          Les tours doivent être réalisés
+          dans le sens horaire.
+
+          Si le joueur tourne en arrière,
+          la progression diminue.
+        */
+        progression = Math.max(
+          0,
+          progression + difference
+        );
+
+        manivelle.style.transform =
+          `rotate(${rotation}deg)`;
+
+        const nouveauxTours = Math.min(
+          TOURS_REQUIS,
+          Math.floor(progression / 360)
+        );
+
+        if (nouveauxTours > tours) {
+          tours = nouveauxTours;
+
+          jouerClacDeTour();
+
+          actualiserAffichage();
+        }
+
+        if (
+          progression >=
+          TOURS_REQUIS * 360
+        ) {
+          afficherReussite();
+        }
+      }
+
+      /*
+        Le joueur retire son doigt.
+      */
+      function terminerRotation(evenement) {
+        if (!actif) {
+          return;
+        }
+
+        actif = false;
+
+        aide.style.opacity = "1";
+
+        try {
+          manivelle.releasePointerCapture(
+            evenement.pointerId
+          );
+        } catch (erreur) {
+          // Aucun traitement nécessaire.
+        }
+      }
+
+      function actualiserAffichage() {
+        manivelle.setAttribute(
+          "aria-valuenow",
+          tours
+        );
+      }
+
+      function afficherReussite() {
+        fini = true;
+        actif = false;
+        tours = TOURS_REQUIS;
+
+        actualiserAffichage();
+
+        /* Démarre les quatre engrenages après le quatrième tour. */
+        scene.classList.add("phare-engrenages-actifs");
+
+        /* Affiche immédiatement le fond normal du mécanisme actif. */
+        fond.src = "images/1-png2.png";
+
+        /*
+          Affiche très brièvement 1-png1.png, puis revient
+          automatiquement à 1-png2.png.
+        */
+        function montrerEclair() {
+          clearTimeout(minuterieRetourFond);
+          fond.src = "images/1-png1.png";
+
+          minuterieRetourFond = setTimeout(() => {
+            fond.src = "images/1-png2.png";
+          }, 400);
+        }
+
+        /* Premier éclair exactement quatre secondes après la réussite. */
+        minuteriePremierEclair = setTimeout(() => {
+          montrerEclair();
+
+          /* Le joueur peut poursuivre après le premier éclair du phare. */
+          boutonContinuer.style.display = "block";
+
+          /* Puis un nouvel éclair toutes les dix secondes. */
+          minuterieEclairsSuivants = setInterval(
+            montrerEclair,
+            10000
+          );
+        }, 4000);
+
+        /* Démarre en boucle le son externe du mécanisme. */
+        sonEngrenages.currentTime = 0;
+        const lectureEngrenages = sonEngrenages.play();
+
+        if (lectureEngrenages) {
+          lectureEngrenages.catch(() => {
+            // Le jeu reste fonctionnel si le fichier audio est absent.
+          });
+        }
+
+        aide.style.opacity = "0";
+
+        if (navigator.vibrate) {
+          navigator.vibrate([
+            80,
+            60,
+            120
+          ]);
+        }
+      }
+
+      /*
+        Événements tactiles et souris.
+      */
+      manivelle.addEventListener(
+        "pointerdown",
+        commencerRotation
+      );
+
+      manivelle.addEventListener(
+        "pointermove",
+        faireTourner
+      );
+
+      manivelle.addEventListener(
+        "pointerup",
+        terminerRotation
+      );
+
+      manivelle.addEventListener(
+        "pointercancel",
+        terminerRotation
+      );
+
+      boutonContinuer.addEventListener("click", () => {
+        clearTimeout(minuteriePremierEclair);
+        clearTimeout(minuterieRetourFond);
+        clearInterval(minuterieEclairsSuivants);
+        sonEngrenages.pause();
+        showScreen("finaventure");
+      });
+
+      /*
+        Recalcule l’axe après un changement
+        de taille ou d’orientation.
+      */
+      window.addEventListener(
+        "resize",
+        calculerPositionAxe
+      );
+
+      window.addEventListener(
+        "orientationchange",
+        calculerPositionAxe
+      );
+
+      /*
+        Premier calcul au chargement.
+      */
+      calculerPositionAxe();
+    })();
+  
 </script>
 
 </body>
