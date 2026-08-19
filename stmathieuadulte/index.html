@@ -1767,6 +1767,35 @@ html, body, body *, button, .btn-primary, input, textarea, select {
       }
     }
   
+.reprise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 0, 1, 0.88);
+  backdrop-filter: blur(4px);
+}
+
+.reprise-overlay[hidden] { display: none; }
+
+.reprise-dialogue {
+  width: min(440px, 100%);
+  padding: 28px 20px;
+  text-align: center;
+  color: var(--ivoire);
+  background: var(--nuit-rouge);
+  border: 1px solid var(--or);
+  border-radius: 14px;
+  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.55);
+}
+
+.reprise-dialogue h2 { margin-top: 0; }
+.reprise-dialogue button { width: min(330px, calc(100% - 24px)); }
+.reprise-dialogue .btn-secondary { background: transparent; }
+
 </style>
 </head>
 
@@ -1782,6 +1811,16 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 
 <div class="bg"></div>
 <div class="progress-bar" id="progress" style="width:0%"></div>
+
+<!-- Fenêtre proposée lorsqu'une progression a été sauvegardée. -->
+<div id="reprise-overlay" class="reprise-overlay" hidden>
+  <div class="reprise-dialogue" role="dialog" aria-modal="true" aria-labelledby="reprise-titre">
+    <h2 id="reprise-titre">Aventure en cours</h2>
+    <p>Une progression a été retrouvée sur cet appareil.</p>
+    <button class="btn-primary" type="button" onclick="reprendreAventure()">Reprendre l'aventure</button>
+    <button class="btn-secondary" type="button" onclick="recommencerAventure()">Recommencer depuis le début</button>
+  </div>
+</div>
 <button class="nav-back" id="nav-back" onclick="goBack()">←</button>
 
 <button id="stop-audio-btn" onclick="stopperChant()" title="Couper le chant">
@@ -2329,6 +2368,97 @@ const progressMap = {
   finaventure: 100
 };
 
+/* SAUVEGARDE AUTOMATIQUE DE LA PROGRESSION
+   La clé est propre à cette aventure. Changez le suffixe si vous créez
+   une autre aventure afin que leurs sauvegardes ne se mélangent pas. */
+const CLE_SAUVEGARDE = 'avelescape-stmathieu-adulte-v1';
+
+/* Seuls les écrans stables servent de points de reprise.
+   Les indices, erreurs et animations intermédiaires ne sont pas sauvegardés. */
+const pointsDeReprise = [
+  'missive1',
+  'lettre',
+  'puits',
+  'locmaze',
+  'puzzle',
+  'instructionschap2',
+  'porteloin',
+  'abbaye',
+  'moineloin',
+  'petitphare',
+  'suiteaventure',
+  'codeancienphare',
+  'hautphare',
+  'sommetphare'
+];
+
+function lireSauvegarde() {
+  try {
+    const donnee = JSON.parse(localStorage.getItem(CLE_SAUVEGARDE));
+    if (!donnee || !pointsDeReprise.includes(donnee.ecran)) return null;
+    return donnee;
+  } catch (erreur) {
+    return null;
+  }
+}
+
+function enregistrerProgression(ecran) {
+  if (ecran === 'finaventure') {
+    effacerSauvegarde();
+    return;
+  }
+
+  const rang = pointsDeReprise.indexOf(ecran);
+  if (rang === -1) return;
+
+  try {
+    const ancienne = lireSauvegarde();
+
+    /* Le bouton Retour ne doit jamais faire reculer la sauvegarde. */
+    if (ancienne && ancienne.rang > rang) return;
+
+    localStorage.setItem(CLE_SAUVEGARDE, JSON.stringify({
+      ecran: ecran,
+      rang: rang,
+      date: Date.now()
+    }));
+  } catch (erreur) {
+    /* L'aventure reste utilisable si le stockage est bloqué. */
+    console.warn('Sauvegarde locale indisponible.');
+  }
+}
+
+function effacerSauvegarde() {
+  try {
+    localStorage.removeItem(CLE_SAUVEGARDE);
+  } catch (erreur) {}
+}
+
+function afficherChoixReprise() {
+  const sauvegarde = lireSauvegarde();
+  const overlay = document.getElementById('reprise-overlay');
+  if (sauvegarde && overlay) overlay.hidden = false;
+}
+
+function reprendreAventure() {
+  const sauvegarde = lireSauvegarde();
+  const overlay = document.getElementById('reprise-overlay');
+  if (overlay) overlay.hidden = true;
+
+  if (sauvegarde) {
+    navHistory = [];
+    showScreen(sauvegarde.ecran, false);
+  }
+}
+
+function recommencerAventure() {
+  effacerSauvegarde();
+  const overlay = document.getElementById('reprise-overlay');
+  if (overlay) overlay.hidden = true;
+  navHistory = [];
+  showScreen('intro', false);
+}
+
 function showScreen(name, addHist = true) {
   if (!screens[name]) {
     console.error("Écran introuvable :", name);
@@ -2345,6 +2475,7 @@ function showScreen(name, addHist = true) {
 
   screens[name].classList.add('active');
   currentScreen = name;
+  enregistrerProgression(name);
 
 
   const chantAudio = document.getElementById('chant-audio');
@@ -3333,6 +3464,8 @@ window.resetMecanismePhare = resetMecanismePhare;
 window.suiteMecanismePhare = suiteMecanismePhare;
 window.mettreAJourBoutonsIndicesMecanisme = mettreAJourBoutonsIndicesMecanisme;
 window.retourSite = retourSite;
+window.reprendreAventure = reprendreAventure;
+window.recommencerAventure = recommencerAventure;
 
 
 /* Ajustement mobile : corrige la hauteur utile sur certains navigateurs mobiles */
@@ -3369,6 +3502,9 @@ document.addEventListener('DOMContentLoaded', function() {
   if (btnContinuerSceau) {
     btnContinuerSceau.addEventListener('pointerup', continuerApresSceau, { passive: false });
   }
+
+  /* Attend que l'écran d'introduction soit prêt avant de proposer la reprise. */
+  afficherChoixReprise();
 });
 
 function retourSite() {
