@@ -3306,13 +3306,13 @@ function mettreAJourBoutonsIndicesMecanisme() {
   const boutonIndice1 = document.getElementById("meca-indice1-btn");
   const boutonIndice2 = document.getElementById("meca-indice2-btn");
 
-  // Après 1 échec complet, le 1er indice devient disponible.
+  // Après un échec complet, le premier indice devient disponible.
   if (boutonIndice1 && nbErreursMecanisme >= 1) {
     boutonIndice1.hidden = false;
     boutonIndice1.style.setProperty("display", "inline-block", "important");
   }
 
-  // Après 1 échec complet, le 2ème indice devient disponible.
+  // Après un échec complet, le deuxième indice devient disponible.
   if (boutonIndice2 && nbErreursMecanisme >= 1) {
     boutonIndice2.hidden = false;
     boutonIndice2.style.setProperty("display", "inline-block", "important");
