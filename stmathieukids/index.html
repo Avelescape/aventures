@@ -1848,6 +1848,186 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   }
 }
 
+/* =========================================================
+   SOMMET DU PHARE — MANIVELLE ET ENGRENAGES
+   Mécanisme repris de la version adulte.
+   ========================================================= */
+:root {
+  --manivelle-x: 54.08%;
+  --manivelle-y: 34.31%;
+  --manivelle-largeur: 35%;
+}
+
+#screen-sommetphare * { box-sizing: border-box; }
+
+#screen-sommetphare {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #080604;
+  color: white;
+  font-family: Georgia, serif;
+  overscroll-behavior: none;
+}
+
+.phare-scene {
+  position: relative;
+  width: min(100vw, calc(100svh * 943 / 1668));
+  aspect-ratio: 943 / 1668;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #130b04;
+  isolation: isolate;
+}
+
+.phare-fond {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.phare-voile {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background: linear-gradient(#0003 0 10%, transparent 22% 73%, #0005);
+  pointer-events: none;
+}
+
+.phare-manivelle-zone {
+  position: absolute;
+  z-index: 5;
+  left: var(--manivelle-x);
+  top: var(--manivelle-y);
+  width: var(--manivelle-largeur);
+  aspect-ratio: 1774 / 887;
+  transform-origin: 19.75% 50%;
+  touch-action: none;
+  cursor: grab;
+  filter: drop-shadow(0 7px 5px #000b);
+  will-change: transform;
+}
+
+.phare-manivelle-zone:active { cursor: grabbing; }
+
+.phare-manivelle {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.phare-engrenage {
+  position: absolute;
+  z-index: 4;
+  left: var(--engrenage-x);
+  top: var(--engrenage-y);
+  width: var(--engrenage-largeur);
+  height: auto;
+  display: block;
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: 50% 50%;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  filter: drop-shadow(0 5px 5px #000a);
+  will-change: transform;
+}
+
+.phare-engrenage-1 {
+  --engrenage-x: 63.73%;
+  --engrenage-y: 59.05%;
+  --engrenage-largeur: 20%;
+}
+
+.phare-engrenage-2 {
+  --engrenage-x: 62.99%;
+  --engrenage-y: 50.96%;
+  --engrenage-largeur: 20%;
+}
+
+.phare-engrenage-3 {
+  --engrenage-x: 50.48%;
+  --engrenage-y: 50.60%;
+  --engrenage-largeur: 20%;
+}
+
+.phare-engrenage-4 {
+  --engrenage-x: 38.18%;
+  --engrenage-y: 47.78%;
+  --engrenage-largeur: 20%;
+}
+
+.phare-engrenages-actifs .phare-engrenage-1,
+.phare-engrenages-actifs .phare-engrenage-3 {
+  animation: rotation-engrenage-horaire 2.4s linear infinite;
+}
+
+.phare-engrenages-actifs .phare-engrenage-2,
+.phare-engrenages-actifs .phare-engrenage-4 {
+  animation: rotation-engrenage-antihoraire 3.15s linear infinite;
+}
+
+@keyframes rotation-engrenage-horaire {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes rotation-engrenage-antihoraire {
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+.phare-aide {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 90%;
+  padding: 8px 13px;
+  border-radius: 7px;
+  background: #0d0805d9;
+  color: #f2d69e;
+  font-size: clamp(12px, 3.4vw, 16px);
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.phare-continuer {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: none;
+  min-width: 170px;
+  padding: 12px 24px;
+  border: 3px solid var(--gold-dark);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #FFE082, var(--gold));
+  box-shadow: 0 5px 0 var(--gold-dark), 0 12px 24px rgba(0,0,0,0.25);
+  color: var(--ink);
+  font: 800 clamp(18px, 4.5vw, 24px)/1.2 'Patrick Hand', 'Nunito', sans-serif;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #screen-sommetphare * { transition: none !important; }
+}
+
 </style>
 </head>
 
@@ -2174,86 +2354,80 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 </div>
 
 <div class="screen" id="screen-sommetphare">
-  <h1>Active les engrenages et choisis le bon poids pour rallumer le phare !</h1>
+  <main class="phare-scene" id="phare-scene">
+    <img
+      class="phare-fond"
+      id="phare-fond"
+      src="images/1-webp3.webp"
+      alt="Salle du mécanisme du phare"
+      draggable="false"
+    >
 
-  <div class="meca-scene">
-    <div class="meca-game" id="meca-game">
+    <div class="phare-voile"></div>
 
-      <div id="meca-fond" class="meca-fond"></div>
+    <img
+      class="phare-engrenage phare-engrenage-1"
+      src="images/1-webpengrenage.webp"
+      alt=""
+      draggable="false"
+    >
+    <img
+      class="phare-engrenage phare-engrenage-2"
+      src="images/1-webpengrenagegrand.webp"
+      alt=""
+      draggable="false"
+    >
+    <img
+      class="phare-engrenage phare-engrenage-3"
+      src="images/1-webpengrenage.webp"
+      alt=""
+      draggable="false"
+    >
+    <img
+      class="phare-engrenage phare-engrenage-4"
+      src="images/1-webpengrenagegrand.webp"
+      alt=""
+      draggable="false"
+    >
 
-      <button class="meca-reset" onclick="resetMecanismePhare()">Réinitialiser</button>
-
-      <div id="meca-gearA" class="meca-gear meca-gear-small"></div>
-      <div id="meca-gearB" class="meca-gear meca-gear-big"></div>
-      <div id="meca-gearC" class="meca-gear meca-gear-small"></div>
-      <div id="meca-gearD" class="meca-gear meca-gear-big"></div>
-
-      <svg class="meca-zones" viewBox="0 0 1152 2048" preserveAspectRatio="none">
-        <rect class="meca-zone" x="370" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('A')" />
-        <rect class="meca-zone" x="520" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('B')" />
-        <rect class="meca-zone" x="680" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('C')" />
-        <rect class="meca-zone" x="850" y="800" width="130" height="150" rx="15" onclick="clickZoneMecanisme('D')" />
-
-        <rect class="meca-zone" x="500" y="1500" width="130" height="280" rx="15" onclick="clickZoneMecanisme('E')" />
-        <rect class="meca-zone" x="680" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('F')" />
-        <rect class="meca-zone" x="820" y="1400" width="130" height="400" rx="15" onclick="clickZoneMecanisme('G')" />
-
-      </svg>
-
-      <div id="meca-message" class="meca-message"></div>
-
-      <div class="meca-indices">
-        <button id="meca-indice1-btn" class="meca-indice-btn" hidden onclick="showScreen('indicemecanisme1')">
-          Premier indice
-        </button>
-        <button id="meca-indice2-btn" class="meca-indice-btn" hidden onclick="showScreen('indicemecanisme2')">
-          Deuxième indice
-        </button>
-      </div>
-
-      <button id="meca-suite" class="meca-suite" onclick="suiteMecanismePhare()">
-        Continuer
-      </button>
-
+    <div
+      class="phare-manivelle-zone"
+      id="phare-manivelle"
+      role="slider"
+      tabindex="0"
+      aria-label="Manivelle du phare"
+      aria-valuemin="0"
+      aria-valuemax="3"
+      aria-valuenow="0"
+    >
+      <img
+        class="phare-manivelle"
+        src="images/1-webpmanivelle.webp"
+        alt=""
+        draggable="false"
+      >
     </div>
-  </div>
 
-  <div class="meca-indice-initial">
-    <button id="meca-indice0-btn" class="meca-indice-btn" onclick="afficherIndiceInitial()">
-      Indice
+    <div class="phare-aide" id="phare-aide">
+      Pose ton doigt sur la manivelle et effectue trois tours sur l’écran.
+    </div>
+
+    <button class="phare-continuer" id="phare-continuer" type="button">
+      Continuer
     </button>
-    <p id="meca-indice0-message" style="display:none;"></p>
+  </main>
 
-    <button id="retour-puzzle-indice"
-            class="btn-primary"
-            style="display:none;"
-            onclick="showScreen('puzzle')">
-      Retour au puzzle
-    </button>
-  </div>
-
-  <audio id="sonSuccesMecanisme" src="audios/engrenages.mp3" preload="auto"></audio>
-</div>
-
-
-<div class="screen" id="screen-indicemecanisme1">
-  <div class="indice-mecanisme-page">
-    <h2>Premier indice</h2>
-    <p>L’ordre des engrenages et le choix du poids forment le code d’identité du phare.</p>
-    <button class="btn-primary" onclick="showScreen('sommetphare')">
-      Retour au mécanisme
-    </button>
-  </div>
-</div>
-
-<div class="screen" id="screen-indicemecanisme2">
-  <div class="indice-mecanisme-page">
-    <h2>Deuxième indice</h2>
-    <p>Ce code est caché sur le sceau que tu as reconstitué.</p>
-    <button class="btn-primary" onclick="showScreen('sommetphare')">
-      Retour au mécanisme
-    </button>
-  </div>
+  <audio
+    id="phare-son-engrenages"
+    src="audios/engrenages.mp3"
+    preload="auto"
+    loop
+  ></audio>
+  <audio
+    id="phare-son-tour"
+    src="audios/clac.mp3"
+    preload="auto"
+  ></audio>
 </div>
 
 <div class="screen" id="screen-finaventure">
@@ -2425,10 +2599,6 @@ function showScreen(name, addHist = true) {
     lancerTexteFin();
   }
 
-  if (name === 'sommetphare') {
-    preparerAffichageMecanismePhare();
-    mettreAJourBoutonsIndicesMecanisme();
-  }
 }
 
 /*
@@ -3474,6 +3644,228 @@ document.addEventListener('DOMContentLoaded', function() {
 function retourSite() {
   window.location.href = "https://avelescape.github.io/aventures/";
 }
+
+/* SOMMET DU PHARE — comportement de la manivelle repris de la version adulte */
+(() => {
+  const TOURS_REQUIS = 3;
+  const VITESSE_MAX_DEGRES_SECONDE = 180;
+  const LARGEUR_PHOTO = 943;
+  const HAUTEUR_PHOTO = 1668;
+  const AXE_GIMP_X = 618;
+  const AXE_GIMP_Y = 709;
+  const PAS_CLIC_METALLIQUE = 15;
+
+  const scene = document.querySelector('#phare-scene');
+  const manivelle = document.querySelector('#phare-manivelle');
+  const aide = document.querySelector('#phare-aide');
+  const fond = document.querySelector('#phare-fond');
+  const sonEngrenages = document.querySelector('#phare-son-engrenages');
+  const sonTour = document.querySelector('#phare-son-tour');
+  const boutonContinuer = document.querySelector('#phare-continuer');
+
+  if (!scene || !manivelle || !aide || !fond || !sonEngrenages || !sonTour || !boutonContinuer) {
+    return;
+  }
+
+  const fondNormal = new Image();
+  fondNormal.src = 'images/1-webp2.webp';
+
+  const fondEclair = new Image();
+  fondEclair.src = 'images/1-webp1.webp';
+
+  let minuteriePremierEclair = null;
+  let minuterieEclairsSuivants = null;
+  let minuterieRetourFond = null;
+  let actif = false;
+  let dernierAngle = 0;
+  let dernierInstant = 0;
+  let rotation = 0;
+  let progression = 0;
+  let tours = 0;
+  let fini = false;
+  let pivotX = 0;
+  let pivotY = 0;
+  let audioCtx = null;
+  let sortieAudio = null;
+  let angleDernierClic = 0;
+
+  function preparerAudio() {
+    if (!audioCtx) {
+      const AudioContextMobile = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextMobile) return false;
+
+      audioCtx = new AudioContextMobile();
+      sortieAudio = audioCtx.createDynamicsCompressor();
+      sortieAudio.threshold.value = -18;
+      sortieAudio.knee.value = 8;
+      sortieAudio.ratio.value = 8;
+      sortieAudio.attack.value = 0.002;
+      sortieAudio.release.value = 0.12;
+      sortieAudio.connect(audioCtx.destination);
+    }
+
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return true;
+  }
+
+  function jouerClicMetallique(intensite = 1) {
+    if (!preparerAudio()) return;
+
+    const maintenant = audioCtx.currentTime;
+    const oscillateur = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const filtre = audioCtx.createBiquadFilter();
+
+    oscillateur.type = 'square';
+    oscillateur.frequency.setValueAtTime(720, maintenant);
+    oscillateur.frequency.exponentialRampToValueAtTime(240, maintenant + 0.045);
+    filtre.type = 'bandpass';
+    filtre.frequency.value = 620;
+    filtre.Q.value = 2.2;
+    gain.gain.setValueAtTime(Math.min(0.55, 0.38 + intensite * 0.07), maintenant);
+    gain.gain.exponentialRampToValueAtTime(0.001, maintenant + 0.075);
+
+    oscillateur.connect(filtre).connect(gain).connect(sortieAudio);
+    oscillateur.start(maintenant);
+    oscillateur.stop(maintenant + 0.08);
+  }
+
+  function jouerClacDeTour() {
+    sonTour.pause();
+    sonTour.currentTime = 0;
+    sonTour.play().catch(() => {});
+  }
+
+  function calculerPositionAxe() {
+    const sceneRect = scene.getBoundingClientRect();
+    pivotX = sceneRect.left + AXE_GIMP_X * (sceneRect.width / LARGEUR_PHOTO);
+    pivotY = sceneRect.top + AXE_GIMP_Y * (sceneRect.height / HAUTEUR_PHOTO);
+  }
+
+  function obtenirAngleDuDoigt(evenement) {
+    return Math.atan2(
+      evenement.clientY - pivotY,
+      evenement.clientX - pivotX
+    ) * 180 / Math.PI;
+  }
+
+  function commencerRotation(evenement) {
+    if (fini) return;
+
+    evenement.preventDefault();
+    calculerPositionAxe();
+    actif = true;
+    dernierAngle = obtenirAngleDuDoigt(evenement);
+    dernierInstant = evenement.timeStamp;
+    manivelle.setPointerCapture(evenement.pointerId);
+    preparerAudio();
+    angleDernierClic = rotation;
+    aide.style.opacity = '0.25';
+  }
+
+  function faireTourner(evenement) {
+    if (!actif || fini) return;
+
+    evenement.preventDefault();
+    const nouvelAngle = obtenirAngleDuDoigt(evenement);
+    let difference = nouvelAngle - dernierAngle;
+    const tempsEcoule = Math.max(1, evenement.timeStamp - dernierInstant);
+
+    if (difference > 180) difference -= 360;
+    if (difference < -180) difference += 360;
+
+    const deplacementMaximum = VITESSE_MAX_DEGRES_SECONDE * tempsEcoule / 1000;
+    difference = Math.max(-deplacementMaximum, Math.min(deplacementMaximum, difference));
+    dernierAngle = nouvelAngle;
+    dernierInstant = evenement.timeStamp;
+    rotation += difference;
+
+    if (Math.abs(rotation - angleDernierClic) >= PAS_CLIC_METALLIQUE) {
+      jouerClicMetallique(Math.min(2, Math.abs(difference) / 8));
+      angleDernierClic = rotation;
+    }
+
+    progression = Math.max(0, progression + difference);
+    manivelle.style.transform = `rotate(${rotation}deg)`;
+
+    const nouveauxTours = Math.min(TOURS_REQUIS, Math.floor(progression / 360));
+    if (nouveauxTours > tours) {
+      tours = nouveauxTours;
+      jouerClacDeTour();
+      manivelle.setAttribute('aria-valuenow', tours);
+    }
+
+    if (progression >= TOURS_REQUIS * 360) afficherReussite();
+  }
+
+  function terminerRotation(evenement) {
+    if (!actif) return;
+    actif = false;
+    aide.style.opacity = '1';
+
+    try {
+      manivelle.releasePointerCapture(evenement.pointerId);
+    } catch (erreur) {}
+  }
+
+  function afficherReussite() {
+    fini = true;
+    actif = false;
+    tours = TOURS_REQUIS;
+    manivelle.setAttribute('aria-valuenow', tours);
+    scene.classList.add('phare-engrenages-actifs');
+    fond.src = 'images/1-webp2.webp';
+
+    function montrerEclair() {
+      clearTimeout(minuterieRetourFond);
+      fond.src = 'images/1-webp1.webp';
+      minuterieRetourFond = setTimeout(() => {
+        fond.src = 'images/1-webp2.webp';
+      }, 400);
+    }
+
+    minuteriePremierEclair = setTimeout(() => {
+      montrerEclair();
+      boutonContinuer.style.display = 'block';
+      minuterieEclairsSuivants = setInterval(montrerEclair, 10000);
+    }, 4000);
+
+    sonEngrenages.currentTime = 0;
+    sonEngrenages.play().catch(() => {});
+    aide.style.opacity = '0';
+
+    if (navigator.vibrate) navigator.vibrate([80, 60, 120]);
+  }
+
+  let dernierAppuiContinuer = 0;
+
+  function ouvrirSceneFinale(evenement) {
+    if (evenement) {
+      evenement.preventDefault();
+      evenement.stopPropagation();
+    }
+
+    const maintenant = Date.now();
+    if (maintenant - dernierAppuiContinuer < 500) return;
+    dernierAppuiContinuer = maintenant;
+
+    clearTimeout(minuteriePremierEclair);
+    clearTimeout(minuterieRetourFond);
+    clearInterval(minuterieEclairsSuivants);
+    sonEngrenages.pause();
+    showScreen('finaventure');
+  }
+
+  manivelle.addEventListener('pointerdown', commencerRotation);
+  manivelle.addEventListener('pointermove', faireTourner);
+  manivelle.addEventListener('pointerup', terminerRotation);
+  manivelle.addEventListener('pointercancel', terminerRotation);
+  boutonContinuer.addEventListener('pointerup', ouvrirSceneFinale, { passive: false });
+  boutonContinuer.addEventListener('click', ouvrirSceneFinale);
+  window.addEventListener('resize', calculerPositionAxe);
+  window.addEventListener('orientationchange', calculerPositionAxe);
+  calculerPositionAxe();
+})();
 </script>
 
 </body>
