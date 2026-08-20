@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0E3B4C">
-<title>Le Mystère du Phare</title>
+<title>Le MystÃ¨re du Phare</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -337,7 +337,7 @@ input {
 
 
 
-/* ---------------- SOMMET DU PHARE - MÉCANISME HTML ---------------- */
+/* ---------------- SOMMET DU PHARE - MÃ‰CANISME HTML ---------------- */
 .meca-scene {
   position: relative;
   width: 100%;
@@ -378,14 +378,14 @@ input {
   height: 100%;
   z-index: 5;
 
-  /* Les zones restent cachées tant que l’image du phare n’est pas chargée. */
+  /* Les zones restent cachÃ©es tant que lâ€™image du phare nâ€™est pas chargÃ©e. */
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: opacity 0.4s ease;
 }
 
-/* L’image est visible en premier, puis les zones apparaissent. */
+/* Lâ€™image est visible en premier, puis les zones apparaissent. */
 .meca-game.meca-ready .meca-zones {
   opacity: 1;
   visibility: visible;
@@ -606,8 +606,8 @@ input {
 
 /* =========================================================
    PALETTE AVELESCAPE KIDS 7-12 ANS - BILLIG
-   Ajoutée par ChatGPT : remplace l'ambiance rouge sombre
-   par une ambiance océan / sable / aventure plus enfant.
+   AjoutÃ©e par ChatGPT : remplace l'ambiance rouge sombre
+   par une ambiance ocÃ©an / sable / aventure plus enfant.
    ========================================================= */
 
 :root {
@@ -627,7 +627,7 @@ input {
   --ink: #1A1D23;
   --paper-border: #D7AE67;
 
-  /* Compatibilité avec les anciennes variables du code */
+  /* CompatibilitÃ© avec les anciennes variables du code */
   --rouge-cardinal: var(--ocean-dark);
   --cramoisi: var(--turquoise-dark);
   --or: var(--gold);
@@ -691,7 +691,7 @@ h1, h2, h3,
   background: var(--gold);
 }
 
-/* Images plus douces, façon carte d'aventure */
+/* Images plus douces, faÃ§on carte d'aventure */
 .intro-img,
 .lettre-img,
 .missive1-image,
@@ -822,7 +822,7 @@ button:active {
   font-family: 'Patrick Hand', 'Nunito', sans-serif;
 }
 
-/* Champs de réponse */
+/* Champs de rÃ©ponse */
 input {
   font-family: 'Nunito', sans-serif;
   font-weight: 800;
@@ -867,7 +867,7 @@ input:focus {
   border: 2px solid var(--cream);
 }
 
-/* Mécanisme du phare */
+/* MÃ©canisme du phare */
 .meca-scene {
   background: transparent;
 }
@@ -918,12 +918,12 @@ input:focus {
   box-shadow: 0 5px 0 var(--gold-dark);
 }
 
-/* Petits détails dessinés */
+/* Petits dÃ©tails dessinÃ©s */
 .dialogue-box::before,
 #enigme-phare::before,
 .porte-label::before,
 .puzzle-label::before {
-  content: "🐾";
+  content: "ðŸ¾";
   display: block;
   font-size: 28px;
   line-height: 1;
@@ -970,8 +970,8 @@ input:focus {
 
 /* =========================================================
    BILLIG - CHIEN GUIDE
-   Mets l'image billig.png dans le même dossier que ce fichier HTML.
-   Tu peux remplacer cette image par une autre en gardant le même nom.
+   Mets l'image billig.png dans le mÃªme dossier que ce fichier HTML.
+   Tu peux remplacer cette image par une autre en gardant le mÃªme nom.
    ========================================================= */
 /* =========================================================
    BILLIG - CHIEN GUIDE
@@ -1001,7 +1001,7 @@ input:focus {
   content: attr(data-message);
   position: absolute;
 
-  /* espace augmenté entre Billig et la bulle */
+  /* espace augmentÃ© entre Billig et la bulle */
   right: calc(100% + 28px);
   bottom: calc(62% + 12px);
 
@@ -1107,7 +1107,7 @@ input:focus {
     padding: 7px 9px;
   }
 
-  /* On évite que Billig gêne le mécanisme du phare. */
+  /* On Ã©vite que Billig gÃªne le mÃ©canisme du phare. */
   #screen-sommetphare .billig-helper {
     width: 60px;
     bottom: 8px;
@@ -1156,7 +1156,7 @@ button,
 input,
 textarea,
 select {
-  font-size: 16px !important; /* évite le zoom automatique sur iPhone */
+  font-size: 16px !important; /* Ã©vite le zoom automatique sur iPhone */
 }
 
 .screen {
@@ -1286,7 +1286,7 @@ button {
   min-height: 50px;
 }
 
-/* Très petits téléphones */
+/* TrÃ¨s petits tÃ©lÃ©phones */
 @media (max-width: 390px) {
   .screen {
     padding-left: 10px;
@@ -1340,7 +1340,7 @@ button {
   }
 }
 
-/* Téléphones en paysage : on limite la hauteur des visuels pour éviter les boutons hors écran */
+/* TÃ©lÃ©phones en paysage : on limite la hauteur des visuels pour Ã©viter les boutons hors Ã©cran */
 @media (max-height: 520px) and (orientation: landscape) {
   .screen {
     padding-top: 18px;
@@ -1457,8 +1457,8 @@ button {
 
 
 /* =========================================================
-   PUZZLE - VRAI GLISSÉ AU DOIGT
-   Les pièces suivent le doigt puis s'échangent au relâchement.
+   PUZZLE - VRAI GLISSÃ‰ AU DOIGT
+   Les piÃ¨ces suivent le doigt puis s'Ã©changent au relÃ¢chement.
    ========================================================= */
 #puzzle-board {
   position: relative !important;
@@ -1487,7 +1487,7 @@ button {
 
 /* =========================================================
    CORRECTION FINALE MOBILE : BILLIG VISIBLE + BOUTON SITE NON FIXE
-   Ces règles sont placées à la fin pour écraser les anciennes règles.
+   Ces rÃ¨gles sont placÃ©es Ã  la fin pour Ã©craser les anciennes rÃ¨gles.
    ========================================================= */
 body {
   position: relative;
@@ -1574,13 +1574,13 @@ body {
   }
 }
 
-/* Sur le mécanisme, Billig reste visible mais plus discret pour ne pas gêner les zones tactiles. */
+/* Sur le mÃ©canisme, Billig reste visible mais plus discret pour ne pas gÃªner les zones tactiles. */
 #screen-sommetphare.active ~ #billig-helper-global,
 #billig-helper-global.sommet-mode {
   width: 120px !important;
   max-width: 30vw !important;
 }
-/* Bouton couper le chant - flottant, visible sur tous les écrans pendant la lecture */
+/* Bouton couper le chant - flottant, visible sur tous les Ã©crans pendant la lecture */
 #stop-audio-btn{
     position: fixed;
     top: max(64px, calc(env(safe-area-inset-top, 0px) + 54px));
@@ -1605,8 +1605,8 @@ body {
 }
 
 /* =========================================================
-   CORRECTION SCÈNE DU PUITS
-   Billig passe à gauche pour ne plus cacher le bouton Retour
+   CORRECTION SCÃˆNE DU PUITS
+   Billig passe Ã  gauche pour ne plus cacher le bouton Retour
    ========================================================= */
 body:has(#screen-puits.active) #billig-helper-global {
   left: 8px !important;
@@ -1615,7 +1615,7 @@ body:has(#screen-puits.active) #billig-helper-global {
 
 
 /* =========================================================
-   CORRECTION SCÈNE DU PUZZLE
+   CORRECTION SCÃˆNE DU PUZZLE
    Billig et sa bulle restent visibles sans cacher le puzzle
    ========================================================= */
 body:has(#screen-puzzle.active) #billig-helper-global {
@@ -1638,8 +1638,8 @@ body:has(#screen-puzzle.active) #billig-helper-global::after {
 
 
 /* =========================================================
-   AGRANDISSEMENT GÉNÉRAL DES ÉCRITURES
-   Ajout final : ces règles écrasent les anciennes tailles
+   AGRANDISSEMENT GÃ‰NÃ‰RAL DES Ã‰CRITURES
+   Ajout final : ces rÃ¨gles Ã©crasent les anciennes tailles
    sans modifier le fonctionnement de l'aventure.
    ========================================================= */
 
@@ -1677,7 +1677,7 @@ h3 {
   line-height: 1.25 !important;
 }
 
-/* Messages de réponse, de réussite, d'erreur et indices */
+/* Messages de rÃ©ponse, de rÃ©ussite, d'erreur et indices */
 #message,
 #puzzle-message,
 #code-message,
@@ -1689,7 +1689,7 @@ h3 {
   line-height: 1.4 !important;
 }
 
-/* Champs dans lesquels le joueur écrit */
+/* Champs dans lesquels le joueur Ã©crit */
 input,
 input[type="text"],
 input[type="number"] {
@@ -1702,12 +1702,12 @@ button {
   font-size: clamp(22px, 5.5vw, 28px) !important;
 }
 
-/* La flèche Retour conserve une taille adaptée à son bouton rond */
+/* La flÃ¨che Retour conserve une taille adaptÃ©e Ã  son bouton rond */
 .nav-back {
   font-size: 26px !important;
 }
 
-/* Les petits boutons du mécanisme restent lisibles sans devenir trop grands */
+/* Les petits boutons du mÃ©canisme restent lisibles sans devenir trop grands */
 .meca-reset {
   font-size: 16px !important;
 }
@@ -1727,7 +1727,7 @@ button {
   line-height: 1.2 !important;
 }
 
-/* Ajustement pour les très petits téléphones */
+/* Ajustement pour les trÃ¨s petits tÃ©lÃ©phones */
 @media (max-width: 390px) {
   #dialogue-text,
   #dialogue-text-phare,
@@ -1763,8 +1763,8 @@ button {
 
 
 /* =========================================================
-   INDICE DE L'ÉNIGME « CLOCHE »
-   Texte noir pour une meilleure lisibilité sur le parchemin.
+   INDICE DE L'Ã‰NIGME Â« CLOCHE Â»
+   Texte noir pour une meilleure lisibilitÃ© sur le parchemin.
    ========================================================= */
 #indice-phare {
   color: #000000 !important;
@@ -1772,7 +1772,7 @@ button {
 
 
 /* =========================================================
-   SCÈNE FINALE : BULLE PLUS LISIBLE + CRÉDIT DU CHANT
+   SCÃˆNE FINALE : BULLE PLUS LISIBLE + CRÃ‰DIT DU CHANT
    ========================================================= */
 body:has(#screen-finaventure.active) #billig-helper-global::after {
   min-width: 190px !important;
@@ -1803,7 +1803,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 /* =========================================================
    BILLIG DANS LE FLUX DE LA PAGE
-   Placé après tous les textes, images et boutons de l'écran actif.
+   PlacÃ© aprÃ¨s tous les textes, images et boutons de l'Ã©cran actif.
    ========================================================= */
 .screen .billig-helper,
 .screen #billig-helper-global {
@@ -1849,8 +1849,8 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 }
 
 /* =========================================================
-   SOMMET DU PHARE — MANIVELLE ET ENGRENAGES
-   Mécanisme repris de la version adulte.
+   SOMMET DU PHARE â€” MANIVELLE ET ENGRENAGES
+   MÃ©canisme repris de la version adulte.
    ========================================================= */
 :root {
   --manivelle-x: 54.08%;
@@ -2044,7 +2044,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 <div class="bg"></div>
 <div class="progress-bar" id="progress" style="width:0%"></div>
-<button class="nav-back" id="nav-back" onclick="goBack()">←</button>
+<button class="nav-back" id="nav-back" onclick="goBack()">â†</button>
 
 <button id="stop-audio-btn" onclick="stopperChant()" title="Couper le chant">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff">
@@ -2058,7 +2058,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
        alt="intro"
        onclick="startAventure(event)">
 
-  <p class="intro-date">17 février · Anno Domini 1840</p>
+  <p class="intro-date">17 fÃ©vrier Â· Anno Domini 1840</p>
 
   <div class="intro-sep">
     <div class="intro-sep-line"></div>
@@ -2066,7 +2066,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
     <div class="intro-sep-line"></div>
   </div>
 
-  <h1 class="intro-title">Le Mystère<br>du Phare</h1>
+  <h1 class="intro-title">Le MystÃ¨re<br>du Phare</h1>
 
   <p class="intro-location">Pointe de Saint-Mathieu, Bretagne</p>
   <button class="btn-primary" onclick="startAventure(event)">Commencer l'aventure</button>
@@ -2074,19 +2074,19 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 <div class="screen" id="screen-missive1">
   <div class="missive1-label">
-    <p>Billig, le chien-guide des aventuriers, vient de trouver une mystérieuse enveloppe…</p>
+    <p>Billig, le chien-guide des aventuriers, vient de trouver une mystÃ©rieuse enveloppeâ€¦</p>
     <p>Touche-la pour l'ouvrir !</p>
   </div>
 
   <img src="images/1-webpenveloppe1.webp"
-       alt="missive1 scellée"
+       alt="missive1 scellÃ©e"
        class="missive1-image"
        onclick="showScreen('missive2')">
 </div>
 
 <div class="screen" id="screen-missive2">
   <div class="missive2-label">
-    <p>Le cachet de cire est brisé...</p>
+    <p>Le cachet de cire est brisÃ©...</p>
     <p>appuie sur l'enveloppe</p>
   </div>
 
@@ -2111,10 +2111,10 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 <div class="screen" id="screen-puits">
   <div class="puits-label">
-    <p>Te voilà devant le puits de Saint-Mathieu.</p>
-    <p>Mais il n'y a personne…</p>
-    <p>Isabelle t'avait pourtant donné rendez-vous ici.</p>
-    <p>Elle a peut-être laissé un indice !</p>
+    <p>Te voilÃ  devant le puits de Saint-Mathieu.</p>
+    <p>Mais il n'y a personneâ€¦</p>
+    <p>Isabelle t'avait pourtant donnÃ© rendez-vous ici.</p>
+    <p>Elle a peut-Ãªtre laissÃ© un indice !</p>
 
     <button class="btn-primary" onclick="showScreen('locmaze')">Continuer</button>
     <button class="btn-primary" onclick="showScreen('lettre')">Retour</button>
@@ -2123,13 +2123,13 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 <div class="screen" id="screen-locmaze">
   <div class="locmaze-label">
-    <h2 style="color: #ff5a1f;">Cherche le grand panneau intitulé « Site de la pointe Saint-Mathieu ».</h2>
+    <h2 style="color: #ff5a1f;">Cherche le grand panneau intitulÃ© Â« Site de la pointe Saint-Mathieu Â».</h2>
     <h2 style="color: #ff5a1f;">Trouve le mot secret en relevant les lettres suivantes :</h2>
-    <p>Première lettre de la 7e ligne</p>
-    <p>Première lettre de la 12e ligne</p>
-    <p>Dernière lettre de la 19e ligne</p>
-    <p>Première lettre de la 21e ligne</p>
-    <p>Première lettre de la 1re ligne</p>
+    <p>PremiÃ¨re lettre de la 7e ligne</p>
+    <p>PremiÃ¨re lettre de la 12e ligne</p>
+    <p>DerniÃ¨re lettre de la 19e ligne</p>
+    <p>PremiÃ¨re lettre de la 21e ligne</p>
+    <p>PremiÃ¨re lettre de la 1re ligne</p>
     <input type="text" id="reponse">
 
      <button class="btn-primary" onclick="verifier()">Valider</button>
@@ -2140,8 +2140,8 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 <div class="screen" id="screen-so">
   <div class="so-label">
-    <p>Près du puits, tu trouveras deux grands panneaux du côté de la route.</p>
-    <p>Cherche celui qui est écrit en français.</p>
+    <p>PrÃ¨s du puits, tu trouveras deux grands panneaux du cÃ´tÃ© de la route.</p>
+    <p>Cherche celui qui est Ã©crit en franÃ§ais.</p>
     
 
     <button class="btn-primary" onclick="showScreen('locmaze')">Retour</button>
@@ -2152,7 +2152,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 <div class="screen" id="screen-puzzle">
   <div class="puzzle-label">
     <h2 style="color: var(--or);">Reconstitue le sceau</h2>
-    <p>Fais glisser les pièces pour remettre l’image dans le bon ordre.</p>
+    <p>Fais glisser les piÃ¨ces pour remettre lâ€™image dans le bon ordre.</p>
 
     <div id="puzzle-board"></div>
     <div id="puzzle-message"></div>
@@ -2169,8 +2169,8 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 <div class="screen" id="screen-instructionschap2">
   <div class="instructionschap2-label">
     <p>Explore les alentours de la chapelle !</p>
-    <p>Observe bien les panneaux, les symboles, les dates et les objets. L’un de ces éléments pourrait te donner un indice très utile pour la suite.</p>
-    <p>Quand tu auras terminé ton exploration, retrouve-nous devant la porte du phare !</p>
+    <p>Observe bien les panneaux, les symboles, les dates et les objets. Lâ€™un de ces Ã©lÃ©ments pourrait te donner un indice trÃ¨s utile pour la suite.</p>
+    <p>Quand tu auras terminÃ© ton exploration, retrouve-nous devant la porte du phare !</p>
     <button class="btn-primary" onclick="nextScreen()">Clique lorsque tu es devant le phare</button>
   </div>
 </div>
@@ -2178,9 +2178,9 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 <div id="screen-porteloin" class="screen">
   <div class="porte-label">
     <img class="chapter-img"
-         src="images/1-webppharefermé.webp"
+         src="images/1-webppharefermÃ©.webp"
          alt="Porte du phare">
-    <p>La porte semble fermée…</p>
+    <p>La porte semble fermÃ©eâ€¦</p>
     <button class="btn-primary" onclick="essayerOuvrir()">
       Suite
     </button>
@@ -2193,19 +2193,19 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
          src="images/1-webpcadenas.webp"
          alt="Cadenas du phare">
 
-    <p>La porte est verrouillée par un cadenas à code.</p>
+    <p>La porte est verrouillÃ©e par un cadenas Ã  code.</p>
 
    <h3 style="color:#000000; text-shadow:1px 1px 2px rgba(255,255,255,0.8);">
-  Écoute… Entends-tu ce chant ?<br>
-  Il semble venir de l’abbaye.
+  Ã‰couteâ€¦ Entends-tu ce chant ?<br>
+  Il semble venir de lâ€™abbaye.
 </h3>
 
 <h3 style="color:#000000; text-shadow:1px 1px 2px rgba(255,255,255,0.8);">
-  Allons voir ce qui s’y passe !
+  Allons voir ce qui sâ€™y passe !
 </h3>
 
     <button class="btn-primary" onclick="showScreen('abbaye')">
-      Clique lorsque tu es à l’abbaye
+      Clique lorsque tu es Ã  lâ€™abbaye
     </button>
   </div>
 </div>
@@ -2214,7 +2214,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   <div class="abbaye-container">
     <img class="abbaye-img"
          src="images/1-webpmoineloinkid.webp"
-         alt="Un moine apparaît dans l'abbaye"
+         alt="Un moine apparaÃ®t dans l'abbaye"
          onclick="showScreen('moineloin')">
 
     <button class="btn-primary" onclick="showScreen('moineloin')">
@@ -2233,13 +2233,13 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   </div>
 
   <div id="enigme-distance" style="display:none;">
-    <p>Quelle distance, en kilomètres, sépare Saint-Mathieu de Saint-Jacques-de-Compostelle, en Espagne ?</p>
+    <p>Quelle distance, en kilomÃ¨tres, sÃ©pare Saint-Mathieu de Saint-Jacques-de-Compostelle, en Espagne ?</p>
 
     <input id="distanceInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4">
     <br>
 
     <button class="btn-primary" type="button" onclick="afficherIndiceDistance()">Indice</button>
-    <p id="indice-distance" style="display:none; color: var(--or);">Retourne près de la chapelle et observe tout ce qui est autour.</p>
+    <p id="indice-distance" style="display:none; color: var(--or);">Retourne prÃ¨s de la chapelle et observe tout ce qui est autour.</p>
 
     <button class="btn-primary" onclick="verifierDistance()">Valider</button>
     <p id="distance-message"></p>
@@ -2279,14 +2279,14 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 <div class="screen" id="screen-petitphare">
   <img class="chapter-img"
        src="images/1-webpyannblesse.webp"
-       alt="Yannick blessé">
+       alt="Yannick blessÃ©">
 
   <div class="dialogue-box">
     <p id="dialogue-text-phare"></p>
   </div>
 
   <div id="enigme-phare" style="display:none;">
-    <p>Quel objet pourrait produire un son assez fort pour prévenir Yannick et les marins ?</p>
+    <p>Quel objet pourrait produire un son assez fort pour prÃ©venir Yannick et les marins ?</p>
     <p>Entre le mot de 6 lettres :</p>
 
     <input id="motPhareInput" type="text" maxlength="6">
@@ -2320,7 +2320,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
        alt="Ancien phare">
 
   <div class="texte-sommet" style="opacity:1;">
-    <p>Entre le code à 4 chiffres pour ouvrir le cadenas :</p>
+    <p>Entre le code Ã  4 chiffres pour ouvrir le cadenas :</p>
 
     <input id="codeAncienPhareInput"
            type="text"
@@ -2330,7 +2330,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
     <button class="btn-primary" type="button" onclick="afficherIndiceCodeAncienPhare()">Indice</button>
     <p id="indice-code-ancien-phare" style="display:none; color: var(--or);">
-      Tu peux trouver cette année à deux endroits : sur le panneau consacré à l’ancien phare et sur le sceau découvert au début de l’aventure.
+      Tu peux trouver cette annÃ©e Ã  deux endroits : sur le panneau consacrÃ© Ã  lâ€™ancien phare et sur le sceau dÃ©couvert au dÃ©but de lâ€™aventure.
     </p>
 
     <br>
@@ -2346,7 +2346,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
        alt="Phare ouvert">
 
   <div class="texte-sommet" style="opacity:1;">
-    <p>Bravo ! Le cadenas s’ouvre !</p>
+    <p>Bravo ! Le cadenas sâ€™ouvre !</p>
   </div>
 
   <button class="btn-primary" onclick="showScreen('sommetphare')">
@@ -2360,7 +2360,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
       class="phare-fond"
       id="phare-fond"
       src="images/1-webp3.webp"
-      alt="Salle du mécanisme du phare"
+      alt="Salle du mÃ©canisme du phare"
       draggable="false"
     >
 
@@ -2410,7 +2410,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
     </div>
 
     <div class="phare-aide" id="phare-aide">
-      Pose ton doigt sur la manivelle et effectue trois tours sur l’écran.
+      Pose ton doigt sur la manivelle et effectue trois tours sur lâ€™Ã©cran.
     </div>
 
     <button class="phare-continuer" id="phare-continuer" type="button">
@@ -2443,7 +2443,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   </button>
 
   <p class="credit-chant">
-    Chant grégorien proposé par Gregorian Chanting (@GregorianChanting).
+    Chant grÃ©gorien proposÃ© par Gregorian Chanting (@GregorianChanting).
   </p>
 </div>
 
@@ -2534,7 +2534,7 @@ const progressMap = {
 
 function showScreen(name, addHist = true) {
   if (!screens[name]) {
-    console.error("Écran introuvable :", name);
+    console.error("Ã‰cran introuvable :", name);
     return;
   }
 
@@ -2558,7 +2558,7 @@ function showScreen(name, addHist = true) {
   if (chantAudio && name === 'mauvaiscode') {
     chantAudio.currentTime = 0;
     chantAudio.play().catch(() => {
-      console.log("Lecture audio bloquée par le navigateur.");
+      console.log("Lecture audio bloquÃ©e par le navigateur.");
     });
   }
 
@@ -2603,8 +2603,8 @@ function showScreen(name, addHist = true) {
 }
 
 /*
- * Charge d’abord l’image du mécanisme, puis affiche les zones cliquables.
- * Cela évite que les rectangles apparaissent avant le décor sur mobile.
+ * Charge dâ€™abord lâ€™image du mÃ©canisme, puis affiche les zones cliquables.
+ * Cela Ã©vite que les rectangles apparaissent avant le dÃ©cor sur mobile.
  */
 function preparerAffichageMecanismePhare() {
   const game = document.getElementById('meca-game');
@@ -2619,7 +2619,7 @@ function preparerAffichageMecanismePhare() {
   const afficherZonesApresImage = () => {
     fond.style.backgroundImage = `url("${imageMecanismeEteinte}")`;
 
-    /* Deux frames laissent au navigateur le temps d’afficher réellement l’image. */
+    /* Deux frames laissent au navigateur le temps dâ€™afficher rÃ©ellement lâ€™image. */
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         if (currentScreen === 'sommetphare' && !mecanismeSolved) {
@@ -2633,7 +2633,7 @@ function preparerAffichageMecanismePhare() {
   image.onerror = afficherZonesApresImage;
   image.src = imageMecanismeEteinte;
 
-  /* Une image déjà en cache peut être immédiatement complète. */
+  /* Une image dÃ©jÃ  en cache peut Ãªtre immÃ©diatement complÃ¨te. */
   if (image.complete) {
     afficherZonesApresImage();
   }
@@ -2658,7 +2658,7 @@ function verifier() {
     showScreen('puzzle');
   } else {
     vibrerEchec();
-    message.innerText = "Ce n'est pas la bonne réponse, essaye encore !";
+    message.innerText = "Ce n'est pas la bonne rÃ©ponse, essaye encore !";
   }
 }
 
@@ -2676,11 +2676,11 @@ if (reponseInput) {
   });
 }
 
-/* PUZZLE - VERSION RÉUTILISABLE AVELESCAPE - GLISSÉ AU DOIGT */
+/* PUZZLE - VERSION RÃ‰UTILISABLE AVELESCAPE - GLISSÃ‰ AU DOIGT */
 const CONFIG_PUZZLE = {
   taille: 3,
   image: "images/1-webpsceau.webp",
-  messageVictoire: "Le sceau est reconstitué !",
+  messageVictoire: "Le sceau est reconstituÃ© !",
   boutonSuite: "Continuer"
 };
 
@@ -2873,10 +2873,10 @@ function nextScreen() {
 
 /* DIALOGUE MOINE */
 const dialogueMoine = [
-  "Te voilà enfin…",
-  "Je m’appelle Gwenhaël. Je suis l’un des premiers moines de cette abbaye.",
-  "Saint Tanguy, le fondateur de l’abbaye, m’a confié une mission : veiller sur ce lieu.",
-  "Réponds à ma question et je t’aiderai à retrouver Yannick, le gardien du phare."
+  "Te voilÃ  enfinâ€¦",
+  "Je mâ€™appelle GwenhaÃ«l. Je suis lâ€™un des premiers moines de cette abbaye.",
+  "Saint Tanguy, le fondateur de lâ€™abbaye, mâ€™a confiÃ© une mission : veiller sur ce lieu.",
+  "RÃ©ponds Ã  ma question et je tâ€™aiderai Ã  retrouver Yannick, le gardien du phare."
 ];
 
 let dialogueIndex = 0;
@@ -2936,7 +2936,7 @@ function verifierDistance() {
     showScreen('yannickdisparu');
   } else {
     vibrerEchec();
-    message.innerText = "Ce n'est pas la bonne réponse, essaye encore !";
+    message.innerText = "Ce n'est pas la bonne rÃ©ponse, essaye encore !";
   }
 }
 
@@ -2948,7 +2948,7 @@ function afficherIndiceDistance() {
 /* YANNICK A DISPARU */
 const texteYannickDisparu = [
   "Yannick, le gardien, a disparu.",
-  "Sors par la porte latérale située du côté nord, puis dirige-toi vers le petit phare."
+  "Sors par la porte latÃ©rale situÃ©e du cÃ´tÃ© nord, puis dirige-toi vers le petit phare."
 ];
 
 let indexYannickDisparu = 0;
@@ -2992,10 +2992,10 @@ function afficherLigneYannickDisparu() {
 
 /* EXPLICATION NAUFRAGEURS */
 const dialogueNaufrageurs = [
-  "La nuit, les phares aident les marins à trouver leur chemin en mer.",
-  "Si Yannick n’allume pas le phare, les marins risquent de perdre leur direction !",
-  "Leur bateau pourrait alors se diriger vers les récifs…",
-  "Il faut rallumer le phare avant qu’il ne soit trop tard !"
+  "La nuit, les phares aident les marins Ã  trouver leur chemin en mer.",
+  "Si Yannick nâ€™allume pas le phare, les marins risquent de perdre leur direction !",
+  "Leur bateau pourrait alors se diriger vers les rÃ©cifsâ€¦",
+  "Il faut rallumer le phare avant quâ€™il ne soit trop tard !"
 
 ];
 
@@ -3040,10 +3040,10 @@ function afficherDialogueNaufrageurs() {
 
 /* DIALOGUE PETIT PHARE */
 const dialoguePhare = [
-  "Regarde en contrebas, vers l’ouest !",
-  "C’est Yannick !",
-  "Mais il ne nous voit pas…",
-  "Trouve un moyen de lui montrer que tu es là tout en prévenant le bateau qui approche des récifs."
+  "Regarde en contrebas, vers lâ€™ouest !",
+  "Câ€™est Yannick !",
+  "Mais il ne nous voit pasâ€¦",
+  "Trouve un moyen de lui montrer que tu es lÃ  tout en prÃ©venant le bateau qui approche des rÃ©cifs."
 ];
 
 let dialogueIndexPhare = 0;
@@ -3091,7 +3091,7 @@ function afficherDialoguePhare() {
   }, 1000);
 }
 
-/* ÉNIGME DU PETIT PHARE */
+/* Ã‰NIGME DU PETIT PHARE */
 function verifierMotPhare() {
   const input = document.getElementById('motPhareInput');
   const message = document.getElementById('mot-phare-message');
@@ -3108,14 +3108,12 @@ function verifierMotPhare() {
         cloche.play().catch(() => {});
     }
 
-    // attendre la fin de la cloche avant de continuer
-    setTimeout(() => {
-        showScreen("suiteaventure");
-    }, 3500); // adapte selon la durée de cloche.mp3
+    // Passer immÃ©diatement Ã  la scÃ¨ne suivante.
+    showScreen("suiteaventure");
 }
  else {
     vibrerEchec();
-    message.innerText = 'Ce n’est pas encore ça. Essaie encore !';
+    message.innerText = 'Ce nâ€™est pas encore Ã§a. Essaie encore !';
   }
 }
 
@@ -3137,16 +3135,16 @@ function afficherIndicePhare() {
   const indice = document.getElementById('indice-phare');
 
   if (indice) {
-    indice.innerText = "Cet objet fait « ding-dong ». On le trouve souvent en haut d’une église ou dans un clocher.";
+    indice.innerText = "Cet objet fait Â« ding-dong Â». On le trouve souvent en haut dâ€™une Ã©glise ou dans un clocher.";
   }
 }
 
 /* TEXTE FINAL */
 const texteFin = [
-  "Yannick t’a vu !",
+  "Yannick tâ€™a vu !",
   "Il te crie :",
-  "Le code du cadenas est l’année de construction de l’ancien phare !",
-  "Dépêche-toi !"
+  "Le code du cadenas est lâ€™annÃ©e de construction de lâ€™ancien phare !",
+  "DÃ©pÃªche-toi !"
 ];
 
 let indexFin = 0;
@@ -3206,7 +3204,7 @@ function verifierCodeAncienPhare() {
     showScreen('hautphare');
   } else {
     vibrerEchec();
-    message.innerText = 'Ce n’est pas le bon code. Cherche encore !';
+    message.innerText = 'Ce nâ€™est pas le bon code. Cherche encore !';
   }
 }
 
@@ -3225,7 +3223,7 @@ if (codeAncienPhareInput) {
 }
 
 
-/* SOMMET DU PHARE - MÉCANISME HTML */
+/* SOMMET DU PHARE - MÃ‰CANISME HTML */
 const codeCorrectMecanisme = ["D", "A", "B", "C", "F"];
 
 const imageMecanismeEteinte = "images/1-webplentilleeteinte.webp";
@@ -3247,17 +3245,17 @@ function jouerSuccesMecanisme() {
   son.currentTime = 0;
 
   son.play().catch(error => {
-    console.log("Son succès bloqué :", error);
+    console.log("Son succÃ¨s bloquÃ© :", error);
   });
 }
 
 function clickZoneMecanisme(letter) {
-  // Joue le son à chaque appui sur une zone cliquable du mécanisme.
+  // Joue le son Ã  chaque appui sur une zone cliquable du mÃ©canisme.
   const sonZonePhare = document.getElementById('zones-phare-audio');
   if (sonZonePhare) {
     sonZonePhare.currentTime = 0;
     sonZonePhare.play().catch(() => {
-      console.log("Lecture du son des zones bloquée par le navigateur.");
+      console.log("Lecture du son des zones bloquÃ©e par le navigateur.");
     });
   }
 
@@ -3266,8 +3264,8 @@ function clickZoneMecanisme(letter) {
   hideMessageMecanisme();
   sequenceMecanisme.push(letter);
 
-  // IMPORTANT : on ne vérifie pas le code à chaque clic.
-  // On laisse d'abord le joueur cliquer sur toutes les zones nécessaires.
+  // IMPORTANT : on ne vÃ©rifie pas le code Ã  chaque clic.
+  // On laisse d'abord le joueur cliquer sur toutes les zones nÃ©cessaires.
   if (sequenceMecanisme.length < codeCorrectMecanisme.length) {
     return;
   }
@@ -3280,12 +3278,12 @@ function clickZoneMecanisme(letter) {
     return;
   }
 
-  // Ici seulement, après une séquence complète, on compte 1 échec.
+  // Ici seulement, aprÃ¨s une sÃ©quence complÃ¨te, on compte 1 Ã©chec.
   nbErreursMecanisme++;
   vibrerEchec();
   sequenceMecanisme = [];
 
-  showMessageMecanisme("Ce n’est pas le bon ordre. Le mécanisme se bloque… Essaie encore !");
+  showMessageMecanisme("Ce nâ€™est pas le bon ordre. Le mÃ©canisme se bloqueâ€¦ Essaie encore !");
   mettreAJourBoutonsIndicesMecanisme();
 }
 
@@ -3293,13 +3291,13 @@ function mettreAJourBoutonsIndicesMecanisme() {
   const boutonIndice1 = document.getElementById("meca-indice1-btn");
   const boutonIndice2 = document.getElementById("meca-indice2-btn");
 
-  // Après 3 échecs complets, le 1er indice devient disponible.
+  // AprÃ¨s 3 Ã©checs complets, le 1er indice devient disponible.
   if (boutonIndice1 && nbErreursMecanisme >= 3) {
     boutonIndice1.hidden = false;
     boutonIndice1.style.setProperty("display", "inline-block", "important");
   }
 
-  // Après 4 échecs complets, le 2ème indice devient disponible.
+  // AprÃ¨s 4 Ã©checs complets, le 2Ã¨me indice devient disponible.
   if (boutonIndice2 && nbErreursMecanisme >= 4) {
     boutonIndice2.hidden = false;
     boutonIndice2.style.setProperty("display", "inline-block", "important");
@@ -3325,7 +3323,7 @@ function afficherIndiceInitial() {
   const message = document.getElementById("meca-indice0-message");
   if (!message) return;
 
-  message.textContent = "Le code pour activer le phare se trouvait sur le sceau, en début de jeu.";
+  message.textContent = "Le code pour activer le phare se trouvait sur le sceau, en dÃ©but de jeu.";
   message.style.display = "block";
 
   const retourPuzzleIndice = document.getElementById('retour-puzzle-indice');
@@ -3421,7 +3419,7 @@ function hideMessageMecanisme() {
 }
 
 
-/* DÉMARRAGE ROBUSTE DE L'AVENTURE */
+/* DÃ‰MARRAGE ROBUSTE DE L'AVENTURE */
 let dernierDemarrageAventure = 0;
 
 function startAventure(event) {
@@ -3437,7 +3435,7 @@ function startAventure(event) {
   showScreen('missive1');
 }
 
-/* Sécurité : on expose explicitement les fonctions utilisées par les boutons HTML */
+/* SÃ©curitÃ© : on expose explicitement les fonctions utilisÃ©es par les boutons HTML */
 window.vibrerEchec = vibrerEchec;
 window.startAventure = startAventure;
 window.showScreen = showScreen;
@@ -3459,12 +3457,12 @@ window.retourSite = retourSite;
 
 /* BILLIG - chien guide avec plusieurs images WordPress
    ---------------------------------------------------------
-   1) Téléverse chaque image PNG 512 x 512 avec fond transparent sur WordPress.
-   2) Copie l'URL complète de chaque image dans la liste ci-dessous.
-   3) Tu peux garder seulement les images que tu as déjà : si une posture manque,
-      le code affiche automatiquement l'image par défaut.
+   1) TÃ©lÃ©verse chaque image PNG 512 x 512 avec fond transparent sur WordPress.
+   2) Copie l'URL complÃ¨te de chaque image dans la liste ci-dessous.
+   3) Tu peux garder seulement les images que tu as dÃ©jÃ  : si une posture manque,
+      le code affiche automatiquement l'image par dÃ©faut.
 
-   Noms conseillés dans WordPress :
+   Noms conseillÃ©s dans WordPress :
    billig-content.png
    billig-curieux.png
    billig-indice.png
@@ -3483,7 +3481,7 @@ const billigImages = {
   court:'../billig/images/0-webpbilligcourt.webp',
   curieux:'../billig/images/0-webpbilligcurieux.webp',
   lunettes:'../billig/images/0-webplunettes.webp',
-  allongé:'../billig/images/0-webpbillgrepos.webp',
+  allongÃ©:'../billig/images/0-webpbillgrepos.webp',
 };
 
 
@@ -3492,12 +3490,12 @@ const BILLIG_IMAGE_DEFAUT = billigImages.content;
 const billigScreens = {
   missive1: { image: 'lettre', side: 'right' },
   missive2: { image: 'interrogatif', message: 'On l\'ouvre ensemble ?', side: 'right', small: true },
-  puits: { image: 'curieux', message: 'Cherchons l’indice !', side: 'right' },
+  puits: { image: 'curieux', message: 'Cherchons lâ€™indice !', side: 'right' },
   so: { image: 'loupe', message: 'Regarde le panneau !', side: 'right' },
-  puzzle: { image: 'allongé', message: 'J\'adore les puzzles !', side: 'right' },
+  puzzle: { image: 'allongÃ©', message: 'J\'adore les puzzles !', side: 'right' },
   instructionschap2: { image: 'court', message: 'allons chercher des indices !', side: 'right' },
   mauvaiscode: { image: 'court', message: 'Allons voir !', side: 'right' },
-  finaventure: { image: 'content', message: "Bravo !\nGrâce à toi, Yannick, qui s’était cassé la jambe, va pouvoir être soigné. Tu as aussi sauvé les marins du naufrage !\nReviens vite pour une nouvelle aventure !",
+  finaventure: { image: 'content', message: "Bravo !\nGrÃ¢ce Ã  toi, Yannick, qui sâ€™Ã©tait cassÃ© la jambe, va pouvoir Ãªtre soignÃ©. Tu as aussi sauvÃ© les marins du naufrage !\nReviens vite pour une nouvelle aventure !",
     side: 'right'
 },
 };
@@ -3521,7 +3519,7 @@ function ajouterBilligAuxPages() {
     img.alt = 'Billig, le chien guide';
     img.loading = 'lazy';
 
-    // Si l'image choisie n'existe pas encore, on affiche l'image par défaut.
+    // Si l'image choisie n'existe pas encore, on affiche l'image par dÃ©faut.
     img.onerror = function() {
       if (img.src === BILLIG_IMAGE_DEFAUT) return;
       img.src = BILLIG_IMAGE_DEFAUT;
@@ -3561,14 +3559,14 @@ function updateBilligForScreen(screenName) {
   const config = billigScreens[screenName];
 
   if (!config) {
-    // Aucun Billig sur les écrans non listés dans billigScreens.
-    // Cela masque notamment Billig sur la première fenêtre d'accueil.
+    // Aucun Billig sur les Ã©crans non listÃ©s dans billigScreens.
+    // Cela masque notamment Billig sur la premiÃ¨re fenÃªtre d'accueil.
     wrapper.style.display = 'none';
     wrapper.className = 'billig-helper billig-hidden-message';
     return;
   }
 
-  // Billig devient le dernier élément de l'écran actif : il reste ainsi
+  // Billig devient le dernier Ã©lÃ©ment de l'Ã©cran actif : il reste ainsi
   // toujours sous les textes, images et boutons, sans flotter au-dessus.
   const activeScreen = screens[screenName];
   if (activeScreen && wrapper.parentElement !== activeScreen) {
@@ -3618,7 +3616,7 @@ ajusterHauteurMobile();
 window.addEventListener('resize', ajusterHauteurMobile);
 window.addEventListener('orientationchange', ajusterHauteurMobile);
 
-/* Sécurité au chargement : on force l'écran de départ et on ajoute un déclenchement tactile */
+/* SÃ©curitÃ© au chargement : on force l'Ã©cran de dÃ©part et on ajoute un dÃ©clenchement tactile */
 document.addEventListener('DOMContentLoaded', function() {
   creerBilligGlobal();
   updateBilligForScreen('intro');
@@ -3646,7 +3644,7 @@ function retourSite() {
   window.location.href = "https://avelescape.github.io/aventures/";
 }
 
-/* SOMMET DU PHARE — comportement de la manivelle repris de la version adulte */
+/* SOMMET DU PHARE â€” comportement de la manivelle repris de la version adulte */
 (() => {
   const TOURS_REQUIS = 3;
   const VITESSE_MAX_DEGRES_SECONDE = 180;
