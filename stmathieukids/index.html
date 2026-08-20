@@ -2340,6 +2340,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
            inputmode="numeric"
            pattern="[0-9]*">
 
+    <button class="btn-primary" onclick="verifierCodeAncienPhare()">Valider</button>
     <button class="btn-primary" type="button" onclick="afficherIndiceCodeAncienPhare()">Indice</button>
     <p id="indice-code-ancien-phare" style="display:none; color: var(--or);">
       Tu peux trouver cette année à deux endroits : sur le panneau consacré à l’ancien phare et sur le sceau découvert au début de l’aventure.
@@ -2347,7 +2348,6 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
     <br>
 
-    <button class="btn-primary" onclick="verifierCodeAncienPhare()">Valider</button>
     <p id="code-ancien-phare-message"></p>
   </div>
 </div>
