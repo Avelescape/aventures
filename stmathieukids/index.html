@@ -1878,7 +1878,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
        alt="intro"
        onclick="startAventure(event)">
 
-  <p class="intro-date">17 Février · Anno Domini 1840</p>
+  <p class="intro-date">17 février · Anno Domini 1840</p>
 
   <div class="intro-sep">
     <div class="intro-sep-line"></div>
@@ -1889,13 +1889,13 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   <h1 class="intro-title">Le Mystère<br>du Phare</h1>
 
   <p class="intro-location">Pointe de Saint-Mathieu, Bretagne</p>
-  <button class="btn-primary" onclick="startAventure(event)">Commencer l'enquête</button>
+  <button class="btn-primary" onclick="startAventure(event)">Commencer l'aventure</button>
 </div>
 
 <div class="screen" id="screen-missive1">
   <div class="missive1-label">
-    <p>Billig, le chien guide des aventuriers, t'apporte une enveloppe</p>
-    <p>Clique pour l'ouvrir</p>
+    <p>Billig, le chien-guide des aventuriers, vient de trouver une mystérieuse enveloppe…</p>
+    <p>Touche-la pour l'ouvrir !</p>
   </div>
 
   <img src="images/1-webpenveloppe1.webp"
@@ -1930,10 +1930,10 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 <div class="screen" id="screen-puits">
   <div class="puits-label">
-    <p>Tu es bien devant le puits de Saint Mathieu</p>
-    <p>Personne...</p>
-    <p>Isabelle t'a pourtant demandé de l'y rejoindre</p>
-    <p>Peut-être a-t-elle laissé un indice ?</p>
+    <p>Te voilà devant le puits de Saint-Mathieu.</p>
+    <p>Mais il n'y a personne…</p>
+    <p>Isabelle t'avait pourtant donné rendez-vous ici.</p>
+    <p>Elle a peut-être laissé un indice !</p>
 
     <button class="btn-primary" onclick="showScreen('locmaze')">Continuer</button>
     <button class="btn-primary" onclick="showScreen('lettre')">Retour</button>
@@ -1942,13 +1942,13 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 <div class="screen" id="screen-locmaze">
   <div class="locmaze-label">
-    <h2>Cherche le grand panneau "Site de la pointe de St Mathieu</h2>
-    <h2>Entre le mot :</h2>
-    <p>Première lettre de la 7eme ligne</p>
-    <p>Première lettre de la 12eme ligne</p>
-    <p>Dernière lettre de la 19eme ligne</p>
-    <p>Première lettre de la 21eme ligne</p>
-    <p>Première lettre de la 1ere ligne</p>
+    <h2>Cherche le grand panneau intitulé « Site de la pointe Saint-Mathieu ».</h2>
+    <h2>Trouve le mot secret en relevant les lettres suivantes :</h2>
+    <p>Première lettre de la 7e ligne</p>
+    <p>Première lettre de la 12e ligne</p>
+    <p>Dernière lettre de la 19e ligne</p>
+    <p>Première lettre de la 21e ligne</p>
+    <p>Première lettre de la 1re ligne</p>
     <input type="text" id="reponse">
 
      <button class="btn-primary" onclick="verifier()">Valider</button>
@@ -1959,8 +1959,8 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 <div class="screen" id="screen-so">
   <div class="so-label">
-    <p>Lorsque tu es près du puits, deux grands panneaux se trouvent côté route.</p>
-    <p>Choisis celui qui est en français.</p>
+    <p>Près du puits, tu trouveras deux grands panneaux du côté de la route.</p>
+    <p>Cherche celui qui est écrit en français.</p>
     
 
     <button class="btn-primary" onclick="showScreen('locmaze')">Retour</button>
@@ -1971,7 +1971,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 <div class="screen" id="screen-puzzle">
   <div class="puzzle-label">
     <h2>Reconstitue le sceau</h2>
-    <p>Déplace les pièces pour reformer l’image.</p>
+    <p>Fais glisser les pièces pour remettre l’image dans le bon ordre.</p>
 
     <div id="puzzle-board"></div>
     <div id="puzzle-message"></div>
@@ -1980,17 +1980,17 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
             class="btn-primary"
             style="display:none;"
             onclick="showScreen('instructionschap2')">
-      Continuons
+      Continuer
     </button>
   </div>
 </div>
 
 <div class="screen" id="screen-instructionschap2">
   <div class="instructionschap2-label">
-    <p>Explore les alentours de la chapelle !<p>
-<p>Un détail, un symbole, une date ou un objet pourrait te donner un indice très utile pour la suite de ton aventure.<p>
-<p> Quand tu auras terminé ton exploration, retrouvons-nous devant la porte du phare !</p>
-    <button class="btn-primary" onclick="nextScreen()">Clique quand tu es devant le phare</button>
+    <p>Explore les alentours de la chapelle !</p>
+    <p>Observe bien les panneaux, les symboles, les dates et les objets. L’un de ces éléments pourrait te donner un indice très utile pour la suite.</p>
+    <p>Quand tu auras terminé ton exploration, retrouve-nous devant la porte du phare !</p>
+    <button class="btn-primary" onclick="nextScreen()">Je suis devant le phare</button>
   </div>
 </div>
 
@@ -1999,9 +1999,9 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
     <img class="chapter-img"
          src="images/1-webppharefermé.webp"
          alt="Porte du phare">
-    <p>Il semble fermé...</p>
+    <p>La porte semble fermée…</p>
     <button class="btn-primary" onclick="essayerOuvrir()">
-      Suite
+      Essayer d’ouvrir la porte
     </button>
   </div>
 </div>
@@ -2015,17 +2015,16 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
     <p>La porte est verrouillée par un cadenas à code.</p>
 
    <h3 style="color:#000000; text-shadow:1px 1px 2px rgba(255,255,255,0.8);">
-  Écoute...<br>
-  D'où provient ce chant ?<br>
-  Il semblerait qu'il provienne de l'abbaye.
+  Écoute… Entends-tu ce chant ?<br>
+  Il semble venir de l’abbaye.
 </h3>
 
 <h3 style="color:#000000; text-shadow:1px 1px 2px rgba(255,255,255,0.8);">
-  Tu devrais peut-être y aller.
+  Allons voir ce qui s’y passe !
 </h3>
 
     <button class="btn-primary" onclick="showScreen('abbaye')">
-      Clique lorsque tu es à l'abbaye
+      Je suis arrivé à l’abbaye
     </button>
   </div>
 </div>
@@ -2034,7 +2033,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   <div class="abbaye-container">
     <img class="abbaye-img"
          src="images/1-webpmoineloinkid.webp"
-         alt="Moine apparait dans l'abbaye"
+         alt="Un moine apparaît dans l'abbaye"
          onclick="showScreen('moineloin')">
 
     <button class="btn-primary" onclick="showScreen('moineloin')">
@@ -2053,13 +2052,13 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   </div>
 
   <div id="enigme-distance" style="display:none;">
-    <p>Quelle est la distance en Km entre St Mathieu et St Jacques de Compostelle (Espagne) ?</p>
+    <p>Quelle distance, en kilomètres, sépare Saint-Mathieu de Saint-Jacques-de-Compostelle, en Espagne ?</p>
 
     <input id="distanceInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4">
     <br>
 
     <button class="btn-primary" type="button" onclick="afficherIndiceDistance()">Indice</button>
-    <p id="indice-distance" style="display:none; color: var(--or);">Retourne près de la chapelle</p>
+    <p id="indice-distance" style="display:none; color: var(--or);">Retourne tout autour de la chapelle et observe bien les panneaux.</p>
 
     <button class="btn-primary" onclick="verifierDistance()">Valider</button>
     <p id="distance-message"></p>
@@ -2106,7 +2105,8 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   </div>
 
   <div id="enigme-phare" style="display:none;">
-    <p>Entre le mot en 6 lettres :</p>
+    <p>Quel objet pourrait produire un son assez fort pour prévenir Yannick et les marins ?</p>
+    <p>Entre le mot de 6 lettres :</p>
 
     <input id="motPhareInput" type="text" maxlength="6">
     <br>
@@ -2139,7 +2139,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
        alt="Ancien phare">
 
   <div class="texte-sommet" style="opacity:1;">
-    <p>Entre le code à 4 chiffres :</p>
+    <p>Entre le code à 4 chiffres pour ouvrir le cadenas :</p>
 
     <input id="codeAncienPhareInput"
            type="text"
@@ -2149,7 +2149,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
     <button class="btn-primary" type="button" onclick="afficherIndiceCodeAncienPhare()">Indice</button>
     <p id="indice-code-ancien-phare" style="display:none; color: var(--or);">
-      Il y a deux endroits pour trouver l’année : le panneau d’information sur l’ancien phare et le sceau en début d’aventure.
+      Tu peux trouver cette année à deux endroits : sur le panneau consacré à l’ancien phare et sur le sceau découvert au début de l’aventure.
     </p>
 
     <br>
@@ -2165,7 +2165,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
        alt="Phare ouvert">
 
   <div class="texte-sommet" style="opacity:1;">
-    <p>Le cadenas s’ouvre !</p>
+    <p>Bravo ! Le cadenas s’ouvre !</p>
   </div>
 
   <button class="btn-primary" onclick="showScreen('sommetphare')">
@@ -2174,7 +2174,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 </div>
 
 <div class="screen" id="screen-sommetphare">
-  <h1>Actionne les engrenages et les poids pour rallumer le phare.</h1>
+  <h1>Active les engrenages et choisis le bon poids pour rallumer le phare !</h1>
 
   <div class="meca-scene">
     <div class="meca-game" id="meca-game">
@@ -2204,15 +2204,15 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
       <div class="meca-indices">
         <button id="meca-indice1-btn" class="meca-indice-btn" hidden onclick="showScreen('indicemecanisme1')">
-          1er indice
+          Premier indice
         </button>
         <button id="meca-indice2-btn" class="meca-indice-btn" hidden onclick="showScreen('indicemecanisme2')">
-          2ème indice
+          Deuxième indice
         </button>
       </div>
 
       <button id="meca-suite" class="meca-suite" onclick="suiteMecanismePhare()">
-        suivant
+        Continuer
       </button>
 
     </div>
@@ -2238,8 +2238,8 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 <div class="screen" id="screen-indicemecanisme1">
   <div class="indice-mecanisme-page">
-    <h2>1er indice</h2>
-    <p>L'ordre des engrenages et du poids est l'identité certifiée du phare.</p>
+    <h2>Premier indice</h2>
+    <p>L’ordre des engrenages et le choix du poids forment le code d’identité du phare.</p>
     <button class="btn-primary" onclick="showScreen('sommetphare')">
       Retour au mécanisme
     </button>
@@ -2248,8 +2248,8 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
 
 <div class="screen" id="screen-indicemecanisme2">
   <div class="indice-mecanisme-page">
-    <h2>2ème indice</h2>
-    <p>Le sceau est l'identification officielle du phare.</p>
+    <h2>Deuxième indice</h2>
+    <p>Ce code est caché sur le sceau que tu as reconstitué.</p>
     <button class="btn-primary" onclick="showScreen('sommetphare')">
       Retour au mécanisme
     </button>
@@ -2268,7 +2268,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   </button>
 
   <p class="credit-chant">
-    Your support helps Gregorian Chanting (@GregorianChanting) keep the ancient voice of monastic devotion alive.
+    Chant grégorien proposé par Gregorian Chanting (@GregorianChanting).
   </p>
 </div>
 
@@ -2510,7 +2510,7 @@ const CONFIG_PUZZLE = {
   taille: 3,
   image: "images/1-webpsceau.webp",
   messageVictoire: "Le sceau est reconstitué !",
-  boutonSuite: "Continuons"
+  boutonSuite: "Continuer"
 };
 
 let puzzleSolved = false;
@@ -2702,11 +2702,10 @@ function nextScreen() {
 
 /* DIALOGUE MOINE */
 const dialogueMoine = [
-  "Te voilà, enfin...",
-  "Je suis Gwenhaël, un des premiers moines de l'abbaye.",
-  "J'ai été désigné par Saint Tanguy, le fondateur de l'abbaye,",
-  "pour que mon âme veille sur ce lieu.",
-  "Réponds à ma question, et je t'aiderai à retrouver Yannick, le gardien du phare."
+  "Te voilà enfin…",
+  "Je m’appelle Gwenhaël. Je suis l’un des premiers moines de cette abbaye.",
+  "Saint Tanguy, le fondateur de l’abbaye, m’a confié une mission : veiller sur ce lieu.",
+  "Réponds à ma question et je t’aiderai à retrouver Yannick, le gardien du phare."
 ];
 
 let dialogueIndex = 0;
@@ -2778,7 +2777,7 @@ function afficherIndiceDistance() {
 /* YANNICK A DISPARU */
 const texteYannickDisparu = [
   "Yannick, le gardien, a disparu.",
-  "Sort par la porte latérale nord, et va près du petit phare."
+  "Sors par la porte latérale située du côté nord, puis dirige-toi vers le petit phare."
 ];
 
 let indexYannickDisparu = 0;
@@ -2822,11 +2821,10 @@ function afficherLigneYannickDisparu() {
 
 /* EXPLICATION NAUFRAGEURS */
 const dialogueNaufrageurs = [
-  "Les phares servent aux marins pour se diriger sur la mer la nuit.",
-  "Si Yannick n'allume pas le phare,",
-  "les marins ne trouveront pas leurs directions sur la mer!",
-  "Et ils risquent de diriger leurs navires vers les récifs.",
-  "Cela provoquerait des échouements ou des naufrages..."
+  "La nuit, les phares aident les marins à trouver leur chemin en mer.",
+  "Si Yannick n’allume pas le phare, les marins risquent de perdre leur direction !",
+  "Leur bateau pourrait alors se diriger vers les récifs…",
+  "Il faut rallumer le phare avant qu’il ne soit trop tard !"
 
 ];
 
@@ -2871,12 +2869,10 @@ function afficherDialogueNaufrageurs() {
 
 /* DIALOGUE PETIT PHARE */
 const dialoguePhare = [
-  "Regarde à l'ouest, en contrebas !",
-  "Yannick !!!",
-  "Mais il ne nous voit pas...",
-  "Trouve une solution pour à la fois :",
-  "lui dire que tu es là",
-  "et prévenir le bateau qui approche des récifs."
+  "Regarde en contrebas, vers l’ouest !",
+  "C’est Yannick !",
+  "Mais il ne nous voit pas…",
+  "Trouve un moyen de lui montrer que tu es là tout en prévenant le bateau qui approche des récifs."
 ];
 
 let dialogueIndexPhare = 0;
@@ -2948,7 +2944,7 @@ function verifierMotPhare() {
 }
  else {
     vibrerEchec();
-    message.innerText = 'Réessayez';
+    message.innerText = 'Ce n’est pas encore ça. Essaie encore !';
   }
 }
 
@@ -2970,18 +2966,16 @@ function afficherIndicePhare() {
   const indice = document.getElementById('indice-phare');
 
   if (indice) {
-    indice.innerText = "C'est un objet qui fait DING-DONG et l'on trouve souvent en haut d'une église ou d'un clocher";
+    indice.innerText = "Cet objet fait « ding-dong ». On le trouve souvent en haut d’une église ou dans un clocher.";
   }
 }
 
 /* TEXTE FINAL */
 const texteFin = [
-  "Yannick t'a vu !",
-  "Il te dit :",
-  "Le code du cadenas...",
-  "c'est l'année de construction de l'ancien phare,",
-  "mais à l'envers!",
-  "Dépêche-toi..."
+  "Yannick t’a vu !",
+  "Il te crie :",
+  "Le code du cadenas est l’année de construction de l’ancien phare !",
+  "Dépêche-toi !"
 ];
 
 let indexFin = 0;
@@ -3041,7 +3035,7 @@ function verifierCodeAncienPhare() {
     showScreen('hautphare');
   } else {
     vibrerEchec();
-    message.innerText = 'Mauvais code...';
+    message.innerText = 'Ce n’est pas le bon code. Cherche encore !';
   }
 }
 
@@ -3120,7 +3114,7 @@ function clickZoneMecanisme(letter) {
   vibrerEchec();
   sequenceMecanisme = [];
 
-  showMessageMecanisme("Mauvais ordre. Le mécanisme se bloque.");
+  showMessageMecanisme("Ce n’est pas le bon ordre. Le mécanisme se bloque… Essaie encore !");
   mettreAJourBoutonsIndicesMecanisme();
 }
 
@@ -3326,13 +3320,13 @@ const BILLIG_IMAGE_DEFAUT = billigImages.content;
 
 const billigScreens = {
   missive1: { image: 'lettre', side: 'right' },
-  missive2: { image: 'interrogatif', message: 'On l\'ouvre ?', side: 'right', small: true },
+  missive2: { image: 'interrogatif', message: 'On l\'ouvre ensemble ?', side: 'right', small: true },
   puits: { image: 'curieux', message: 'Cherchons l’indice !', side: 'right' },
   so: { image: 'loupe', message: 'Regarde le panneau !', side: 'right' },
-  puzzle: { image: 'allongé', message: 'j\'adore les puzzles!', side: 'right' },
-  instructionschap2: { image: 'court', message: 'Je vous accompagne!', side: 'right' },
+  puzzle: { image: 'allongé', message: 'J\'adore les puzzles !', side: 'right' },
+  instructionschap2: { image: 'court', message: 'Je t\'accompagne !', side: 'right' },
   mauvaiscode: { image: 'court', message: 'Allons voir !', side: 'right' },
-  finaventure: { image: 'content', message: "Bravo !\nGrâce à toi, Yannick qui avait la jambe cassée a pu être soigné et les marins n'ont pas fait naufrage sur les récifs !\nReviens vite pour une nouvelle aventure !",
+  finaventure: { image: 'content', message: "Bravo !\nGrâce à toi, Yannick, qui s’était cassé la jambe, va pouvoir être soigné. Tu as aussi sauvé les marins du naufrage !\nReviens vite pour une nouvelle aventure !",
     side: 'right'
 },
 };
