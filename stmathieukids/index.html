@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -2045,10 +2048,73 @@ body:has(#screen-finaventure.active) #billig-helper-global {
   #screen-sommetphare * { transition: none !important; }
 }
 
+.reprise-aventure[hidden] {
+  display: none !important;
+}
+
+.reprise-aventure {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 29, 48, 0.82);
+  backdrop-filter: blur(4px);
+}
+
+.reprise-aventure-box {
+  width: min(92vw, 520px);
+  padding: 28px 22px;
+  text-align: center;
+  color: #2a1f14;
+  background: #f5efe0;
+  border: 3px solid #c9b88a;
+  border-radius: 18px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
+}
+
+.reprise-aventure-box h2 {
+  margin: 0 0 14px;
+  color: #e04412;
+  font-family: Georgia, serif;
+}
+
+.reprise-aventure-box p {
+  margin: 0 0 22px;
+}
+
+.reprise-aventure-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reprise-aventure-actions .btn-primary {
+  width: 100%;
+  margin: 0;
+}
+
+.reprise-recommencer {
+  background: #1a2c4a !important;
+}
+
 </style>
 </head>
 
 <body>
+
+<div id="reprise-aventure" class="reprise-aventure" hidden>
+  <div class="reprise-aventure-box" role="dialog" aria-modal="true" aria-labelledby="reprise-aventure-titre">
+    <h2 id="reprise-aventure-titre">Une aventure est déjà en cours</h2>
+    <p>Veux-tu reprendre là où tu t’étais arrêté ou recommencer depuis le début&nbsp;?</p>
+    <div class="reprise-aventure-actions">
+      <button class="btn-primary" type="button" onclick="continuerAventureSauvegardee()">Continuer</button>
+      <button class="btn-primary reprise-recommencer" type="button" onclick="recommencerAventure()">Recommencer</button>
+    </div>
+  </div>
+</div>
 
 <audio id="cloche-audio" src="audios/cloche.mp3" preload="auto"></audio>
 <audio id="chant-audio" src="audios/grego.mp3" preload="auto"></audio>
@@ -2474,6 +2540,69 @@ function vibrerEchec() {
 
 let currentScreen = 'intro';
 let navHistory = [];
+const CLE_SAUVEGARDE_AVENTURE = 'avelescape-stmathieu-kids-progression-v1';
+
+function lireSauvegardeAventure() {
+  try {
+    const sauvegarde = JSON.parse(localStorage.getItem(CLE_SAUVEGARDE_AVENTURE));
+    if (!sauvegarde || !sauvegarde.screen || sauvegarde.screen === 'intro') return null;
+    return sauvegarde;
+  } catch (erreur) {
+    console.warn('Sauvegarde illisible :', erreur);
+    return null;
+  }
+}
+
+function sauvegarderAventure() {
+  if (!currentScreen || currentScreen === 'intro') return;
+
+  try {
+    localStorage.setItem(CLE_SAUVEGARDE_AVENTURE, JSON.stringify({
+      screen: currentScreen,
+      history: navHistory,
+      date: Date.now()
+    }));
+  } catch (erreur) {
+    console.warn('La progression ne peut pas être enregistrée :', erreur);
+  }
+}
+
+function afficherChoixReprise() {
+  const fenetre = document.getElementById('reprise-aventure');
+  if (fenetre) fenetre.hidden = false;
+}
+
+function masquerChoixReprise() {
+  const fenetre = document.getElementById('reprise-aventure');
+  if (fenetre) fenetre.hidden = true;
+}
+
+function continuerAventureSauvegardee() {
+  const sauvegarde = lireSauvegardeAventure();
+  masquerChoixReprise();
+
+  if (!sauvegarde || !screens[sauvegarde.screen]) {
+    recommencerAventure();
+    return;
+  }
+
+  navHistory = Array.isArray(sauvegarde.history)
+    ? sauvegarde.history.filter(nom => screens[nom])
+    : [];
+  showScreen(sauvegarde.screen, false);
+}
+
+function recommencerAventure() {
+  try {
+    localStorage.removeItem(CLE_SAUVEGARDE_AVENTURE);
+  } catch (erreur) {
+    console.warn('La sauvegarde ne peut pas être effacée :', erreur);
+  }
+
+  masquerChoixReprise();
+  navHistory = [];
+  showScreen('intro', false);
+}
 
 /* Bouton couper le chant : visible partout tant que le chant joue */
 const stopAudioBtn = document.getElementById('stop-audio-btn');
@@ -2563,6 +2692,8 @@ function showScreen(name, addHist = true) {
 
   screens[name].classList.add('active');
   currentScreen = name;
+
+  sauvegarderAventure();
 
   if (typeof updateBilligForScreen === 'function') {
     updateBilligForScreen(name);
@@ -3658,6 +3789,10 @@ document.addEventListener('DOMContentLoaded', function() {
   introElements.forEach(element => {
     element.addEventListener('pointerup', startAventure, { passive: false });
   });
+
+  if (lireSauvegardeAventure()) {
+    afficherChoixReprise();
+  }
 });
 
 function retourSite() {
