@@ -1853,6 +1853,11 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   }
 }
 
+/* Dans la scène finale, Billig est légèrement plus petit. */
+body:has(#screen-finaventure.active) #billig-helper-global {
+  width: min(180px, 50vw) !important;
+}
+
 /* =========================================================
    SOMMET DU PHARE — MANIVELLE ET ENGRENAGES
    Mécanisme repris de la version adulte.
