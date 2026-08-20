@@ -1801,6 +1801,53 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
   }
 }
 
+/* =========================================================
+   BILLIG DANS LE FLUX DE LA PAGE
+   Placé après tous les textes, images et boutons de l'écran actif.
+   ========================================================= */
+.screen .billig-helper,
+.screen #billig-helper-global {
+  position: relative !important;
+  inset: auto !important;
+  display: block;
+  width: min(210px, 58vw) !important;
+  max-width: 100% !important;
+  margin: 28px auto max(18px, env(safe-area-inset-bottom)) !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+
+.screen .billig-small,
+.screen #billig-helper-global.billig-small,
+.screen #billig-helper-global.sommet-mode {
+  width: min(180px, 50vw) !important;
+  max-width: 100% !important;
+}
+
+.screen .billig-helper::after,
+.screen #billig-helper-global::after {
+  position: relative !important;
+  inset: auto !important;
+  display: block;
+  width: fit-content;
+  min-width: 0 !important;
+  max-width: min(270px, 82vw) !important;
+  margin: 0 auto 14px !important;
+  transform: none;
+}
+
+.screen .billig-hidden-message::after,
+.screen #billig-helper-global.billig-hidden-message::after {
+  display: none !important;
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .screen .billig-helper,
+  .screen #billig-helper-global {
+    display: block;
+  }
+}
+
 </style>
 </head>
 
@@ -3354,6 +3401,13 @@ function updateBilligForScreen(screenName) {
     wrapper.style.display = 'none';
     wrapper.className = 'billig-helper billig-hidden-message';
     return;
+  }
+
+  // Billig devient le dernier élément de l'écran actif : il reste ainsi
+  // toujours sous les textes, images et boutons, sans flotter au-dessus.
+  const activeScreen = screens[screenName];
+  if (activeScreen && wrapper.parentElement !== activeScreen) {
+    activeScreen.appendChild(wrapper);
   }
 
   wrapper.style.display = 'block';
