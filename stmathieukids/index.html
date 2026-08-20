@@ -1,3 +1,9 @@
+md collé
+
+
+
+
+```
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -2436,9 +2442,7 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
        src="images/1-webpfinkid.webp"
        alt="Fin de l'aventure">
 
- <div style="height:220px;"></div>
-
-  <button class="btn-primary" onclick="retourSite()">
+  <button class="btn-primary" id="bouton-fin-aventure" onclick="retourSite()">
     Fin
   </button>
 
@@ -3566,11 +3570,16 @@ function updateBilligForScreen(screenName) {
     return;
   }
 
-  // Billig devient le dernier élément de l'écran actif : il reste ainsi
-  // toujours sous les textes, images et boutons, sans flotter au-dessus.
+  // Billig reste dans le flux de la page, sans flotter au-dessus des éléments.
   const activeScreen = screens[screenName];
   if (activeScreen && wrapper.parentElement !== activeScreen) {
     activeScreen.appendChild(wrapper);
+  }
+
+  // Dans la scène finale, l'ordre est : image, bulle, Billig, bouton Fin, chant.
+  if (screenName === 'finaventure' && activeScreen) {
+    const boutonFin = document.getElementById('bouton-fin-aventure');
+    if (boutonFin) activeScreen.insertBefore(wrapper, boutonFin);
   }
 
   wrapper.style.display = 'block';
@@ -3869,3 +3878,4 @@ function retourSite() {
 
 </body>
 </html>
+```
