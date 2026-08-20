@@ -2011,6 +2011,9 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
     <input id="distanceInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4">
     <br>
 
+    <button class="btn-primary" type="button" onclick="afficherIndiceDistance()">Indice</button>
+    <p id="indice-distance" style="display:none; color: var(--or);">Retourne près de la chapelle</p>
+
     <button class="btn-primary" onclick="verifierDistance()">Valider</button>
     <p id="distance-message"></p>
   </div>
@@ -2096,6 +2099,11 @@ body:has(#screen-finaventure.active) #billig-helper-global::after {
            maxlength="4"
            inputmode="numeric"
            pattern="[0-9]*">
+
+    <button class="btn-primary" type="button" onclick="afficherIndiceCodeAncienPhare()">Indice</button>
+    <p id="indice-code-ancien-phare" style="display:none; color: var(--or);">
+      Il y a deux endroits pour trouver l’année : le panneau d’information sur l’ancien phare et le sceau en début d’aventure.
+    </p>
 
     <br>
 
@@ -2715,6 +2723,11 @@ function verifierDistance() {
   }
 }
 
+function afficherIndiceDistance() {
+  const indice = document.getElementById('indice-distance');
+  if (indice) indice.style.display = 'block';
+}
+
 /* YANNICK A DISPARU */
 const texteYannickDisparu = [
   "Yannick, le gardien, a disparu.",
@@ -2964,6 +2977,11 @@ function afficherLigneFin() {
 }
 
 /* CODE ANCIEN PHARE */
+function afficherIndiceCodeAncienPhare() {
+  const indice = document.getElementById('indice-code-ancien-phare');
+  if (indice) indice.style.display = 'block';
+}
+
 function verifierCodeAncienPhare() {
   const input = document.getElementById('codeAncienPhareInput');
   const message = document.getElementById('code-ancien-phare-message');
@@ -2972,7 +2990,7 @@ function verifierCodeAncienPhare() {
 
   const code = input.value.trim();
 
-  if (code === '5381') {
+  if (code === '1835') {
     showScreen('hautphare');
   } else {
     vibrerEchec();
