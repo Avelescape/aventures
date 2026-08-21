@@ -45,6 +45,22 @@ body {
   overflow-x: hidden;
 }
 
+/* Apparition douce de la scène « Le socle » après la dernière page du carnet. */
+.socle-fade-in::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2000000;
+  background: #000;
+  pointer-events: none;
+  animation: socleFadeIn .7s ease forwards;
+}
+
+@keyframes socleFadeIn {
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; }
+}
+
 .scene {
   min-height: 100vh;
   min-height: 100dvh;
@@ -611,6 +627,11 @@ input {
 </div>
 
 <script>
+if (window.location.hash === '#chapitre3' && sessionStorage.getItem('avelescape-fade-socle') === '1') {
+  sessionStorage.removeItem('avelescape-fade-socle');
+  document.body.classList.add('socle-fade-in');
+}
+
 let historiquePages = [];
 
 function pageActive() {
