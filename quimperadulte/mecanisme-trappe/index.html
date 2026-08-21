@@ -721,6 +721,9 @@
     const canvasTrappe =
       document.getElementById("canvasTrappe");
 
+    const trappeMobile =
+      document.getElementById("trappeMobile");
+
     const contexteCanvas =
       canvasTrappe.getContext("2d");
 
@@ -977,7 +980,48 @@
 
       trappeOuverte = true;
 
-      scene.classList.add("est-ouverte");
+      /* On anime réellement le panneau avant d'appliquer
+         l'état final. Ainsi, le navigateur ne peut pas passer
+         directement de la façade à la cavité. */
+      const distance = CONFIG.trappe.distance;
+      let mouvementFinal = `translate3d(${distance}%, 0, 0) rotate(1.2deg)`;
+
+      if (CONFIG.trappe.direction === "gauche") {
+        mouvementFinal = `translate3d(-${distance}%, 0, 0) rotate(-1.2deg)`;
+      } else if (CONFIG.trappe.direction === "haut") {
+        mouvementFinal = `translate3d(0, -${distance}%, 0) rotate(-1.2deg)`;
+      } else if (CONFIG.trappe.direction === "bas") {
+        mouvementFinal = `translate3d(0, ${distance}%, 0) rotate(1.2deg)`;
+      }
+
+      const animationTrappe = trappeMobile.animate(
+        [
+          {
+            transform: "translate3d(0, 0, 0) rotate(0deg)",
+            filter: "brightness(1) drop-shadow(0 2px 2px rgba(0,0,0,.2))"
+          },
+          {
+            offset: 0.18,
+            transform: "translate3d(0, 0, 0) rotate(0deg)",
+            filter: "brightness(.94) drop-shadow(-3px 2px 4px rgba(0,0,0,.5))"
+          },
+          {
+            transform: mouvementFinal,
+            filter: "brightness(.72) drop-shadow(-12px 4px 7px rgba(0,0,0,.82))"
+          }
+        ],
+        {
+          duration: CONFIG.trappe.vitesse,
+          easing: "cubic-bezier(.55, 0, .2, 1)",
+          fill: "forwards"
+        }
+      );
+
+      animationTrappe.onfinish = () => {
+        scene.classList.add("est-ouverte");
+        animationTrappe.cancel();
+        boutonCavite.focus();
+      };
 
       if (window.parent && window.parent !== window) {
         window.parent.postMessage("mecanisme-ouvert", "*");
@@ -993,9 +1037,8 @@
         Le coffre devient accessible une fois
         l’animation presque terminée.
       */
-      window.setTimeout(() => {
-        boutonCavite.focus();
-      }, CONFIG.trappe.vitesse);
+      /* Le focus est donné dans onfinish, une fois la trappe
+         complètement sortie de son logement. */
     }
 
     /*
