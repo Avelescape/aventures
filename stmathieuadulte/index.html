@@ -3732,13 +3732,23 @@ function retourSite() {
           tempsEcoule /
           1000;
 
+        dernierAngle = nouvelAngle;
+        dernierInstant = evenement.timeStamp;
+
+        /*
+          Bloque complètement la manivelle lorsque le joueur
+          essaie de la tourner dans le sens antihoraire.
+          Le suivi du doigt reste actualisé afin que la reprise
+          dans le sens horaire soit immédiate et sans saut.
+        */
         difference = Math.max(
-          -deplacementMaximum,
+          0,
           Math.min(deplacementMaximum, difference)
         );
 
-        dernierAngle = nouvelAngle;
-        dernierInstant = evenement.timeStamp;
+        if (difference === 0) {
+          return;
+        }
 
         rotation += difference;
 
@@ -3754,16 +3764,10 @@ function retourSite() {
         }
 
         /*
-          Les tours doivent être réalisés
+          Les tours sont uniquement comptabilisés
           dans le sens horaire.
-
-          Si le joueur tourne en arrière,
-          la progression diminue.
         */
-        progression = Math.max(
-          0,
-          progression + difference
-        );
+        progression += difference;
 
         manivelle.style.transform =
           `rotate(${rotation}deg)`;
