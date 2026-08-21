@@ -720,7 +720,10 @@
       positionnerZoneMecanisme();
       appliquerDirectionEtVitesse();
 
-      if (imageBatiment.complete) {
+      if (
+        imageBatiment.complete &&
+        imageBatiment.naturalWidth > 0
+      ) {
         creerTrappeDepuisBatiment();
       }
     }
@@ -796,6 +799,28 @@
     function creerTrappeDepuisBatiment() {
       const trappe = CONFIG.trappe;
 
+      /*
+        Une image peut être marquée « complete » alors qu'elle
+        n'est pas encore utilisable (ou si son chargement a échoué).
+        Dans ce cas, on attend l'événement load au lieu de créer
+        un canvas transparent.
+      */
+      if (
+        !imageBatiment.naturalWidth ||
+        !imageBatiment.naturalHeight
+      ) {
+        trappeCreee = false;
+        return;
+      }
+
+      const echelleX =
+        imageBatiment.naturalWidth /
+        CONFIG.imageOriginale.largeur;
+
+      const echelleY =
+        imageBatiment.naturalHeight /
+        CONFIG.imageOriginale.hauteur;
+
       canvasTrappe.width =
         trappe.largeur;
 
@@ -812,10 +837,10 @@
       contexteCanvas.drawImage(
         imageBatiment,
 
-        trappe.x,
-        trappe.y,
-        trappe.largeur,
-        trappe.hauteur,
+        trappe.x * echelleX,
+        trappe.y * echelleY,
+        trappe.largeur * echelleX,
+        trappe.hauteur * echelleY,
 
         0,
         0,
@@ -881,7 +906,17 @@
     */
 
     function ouvrirTrappe() {
-      if (trappeOuverte || !trappeCreee) {
+      if (trappeOuverte) {
+        return;
+      }
+
+      /* Nouvelle tentative au premier toucher si le canvas
+         n'était pas prêt lors de l'initialisation. */
+      if (!trappeCreee) {
+        creerTrappeDepuisBatiment();
+      }
+
+      if (!trappeCreee) {
         return;
       }
 
@@ -985,6 +1020,17 @@
       creerTrappeDepuisBatiment
     );
 
+    imageBatiment.addEventListener(
+      "error",
+      () => {
+        trappeCreee = false;
+        console.error(
+          "Impossible de charger l'image du bâtiment :",
+          imageBatiment.src
+        );
+      }
+    );
+
     scene.addEventListener(
       "click",
       ouvrirTrappe
@@ -1037,4 +1083,3 @@
 
 </body>
 </html>
-```
