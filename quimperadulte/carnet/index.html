@@ -340,6 +340,8 @@
       let startX = 0;
       let startY = 0;
       let deltaX = 0;
+      let lastPageReady = false;
+      let gestureStartedOnLastPage = false;
 
       function showPages() {
         pages.forEach((page, index) => {
@@ -356,6 +358,16 @@
            la dernière page, jamais avec le bouton suivant. */
         next.disabled = current === pages.length - 1;
         counter.textContent = `${current + 1} / ${pages.length}`;
+
+        /* Un nouveau geste doit commencer après l'affichage complet de la
+           dernière page. Le geste précédent ne peut donc jamais enchaîner
+           automatiquement vers la scène suivante. */
+        lastPageReady = false;
+        if (current === pages.length - 1) {
+          window.setTimeout(() => {
+            if (current === pages.length - 1) lastPageReady = true;
+          }, 450);
+        }
       }
 
       function turn(direction, fromSwipeGesture = false) {
@@ -365,7 +377,8 @@
         // Sur la dernière page, un glissement vers la gauche la tourne puis
         // ouvre directement la scène suivante.
         if (target >= pages.length) {
-          if (direction < 0 || !STORY.nextSceneUrl || !fromSwipeGesture) return;
+          if (direction < 0 || !STORY.nextSceneUrl || !fromSwipeGesture ||
+              !gestureStartedOnLastPage || !lastPageReady) return;
           const page = pages[current];
           page.style.transformOrigin = 'left center';
           page.classList.add('turning');
@@ -414,6 +427,7 @@
         startX = event.clientX;
         startY = event.clientY;
         deltaX = 0;
+        gestureStartedOnLastPage = current === pages.length - 1 && lastPageReady;
         book.setPointerCapture?.(event.pointerId);
       });
 
@@ -463,11 +477,13 @@
           });
           window.setTimeout(() => pages[current]?.classList.remove('turning'), 730);
         }
+        gestureStartedOnLastPage = false;
       }
 
       book.addEventListener('pointerup', release);
       book.addEventListener('pointercancel', () => {
         tracking = false;
+        gestureStartedOnLastPage = false;
         showPages();
       });
       previous.addEventListener('click', () => turn(-1));
