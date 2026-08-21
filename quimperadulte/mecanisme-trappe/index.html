@@ -27,10 +27,10 @@
       --trappe-largeur: 10%;
       --trappe-hauteur: 10%;
 
-      --deplacement-x: 110%;
+      --deplacement-x: 165%;
       --deplacement-y: 0%;
 
-      --duree-trappe: 1200ms;
+      --duree-trappe: 1800ms;
     }
 
     * {
@@ -285,9 +285,11 @@
          pendant toute l'animation. */
       pointer-events: none;
 
+      transform-origin: center center;
+
       filter:
         brightness(1)
-        drop-shadow(0 0 0 transparent);
+        drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
 
       transition:
         transform var(--duree-trappe)
@@ -304,17 +306,37 @@
       pointer-events: none;
     }
 
+    .image-trappe {
+      position: absolute;
+      inset: 0;
+
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: fill;
+
+      pointer-events: none;
+    }
+
+    .image-trappe[hidden],
+    .canvas-trappe[hidden] {
+      display: none;
+    }
+
     .scene.est-ouverte .trappe-mobile {
       transform:
         translate3d(
           var(--deplacement-x),
           var(--deplacement-y),
           0
-        );
+        )
+        rotate(1.2deg);
 
       filter:
-        brightness(0.78)
-        drop-shadow(-7px 0 5px rgba(0, 0, 0, 0.65));
+        brightness(0.72)
+        drop-shadow(-12px 4px 7px rgba(0, 0, 0, 0.82));
     }
 
     /* =========================
@@ -544,10 +566,20 @@
           class="trappe-mobile"
           id="trappeMobile"
         >
+          <img
+            class="image-trappe"
+            id="imageTrappe"
+            src="images/trappe.webp"
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+          >
+
           <canvas
             class="canvas-trappe"
             id="canvasTrappe"
             aria-hidden="true"
+            hidden
           ></canvas>
         </div>
 
@@ -627,7 +659,8 @@
     const CONFIG = {
       images: {
         batiment: "images/batiment.webp",
-        cavite: "images/cavite.webp"
+        cavite: "images/cavite.webp",
+        trappe: "images/trappe.webp"
       },
 
       imageOriginale: {
@@ -643,9 +676,9 @@
 
         direction: "droite",
 
-        distance: 110,
+        distance: 165,
 
-        vitesse: 1400
+        vitesse: 1800
       },
 
       comportement: {
@@ -681,6 +714,9 @@
 
     const imageCavite =
       document.getElementById("imageCavite");
+
+    const imageTrappe =
+      document.getElementById("imageTrappe");
 
     const canvasTrappe =
       document.getElementById("canvasTrappe");
@@ -744,6 +780,9 @@
 
       imageCavite.src =
         CONFIG.images.cavite;
+
+      imageTrappe.src =
+        CONFIG.images.trappe;
     }
 
     function appliquerTextes() {
@@ -859,6 +898,12 @@
       );
 
       trappeCreee = true;
+
+      /* Le découpage sert de secours si trappe.webp
+         n'est pas présent dans le dossier images. */
+      if (!imageTrappe.complete || !imageTrappe.naturalWidth) {
+        canvasTrappe.hidden = false;
+      }
     }
 
     /*
@@ -1028,6 +1073,24 @@
     imageBatiment.addEventListener(
       "load",
       creerTrappeDepuisBatiment
+    );
+
+    imageTrappe.addEventListener(
+      "load",
+      () => {
+        imageTrappe.hidden = false;
+        canvasTrappe.hidden = true;
+        trappeCreee = true;
+      }
+    );
+
+    imageTrappe.addEventListener(
+      "error",
+      () => {
+        imageTrappe.hidden = true;
+        canvasTrappe.hidden = false;
+        creerTrappeDepuisBatiment();
+      }
     );
 
     imageBatiment.addEventListener(
