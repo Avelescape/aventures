@@ -352,18 +352,20 @@
           page.style.setProperty('--fold', 0);
         });
         previous.disabled = current === 0;
-        next.disabled = false;
+        /* La sortie du carnet se fait uniquement par le geste de tourner
+           la dernière page, jamais avec le bouton suivant. */
+        next.disabled = current === pages.length - 1;
         counter.textContent = `${current + 1} / ${pages.length}`;
       }
 
-      function turn(direction) {
+      function turn(direction, fromSwipeGesture = false) {
         const target = current + direction;
         if (target < 0) return;
 
         // Sur la dernière page, un glissement vers la gauche la tourne puis
         // ouvre directement la scène suivante.
         if (target >= pages.length) {
-          if (direction < 0 || !STORY.nextSceneUrl) return;
+          if (direction < 0 || !STORY.nextSceneUrl || !fromSwipeGesture) return;
           const page = pages[current];
           page.style.transformOrigin = 'left center';
           page.classList.add('turning');
@@ -450,7 +452,7 @@
         const horizontal = Math.abs(deltaX) > Math.abs(deltaY) * 1.15;
 
         if (horizontal && Math.abs(deltaX) > 48) {
-          turn(deltaX < 0 ? 1 : -1);
+          turn(deltaX < 0 ? 1 : -1, true);
         } else {
           pages[current].classList.add('turning');
           pages[current].style.transform = '';
