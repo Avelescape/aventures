@@ -337,12 +337,6 @@ input {
   flex: 1;
 }
 
-#overlay-anim button {
-  position: absolute;
-  bottom: 20px;
-  margin: 0;
-  z-index: 1001;
-}
 </style>
 </head>
 
@@ -614,7 +608,6 @@ input {
 
 <div id="overlay-anim">
   <iframe id="iframe-anim" src="" allowfullscreen></iframe>
-  <button id="btn-continuer-anim">Continuer →</button>
 </div>
 
 <script>
@@ -782,29 +775,22 @@ function verifierChapitre3_1() {
 function lancerAnimation(fichier, pageSuivante) {
   const overlay = document.getElementById("overlay-anim");
   const iframe = document.getElementById("iframe-anim");
-  const btnContinuer = document.getElementById("btn-continuer-anim");
   const boutonSiteRetour = document.querySelector(".site-retour");
 
   iframe.src = fichier;
   overlay.style.display = "flex";
-  btnContinuer.style.display = "none";
   if (boutonSiteRetour) boutonSiteRetour.style.display = "none";
 
   function surMessageMecanisme(event) {
     if (event.data === "mecanisme-ouvert") {
-      btnContinuer.style.display = "inline-flex";
+      overlay.style.display = "none";
+      iframe.src = "";
       window.removeEventListener("message", surMessageMecanisme);
+      if (boutonSiteRetour) boutonSiteRetour.style.display = "";
+      changerPage(pageSuivante);
     }
   }
   window.addEventListener("message", surMessageMecanisme);
-
-  btnContinuer.onclick = function () {
-    overlay.style.display = "none";
-    iframe.src = "";
-    window.removeEventListener("message", surMessageMecanisme);
-    if (boutonSiteRetour) boutonSiteRetour.style.display = "";
-    changerPage(pageSuivante);
-  };
 }
 </script>
 
