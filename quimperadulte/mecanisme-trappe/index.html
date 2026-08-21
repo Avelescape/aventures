@@ -12,20 +12,551 @@
 
   <title>La trappe secrète</title>
 
-  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --cream: #f2ece0;
+      --parchment: #e8dfc8;
+      --gold: #c17a4f;
+      --orange: #3c4f63;
+      --night: #12181f;
+      --ink: #24303d;
+
+      --trappe-x: 0%;
+      --trappe-y: 0%;
+      --trappe-largeur: 10%;
+      --trappe-hauteur: 10%;
+
+      --deplacement-x: 110%;
+      --deplacement-y: 0%;
+
+      --duree-trappe: 1200ms;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      min-height: 100svh;
+
+      padding:
+        max(18px, env(safe-area-inset-top))
+        14px
+        max(30px, env(safe-area-inset-bottom));
+
+      color: var(--cream);
+      background:
+        radial-gradient(circle at top, #2c3c4e 0%, var(--night) 68%);
+
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    img,
+    canvas {
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .aventure {
+      width: min(100%, 620px);
+      margin: 0 auto;
+    }
+
+    /* =========================
+       INTRODUCTION
+       ========================= */
+
+    .introduction {
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .introduction h1 {
+      margin: 0 0 10px;
+
+      font-family: Georgia, serif;
+      font-size: clamp(1.8rem, 7vw, 2.6rem);
+    }
+
+    .introduction p {
+      max-width: 520px;
+      margin: 0 auto;
+
+      color: #ddd3b8;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       SCÈNE
+       ========================= */
+
+    .scene {
+      position: relative;
+
+      width: 100%;
+      overflow: hidden;
+
+      border: 2px solid rgba(60, 79, 99, 0.7);
+      border-radius: 18px;
+
+      background: #0a0f14;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 25px 55px rgba(0, 0, 0, 0.56),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+
+      transition:
+        transform 900ms ease,
+        box-shadow 900ms ease;
+    }
+
+    .scene.est-ouverte {
+      transform: scale(1.015);
+
+      cursor: default;
+
+      box-shadow:
+        0 28px 65px rgba(0, 0, 0, 0.62),
+        0 0 30px rgba(60, 79, 99, 0.18);
+    }
+
+    .image-batiment {
+      position: relative;
+      z-index: 1;
+
+      display: block;
+
+      width: 100%;
+      height: auto;
+
+      pointer-events: none;
+    }
+
+    /* =========================
+       ZONE DU MÉCANISME
+       ========================= */
+
+    .zone-mecanisme {
+      position: absolute;
+
+      left: var(--trappe-x);
+      top: var(--trappe-y);
+
+      z-index: 10;
+
+      width: var(--trappe-largeur);
+      height: var(--trappe-hauteur);
+
+      /*
+        La partie de la trappe qui se déplace
+        hors de cette zone est masquée.
+      */
+      overflow: hidden;
+
+      /*
+        Pour les réglages, tu peux remplacer par :
+        outline: 3px solid red;
+      */
+      outline: none;
+
+      background: #0a0f14;
+
+      box-shadow:
+        inset 0 0 12px rgba(0, 0, 0, 0.82);
+    }
+
+    /* =========================
+       CAVITÉ
+       ========================= */
+
+    .cavite {
+      position: absolute;
+      inset: 0;
+
+      z-index: 1;
+
+      overflow: hidden;
+
+      background: #0a0f14;
+    }
+
+    .image-cavite {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: fill;
+
+      pointer-events: none;
+    }
+
+    .ombre-cavite {
+      position: absolute;
+      inset: 0;
+
+      z-index: 2;
+
+      pointer-events: none;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.5),
+          transparent 22%,
+          transparent 78%,
+          rgba(0, 0, 0, 0.5)
+        );
+
+      box-shadow:
+        inset 0 0 14px rgba(0, 0, 0, 0.85);
+    }
+
+    .lumiere-cavite {
+      position: absolute;
+
+      left: 50%;
+      top: 55%;
+
+      z-index: 3;
+
+      width: 150%;
+      height: 150%;
+
+      border-radius: 50%;
+
+      opacity: 0;
+
+      transform:
+        translate(-50%, -50%)
+        scale(0.45);
+
+      pointer-events: none;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(255, 221, 145, 0.48) 0%,
+          rgba(242, 83, 3, 0.14) 40%,
+          transparent 72%
+        );
+
+      transition:
+        opacity 900ms ease 650ms,
+        transform 1000ms ease 650ms;
+    }
+
+    .scene.est-ouverte .lumiere-cavite {
+      opacity: 1;
+
+      transform:
+        translate(-50%, -50%)
+        scale(1);
+    }
+
+    /* =========================
+       TRAPPE CRÉÉE PAR CANVAS
+       ========================= */
+
+    .trappe-mobile {
+      position: absolute;
+      inset: 0;
+
+      z-index: 5;
+
+      width: 100%;
+      height: 100%;
+
+      transform: translate3d(0, 0, 0);
+
+      will-change: transform;
+
+      filter:
+        brightness(1)
+        drop-shadow(0 0 0 transparent);
+
+      transition:
+        transform var(--duree-trappe)
+          cubic-bezier(.62, 0, .25, 1),
+        filter 550ms ease;
+    }
+
+    .canvas-trappe {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      pointer-events: none;
+    }
+
+    .scene.est-ouverte .trappe-mobile {
+      transform:
+        translate3d(
+          var(--deplacement-x),
+          var(--deplacement-y),
+          0
+        );
+
+      filter:
+        brightness(0.78)
+        drop-shadow(-7px 0 5px rgba(0, 0, 0, 0.65));
+    }
+
+    /* =========================
+       ZONE CLIQUABLE DU COFFRE
+       ========================= */
+
+    .bouton-cavite {
+      position: absolute;
+      inset: 0;
+
+      z-index: 8;
+
+      padding: 0;
+      border: 0;
+
+      opacity: 0;
+
+      background: transparent;
+
+      cursor: pointer;
+      pointer-events: none;
+    }
+
+    .scene.est-ouverte .bouton-cavite {
+      pointer-events: auto;
+    }
+
+    /* =========================
+       MESSAGE SUR L’IMAGE
+       ========================= */
+
+    .message-scene {
+      position: absolute;
+
+      left: 50%;
+      top: 16px;
+
+      z-index: 30;
+
+      padding: 10px 15px;
+
+      border: 1px solid rgba(60, 79, 99, 0.78);
+      border-radius: 999px;
+
+      color: var(--cream);
+      background: rgba(28, 40, 54, 0.92);
+
+      font-size: 0.9rem;
+      font-weight: 800;
+      white-space: nowrap;
+
+      transform: translateX(-50%);
+
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.38);
+
+      animation: apparition-message 500ms ease both;
+    }
+
+    .message-scene[hidden] {
+      display: none;
+    }
+
+    @keyframes apparition-message {
+      from {
+        opacity: 0;
+
+        transform:
+          translateX(-50%)
+          translateY(-12px);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          translateX(-50%)
+          translateY(0);
+      }
+    }
+
+    /* =========================
+       FENÊTRE DU COFFRE
+       ========================= */
+
+    .modale {
+      position: fixed;
+      inset: 0;
+
+      z-index: 100;
+
+      display: grid;
+      place-items: center;
+
+      padding:
+        max(20px, env(safe-area-inset-top))
+        18px
+        max(20px, env(safe-area-inset-bottom));
+
+      background: rgba(8, 12, 16, 0.86);
+
+      backdrop-filter: blur(7px);
+    }
+
+    .modale[hidden] {
+      display: none;
+    }
+
+    .contenu-modale {
+      position: relative;
+
+      width: min(100%, 420px);
+
+      padding: 30px 22px 22px;
+
+      border: 1px solid rgba(60, 79, 99, 0.72);
+      border-radius: 18px;
+
+      text-align: center;
+
+      color: var(--ink);
+      background: var(--parchment);
+
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.62);
+
+      animation: apparition-modale 400ms ease both;
+    }
+
+    @keyframes apparition-modale {
+      from {
+        opacity: 0;
+
+        transform:
+          scale(0.88)
+          translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          scale(1)
+          translateY(0);
+      }
+    }
+
+    .fermer-modale {
+      position: absolute;
+
+      top: 7px;
+      right: 9px;
+
+      width: 42px;
+      height: 42px;
+
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+
+      color: var(--ink);
+      background: transparent;
+
+      font-size: 1.8rem;
+
+      cursor: pointer;
+    }
+
+    .contenu-modale h2 {
+      margin: 5px 0 12px;
+
+      font-family: Georgia, serif;
+      font-size: 1.8rem;
+    }
+
+    .contenu-modale p {
+      margin: 0 0 18px;
+      line-height: 1.55;
+    }
+
+    .bouton-continuer {
+      width: 100%;
+
+      padding: 13px 16px;
+
+      border: 0;
+      border-radius: 10px;
+
+      color: white;
+      background: var(--orange);
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    /* =========================
+       ACCESSIBILITÉ
+       ========================= */
+
+    .sr-only {
+      position: absolute;
+
+      width: 1px;
+      height: 1px;
+
+      padding: 0;
+      margin: -1px;
+
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
   <main class="aventure">
 
-    <section class="intro">
+    <section class="introduction">
 
       <h1>La cache secrète</h1>
 
       <p>
-        Résous l’énigme pour découvrir ce qui se cache derrière
-        la croix située au bas de la façade.
+        Touche la façade pour déclencher le mécanisme
+        dissimulé.
       </p>
 
     </section>
@@ -33,140 +564,87 @@
     <section
       class="scene"
       id="scene"
-      aria-label="Façade avec une trappe secrète"
+      aria-label="Façade d’un bâtiment avec une cache secrète"
     >
 
-      <!-- Image complète de la façade -->
+      <!-- Image complète du bâtiment -->
       <img
-        class="scene__fond"
-        id="imageFond"
+        class="image-batiment"
+        id="imageBatiment"
         src="images/batiment.webp"
-        alt="Façade ancienne vue de face"
+        alt="Façade d’un bâtiment ancien"
         draggable="false"
       >
 
-      <!-- Zone du mécanisme -->
-      <div class="trappe-zone" id="trappeZone">
+      <!-- Zone positionnée automatiquement -->
+      <div
+        class="zone-mecanisme"
+        id="zoneMecanisme"
+      >
 
-        <!-- Cavité située derrière la trappe -->
+        <!-- Cavité avec le coffre intégré -->
         <div class="cavite">
 
           <img
-            class="cavite__image"
+            class="image-cavite"
             id="imageCavite"
             src="images/cavite.webp"
-            alt=""
+            alt="Cavité contenant un coffre"
             draggable="false"
           >
 
-          <div class="cavite__ombre"></div>
-
-          <div class="cavite__lumiere"></div>
-
-          <button
-            class="objet-cache"
-            id="objetCache"
-            type="button"
-            aria-label="Examiner le coffre"
-          >
-            <img
-              class="objet-cache__image"
-              id="imageObjet"
-              src="images/coffre.webp"
-              alt="Un coffre caché dans la cavité"
-              draggable="false"
-            >
-          </button>
+          <div class="ombre-cavite"></div>
+          <div class="lumiere-cavite"></div>
 
         </div>
 
-        <!-- Partie de façade qui coulisse -->
-        <div class="trappe-mobile" id="trappeMobile">
-
-          <img
-            class="trappe-mobile__image"
-            id="imageTrappe"
-            src="images/trappe.webp"
-            alt=""
-            aria-hidden="true"
-            draggable="false"
-          >
-
-        </div>
-
-      </div>
-
-      <!-- Message affiché au-dessus de la scène -->
-      <div class="message-scene" id="messageScene" hidden>
-        Trappe déverrouillée
-      </div>
-
-    </section>
-
-    <section class="enigme" id="blocEnigme">
-
-      <p class="enigme__question" id="questionEnigme">
-        Quel roi légendaire est associé à la ville d’Ys ?
-      </p>
-
-      <form class="reponse" id="formulaireReponse">
-
-        <label class="sr-only" for="champReponse">
-          Réponse à l’énigme
-        </label>
-
-        <input
-          class="reponse__champ"
-          id="champReponse"
-          type="text"
-          placeholder="Entre ta réponse"
-          autocomplete="off"
-          autocapitalize="none"
-          spellcheck="false"
+        <!--
+          La partie du bâtiment utilisée comme trappe
+          sera dessinée automatiquement dans ce canvas.
+        -->
+        <div
+          class="trappe-mobile"
+          id="trappeMobile"
         >
+          <canvas
+            class="canvas-trappe"
+            id="canvasTrappe"
+            aria-hidden="true"
+          ></canvas>
+        </div>
 
         <button
-          class="reponse__bouton"
-          id="boutonValider"
-          type="submit"
-        >
-          Valider
-        </button>
+          class="bouton-cavite"
+          id="boutonCavite"
+          type="button"
+          aria-label="Examiner le coffre"
+        ></button>
 
-      </form>
+      </div>
 
-      <p
-        class="enigme__message"
-        id="messageReponse"
-        role="status"
-        aria-live="polite"
-      ></p>
-
-      <button
-        class="bouton-indice"
-        id="boutonIndice"
-        type="button"
+      <div
+        class="message-scene"
+        id="messageScene"
         hidden
       >
-        Voir un indice
-      </button>
+        La cache est ouverte
+      </div>
 
     </section>
 
-    <!-- Fenêtre affichée lorsque le coffre est sélectionné -->
     <div
       class="modale"
-      id="modaleObjet"
+      id="modale"
       role="dialog"
       aria-modal="true"
       aria-labelledby="titreModale"
       hidden
     >
 
-      <div class="modale__contenu">
+      <div class="contenu-modale">
 
         <button
-          class="modale__fermer"
+          class="fermer-modale"
           id="fermerModale"
           type="button"
           aria-label="Fermer"
@@ -174,27 +652,21 @@
           ×
         </button>
 
-        <img
-          class="modale__image"
-          id="imageObjetModale"
-          src="images/coffre.webp"
-          alt=""
-        >
-
         <h2 id="titreModale">
-          Un coffre oublié
+          Le coffre est découvert
         </h2>
 
         <p id="texteModale">
-          Derrière la façade se trouvait un coffre soigneusement dissimulé.
+          Derrière la trappe se trouvait une cavité contenant
+          le coffre des artefacts.
         </p>
 
         <button
-          class="modale__continuer"
-          id="boutonContinuer"
+          class="bouton-continuer"
+          id="continuer"
           type="button"
         >
-          Continuer l’aventure
+          Ouvrir le coffre
         </button>
 
       </div>
@@ -205,1194 +677,482 @@
 
   <audio
     id="sonTrappe"
-    src="sons/trappe.mp3"
+    src="audios/engrenages.mp3"
     preload="auto"
   ></audio>
 
-  <audio
-    id="sonSucces"
-    src="sons/succes.mp3"
-    preload="auto"
-  ></audio>
+  <script>
+    "use strict";
 
-  <script src="script.js"></script>
+    /*
+      =====================================================
+      CONFIGURATION PRINCIPALE
+      =====================================================
+
+      Les coordonnées ci-dessous correspondent aux valeurs
+      que tu as relevées dans GIMP :
+
+      Image complète : 1152 × 2048 px
+      Position : X 511 px, Y 1323 px
+      Taille : 140 × 154 px
+    */
+
+    const CONFIG = {
+      images: {
+        batiment: "images/batiment.webp",
+        cavite: "images/cavite.webp"
+      },
+
+      imageOriginale: {
+        largeur: 1152,
+        hauteur: 2048
+      },
+
+      trappe: {
+        x: 511,
+        y: 1323,
+        largeur: 140,
+        hauteur: 154,
+
+        /*
+          Directions possibles :
+          "droite"
+          "gauche"
+          "haut"
+          "bas"
+        */
+        direction: "droite",
+
+        /*
+          Distance en pourcentage de la taille de la trappe.
+
+          100 = elle se déplace d’une fois sa largeur.
+          110 = elle disparaît complètement.
+        */
+        distance: 110,
+
+        /*
+          Durée de l’animation en millisecondes.
+
+          Plus le nombre est grand, plus la trappe est lente.
+        */
+        vitesse: 1400
+      },
+
+      comportement: {
+        vibrationSucces: true
+      },
+
+      coffre: {
+        titre: "Le coffre est découvert",
+
+        texte:
+          "Derrière la trappe se trouvait une cavité contenant le coffre des artefacts.",
+
+        texteBouton:
+          "Ouvrir le coffre",
+
+        /*
+          Indique ici le lien de la scène suivante.
+
+          Exemple :
+          lienSuite: "scene-suivante.html"
+
+          Laisse vide pour simplement fermer la fenêtre.
+        */
+        lienSuite: ""
+      }
+    };
+
+    /*
+      =====================================================
+      ÉLÉMENTS HTML
+      =====================================================
+    */
+
+    const racine = document.documentElement;
+
+    const scene =
+      document.getElementById("scene");
+
+    const imageBatiment =
+      document.getElementById("imageBatiment");
+
+    const imageCavite =
+      document.getElementById("imageCavite");
+
+    const canvasTrappe =
+      document.getElementById("canvasTrappe");
+
+    const contexteCanvas =
+      canvasTrappe.getContext("2d");
+
+    const messageScene =
+      document.getElementById("messageScene");
+
+    const boutonCavite =
+      document.getElementById("boutonCavite");
+
+    const modale =
+      document.getElementById("modale");
+
+    const fermerModale =
+      document.getElementById("fermerModale");
+
+    const titreModale =
+      document.getElementById("titreModale");
+
+    const texteModale =
+      document.getElementById("texteModale");
+
+    const boutonContinuer =
+      document.getElementById("continuer");
+
+    const sonTrappe =
+      document.getElementById("sonTrappe");
+
+    /*
+      =====================================================
+      ÉTAT DU MÉCANISME
+      =====================================================
+    */
+
+    let trappeOuverte = false;
+    let trappeCreee = false;
+
+    /*
+      =====================================================
+      INITIALISATION
+      =====================================================
+    */
+
+    function initialiser() {
+      appliquerImages();
+      appliquerTextes();
+      positionnerZoneMecanisme();
+      appliquerDirectionEtVitesse();
+
+      if (imageBatiment.complete) {
+        creerTrappeDepuisBatiment();
+      }
+    }
+
+    function appliquerImages() {
+      imageBatiment.src =
+        CONFIG.images.batiment;
+
+      imageCavite.src =
+        CONFIG.images.cavite;
+    }
+
+    function appliquerTextes() {
+      titreModale.textContent =
+        CONFIG.coffre.titre;
+
+      texteModale.textContent =
+        CONFIG.coffre.texte;
+
+      boutonContinuer.textContent =
+        CONFIG.coffre.texteBouton;
+    }
+
+    /*
+      =====================================================
+      POSITION DE LA ZONE
+      =====================================================
+    */
+
+    function positionnerZoneMecanisme() {
+      const image = CONFIG.imageOriginale;
+      const trappe = CONFIG.trappe;
+
+      const xPourcentage =
+        (trappe.x / image.largeur) * 100;
+
+      const yPourcentage =
+        (trappe.y / image.hauteur) * 100;
+
+      const largeurPourcentage =
+        (trappe.largeur / image.largeur) * 100;
+
+      const hauteurPourcentage =
+        (trappe.hauteur / image.hauteur) * 100;
+
+      racine.style.setProperty(
+        "--trappe-x",
+        `${xPourcentage}%`
+      );
+
+      racine.style.setProperty(
+        "--trappe-y",
+        `${yPourcentage}%`
+      );
+
+      racine.style.setProperty(
+        "--trappe-largeur",
+        `${largeurPourcentage}%`
+      );
+
+      racine.style.setProperty(
+        "--trappe-hauteur",
+        `${hauteurPourcentage}%`
+      );
+    }
+
+    /*
+      =====================================================
+      CRÉATION AUTOMATIQUE DE LA TRAPPE
+      =====================================================
+    */
+
+    function creerTrappeDepuisBatiment() {
+      const trappe = CONFIG.trappe;
+
+      /*
+        Le canvas possède exactement les dimensions
+        de la sélection GIMP.
+      */
+      canvasTrappe.width =
+        trappe.largeur;
+
+      canvasTrappe.height =
+        trappe.hauteur;
+
+      contexteCanvas.clearRect(
+        0,
+        0,
+        canvasTrappe.width,
+        canvasTrappe.height
+      );
+
+      /*
+        On prélève directement la zone correspondante
+        dans l’image originale du bâtiment.
+      */
+      contexteCanvas.drawImage(
+        imageBatiment,
+
+        trappe.x,
+        trappe.y,
+        trappe.largeur,
+        trappe.hauteur,
+
+        0,
+        0,
+        trappe.largeur,
+        trappe.hauteur
+      );
+
+      trappeCreee = true;
+    }
+
+    /*
+      =====================================================
+      DIRECTION ET VITESSE
+      =====================================================
+    */
+
+    function appliquerDirectionEtVitesse() {
+      const distance =
+        CONFIG.trappe.distance;
+
+      let deplacementX = 0;
+      let deplacementY = 0;
+
+      switch (CONFIG.trappe.direction) {
+        case "gauche":
+          deplacementX = -distance;
+          break;
+
+        case "haut":
+          deplacementY = -distance;
+          break;
+
+        case "bas":
+          deplacementY = distance;
+          break;
+
+        case "droite":
+        default:
+          deplacementX = distance;
+          break;
+      }
+
+      racine.style.setProperty(
+        "--deplacement-x",
+        `${deplacementX}%`
+      );
+
+      racine.style.setProperty(
+        "--deplacement-y",
+        `${deplacementY}%`
+      );
+
+      racine.style.setProperty(
+        "--duree-trappe",
+        `${CONFIG.trappe.vitesse}ms`
+      );
+    }
+
+    /*
+      =====================================================
+      OUVERTURE DE LA TRAPPE
+      =====================================================
+    */
+
+    function ouvrirTrappe() {
+      if (trappeOuverte || !trappeCreee) {
+        return;
+      }
+
+      trappeOuverte = true;
+
+      scene.classList.add("est-ouverte");
+
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage("mecanisme-ouvert", "*");
+      }
+
+      jouerSonTrappe();
+
+      messageScene.hidden = false;
+
+      if (CONFIG.comportement.vibrationSucces) {
+        vibrer([70, 45, 140]);
+      }
+
+      /*
+        Le coffre devient accessible une fois
+        l’animation presque terminée.
+      */
+      window.setTimeout(() => {
+        boutonCavite.focus();
+      }, CONFIG.trappe.vitesse);
+    }
+
+    /*
+      =====================================================
+      SON DE LA TRAPPE
+      =====================================================
+    */
+
+    function jouerSonTrappe() {
+      if (!sonTrappe) {
+        return;
+      }
+
+      sonTrappe.pause();
+      sonTrappe.currentTime = 0;
+
+      sonTrappe.play().catch((erreur) => {
+        console.log("Son de la trappe bloqué :", erreur);
+      });
+    }
+
+    /*
+      =====================================================
+      VIBRATION
+      =====================================================
+    */
+
+    function vibrer(sequence) {
+      if ("vibrate" in navigator) {
+        navigator.vibrate(sequence);
+      }
+    }
+
+    /*
+      =====================================================
+      FENÊTRE DU COFFRE
+      =====================================================
+    */
+
+    function ouvrirFenetreCoffre() {
+      if (!trappeOuverte) {
+        return;
+      }
+
+      modale.hidden = false;
+      fermerModale.focus();
+    }
+
+    function fermerFenetreCoffre() {
+      modale.hidden = true;
+      boutonCavite.focus();
+    }
+
+    function continuerAventure() {
+      const lien =
+        CONFIG.coffre.lienSuite.trim();
+
+      if (lien) {
+        window.location.href = lien;
+        return;
+      }
+
+      fermerFenetreCoffre();
+    }
+
+    /*
+      =====================================================
+      ÉVÉNEMENTS
+      =====================================================
+    */
+
+    imageBatiment.addEventListener(
+      "load",
+      creerTrappeDepuisBatiment
+    );
+
+    scene.addEventListener(
+      "click",
+      ouvrirTrappe
+    );
+
+    boutonCavite.addEventListener(
+      "click",
+      ouvrirFenetreCoffre
+    );
+
+    fermerModale.addEventListener(
+      "click",
+      fermerFenetreCoffre
+    );
+
+    boutonContinuer.addEventListener(
+      "click",
+      continuerAventure
+    );
+
+    modale.addEventListener(
+      "click",
+      (event) => {
+        if (event.target === modale) {
+          fermerFenetreCoffre();
+        }
+      }
+    );
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (
+          event.key === "Escape" &&
+          !modale.hidden
+        ) {
+          fermerFenetreCoffre();
+        }
+      }
+    );
+
+    /*
+      =====================================================
+      LANCEMENT
+      =====================================================
+    */
+
+    initialiser();
+  </script>
 
 </body>
 </html>
-
-
-2. Le fichier style.css
-:root {
-  --cream: #f5efe0;
-  --parchment: #ede4ce;
-  --gold: #d4af37;
-  --orange: #f25303;
-  --night: #17110d;
-  --ink: #2a1f14;
-
-  /*
-    Ces valeurs sont remplacées automatiquement
-    par la configuration JavaScript.
-  */
-  --trappe-x: 38%;
-  --trappe-y: 74%;
-  --trappe-largeur: 24%;
-  --trappe-hauteur: 13%;
-
-  --deplacement-x: 112%;
-  --deplacement-y: 0%;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  width: 100%;
-  min-height: 100%;
-  margin: 0;
-}
-
-body {
-  min-height: 100svh;
-
-  padding:
-    max(18px, env(safe-area-inset-top))
-    14px
-    max(30px, env(safe-area-inset-bottom));
-
-  font-family: Inter, Arial, sans-serif;
-
-  color: var(--cream);
-
-  background:
-    radial-gradient(
-      circle at top,
-      #273347 0%,
-      var(--night) 64%
-    );
-}
-
-button,
-input {
-  font: inherit;
-}
-
-button {
-  -webkit-tap-highlight-color: transparent;
-}
-
-img {
-  -webkit-user-drag: none;
-  user-select: none;
-}
-
-.aventure {
-  width: min(100%, 620px);
-  margin: 0 auto;
-}
-
-.intro {
-  margin-bottom: 18px;
-  text-align: center;
-}
-
-.intro h1 {
-  margin: 0 0 10px;
-
-  font-family: Georgia, serif;
-  font-size: clamp(1.8rem, 7vw, 2.7rem);
-}
-
-.intro p {
-  max-width: 540px;
-  margin: 0 auto;
-
-  color: #ddd3b8;
-  line-height: 1.55;
-}
-
-/* =========================
-   SCÈNE
-   ========================= */
-
-.scene {
-  position: relative;
-
-  width: 100%;
-  overflow: hidden;
-
-  border: 2px solid rgba(212, 175, 55, 0.7);
-  border-radius: 18px;
-
-  background: #080604;
-
-  box-shadow:
-    0 25px 55px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
-}
-
-.scene__fond {
-  display: block;
-
-  width: 100%;
-  height: auto;
-
-  pointer-events: none;
-}
-
-/* =========================
-   ZONE DE LA TRAPPE
-   ========================= */
-
-.trappe-zone {
-  position: absolute;
-
-  left: var(--trappe-x);
-  top: var(--trappe-y);
-
-  width: var(--trappe-largeur);
-  height: var(--trappe-hauteur);
-
-  overflow: hidden;
-
-  /*
-    Pour régler la position, décommente temporairement :
-  */
-
-  /* outline: 3px solid red; */
-}
-
-/* =========================
-   CAVITÉ
-   ========================= */
-
-.cavite {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-
-  overflow: hidden;
-
-  background:
-    radial-gradient(
-      circle at 50% 55%,
-      #4e3321 0%,
-      #1a110c 52%,
-      #020202 100%
-    );
-
-  box-shadow:
-    inset 0 0 20px rgba(0, 0, 0, 1),
-    inset 0 0 0 3px rgba(42, 26, 15, 0.85);
-}
-
-.cavite__image {
-  position: absolute;
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  pointer-events: none;
-}
-
-.cavite__ombre {
-  position: absolute;
-  inset: 0;
-
-  pointer-events: none;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.75),
-      transparent 25%,
-      transparent 75%,
-      rgba(0, 0, 0, 0.65)
-    );
-
-  box-shadow: inset 0 0 20px #000;
-}
-
-.cavite__lumiere {
-  position: absolute;
-
-  left: 50%;
-  bottom: -25%;
-
-  width: 110%;
-  height: 110%;
-
-  border-radius: 50%;
-
-  opacity: 0;
-
-  transform: translateX(-50%) scale(0.7);
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255, 202, 94, 0.72) 0%,
-      rgba(242, 83, 3, 0.2) 42%,
-      transparent 72%
-    );
-
-  transition:
-    opacity 900ms ease 600ms,
-    transform 900ms ease 600ms;
-}
-
-/* =========================
-   OBJET CACHÉ
-   ========================= */
-
-.objet-cache {
-  position: absolute;
-
-  left: 50%;
-  bottom: 2%;
-
-  z-index: 4;
-
-  width: 72%;
-  height: 84%;
-
-  padding: 0;
-  border: 0;
-
-  opacity: 0;
-
-  transform:
-    translateX(-50%)
-    translateY(24%)
-    scale(0.72);
-
-  background: transparent;
-
-  pointer-events: none;
-  cursor: pointer;
-
-  transition:
-    opacity 700ms ease 700ms,
-    transform 900ms cubic-bezier(.2, .8, .2, 1) 650ms;
-}
-
-.objet-cache__image {
-  display: block;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: contain;
-
-  filter:
-    brightness(0.92)
-    drop-shadow(0 7px 7px rgba(0, 0, 0, 0.85));
-}
-
-/* =========================
-   TRAPPE MOBILE
-   ========================= */
-
-.trappe-mobile {
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-
-  overflow: hidden;
-
-  transform: translate3d(0, 0, 0);
-
-  will-change: transform;
-
-  transition:
-    transform 1.3s cubic-bezier(.65, 0, .25, 1),
-    filter 500ms ease;
-}
-
-.trappe-mobile__image {
-  display: block;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: fill;
-
-  pointer-events: none;
-}
-
-/* =========================
-   ÉTAT OUVERT
-   ========================= */
-
-.scene.est-ouverte .trappe-mobile {
-  transform:
-    translate3d(
-      var(--deplacement-x),
-      var(--deplacement-y),
-      0
-    );
-
-  filter: brightness(0.86);
-}
-
-.scene.est-ouverte .cavite__lumiere {
-  opacity: 1;
-
-  transform:
-    translateX(-50%)
-    scale(1);
-}
-
-.scene.est-ouverte .objet-cache {
-  opacity: 1;
-
-  transform:
-    translateX(-50%)
-    translateY(0)
-    scale(1);
-
-  pointer-events: auto;
-}
-
-/* =========================
-   MESSAGE SUR L’IMAGE
-   ========================= */
-
-.message-scene {
-  position: absolute;
-
-  left: 50%;
-  top: 18px;
-
-  z-index: 20;
-
-  padding: 10px 15px;
-
-  border: 1px solid rgba(212, 175, 55, 0.75);
-  border-radius: 999px;
-
-  color: #fff3c7;
-  background: rgba(23, 17, 13, 0.88);
-
-  font-weight: 800;
-  font-size: 0.9rem;
-
-  transform: translateX(-50%);
-
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-
-  animation: apparition-message 500ms ease both;
-}
-
-@keyframes apparition-message {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-/* =========================
-   ÉNIGME
-   ========================= */
-
-.enigme {
-  margin-top: 20px;
-  padding: 19px;
-
-  border: 1px solid rgba(201, 184, 138, 0.55);
-  border-radius: 16px;
-
-  background: rgba(23, 17, 13, 0.9);
-
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.38);
-}
-
-.enigme__question {
-  margin: 0 0 16px;
-
-  text-align: center;
-
-  font-family: Georgia, serif;
-  font-size: clamp(1.08rem, 4vw, 1.3rem);
-  line-height: 1.45;
-}
-
-.reponse {
-  display: flex;
-  gap: 10px;
-}
-
-.reponse__champ {
-  min-width: 0;
-  flex: 1;
-
-  padding: 14px 15px;
-
-  border: 2px solid transparent;
-  border-radius: 10px;
-  outline: none;
-
-  color: var(--ink);
-  background: var(--cream);
-
-  transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.reponse__champ:focus {
-  border-color: var(--gold);
-
-  box-shadow:
-    0 0 0 4px rgba(212, 175, 55, 0.18);
-}
-
-.reponse__bouton {
-  padding: 14px 20px;
-
-  border: 0;
-  border-radius: 10px;
-
-  color: white;
-  background: var(--orange);
-
-  font-weight: 800;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 8px 18px rgba(242, 83, 3, 0.28);
-
-  transition:
-    transform 160ms ease,
-    filter 160ms ease;
-}
-
-.reponse__bouton:active {
-  transform: scale(0.96);
-}
-
-.reponse__bouton:disabled,
-.reponse__champ:disabled {
-  cursor: default;
-  opacity: 0.65;
-}
-
-.enigme__message {
-  min-height: 25px;
-  margin: 13px 0 0;
-
-  text-align: center;
-  font-weight: 700;
-}
-
-.enigme__message--erreur {
-  color: #ff9d85;
-}
-
-.enigme__message--succes {
-  color: #efd477;
-}
-
-.bouton-indice {
-  display: block;
-
-  margin: 10px auto 0;
-  padding: 9px 14px;
-
-  border: 1px solid rgba(212, 175, 55, 0.65);
-  border-radius: 9px;
-
-  color: var(--cream);
-  background: transparent;
-
-  cursor: pointer;
-}
-
-/* =========================
-   ANIMATION D’ERREUR
-   ========================= */
-
-.enigme.secousse {
-  animation: secousse 420ms ease;
-}
-
-@keyframes secousse {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-
-  20% {
-    transform: translateX(-7px);
-  }
-
-  40% {
-    transform: translateX(6px);
-  }
-
-  60% {
-    transform: translateX(-4px);
-  }
-
-  80% {
-    transform: translateX(3px);
-  }
-}
-
-/* =========================
-   MODALE
-   ========================= */
-
-.modale {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-
-  display: grid;
-  place-items: center;
-
-  padding:
-    max(20px, env(safe-area-inset-top))
-    18px
-    max(20px, env(safe-area-inset-bottom));
-
-  background: rgba(7, 5, 3, 0.84);
-
-  backdrop-filter: blur(7px);
-}
-
-.modale[hidden] {
-  display: none;
-}
-
-.modale__contenu {
-  position: relative;
-
-  width: min(100%, 420px);
-
-  padding: 28px 22px 22px;
-
-  border: 1px solid rgba(212, 175, 55, 0.65);
-  border-radius: 18px;
-
-  text-align: center;
-
-  color: var(--ink);
-  background: var(--parchment);
-
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
-
-  animation: apparition-modale 400ms ease both;
-}
-
-@keyframes apparition-modale {
-  from {
-    opacity: 0;
-    transform: scale(0.88) translateY(16px);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.modale__fermer {
-  position: absolute;
-
-  top: 8px;
-  right: 10px;
-
-  width: 40px;
-  height: 40px;
-
-  border: 0;
-  border-radius: 50%;
-
-  color: var(--ink);
-  background: transparent;
-
-  font-size: 1.8rem;
-
-  cursor: pointer;
-}
-
-.modale__image {
-  width: min(75%, 240px);
-  max-height: 190px;
-
-  object-fit: contain;
-
-  filter: drop-shadow(0 13px 12px rgba(0, 0, 0, 0.35));
-}
-
-.modale h2 {
-  margin: 10px 0;
-
-  font-family: Georgia, serif;
-}
-
-.modale p {
-  line-height: 1.55;
-}
-
-.modale__continuer {
-  width: 100%;
-
-  margin-top: 8px;
-  padding: 13px 16px;
-
-  border: 0;
-  border-radius: 10px;
-
-  color: white;
-  background: var(--orange);
-
-  font-weight: 800;
-
-  cursor: pointer;
-}
-
-/* =========================
-   ACCESSIBILITÉ
-   ========================= */
-
-.sr-only {
-  position: absolute;
-
-  width: 1px;
-  height: 1px;
-
-  padding: 0;
-  margin: -1px;
-
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-
-  white-space: nowrap;
-  border: 0;
-}
-
-@media (max-width: 520px) {
-  .reponse {
-    flex-direction: column;
-  }
-
-  .reponse__bouton {
-    width: 100%;
-  }
-
-  .enigme {
-    padding: 16px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    transition-delay: 0ms !important;
-  }
-}
-
-
-3. Le fichier script.js
-
-"use strict";
-
-/*
-  ==========================================================
-  CONFIGURATION DU MÉCANISME
-  ==========================================================
-
-  Tu pourras réutiliser ce code pour une autre aventure
-  en modifiant uniquement cet objet CONFIG.
-*/
-
-const CONFIG = {
-  images: {
-    fond: "images/batiment.webp",
-    trappe: "images/trappe.webp",
-    cavite: "images/cavite.webp",
-    objet: "images/coffre.webp"
-  },
-
-  enigme: {
-    question:
-      "Quel roi légendaire est associé à la ville d’Ys ?",
-
-    reponsesAcceptees: [
-      "gradlon",
-      "roi gradlon",
-      "le roi gradlon"
-    ],
-
-    indice:
-      "Son nom apparaît dans le titre de cette aventure.",
-
-    messageSucces:
-      "Bonne réponse ! Un mécanisme se déclenche.",
-
-    messageErreur:
-      "Ce n’est pas la bonne réponse."
-  },
-
-  /*
-    POSITION DE LA TRAPPE EN POURCENTAGES
-
-    x = distance depuis le bord gauche
-    y = distance depuis le haut
-    largeur = largeur de la trappe
-    hauteur = hauteur de la trappe
-  */
-  trappe: {
-    x: 38,
-    y: 74,
-    largeur: 24,
-    hauteur: 13,
-
-    /*
-      Valeurs possibles :
-      "droite"
-      "gauche"
-      "haut"
-      "bas"
-    */
-    direction: "droite",
-
-    /*
-      Distance parcourue en pourcentage
-      de la taille de la trappe.
-    */
-    distance: 112
-  },
-
-  objet: {
-    titre: "Un coffre oublié",
-
-    description:
-      "Derrière la façade se trouvait un coffre soigneusement dissimulé.",
-
-    texteBouton:
-      "Continuer l’aventure",
-
-    /*
-      Mets ici le lien de la scène suivante.
-      Laisse une chaîne vide pour rester sur la page.
-    */
-    lienSuite: ""
-  },
-
-  comportement: {
-    afficherIndiceApres: 3,
-    vibrationErreur: true,
-    vibrationSucces: true,
-    sonsActifs: true
-  }
-};
-
-/*
-  ==========================================================
-  ÉLÉMENTS HTML
-  ==========================================================
-*/
-
-const racine = document.documentElement;
-
-const scene = document.getElementById("scene");
-const blocEnigme = document.getElementById("blocEnigme");
-
-const imageFond = document.getElementById("imageFond");
-const imageTrappe = document.getElementById("imageTrappe");
-const imageCavite = document.getElementById("imageCavite");
-const imageObjet = document.getElementById("imageObjet");
-const imageObjetModale = document.getElementById("imageObjetModale");
-
-const questionEnigme = document.getElementById("questionEnigme");
-
-const formulaireReponse =
-  document.getElementById("formulaireReponse");
-
-const champReponse = document.getElementById("champReponse");
-const boutonValider = document.getElementById("boutonValider");
-
-const messageReponse = document.getElementById("messageReponse");
-const messageScene = document.getElementById("messageScene");
-
-const boutonIndice = document.getElementById("boutonIndice");
-
-const objetCache = document.getElementById("objetCache");
-
-const modaleObjet = document.getElementById("modaleObjet");
-const fermerModale = document.getElementById("fermerModale");
-
-const titreModale = document.getElementById("titreModale");
-const texteModale = document.getElementById("texteModale");
-const boutonContinuer = document.getElementById("boutonContinuer");
-
-const sonTrappe = document.getElementById("sonTrappe");
-const sonSucces = document.getElementById("sonSucces");
-
-/*
-  ==========================================================
-  ÉTAT DU JEU
-  ==========================================================
-*/
-
-let nombreErreurs = 0;
-let trappeOuverte = false;
-
-/*
-  ==========================================================
-  INITIALISATION
-  ==========================================================
-*/
-
-function initialiser() {
-  appliquerImages();
-  appliquerTextes();
-  appliquerPositionTrappe();
-  appliquerDirection();
-}
-
-function appliquerImages() {
-  imageFond.src = CONFIG.images.fond;
-  imageTrappe.src = CONFIG.images.trappe;
-  imageCavite.src = CONFIG.images.cavite;
-  imageObjet.src = CONFIG.images.objet;
-  imageObjetModale.src = CONFIG.images.objet;
-}
-
-function appliquerTextes() {
-  questionEnigme.textContent = CONFIG.enigme.question;
-
-  titreModale.textContent = CONFIG.objet.titre;
-  texteModale.textContent = CONFIG.objet.description;
-
-  boutonContinuer.textContent =
-    CONFIG.objet.texteBouton;
-}
-
-function appliquerPositionTrappe() {
-  racine.style.setProperty(
-    "--trappe-x",
-    `${CONFIG.trappe.x}%`
-  );
-
-  racine.style.setProperty(
-    "--trappe-y",
-    `${CONFIG.trappe.y}%`
-  );
-
-  racine.style.setProperty(
-    "--trappe-largeur",
-    `${CONFIG.trappe.largeur}%`
-  );
-
-  racine.style.setProperty(
-    "--trappe-hauteur",
-    `${CONFIG.trappe.hauteur}%`
-  );
-}
-
-function appliquerDirection() {
-  const distance = CONFIG.trappe.distance;
-
-  let deplacementX = 0;
-  let deplacementY = 0;
-
-  switch (CONFIG.trappe.direction) {
-    case "gauche":
-      deplacementX = -distance;
-      break;
-
-    case "haut":
-      deplacementY = -distance;
-      break;
-
-    case "bas":
-      deplacementY = distance;
-      break;
-
-    case "droite":
-    default:
-      deplacementX = distance;
-      break;
-  }
-
-  racine.style.setProperty(
-    "--deplacement-x",
-    `${deplacementX}%`
-  );
-
-  racine.style.setProperty(
-    "--deplacement-y",
-    `${deplacementY}%`
-  );
-}
-
-/*
-  ==========================================================
-  VÉRIFICATION DE LA RÉPONSE
-  ==========================================================
-*/
-
-function normaliserTexte(texte) {
-  return texte
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[’']/g, " ")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function reponseCorrecte(texteUtilisateur) {
-  const valeurUtilisateur =
-    normaliserTexte(texteUtilisateur);
-
-  return CONFIG.enigme.reponsesAcceptees.some(
-    (reponse) =>
-      normaliserTexte(reponse) === valeurUtilisateur
-  );
-}
-
-/*
-  ==========================================================
-  OUVERTURE DE LA TRAPPE
-  ==========================================================
-*/
-
-function ouvrirTrappe() {
-  if (trappeOuverte) {
-    return;
-  }
-
-  trappeOuverte = true;
-
-  scene.classList.add("est-ouverte");
-
-  messageReponse.textContent =
-    CONFIG.enigme.messageSucces;
-
-  messageReponse.className =
-    "enigme__message enigme__message--succes";
-
-  messageScene.hidden = false;
-
-  champReponse.disabled = true;
-  boutonValider.disabled = true;
-  boutonIndice.hidden = true;
-
-  if (CONFIG.comportement.vibrationSucces) {
-    vibrer([70, 45, 130]);
-  }
-
-  jouerSon(sonTrappe);
-
-  window.setTimeout(() => {
-    jouerSon(sonSucces);
-  }, 700);
-
-  window.setTimeout(() => {
-    objetCache.focus();
-  }, 1500);
-}
-
-/*
-  ==========================================================
-  MAUVAISE RÉPONSE
-  ==========================================================
-*/
-
-function afficherErreur() {
-  nombreErreurs += 1;
-
-  messageReponse.textContent =
-    CONFIG.enigme.messageErreur;
-
-  messageReponse.className =
-    "enigme__message enigme__message--erreur";
-
-  blocEnigme.classList.remove("secousse");
-
-  /*
-    Force le navigateur à recommencer l’animation.
-  */
-  void blocEnigme.offsetWidth;
-
-  blocEnigme.classList.add("secousse");
-
-  if (CONFIG.comportement.vibrationErreur) {
-    vibrer([80, 45, 80]);
-  }
-
-  if (
-    nombreErreurs >=
-    CONFIG.comportement.afficherIndiceApres
-  ) {
-    boutonIndice.hidden = false;
-  }
-
-  champReponse.select();
-}
-
-/*
-  ==========================================================
-  VIBRATION ET SONS
-  ==========================================================
-*/
-
-function vibrer(sequence) {
-  if ("vibrate" in navigator) {
-    navigator.vibrate(sequence);
-  }
-}
-
-function jouerSon(audio) {
-  if (!CONFIG.comportement.sonsActifs) {
-    return;
-  }
-
-  if (!audio) {
-    return;
-  }
-
-  audio.currentTime = 0;
-
-  audio.play().catch(() => {
-    /*
-      Certains navigateurs bloquent les sons.
-      Le mécanisme continue malgré tout.
-    */
-  });
-}
-
-/*
-  ==========================================================
-  MODALE DU COFFRE
-  ==========================================================
-*/
-
-function ouvrirModale() {
-  if (!trappeOuverte) {
-    return;
-  }
-
-  modaleObjet.hidden = false;
-
-  fermerModale.focus();
-}
-
-function fermerLaModale() {
-  modaleObjet.hidden = true;
-
-  objetCache.focus();
-}
-
-function continuerAventure() {
-  const lien = CONFIG.objet.lienSuite.trim();
-
-  if (lien) {
-    window.location.href = lien;
-    return;
-  }
-
-  fermerLaModale();
-}
-
-/*
-  ==========================================================
-  ÉVÉNEMENTS
-  ==========================================================
-*/
-
-formulaireReponse.addEventListener(
-  "submit",
-  (event) => {
-    event.preventDefault();
-
-    if (trappeOuverte) {
-      return;
-    }
-
-    const valeur = champReponse.value.trim();
-
-    if (!valeur) {
-      messageReponse.textContent =
-        "Entre d’abord une réponse.";
-
-      messageReponse.className =
-        "enigme__message enigme__message--erreur";
-
-      champReponse.focus();
-
-      return;
-    }
-
-    if (reponseCorrecte(valeur)) {
-      ouvrirTrappe();
-    } else {
-      afficherErreur();
-    }
-  }
-);
-
-boutonIndice.addEventListener("click", () => {
-  messageReponse.textContent =
-    CONFIG.enigme.indice;
-
-  messageReponse.className =
-    "enigme__message";
-});
-
-objetCache.addEventListener("click", ouvrirModale);
-
-fermerModale.addEventListener(
-  "click",
-  fermerLaModale
-);
-
-boutonContinuer.addEventListener(
-  "click",
-  continuerAventure
-);
-
-modaleObjet.addEventListener("click", (event) => {
-  if (event.target === modaleObjet) {
-    fermerLaModale();
-  }
-});
-
-document.addEventListener("keydown", (event) => {
-  if (
-    event.key === "Escape" &&
-    !modaleObjet.hidden
-  ) {
-    fermerLaModale();
-  }
-});
-
-/*
-  ==========================================================
-  LANCEMENT
-  ==========================================================
-*/
-
-initialiser();
