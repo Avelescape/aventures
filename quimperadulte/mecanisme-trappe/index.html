@@ -1,3 +1,10 @@
+Oui. Voici le fichier HTML complet modifié avec uniquement ces changements :
+
+* le titre est **descendu** dans la page ;
+* le paragraphe « Touche la façade… » est supprimé ;
+* « La cache est ouverte » est supprimé, ainsi que son CSS et son JavaScript associé.
+
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -84,6 +91,7 @@
 
     .introduction {
       margin-bottom: 18px;
+      padding-top: 45px;
       text-align: center;
     }
 
@@ -92,14 +100,6 @@
 
       font-family: Georgia, serif;
       font-size: clamp(1.8rem, 7vw, 2.6rem);
-    }
-
-    .introduction p {
-      max-width: 520px;
-      margin: 0 auto;
-
-      color: #ddd3b8;
-      line-height: 1.5;
     }
 
     /* =========================
@@ -165,16 +165,8 @@
       width: var(--trappe-largeur);
       height: var(--trappe-hauteur);
 
-      /*
-        La partie de la trappe qui se déplace
-        hors de cette zone est masquée.
-      */
       overflow: hidden;
 
-      /*
-        Pour les réglages, tu peux remplacer par :
-        outline: 3px solid red;
-      */
       outline: none;
 
       background: #0a0f14;
@@ -347,59 +339,6 @@
     }
 
     /* =========================
-       MESSAGE SUR L’IMAGE
-       ========================= */
-
-    .message-scene {
-      position: absolute;
-
-      left: 50%;
-      top: 16px;
-
-      z-index: 30;
-
-      padding: 10px 15px;
-
-      border: 1px solid rgba(60, 79, 99, 0.78);
-      border-radius: 999px;
-
-      color: var(--cream);
-      background: rgba(28, 40, 54, 0.92);
-
-      font-size: 0.9rem;
-      font-weight: 800;
-      white-space: nowrap;
-
-      transform: translateX(-50%);
-
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.38);
-
-      animation: apparition-message 500ms ease both;
-    }
-
-    .message-scene[hidden] {
-      display: none;
-    }
-
-    @keyframes apparition-message {
-      from {
-        opacity: 0;
-
-        transform:
-          translateX(-50%)
-          translateY(-12px);
-      }
-
-      to {
-        opacity: 1;
-
-        transform:
-          translateX(-50%)
-          translateY(0);
-      }
-    }
-
-    /* =========================
        FENÊTRE DU COFFRE
        ========================= */
 
@@ -554,11 +493,6 @@
 
       <h1>Toucher la façade de la maison</h1>
 
-      <p>
-        Touche la façade pour déclencher le mécanisme
-        dissimulé.
-      </p>
-
     </section>
 
     <section
@@ -622,14 +556,6 @@
 
       </div>
 
-      <div
-        class="message-scene"
-        id="messageScene"
-        hidden
-      >
-        La cache est ouverte
-      </div>
-
     </section>
 
     <div
@@ -689,9 +615,6 @@
       CONFIGURATION PRINCIPALE
       =====================================================
 
-      Les coordonnées ci-dessous correspondent aux valeurs
-      que tu as relevées dans GIMP :
-
       Image complète : 1152 × 2048 px
       Position : X 511 px, Y 1323 px
       Taille : 140 × 154 px
@@ -714,28 +637,10 @@
         largeur: 140,
         hauteur: 154,
 
-        /*
-          Directions possibles :
-          "droite"
-          "gauche"
-          "haut"
-          "bas"
-        */
         direction: "droite",
 
-        /*
-          Distance en pourcentage de la taille de la trappe.
-
-          100 = elle se déplace d’une fois sa largeur.
-          110 = elle disparaît complètement.
-        */
         distance: 110,
 
-        /*
-          Durée de l’animation en millisecondes.
-
-          Plus le nombre est grand, plus la trappe est lente.
-        */
         vitesse: 1400
       },
 
@@ -752,14 +657,6 @@
         texteBouton:
           "Ouvrir le coffre",
 
-        /*
-          Indique ici le lien de la scène suivante.
-
-          Exemple :
-          lienSuite: "scene-suivante.html"
-
-          Laisse vide pour simplement fermer la fenêtre.
-        */
         lienSuite: ""
       }
     };
@@ -786,9 +683,6 @@
 
     const contexteCanvas =
       canvasTrappe.getContext("2d");
-
-    const messageScene =
-      document.getElementById("messageScene");
 
     const boutonCavite =
       document.getElementById("boutonCavite");
@@ -908,10 +802,6 @@
     function creerTrappeDepuisBatiment() {
       const trappe = CONFIG.trappe;
 
-      /*
-        Le canvas possède exactement les dimensions
-        de la sélection GIMP.
-      */
       canvasTrappe.width =
         trappe.largeur;
 
@@ -925,10 +815,6 @@
         canvasTrappe.height
       );
 
-      /*
-        On prélève directement la zone correspondante
-        dans l’image originale du bâtiment.
-      */
       contexteCanvas.drawImage(
         imageBatiment,
 
@@ -1015,8 +901,6 @@
 
       jouerSonTrappe();
 
-      messageScene.hidden = false;
-
       if (CONFIG.comportement.vibrationSucces) {
         vibrer([70, 45, 140]);
       }
@@ -1045,7 +929,10 @@
       sonTrappe.currentTime = 0;
 
       sonTrappe.play().catch((erreur) => {
-        console.log("Son de la trappe bloqué :", erreur);
+        console.log(
+          "Son de la trappe bloqué :",
+          erreur
+        );
       });
     }
 
@@ -1156,3 +1043,4 @@
 
 </body>
 </html>
+```
