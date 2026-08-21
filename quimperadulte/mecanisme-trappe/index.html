@@ -14,12 +14,12 @@
 
   <style>
     :root {
-      --cream: #f5efe0;
-      --parchment: #ede4ce;
-      --gold: #d4af37;
-      --orange: #f25303;
-      --night: #17110d;
-      --ink: #2a1f14;
+      --cream: #f2ece0;
+      --parchment: #e8dfc8;
+      --gold: #c17a4f;
+      --orange: #3c4f63;
+      --night: #12181f;
+      --ink: #24303d;
 
       --trappe-x: 0%;
       --trappe-y: 0%;
@@ -53,7 +53,7 @@
 
       color: var(--cream);
       background:
-        radial-gradient(circle at top, #293343 0%, var(--night) 68%);
+        radial-gradient(circle at top, #2c3c4e 0%, var(--night) 68%);
 
       font-family: Inter, Arial, sans-serif;
     }
@@ -84,6 +84,7 @@
 
     .introduction {
       margin-bottom: 18px;
+      padding-top: 45px;
       text-align: center;
     }
 
@@ -92,14 +93,6 @@
 
       font-family: Georgia, serif;
       font-size: clamp(1.8rem, 7vw, 2.6rem);
-    }
-
-    .introduction p {
-      max-width: 520px;
-      margin: 0 auto;
-
-      color: #ddd3b8;
-      line-height: 1.5;
     }
 
     /* =========================
@@ -112,10 +105,12 @@
       width: 100%;
       overflow: hidden;
 
-      border: 2px solid rgba(212, 175, 55, 0.7);
+      border: 2px solid rgba(60, 79, 99, 0.7);
       border-radius: 18px;
 
-      background: #080604;
+      background: #0a0f14;
+
+      cursor: pointer;
 
       box-shadow:
         0 25px 55px rgba(0, 0, 0, 0.56),
@@ -129,9 +124,11 @@
     .scene.est-ouverte {
       transform: scale(1.015);
 
+      cursor: default;
+
       box-shadow:
         0 28px 65px rgba(0, 0, 0, 0.62),
-        0 0 30px rgba(212, 175, 55, 0.12);
+        0 0 30px rgba(60, 79, 99, 0.18);
     }
 
     .image-batiment {
@@ -161,19 +158,13 @@
       width: var(--trappe-largeur);
       height: var(--trappe-hauteur);
 
-      /*
-        La partie de la trappe qui se déplace
-        hors de cette zone est masquée.
-      */
-      overflow: hidden;
+      /* La trappe doit pouvoir rester visible lorsqu'elle
+         coulisse hors de son logement. */
+      overflow: visible;
 
-      /*
-        Pour les réglages, tu peux remplacer par :
-        outline: 3px solid red;
-      */
       outline: none;
 
-      background: #090705;
+      background: #0a0f14;
 
       box-shadow:
         inset 0 0 12px rgba(0, 0, 0, 0.82);
@@ -191,7 +182,11 @@
 
       overflow: hidden;
 
-      background: #090705;
+      /* La cavité, elle, reste strictement limitée
+         aux dimensions de l'ouverture. */
+      border-radius: 1px;
+
+      background: #0a0f14;
     }
 
     .image-cavite {
@@ -285,6 +280,10 @@
 
       will-change: transform;
 
+      /* Le panneau coulissant passe devant la façade
+         pendant toute l'animation. */
+      pointer-events: none;
+
       filter:
         brightness(1)
         drop-shadow(0 0 0 transparent);
@@ -343,212 +342,6 @@
     }
 
     /* =========================
-       MESSAGE SUR L’IMAGE
-       ========================= */
-
-    .message-scene {
-      position: absolute;
-
-      left: 50%;
-      top: 16px;
-
-      z-index: 30;
-
-      padding: 10px 15px;
-
-      border: 1px solid rgba(212, 175, 55, 0.78);
-      border-radius: 999px;
-
-      color: #fff3c7;
-      background: rgba(23, 17, 13, 0.92);
-
-      font-size: 0.9rem;
-      font-weight: 800;
-      white-space: nowrap;
-
-      transform: translateX(-50%);
-
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.38);
-
-      animation: apparition-message 500ms ease both;
-    }
-
-    .message-scene[hidden] {
-      display: none;
-    }
-
-    @keyframes apparition-message {
-      from {
-        opacity: 0;
-
-        transform:
-          translateX(-50%)
-          translateY(-12px);
-      }
-
-      to {
-        opacity: 1;
-
-        transform:
-          translateX(-50%)
-          translateY(0);
-      }
-    }
-
-    /* =========================
-       BLOC DE L’ÉNIGME
-       ========================= */
-
-    .enigme {
-      margin-top: 20px;
-      padding: 19px;
-
-      border: 1px solid rgba(201, 184, 138, 0.55);
-      border-radius: 16px;
-
-      background: rgba(23, 17, 13, 0.94);
-
-      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.38);
-    }
-
-    .question {
-      margin: 0 0 16px;
-
-      text-align: center;
-
-      font-family: Georgia, serif;
-      font-size: clamp(1.08rem, 4vw, 1.3rem);
-      line-height: 1.45;
-    }
-
-    .formulaire {
-      display: flex;
-      gap: 10px;
-    }
-
-    .champ-reponse {
-      min-width: 0;
-      flex: 1;
-
-      padding: 14px 15px;
-
-      border: 2px solid transparent;
-      border-radius: 10px;
-      outline: none;
-
-      color: var(--ink);
-      background: var(--cream);
-
-      transition:
-        border-color 180ms ease,
-        box-shadow 180ms ease;
-    }
-
-    .champ-reponse:focus {
-      border-color: var(--gold);
-
-      box-shadow:
-        0 0 0 4px rgba(212, 175, 55, 0.18);
-    }
-
-    .bouton-valider {
-      padding: 14px 20px;
-
-      border: 0;
-      border-radius: 10px;
-
-      color: white;
-      background: var(--orange);
-
-      font-weight: 800;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 8px 18px rgba(242, 83, 3, 0.28);
-
-      transition:
-        transform 160ms ease,
-        filter 160ms ease;
-    }
-
-    .bouton-valider:active {
-      transform: scale(0.96);
-    }
-
-    .champ-reponse:disabled,
-    .bouton-valider:disabled {
-      cursor: default;
-      opacity: 0.62;
-    }
-
-    .message-enigme {
-      min-height: 25px;
-      margin: 13px 0 0;
-
-      text-align: center;
-      font-weight: 700;
-    }
-
-    .message-enigme.erreur {
-      color: #ff9d85;
-    }
-
-    .message-enigme.succes {
-      color: #efd477;
-    }
-
-    .bouton-indice {
-      display: block;
-
-      margin: 10px auto 0;
-      padding: 9px 14px;
-
-      border: 1px solid rgba(212, 175, 55, 0.65);
-      border-radius: 9px;
-
-      color: var(--cream);
-      background: transparent;
-
-      cursor: pointer;
-    }
-
-    .bouton-indice[hidden] {
-      display: none;
-    }
-
-    /* =========================
-       SECOUSSE EN CAS D’ERREUR
-       ========================= */
-
-    .enigme.secousse {
-      animation: secousse 420ms ease;
-    }
-
-    @keyframes secousse {
-      0%,
-      100% {
-        transform: translateX(0);
-      }
-
-      20% {
-        transform: translateX(-7px);
-      }
-
-      40% {
-        transform: translateX(6px);
-      }
-
-      60% {
-        transform: translateX(-4px);
-      }
-
-      80% {
-        transform: translateX(3px);
-      }
-    }
-
-    /* =========================
        FENÊTRE DU COFFRE
        ========================= */
 
@@ -566,7 +359,7 @@
         18px
         max(20px, env(safe-area-inset-bottom));
 
-      background: rgba(7, 5, 3, 0.86);
+      background: rgba(8, 12, 16, 0.86);
 
       backdrop-filter: blur(7px);
     }
@@ -582,7 +375,7 @@
 
       padding: 30px 22px 22px;
 
-      border: 1px solid rgba(212, 175, 55, 0.72);
+      border: 1px solid rgba(60, 79, 99, 0.72);
       border-radius: 18px;
 
       text-align: center;
@@ -682,20 +475,6 @@
       border: 0;
     }
 
-    @media (max-width: 520px) {
-      .formulaire {
-        flex-direction: column;
-      }
-
-      .bouton-valider {
-        width: 100%;
-      }
-
-      .enigme {
-        padding: 16px;
-      }
-    }
-
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
@@ -715,12 +494,7 @@
 
     <section class="introduction">
 
-      <h1>La cache secrète</h1>
-
-      <p>
-        Trouve la bonne réponse pour déclencher le mécanisme
-        dissimulé dans la façade.
-      </p>
+      <h1>Toucher la façade de la maison</h1>
 
     </section>
 
@@ -785,76 +559,6 @@
 
       </div>
 
-      <div
-        class="message-scene"
-        id="messageScene"
-        hidden
-      >
-        La cache est ouverte
-      </div>
-
-    </section>
-
-    <section
-      class="enigme"
-      id="blocEnigme"
-    >
-
-      <p
-        class="question"
-        id="question"
-      >
-        Quel élément de la maison dissimule le coffre ?
-      </p>
-
-      <form
-        class="formulaire"
-        id="formulaire"
-      >
-
-        <label
-          class="sr-only"
-          for="reponse"
-        >
-          Ta réponse
-        </label>
-
-        <input
-          class="champ-reponse"
-          id="reponse"
-          type="text"
-          placeholder="Entre ta réponse"
-          autocomplete="off"
-          autocapitalize="none"
-          spellcheck="false"
-        >
-
-        <button
-          class="bouton-valider"
-          id="valider"
-          type="submit"
-        >
-          Valider
-        </button>
-
-      </form>
-
-      <p
-        class="message-enigme"
-        id="messageEnigme"
-        role="status"
-        aria-live="polite"
-      ></p>
-
-      <button
-        class="bouton-indice"
-        id="indice"
-        type="button"
-        hidden
-      >
-        Voir un indice
-      </button>
-
     </section>
 
     <div
@@ -900,6 +604,12 @@
 
   </main>
 
+  <audio
+    id="sonTrappe"
+    src="audios/engrenages.mp3"
+    preload="auto"
+  ></audio>
+
   <script>
     "use strict";
 
@@ -907,9 +617,6 @@
       =====================================================
       CONFIGURATION PRINCIPALE
       =====================================================
-
-      Les coordonnées ci-dessous correspondent aux valeurs
-      que tu as relevées dans GIMP :
 
       Image complète : 1152 × 2048 px
       Position : X 511 px, Y 1323 px
@@ -933,53 +640,14 @@
         largeur: 140,
         hauteur: 154,
 
-        /*
-          Directions possibles :
-          "droite"
-          "gauche"
-          "haut"
-          "bas"
-        */
         direction: "droite",
 
-        /*
-          Distance en pourcentage de la taille de la trappe.
-
-          100 = elle se déplace d’une fois sa largeur.
-          110 = elle disparaît complètement.
-        */
         distance: 110,
 
-        /*
-          Durée de l’animation en millisecondes.
-
-          Plus le nombre est grand, plus la trappe est lente.
-        */
         vitesse: 1400
       },
 
-      enigme: {
-        question:
-          "Quel élément de la maison dissimule le coffre ?",
-
-        reponsesAcceptees: [
-          "socle",
-          "le socle"
-        ],
-
-        messageSucces:
-          "Bonne réponse ! Le mécanisme se déclenche.",
-
-        messageErreur:
-          "Ce n’est pas la bonne réponse.",
-
-        indice:
-          "Observe la partie inférieure de la façade."
-      },
-
       comportement: {
-        afficherIndiceApres: 3,
-        vibrationErreur: true,
         vibrationSucces: true
       },
 
@@ -992,14 +660,6 @@
         texteBouton:
           "Ouvrir le coffre",
 
-        /*
-          Indique ici le lien de la scène suivante.
-
-          Exemple :
-          lienSuite: "scene-suivante.html"
-
-          Laisse vide pour simplement fermer la fenêtre.
-        */
         lienSuite: ""
       }
     };
@@ -1015,9 +675,6 @@
     const scene =
       document.getElementById("scene");
 
-    const blocEnigme =
-      document.getElementById("blocEnigme");
-
     const imageBatiment =
       document.getElementById("imageBatiment");
 
@@ -1029,27 +686,6 @@
 
     const contexteCanvas =
       canvasTrappe.getContext("2d");
-
-    const question =
-      document.getElementById("question");
-
-    const formulaire =
-      document.getElementById("formulaire");
-
-    const champReponse =
-      document.getElementById("reponse");
-
-    const boutonValider =
-      document.getElementById("valider");
-
-    const messageEnigme =
-      document.getElementById("messageEnigme");
-
-    const messageScene =
-      document.getElementById("messageScene");
-
-    const boutonIndice =
-      document.getElementById("indice");
 
     const boutonCavite =
       document.getElementById("boutonCavite");
@@ -1069,13 +705,15 @@
     const boutonContinuer =
       document.getElementById("continuer");
 
+    const sonTrappe =
+      document.getElementById("sonTrappe");
+
     /*
       =====================================================
       ÉTAT DU MÉCANISME
       =====================================================
     */
 
-    let nombreErreurs = 0;
     let trappeOuverte = false;
     let trappeCreee = false;
 
@@ -1091,7 +729,10 @@
       positionnerZoneMecanisme();
       appliquerDirectionEtVitesse();
 
-      if (imageBatiment.complete) {
+      if (
+        imageBatiment.complete &&
+        imageBatiment.naturalWidth > 0
+      ) {
         creerTrappeDepuisBatiment();
       }
     }
@@ -1105,9 +746,6 @@
     }
 
     function appliquerTextes() {
-      question.textContent =
-        CONFIG.enigme.question;
-
       titreModale.textContent =
         CONFIG.coffre.titre;
 
@@ -1171,9 +809,27 @@
       const trappe = CONFIG.trappe;
 
       /*
-        Le canvas possède exactement les dimensions
-        de la sélection GIMP.
+        Une image peut être marquée « complete » alors qu'elle
+        n'est pas encore utilisable (ou si son chargement a échoué).
+        Dans ce cas, on attend l'événement load au lieu de créer
+        un canvas transparent.
       */
+      if (
+        !imageBatiment.naturalWidth ||
+        !imageBatiment.naturalHeight
+      ) {
+        trappeCreee = false;
+        return;
+      }
+
+      const echelleX =
+        imageBatiment.naturalWidth /
+        CONFIG.imageOriginale.largeur;
+
+      const echelleY =
+        imageBatiment.naturalHeight /
+        CONFIG.imageOriginale.hauteur;
+
       canvasTrappe.width =
         trappe.largeur;
 
@@ -1187,17 +843,13 @@
         canvasTrappe.height
       );
 
-      /*
-        On prélève directement la zone correspondante
-        dans l’image originale du bâtiment.
-      */
       contexteCanvas.drawImage(
         imageBatiment,
 
-        trappe.x,
-        trappe.y,
-        trappe.largeur,
-        trappe.hauteur,
+        trappe.x * echelleX,
+        trappe.y * echelleY,
+        trappe.largeur * echelleX,
+        trappe.hauteur * echelleY,
 
         0,
         0,
@@ -1258,40 +910,22 @@
 
     /*
       =====================================================
-      TRAITEMENT DES RÉPONSES
-      =====================================================
-    */
-
-    function normaliserTexte(texte) {
-      return texte
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .replace(/[’']/g, " ")
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-
-    function estBonneReponse(valeurUtilisateur) {
-      const valeurNormalisee =
-        normaliserTexte(valeurUtilisateur);
-
-      return CONFIG.enigme.reponsesAcceptees.some(
-        (reponseAcceptee) =>
-          normaliserTexte(reponseAcceptee) ===
-          valeurNormalisee
-      );
-    }
-
-    /*
-      =====================================================
       OUVERTURE DE LA TRAPPE
       =====================================================
     */
 
     function ouvrirTrappe() {
-      if (trappeOuverte || !trappeCreee) {
+      if (trappeOuverte) {
+        return;
+      }
+
+      /* Nouvelle tentative au premier toucher si le canvas
+         n'était pas prêt lors de l'initialisation. */
+      if (!trappeCreee) {
+        creerTrappeDepuisBatiment();
+      }
+
+      if (!trappeCreee) {
         return;
       }
 
@@ -1299,17 +933,11 @@
 
       scene.classList.add("est-ouverte");
 
-      champReponse.disabled = true;
-      boutonValider.disabled = true;
-      boutonIndice.hidden = true;
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage("mecanisme-ouvert", "*");
+      }
 
-      messageEnigme.textContent =
-        CONFIG.enigme.messageSucces;
-
-      messageEnigme.className =
-        "message-enigme succes";
-
-      messageScene.hidden = false;
+      jouerSonTrappe();
 
       if (CONFIG.comportement.vibrationSucces) {
         vibrer([70, 45, 140]);
@@ -1326,37 +954,24 @@
 
     /*
       =====================================================
-      MAUVAISE RÉPONSE
+      SON DE LA TRAPPE
       =====================================================
     */
 
-    function afficherErreur() {
-      nombreErreurs += 1;
-
-      messageEnigme.textContent =
-        CONFIG.enigme.messageErreur;
-
-      messageEnigme.className =
-        "message-enigme erreur";
-
-      blocEnigme.classList.remove("secousse");
-
-      void blocEnigme.offsetWidth;
-
-      blocEnigme.classList.add("secousse");
-
-      if (CONFIG.comportement.vibrationErreur) {
-        vibrer([80, 45, 80]);
+    function jouerSonTrappe() {
+      if (!sonTrappe) {
+        return;
       }
 
-      if (
-        nombreErreurs >=
-        CONFIG.comportement.afficherIndiceApres
-      ) {
-        boutonIndice.hidden = false;
-      }
+      sonTrappe.pause();
+      sonTrappe.currentTime = 0;
 
-      champReponse.select();
+      sonTrappe.play().catch((erreur) => {
+        console.log(
+          "Son de la trappe bloqué :",
+          erreur
+        );
+      });
     }
 
     /*
@@ -1414,47 +1029,20 @@
       creerTrappeDepuisBatiment
     );
 
-    formulaire.addEventListener(
-      "submit",
-      (event) => {
-        event.preventDefault();
-
-        if (trappeOuverte) {
-          return;
-        }
-
-        const valeur =
-          champReponse.value.trim();
-
-        if (!valeur) {
-          messageEnigme.textContent =
-            "Entre d’abord une réponse.";
-
-          messageEnigme.className =
-            "message-enigme erreur";
-
-          champReponse.focus();
-
-          return;
-        }
-
-        if (estBonneReponse(valeur)) {
-          ouvrirTrappe();
-        } else {
-          afficherErreur();
-        }
+    imageBatiment.addEventListener(
+      "error",
+      () => {
+        trappeCreee = false;
+        console.error(
+          "Impossible de charger l'image du bâtiment :",
+          imageBatiment.src
+        );
       }
     );
 
-    boutonIndice.addEventListener(
+    scene.addEventListener(
       "click",
-      () => {
-        messageEnigme.textContent =
-          CONFIG.enigme.indice;
-
-        messageEnigme.className =
-          "message-enigme";
-      }
+      ouvrirTrappe
     );
 
     boutonCavite.addEventListener(
