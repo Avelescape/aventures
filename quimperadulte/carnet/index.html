@@ -160,6 +160,23 @@
     .page.is-hidden { z-index: 1; visibility: hidden; }
     .page.turning { transition: transform .72s cubic-bezier(.18, .72, .18, 1), filter .72s ease; }
 
+    /* Fondu discret entre la dernière page du carnet et la scène suivante. */
+    .scene-fade {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: #000;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .55s ease;
+    }
+
+    .scene-fade.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+
     .navigation {
       position: fixed;
       left: 50%;
@@ -256,6 +273,7 @@
     <span class="swipe-hand" aria-hidden="true">☝️</span>
     <span>Glisse ton doigt vers la gauche pour tourner la page</span>
   </div>
+  <div class="scene-fade" id="sceneFade" aria-hidden="true"></div>
   <script>
     /*
       ────────────────────────────────────────────────────────────────────────
@@ -292,6 +310,7 @@
       const returnSite = document.getElementById('returnSite');
       const returnLabel = document.getElementById('returnLabel');
       const swipeHint = document.getElementById('swipeHint');
+      const sceneFade = document.getElementById('sceneFade');
       const allPages = [STORY.cover, ...STORY.pages];
 
       if (STORY.returnUrl) {
@@ -356,8 +375,12 @@
 
           if (navigator.vibrate) navigator.vibrate(15);
           window.setTimeout(() => {
-            window.location.href = STORY.nextSceneUrl;
-          }, 730);
+            sceneFade.classList.add('is-active');
+            sessionStorage.setItem('avelescape-fade-socle', '1');
+            window.setTimeout(() => {
+              window.location.href = STORY.nextSceneUrl;
+            }, 560);
+          }, 620);
           return;
         }
 
