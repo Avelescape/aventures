@@ -3958,9 +3958,15 @@ function retourSite() {
     if (difference < -180) difference += 360;
 
     const deplacementMaximum = VITESSE_MAX_DEGRES_SECONDE * tempsEcoule / 1000;
-    difference = Math.max(-deplacementMaximum, Math.min(deplacementMaximum, difference));
     dernierAngle = nouvelAngle;
     dernierInstant = evenement.timeStamp;
+
+    // Le sens positif de l'angle correspond au sens des aiguilles d'une montre.
+    // Tout mouvement inverse est ignoré : la manivelle ne recule pas et les
+    // tours antihoraires ne sont jamais comptabilisés.
+    if (difference <= 0) return;
+
+    difference = Math.min(deplacementMaximum, difference);
     rotation += difference;
 
     if (Math.abs(rotation - angleDernierClic) >= PAS_CLIC_METALLIQUE) {
@@ -3968,7 +3974,7 @@ function retourSite() {
       angleDernierClic = rotation;
     }
 
-    progression = Math.max(0, progression + difference);
+    progression += difference;
     manivelle.style.transform = `rotate(${rotation}deg)`;
 
     const nouveauxTours = Math.min(TOURS_REQUIS, Math.floor(progression / 360));
