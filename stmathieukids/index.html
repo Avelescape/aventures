@@ -2209,6 +2209,105 @@ input[type='number'] {
   }
 }
 
+/* =========================================================
+   LISIBILITÉ RENFORCÉE
+   Textes agrandis et orange plus sombre sur les blocs jaunes.
+   ========================================================= */
+:root {
+  --orange-contraste: #963300;
+}
+
+body {
+  font-size: 20px;
+}
+
+#dialogue-text,
+#dialogue-text-phare,
+#dialogue-text-naufrageurs,
+#texte-fin,
+#texte-yannickdisparu,
+#enigme-distance,
+#enigme-phare,
+.missive1-label,
+.missive2-label,
+.puits-label,
+.locmaze-label,
+.so-label,
+.puzzle-label,
+.instructions-label,
+.instructionschap2-label,
+.porte-label,
+.texte-sommet,
+.indice-mecanisme-page {
+  font-size: clamp(22px, 5.4vw, 27px) !important;
+  line-height: 1.55 !important;
+}
+
+#message,
+#puzzle-message,
+#code-message,
+#mot-phare-message,
+#code-ancien-phare-message,
+#message-sommet,
+#distance-message,
+#indice-distance,
+#indice-phare,
+#indice-code-ancien-phare,
+#meca-indice0-message {
+  font-size: clamp(21px, 5vw, 25px) !important;
+  line-height: 1.5 !important;
+}
+
+/* Orange foncé très contrasté sur les cartes crème et jaunes. */
+.missive1-label h1, .missive1-label h2, .missive1-label h3,
+.missive2-label h1, .missive2-label h2, .missive2-label h3,
+.puits-label h1, .puits-label h2, .puits-label h3,
+.locmaze-label h1, .locmaze-label h2, .locmaze-label h3,
+.so-label h1, .so-label h2, .so-label h3,
+.puzzle-label h1, .puzzle-label h2, .puzzle-label h3,
+.instructions-label h1, .instructions-label h2, .instructions-label h3,
+.instructionschap2-label h1, .instructionschap2-label h2, .instructionschap2-label h3,
+.porte-label h1, .porte-label h2, .porte-label h3,
+.dialogue-box h1, .dialogue-box h2, .dialogue-box h3,
+#enigme-phare h1, #enigme-phare h2, #enigme-phare h3,
+.puzzle-label [style*="color: var(--or)"],
+.instructionschap2-label [style*="color: var(--or)"],
+#indice-distance,
+#indice-phare,
+#indice-code-ancien-phare,
+#meca-indice0-message,
+.indice-mecanisme-page {
+  color: var(--orange-contraste) !important;
+}
+
+/* Les deux consignes orange du panneau sont également assombries. */
+.locmaze-label h2[style*="#ff5a1f"] {
+  color: var(--orange-contraste) !important;
+}
+
+@media (max-width: 390px) {
+  #dialogue-text,
+  #dialogue-text-phare,
+  #dialogue-text-naufrageurs,
+  #texte-fin,
+  #texte-yannickdisparu,
+  #enigme-distance,
+  #enigme-phare,
+  .missive1-label,
+  .missive2-label,
+  .puits-label,
+  .locmaze-label,
+  .so-label,
+  .puzzle-label,
+  .instructions-label,
+  .instructionschap2-label,
+  .porte-label,
+  .texte-sommet,
+  .indice-mecanisme-page {
+    font-size: 22px !important;
+  }
+}
+
 </style>
 </head>
 
