@@ -1,134 +1,39 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>La trappe secrète</title>
-  <style>
-    :root {
-      /* Réglage principal : augmentez la valeur pour ralentir l'ouverture. */
-      --duree-ouverture: 2.8s;
+<script>
+  const scene = document.querySelector('#scene');
+  const trappe = document.querySelector('#trappe');
+  const sonEngrenage = document.querySelector('#son-engrenage');
 
-      /* Position mesurée sur l'image originale de 1152 × 2048 px. */
-      --trappe-x: 511;
-      --trappe-y: 1323;
-      --trappe-largeur: 140;
-      --trappe-hauteur: 154;
-    }
+  let ouvertureLancee = false;
 
-    * { box-sizing: border-box; }
+  function ouvrirTrappe() {
+    if (ouvertureLancee) return;
+    ouvertureLancee = true;
 
-    html, body {
-      width: 100%;
-      min-height: 100%;
-      margin: 0;
-      background: #050708;
-      overflow: hidden;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-
-    body {
-      min-height: 100svh;
-      display: grid;
-      place-items: center;
-    }
-
-    #scene {
-      position: relative;
-      width: min(100vw, calc(100svh * 1152 / 2048));
-      aspect-ratio: 1152 / 2048;
-      cursor: pointer;
-      overflow: hidden;
-    }
-
-    #batiment {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      pointer-events: none;
-    }
-
-    /* Cette fenêtre masque la trappe pendant son coulissement vers la droite. */
-    #mecanisme {
-      position: absolute;
-      z-index: 2;
-      left: calc(var(--trappe-x) / 1152 * 100%);
-      top: calc(var(--trappe-y) / 2048 * 100%);
-      width: calc(var(--trappe-largeur) / 1152 * 100%);
-      height: calc(var(--trappe-hauteur) / 2048 * 100%);
-      overflow: hidden;
-      background: #17110d;
-    }
-
-    #cavite,
-    #trappe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
-    #cavite { object-fit: cover; }
-
-    #trappe {
-      z-index: 2;
-      object-fit: fill;
-      transform: translateX(0);
-      transition: transform var(--duree-ouverture) cubic-bezier(.42, 0, .3, 1);
-      will-change: transform;
-    }
-
-    #scene.ouverte #trappe { transform: translateX(105%); }
-
-    @media (prefers-reduced-motion: reduce) {
-      #trappe { transition-duration: .8s; }
-    }
-  </style>
-</head>
-<body>
-  <main id="scene" role="button" tabindex="0" aria-label="Toucher la façade pour ouvrir la trappe">
-    <img id="batiment" src="images/batiment.webp" alt="Façade de la maison">
-
-    <div id="mecanisme" aria-hidden="true">
-      <img id="cavite" src="images/cavite.webp" alt="">
-      <img id="trappe" src="images/trappe.webp" alt="">
-    </div>
-  </main>
-
-  <audio id="son-engrenage" src="engrenage.mp3" preload="auto"></audio>
-
-  <script>
-    const scene = document.querySelector('#scene');
-    const sonEngrenage = document.querySelector('#son-engrenage');
-    let ouvertureLancee = false;
-
-    function ouvrirTrappe() {
-      if (ouvertureLancee) return;
-      ouvertureLancee = true;
-
-      // Le son doit être lancé directement pendant le geste pour fonctionner sur iPhone.
-      sonEngrenage.currentTime = 0;
-      sonEngrenage.play().catch(() => {
-        // L'animation reste fonctionnelle si le fichier audio n'est pas encore ajouté.
-      });
-
-      scene.classList.add('ouverte');
-      scene.setAttribute('aria-label', 'La trappe est ouverte');
-    }
-
-    scene.addEventListener('pointerdown', ouvrirTrappe, { once: true });
-    scene.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        ouvrirTrappe();
-      }
+    sonEngrenage.currentTime = 0;
+    sonEngrenage.play().catch(() => {
+      // L’animation fonctionne même si le son est absent.
     });
-  </script>
-</body>
-</html>
+
+    scene.classList.add('ouverte');
+    scene.setAttribute('aria-label', 'La trappe est ouverte');
+  }
+
+  // Changement de page lorsque la trappe a terminé son ouverture.
+  trappe.addEventListener('transitionend', (event) => {
+    if (
+      ouvertureLancee &&
+      event.propertyName === 'transform'
+    ) {
+      window.location.href = '../index.html';
+    }
+  });
+
+  scene.addEventListener('pointerdown', ouvrirTrappe, { once: true });
+
+  scene.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      ouvrirTrappe();
+    }
+  });
+</script>
