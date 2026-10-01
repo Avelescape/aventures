@@ -1,630 +1,1521 @@
-<!DOCTYPE html>
+3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#071B34" />
-<title>AvelEscape — Aventures & Patrimoine</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<style>
-:root{
-  --navy:#071B34;
-  --navy-deep:#031529;
-  --gold:#C89A4A;
-  --orange:#E04412;
-  --orange-dark:#C83209;
-  --cream:#FCE7C9;
-  --cream-2:#FFF8EE;
-  --sand:#D9C3A0;
-  --text:#071B34;
-  --muted:#4f463b;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;background:var(--cream)}
-body{
-  font-family:Inter,system-ui,sans-serif;
-  background:var(--cream);
-  color:var(--text);
-  max-width:1024px;
-  margin:0 auto;
-  min-height:100vh;
-  box-shadow:0 0 50px rgba(0,0,0,.16);
-}
-a{text-decoration:none;color:inherit}
-img{max-width:100%;display:block}
-.container{width:100%;padding:0 7.5%}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0E2228">
+  <title>Le secret du Roi Gradlon — AvelEscape</title>
 
-/* HEADER */
-header{
-  background:linear-gradient(180deg,#082542 0%,#041a31 100%);
-  color:white;
-  position:sticky;
-  top:0;
-  z-index:200;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  padding-top:env(safe-area-inset-top,0px);
-}
-.nav{
-  height:110px;
-  padding:0 36px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:relative;
-}
-.nav-center{display:flex;align-items:center}
-.nav-logo-img{width:150px;height:100px;object-fit:contain}
-.nav-connexion{
-  height:48px;
-  display:flex;align-items:center;gap:14px;
-  padding:0 26px;
-  border:1.5px solid rgba(255,255,255,.9);
-  border-radius:999px;
-  background:rgba(255,255,255,.02);
-  color:white;
-  font-family:Georgia,serif;
-  font-size:22px;
-  cursor:pointer;
-  margin-left:auto;
-}
-.nav-connexion svg{width:28px;height:28px}
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap");
 
-/* HERO */
-.hero{
-  position:relative;
-  min-height:620px;
-  overflow:visible;
-  background:
-    linear-gradient(90deg,rgba(252,231,201,.55) 0%,rgba(252,231,201,.18) 36%,rgba(7,27,52,.05) 65%,rgba(7,27,52,.25) 100%),
-    url('https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpheropasseport.webp') center bottom/cover no-repeat;
-}
-.hero::after{display:none}
-.hero-content{
-  position:relative;
-  /* Le bouton doit rester cliquable au-dessus des cartes qui chevauchent le héros. */
-  z-index:60;
-  padding-top:104px;
-  width:min(460px,55%);
-}
-.hero h1{
-  font-family:Georgia,serif;
-  font-weight:700;
-  color:#061a33;
-  font-size:clamp(58px,7vw,86px);
-  line-height:.92;
-  letter-spacing:-1px;
-  text-shadow:0 2px 8px rgba(255,255,255,.35);
-}
-.hero h1 em{
-  display:block;
-  font-style:italic;
-  color:var(--orange);
-  font-weight:700;
-}
-.hero-subtitle{
-  margin-top:24px;
-  font-family:Georgia,serif;
-  font-size:25px;
-  line-height:1.25;
-  color:#071B34;
-  max-width:410px;
-}
-.hero-free{
-  margin-top:22px;
-  font-family:Georgia,serif;
-  font-size:28px;
-  font-weight:700;
-  letter-spacing:.5px;
-}
-.hero-buttons{
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
+    :root {
+      --fond-principal: #0E2228;
+      --fond-panneau: #132F35;
+      --or-patine: #B78B45;
+      --cuivre: #B65D2A;
+      --ivoire: #E9DDC7;
+      --beige-grise: #CBBCA5;
+      --granit: #77746C;
+      --ombre: #071417;
+      --ys: #35D3D0;
+      --ys-sombre: #176B70;
+      --hauteur-navigation: 74px;
+    }
 
-    margin-top:250px;      /* descend le bouton */
+    * { box-sizing: border-box; }
 
-}
-.hero-btn{
-  min-height:72px;
-  display:flex;align-items:center;justify-content:space-between;gap:18px;
-  border-radius:12px;
-  padding:0 22px;
-  font-family:Georgia,serif;
-  font-size:22px;
-  font-weight:700;
-  letter-spacing:.3px;
-  box-shadow:0 8px 20px rgba(0,0,0,.20);
-}
-.hero-btn .btn-left{display:flex;align-items:center;gap:18px}
-.hero-btn svg{flex:none}
-.hero-btn-primary{
-  position:relative;
-  overflow:hidden;
-  isolation:isolate;
-  background:linear-gradient(180deg,#082542 0%,#03172E 100%);
-  color:#FFF8EE;
-  border:2px solid var(--gold);
-  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
-  animation:passeport-pulse 3.8s ease-in-out infinite;
-}
-.hero-btn-primary > *{position:relative;z-index:1}
-.hero-btn-primary:hover,
-.hero-btn-primary:focus-visible{
-  transform:translateY(-3px) scale(1.015);
-  border-color:#E2BD70;
-  box-shadow:0 13px 27px rgba(0,0,0,.28),0 0 20px rgba(200,154,74,.30);
-}
-.hero-btn-primary:active{
-  transform:translateY(1px) scale(.985);
-  box-shadow:0 5px 12px rgba(0,0,0,.24);
-}
-.hero-btn-primary.is-opening{
-  pointer-events:none;
-  animation:passeport-click .34s cubic-bezier(.2,.8,.25,1) both;
-  border-color:#F9DE8A;
-  box-shadow:0 5px 14px rgba(0,0,0,.30),0 0 0 5px rgba(200,154,74,.22),0 0 28px rgba(247,189,74,.72);
-}
-@keyframes passeport-click{
-  0%{transform:translateY(0) scale(1)}
-  35%{transform:translateY(3px) scale(.965)}
-  68%{transform:translateY(-2px) scale(1.025)}
-  100%{transform:translateY(0) scale(1)}
-}
-@keyframes passeport-pulse{
-  0%,55%,100%{box-shadow:0 8px 20px rgba(0,0,0,.20)}
-  68%{box-shadow:0 10px 24px rgba(0,0,0,.25),0 0 16px rgba(200,154,74,.25)}
-}
-@media (prefers-reduced-motion:reduce){
-  .hero-btn-primary{animation:none}
-}
-.hero-btn-secondary{
-  background:#FFF8EE;
-  color:#071B34;
-  border:2px solid #F1DAB0;
-}
-.hero-btn .arrow{font-size:38px;line-height:1;font-family:Inter,system-ui,sans-serif;font-weight:300}
+    html {
+      min-height: 100%;
+      background: var(--fond-principal);
+    }
 
-/* CARTES QUI CHEVAUCHENT LE HERO */
-.comment-cartes{
-  position:relative;
-  z-index:50;
-  margin-top:-180px; /* chevauchement plus marqué sur l’image du hero */
-  padding:0 56px;
-}
-.comment-cartes img{
-  width:100%;
-  height:auto;
-  display:block;
-  border-radius:0;
-  filter:drop-shadow(0 18px 24px rgba(0,0,0,.18));
-}
+    body {
+      min-height: 100svh;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ivoire);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(23, 107, 112, 0.14), transparent 42%),
+        linear-gradient(180deg, var(--fond-principal), var(--ombre));
+      font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-/* INTRO AVENTURES */
-.adventures-intro{
-  position:relative;
-  z-index:5;
-  text-align:center;
-  margin-top:-80px; /* remonte Nos aventures sous les cartes */
-  padding:22px 7.5% 24px;
-  background:var(--cream);
-}
-.eyebrow{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  margin-bottom:18px;
-  color:var(--orange);
-  font-family:Georgia,serif;
-  font-size:21px;
-  font-weight:700;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-}
-.eyebrow::before,.eyebrow::after{content:"";width:42px;height:1px;background:rgba(200,154,74,.4)}
-.eyebrow-reviews{white-space:nowrap;margin:0}
-.eyebrow-kids{margin-top:64px}
-.adventures-intro h2{
-  font-family:Georgia,serif;
-  color:#071B34;
-  font-size:44px;
-  line-height:1.08;
-  margin-bottom:18px;
-}
-.adventures-intro p{
-  font-family:Georgia,serif;
-  font-size:21px;
-  line-height:1.45;
-  max-width:700px;
-  margin:0 auto;
-  color:#071B34;
-}
-.cta-all{
-  margin:28px auto 0;
-  width:min(380px,100%);
-  min-height:60px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:22px;
-  border-radius:9px;
-  background:linear-gradient(180deg,var(--orange),var(--orange-dark));
-  color:#fff;
-  font-family:Georgia,serif;
-  font-size:20px;
-  font-weight:700;
-  letter-spacing:.5px;
-  box-shadow:0 10px 20px rgba(198,50,9,.20);
-}
-.cta-all span{font-size:34px;font-family:Inter,system-ui,sans-serif;font-weight:300}
+    button,
+    a { -webkit-tap-highlight-color: transparent; }
 
-/* BAR CATÉGORIES */
-.bar{display:none;background:var(--navy);align-items:stretch;overflow-x:auto;scrollbar-width:none;position:relative;border-top:1px solid rgba(201,162,39,.16);border-bottom:1px solid rgba(201,162,39,.16)}
-.bar::-webkit-scrollbar{display:none}
-.bar-tab{flex:none;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:13px 16px;color:rgba(245,239,224,.7);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:5px;text-decoration:none;min-height:44px}
-.bar-tab.active{color:#F5EFE0;border-bottom-color:var(--gold)}
-.bar-drop-wrap{position:static;display:flex}.bar-drop{display:none;position:absolute;top:100%;left:0;right:0;background:#EAD9BC;border:.5px solid #D9C3A0;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:0 0 12px 12px}.bar-drop.open{display:block}.bar-drop-item{display:block;padding:12px 18px;font-size:14px;color:var(--navy);cursor:pointer;border-top:.5px solid rgba(201,184,138,.4);min-height:44px;display:flex;align-items:center}.bar-drop-parent-item{display:flex;align-items:center;justify-content:space-between}.bar-subdrop{display:none}.bar-subdrop.open{display:block}.bar-subdrop-item{display:flex;align-items:center;padding:11px 18px 11px 30px;font-size:13px;color:var(--navy);text-decoration:none;border-top:.5px solid rgba(201,184,138,.25);min-height:44px}
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
 
-/* ADVENTURES */
-.adventures{background:var(--cream);padding:40px 0}
-.carousel-outer{position:relative}.carousel-mask{overflow:hidden}.carousel-track{display:flex;gap:14px;transition:transform .4s cubic-bezier(.4,0,.2,1)}.carousel-nav-btn{display:none}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:5px;margin-top:2px;margin-bottom:0}.carousel-dot{width:6px;height:6px;border-radius:50%;background:var(--sand);cursor:pointer;transition:all .2s;flex-shrink:0;border:0}.carousel-dot.active{background:var(--gold);width:18px;border-radius:3px}.carousel-dot.nearby{width:4px;height:4px;background:#D9C3A0}
-.adv-card{flex:0 0 calc(25% - 11px);display:flex;flex-direction:column;background:#FFF8EE;border:1px solid #D9C3A0;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(7,27,52,.14);cursor:pointer}.adv-card:active{transform:scale(.99)}.adv-card-img{height:160px;position:relative;overflow:hidden;flex:none}.adv-card-img img{width:100%;height:100%;object-fit:cover;display:block}.adv-card-body{padding:14px 14px;display:flex;flex-direction:column;flex:1}.adv-card-title{font-family:Georgia,serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em}.adv-card-loc{display:flex;align-items:center;gap:5px;font-size:11px;color:#6D6253;margin-bottom:12px;font-weight:500}.adv-card-actions{display:flex;gap:8px;margin-top:auto}.adv-btn-voir{flex:1;background:var(--orange);color:white;border:none;border-radius:9px;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:42px;transition:background .2s ease}
-.adv-btn-voir:hover{background:var(--orange-dark)}
+    .navigation-fixe {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding:
+        calc(10px + env(safe-area-inset-top))
+        calc(12px + env(safe-area-inset-right))
+        10px
+        calc(12px + env(safe-area-inset-left));
+      background: linear-gradient(180deg, rgba(7, 20, 23, 0.96), rgba(7, 20, 23, 0));
+      pointer-events: none;
+    }
 
-/* CARTE INTERACTIVE */
-.map-section{background:var(--cream);padding:40px 0 16px}
-.map-title{font-family:Georgia,serif;color:#071B34;font-size:28px;text-align:center;margin-bottom:16px}
-#adventures-map{width:100%;height:400px;border-radius:16px;overflow:hidden;border:1px solid #D9C3A0;box-shadow:0 8px 24px rgba(7,27,52,.14);background:#EAD9BC;position:relative;isolation:isolate;z-index:0}
-.map-popup{font-family:Inter,system-ui,sans-serif}
-.map-popup strong{font-family:Georgia,serif;color:var(--navy);font-size:14px}
-.map-popup .map-popup-loc{font-size:11px;color:#6D6253;margin:2px 0 6px}
-.map-popup a{display:inline-block;background:var(--orange);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:6px 10px;border-radius:6px}
-.avel-map-marker{background:transparent;border:none}
-@media(max-width:760px){#adventures-map{height:300px}.map-title{font-size:24px}}
+    .bouton-navigation {
+      min-height: 44px;
+      padding: 9px 14px;
+      border: 2px solid var(--or-patine);
+      border-radius: 999px;
+      color: var(--ivoire);
+      background: rgba(19, 47, 53, 0.95);
+      box-shadow: 0 5px 16px rgba(7, 20, 23, 0.55);
+      font: 600 clamp(15px, 4.2vw, 18px)/1.1 "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      pointer-events: auto;
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      transition: background 150ms ease, color 150ms ease, transform 150ms ease, opacity 150ms ease;
+    }
 
-/* BANDEAU AVENTURES KIDS */
-.kids-banner{
-  background:var(--cream);
-  width:100%;
-  margin-top: 0;
-  padding:8px 0 40px;
-}
-.kids-banner .container{
-  width:100%;
-  padding:0 7.5%;       /* même largeur que les cartes */
-}
-.kids-banner img{
-  display:block;
-  width:100%;
-  height:auto;
-}
+    .bouton-navigation:active:not(:disabled) {
+      color: #FFF4E3;
+      background: var(--cuivre);
+      transform: scale(0.96);
+    }
 
-/* AVIS + CTA */
-.reviews-section{background:var(--cream);padding:40px 0}
-.reviews-eyebrow-wrap{display:flex;align-items:flex-start;justify-content:center;min-height:56px}.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.review-photo-card{border-radius:12px;overflow:hidden;background:var(--navy);min-height:100px}.review-photo-card img{width:100%;height:100%;object-fit:cover}.review-card{background:#FFF8EE;border:1px solid #D9C3A0;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:5px;min-height:100px}.review-stars{color:var(--orange);font-size:13px;letter-spacing:1px}.review-text{font-size:12px;color:#1D1A16;line-height:1.5;flex:1;font-style:italic}.review-author{font-size:11px;font-weight:700;color:var(--navy)}
-.cta-section{background:var(--navy);overflow:hidden;border:1px solid rgba(201,162,39,.16);border-radius:0;margin:0 0 40px;width:100%;max-width:none}.cta-inner{display:grid;grid-template-columns:1fr 2fr;gap:8px;padding:2px 10px;align-items:center}.cta-btn-cgv{display:inline-flex;align-items:center;justify-content:center;background:transparent;color:rgba(255,255,255,.55);border-radius:6px;padding:6px 8px;font-size:10px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;text-decoration:underline;min-height:32px}
-.cta-inner{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:4px 16px;
-}
-/* RÉSEAUX SOCIAUX (bandeau Devenez auteur) */
-.footer-social{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex:none;
-}
-.footer-social a{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  border:1.5px solid rgba(255,255,255,.25);
-  color:#FCE7C9;
-  transition:border-color .2s ease,color .2s ease,transform .2s ease;
-}
-.footer-social a:hover{
-  border-color:var(--gold);
-  color:var(--gold);
-  transform:translateY(-2px);
-}
-.footer-social svg{width:16px;height:16px}
+    .bouton-navigation:disabled {
+      opacity: 0.42;
+      cursor: default;
+    }
 
-/* DEVENEZ AUTEUR */
-.cta-btn-author-img img{
-    width:200px;
-    height:auto;
-    display:block;
-    transition:transform .25s;
-}
+    #jeu {
+      min-height: 100svh;
+    }
 
-.cta-btn-author-img:hover img{
-    transform:scale(1.05);
-}
-/* MODALE */
-.modal-bg{display:none;position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:1024px;background:rgba(7,20,40,.65);z-index:2000;overflow-y:auto;padding:20px 16px}.modal-bg.open{display:flex;align-items:flex-start;justify-content:center}.modal{background:#FFF8EE;max-width:480px;width:100%;border-radius:22px;padding:20px;position:relative;border:1px solid #D9C3A0;box-shadow:0 16px 50px rgba(0,0,0,.25)}.modal-img{margin:-20px -20px 16px;height:180px;overflow:hidden;border-radius:22px 22px 0 0;background:#EAD9BC}.modal-img img{width:100%;height:100%;object-fit:cover}.modal-close{float:right;background:transparent;border:1px solid #D9C3A0;border-radius:8px;padding:7px 14px;cursor:pointer;font-size:12px;font-weight:600;color:#6D6253;min-height:36px}.modal-type{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-top:14px}.modal h2{font-family:Georgia,serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin:6px 0 5px}.modal p{font-size:13px;color:#6D6253;line-height:1.65;margin-bottom:14px;font-style:italic;font-family:Georgia,serif}.modal-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.modal-tag{font-size:11px;background:#EAD9BC;border:1px solid #D9C3A0;color:#6D6253;padding:4px 12px;border-radius:6px}.modal-actions{display:flex;flex-direction:column;gap:10px}.btn-fiche-primary{padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;background:var(--navy);color:white;border:none;border-radius:9px;cursor:pointer;min-height:44px;display:block;width:100%;text-align:center}.modal-btn-kids{background:var(--orange)!important}.modal-btn-kids em{font-style:italic;font-family:Georgia,serif;font-size:12px}.btn-itinerary{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--orange);border:1.5px solid var(--orange);padding:12px 14px;border-radius:9px;background:transparent;cursor:pointer;min-height:44px;text-decoration:none}
+    .scene {
+      min-height: 100svh;
+      padding:
+        calc(var(--hauteur-navigation) + env(safe-area-inset-top) + 22px)
+        calc(20px + env(safe-area-inset-right))
+        calc(28px + env(safe-area-inset-bottom))
+        calc(20px + env(safe-area-inset-left));
+    }
 
-@media(max-width:760px){
-  body{max-width:480px}
-  .nav{height:80px;padding:0 18px}.nav-logo-img{width:104px;height:70px}.nav-connexion{height:38px;padding:0 14px;font-size:14px;gap:8px}.nav-connexion svg{width:20px;height:20px}
-  .hero{min-height:545px;background-position:center bottom}.hero::after{display:none}.container{padding:0 28px}
-  .hero-content{padding-top:72px;width:78%}.hero h1{font-size:58px}.hero-subtitle{font-size:18px;margin-top:18px}.hero-free{font-size:23px;margin-top:18px}.hero-buttons{gap:12px;width:100%;max-width:350px}.hero-btn{min-height:56px;font-size:17px;padding:0 15px}.hero-btn .arrow{font-size:30px}.hero-btn svg{width:24px;height:24px}.comment-cartes{margin-top:-90px;padding:0 18px}.comment-cartes img{border-radius:0}.adventures-intro{margin-top:-38px;padding:24px 28px 20px}.eyebrow{font-size:15px}.eyebrow-reviews::before,.eyebrow-reviews::after{width:20px}.adventures-intro h2{font-size:34px}.adventures-intro p{font-size:17px}.cta-all{min-height:54px;font-size:16px}.adv-card{flex-basis:calc(50% - 7px)}.adv-card-img{height:160px}.adventures{padding:28px 0}
-  .carousel-dots{margin-top:2px;margin-bottom:0}
-  .map-section{padding:28px 0 12px}
-  .kids-banner{margin-top:0;padding:6px 0 28px}
-  .kids-banner .container{padding:0 18px}
-  .reviews-section{padding:28px 0}
-  .cta-section{width:100%;margin:0 0 28px;border-radius:0}
-  .cta-inner{padding:4px 14px}
-  .cta-btn-author-img img{width:160px}
-  .reviews-eyebrow-wrap{min-height:44px}
-  .reviews-grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:8px;
-    align-items:stretch;
-  }
-  .review-photo-card{min-height:120px}
-  .review-card{
-    min-height:unset;
-    height:auto;
-    padding:8px;
-    gap:3px;
-    border-radius:10px;
-  }
-  .review-stars{font-size:11px;letter-spacing:.5px;line-height:1}
-  .review-text{
-    font-size:10.5px;
-    line-height:1.22;
-    margin:0;
-    flex:0;
-  }
-  .review-author{font-size:10px;line-height:1.1;margin-top:2px}
-}
-@media(max-width:390px){.hero h1{font-size:50px}.hero-content{width:86%}.comment-cartes{margin-top:-82px;padding:0 14px}.adventures-intro{margin-top:-34px}.adventures-intro h2{font-size:30px}.hero{min-height:515px}.adv-card-img{height:145px}.review-text{font-size:10px}.review-card{padding:7px}}
-</style>
+    .scene[hidden] { display: none; }
+
+    .contenu-scene {
+      width: min(100%, 560px);
+      min-height: calc(100svh - 140px);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      text-align: center;
+      animation: apparition 450ms ease both;
+    }
+
+    .panneau {
+      width: 100%;
+      padding: clamp(24px, 7vw, 36px) clamp(20px, 6vw, 32px);
+      border: 2px solid var(--or-patine);
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(19, 47, 53, 0.98), rgba(14, 34, 40, 0.98));
+      box-shadow: 0 16px 38px rgba(7, 20, 23, 0.58), inset 0 0 30px rgba(183, 139, 69, 0.04);
+    }
+
+    .ornement {
+      width: 84px;
+      height: 1px;
+      margin: 4px auto 22px;
+      background: var(--or-patine);
+      box-shadow: -15px 0 var(--or-patine), 15px 0 var(--or-patine);
+    }
+
+    h1,
+    h2,
+    p { margin-top: 0; }
+
+    h1 {
+      margin-bottom: 18px;
+      color: var(--ivoire);
+      font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 9vw, 40px);
+      font-weight: 600;
+      line-height: 1.18;
+      text-wrap: balance;
+    }
+
+    h2 {
+      margin-bottom: 18px;
+      color: var(--ivoire);
+      font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      font-size: clamp(30px, 8vw, 36px);
+      font-weight: 600;
+      line-height: 1.25;
+      text-wrap: balance;
+    }
+
+    .surtitre {
+      margin-bottom: 10px;
+      color: var(--beige-grise);
+      font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      font-size: clamp(18px, 5vw, 20px);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .texte-narratif {
+      margin-bottom: 0;
+      color: var(--ivoire);
+      font-size: clamp(25px, 6.8vw, 30px);
+      font-weight: 500;
+      line-height: 1.42;
+      text-wrap: pretty;
+    }
+
+    .texte-important {
+      margin-bottom: 0;
+      color: var(--cuivre);
+      font-size: clamp(27px, 7.2vw, 31px);
+      font-weight: 600;
+      line-height: 1.38;
+      text-wrap: pretty;
+    }
+
+    .texte-gardien {
+      color: var(--cuivre);
+      font-weight: 700;
+    }
+
+    .designation-gardien {
+      margin-top: 8px;
+      color: var(--ivoire);
+      font-size: clamp(31px, 8.2vw, 38px);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .artefacts-reunis {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(8px, 2.8vw, 16px);
+      padding: 10px 4px;
+    }
+
+    .artefacts-reunis img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: contain;
+      border-radius: 50%;
+      filter: drop-shadow(0 8px 8px rgba(7, 20, 23, 0.65));
+    }
+
+    .mot-virtuellement {
+      color: var(--cuivre);
+      font-style: italic;
+      font-weight: 700;
+    }
+
+    .introduction {
+      margin-bottom: 24px;
+      color: var(--ivoire);
+      font-size: clamp(21px, 5.8vw, 26px);
+      font-weight: 500;
+      line-height: 1.42;
+      text-wrap: pretty;
+    }
+
+    .question-aventure {
+      margin: 12px 0 0;
+      color: var(--cuivre);
+      font-size: clamp(25px, 6.7vw, 30px);
+      font-weight: 600;
+      line-height: 1.3;
+      text-wrap: balance;
+    }
+
+    .rendez-vous {
+      margin: 26px 0 0;
+      padding-top: 22px;
+      border-top: 1px solid rgba(183, 139, 69, 0.65);
+    }
+
+    .rendez-vous-titre {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-bottom: 9px;
+      color: var(--cuivre);
+      font-size: clamp(24px, 6.4vw, 29px);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .icone-localisation {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 auto;
+      color: var(--or-patine);
+      filter: drop-shadow(0 0 5px rgba(183, 139, 69, 0.3));
+    }
+
+    .adresse-rendez-vous {
+      margin: 0;
+      color: var(--beige-grise);
+      font-size: clamp(20px, 5.4vw, 24px);
+      font-weight: 700;
+      line-height: 1.42;
+      text-wrap: pretty;
+    }
+
+    .bouton-action {
+      min-width: min(100%, 290px);
+      min-height: 58px;
+      padding: 14px 28px;
+      border: 2px solid var(--or-patine);
+      border-radius: 999px;
+      color: var(--ivoire);
+      background: var(--fond-panneau);
+      box-shadow: 0 9px 22px rgba(7, 20, 23, 0.48);
+      font: 600 clamp(22px, 6vw, 25px)/1.2 "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+
+    .bouton-action:active {
+      color: #FFF4E3;
+      background: var(--cuivre);
+      transform: scale(0.97);
+    }
+
+    .bouton-commencer {
+      margin-top: 4px;
+      flex: 0 0 auto;
+    }
+
+    .effet-ys {
+      color: var(--ys);
+      text-shadow: 0 0 8px rgba(53, 211, 208, 0.75), 0 0 22px rgba(53, 211, 208, 0.35);
+    }
+
+    .scene-enquete .contenu-scene {
+      justify-content: flex-start;
+    }
+
+    .scene-enquete .panneau {
+      padding: clamp(22px, 6vw, 32px) clamp(18px, 5vw, 28px);
+    }
+
+    .titre-breton {
+      margin-bottom: 10px;
+    }
+
+    .titre-aventure-breton {
+      margin-bottom: 20px;
+      color: var(--cuivre);
+      font-size: clamp(24px, 6.5vw, 29px);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .bienvenue-enquete {
+      margin-bottom: 6px;
+      color: var(--beige-grise);
+      font-size: clamp(21px, 5.8vw, 26px);
+      font-weight: 500;
+      line-height: 1.3;
+    }
+
+    .nom-enquete {
+      margin-bottom: 0;
+      color: var(--ivoire);
+      font-size: clamp(25px, 6.8vw, 30px);
+      font-weight: 600;
+      font-style: italic;
+      line-height: 1.3;
+    }
+
+    .image-scene {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 58svh;
+      object-fit: contain;
+      border: 2px solid var(--or-patine);
+      border-radius: 22px;
+      background: var(--ombre);
+      box-shadow: 0 14px 32px rgba(7, 20, 23, 0.6);
+    }
+
+    .bloc-enigme {
+      width: 100%;
+    }
+
+    .question-enigme {
+      margin: 0 0 20px;
+      color: var(--cuivre);
+      font-size: clamp(25px, 6.7vw, 30px);
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.35;
+      text-align: center;
+      text-wrap: balance;
+    }
+
+    .formulaire-reponse {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .champ-reponse {
+      width: min(100%, 260px);
+      min-height: 58px;
+      padding: 10px 18px;
+      border: 2px solid var(--or-patine);
+      border-radius: 16px;
+      outline: none;
+      color: var(--ivoire);
+      background: var(--fond-panneau);
+      box-shadow: inset 0 3px 10px rgba(7, 20, 23, 0.4);
+      font: 700 clamp(24px, 7vw, 30px)/1 "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      text-align: center;
+      letter-spacing: 0.08em;
+    }
+
+    .champ-reponse:focus {
+      border-color: var(--cuivre);
+      box-shadow: 0 0 0 3px rgba(182, 93, 42, 0.22), inset 0 3px 10px rgba(7, 20, 23, 0.4);
+    }
+
+    .champ-reponse::placeholder {
+      color: var(--granit);
+      opacity: 1;
+    }
+
+    .champ-avec-prefixe {
+      width: min(100%, 260px);
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border: 2px solid var(--or-patine);
+      border-radius: 16px;
+      background: var(--fond-panneau);
+      box-shadow: inset 0 3px 10px rgba(7, 20, 23, 0.4);
+    }
+
+    .champ-avec-prefixe .champ-reponse {
+      width: 6.5em;
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      text-align: left;
+      text-transform: uppercase;
+    }
+
+    .champ-avec-prefixe:focus-within {
+      border-color: var(--cuivre);
+      box-shadow: 0 0 0 3px rgba(182, 93, 42, 0.22), inset 0 3px 10px rgba(7, 20, 23, 0.4);
+    }
+
+    .champ-avec-prefixe .champ-reponse:focus {
+      box-shadow: none;
+    }
+
+    .prefixe-reponse {
+      flex: 0 0 auto;
+      color: #fff;
+      font: 700 clamp(24px, 7vw, 30px)/1 "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      letter-spacing: 0.08em;
+      pointer-events: none;
+    }
+
+    .message-reponse {
+      min-height: 1.4em;
+      margin: 0;
+      color: var(--cuivre);
+      font-size: clamp(20px, 5.3vw, 23px);
+      font-weight: 600;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    .choix-multiples {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .choix-objet {
+      position: relative;
+      display: flex;
+      min-height: 56px;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 12px;
+      border: 2px solid var(--or-patine);
+      border-radius: 16px;
+      color: var(--ivoire);
+      background: var(--fond-panneau);
+      font: 600 clamp(19px, 5vw, 23px)/1.15 "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      text-align: center;
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .choix-objet input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .choix-objet:has(input:checked) {
+      border-color: var(--cuivre);
+      color: #fff4e3;
+      background: rgba(182, 93, 42, 0.72);
+      transform: scale(0.98);
+    }
+
+    @media (max-width: 390px) {
+      .choix-multiples { grid-template-columns: 1fr; }
+    }
+
+    .image-cliquable {
+      width: min(100%, 341px);
+      padding: 0;
+      border: 0;
+      border-radius: 22px;
+      background: transparent;
+      cursor: zoom-in;
+      animation: invitation-discrete 3.2s ease-in-out infinite;
+    }
+
+    .image-cliquable .image-scene { width: 100%; }
+
+    .image-carnet-mini {
+      width: min(68vw, 240px);
+    }
+
+    .groupe-actions {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .bouton-indice {
+      min-width: min(100%, 240px);
+      min-height: 50px;
+      padding: 11px 24px;
+      border: 1px solid var(--cuivre);
+      border-radius: 999px;
+      color: var(--cuivre);
+      background: rgba(19, 47, 53, 0.8);
+      font: 600 clamp(19px, 5.3vw, 22px)/1.2 "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      cursor: pointer;
+    }
+
+    .texte-indice {
+      margin: 0;
+      padding: 15px 18px;
+      border-left: 3px solid var(--cuivre);
+      border-radius: 10px;
+      color: var(--cuivre);
+      background: rgba(182, 93, 42, 0.09);
+      font-size: clamp(20px, 5.5vw, 24px);
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .texte-indice[hidden] { display: none; }
+
+    .indice-image {
+      margin: -12px 0 0;
+      color: var(--beige-grise);
+      font-size: clamp(16px, 4.4vw, 19px);
+      font-style: italic;
+      opacity: 0.78;
+    }
+
+    .citation-socle {
+      color: var(--beige-grise);
+      font-size: clamp(21px, 5.6vw, 25px);
+      font-style: italic;
+      line-height: 1.42;
+    }
+
+    .appel-carnet {
+      margin: 22px 0 0;
+      padding-top: 20px;
+      border-top: 1px solid rgba(182, 93, 42, 0.55);
+      color: var(--cuivre);
+      font-size: clamp(23px, 6.2vw, 28px);
+      font-weight: 600;
+      font-style: italic;
+      line-height: 1.4;
+      text-shadow: 0 0 12px rgba(182, 93, 42, 0.22);
+      text-wrap: pretty;
+    }
+
+    .visionneuse {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      border: 0;
+      background: rgba(3, 10, 12, 0.94);
+      cursor: zoom-out;
+    }
+
+    .visionneuse[hidden] { display: none; }
+
+    .visionneuse img {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      max-height: 92svh;
+      border: 2px solid var(--or-patine);
+      border-radius: 18px;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.75);
+    }
+
+    @keyframes invitation-discrete {
+      0%, 72%, 100% { transform: scale(1); filter: brightness(1); }
+      84% { transform: scale(1.012); filter: brightness(1.08); }
+    }
+
+    @keyframes apparition {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header>
-  <nav class="nav" aria-label="Navigation principale">
-    <div class="nav-center"><img class="nav-logo-img" src="images-site/0-webpogo-hd.webp" alt="AvelEscape"></div>
-    <button class="nav-connexion" type="button">
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-4 3.1-7 7-7s7 3 7 7"/></svg>
-      Connexion
+  <nav class="navigation-fixe" aria-label="Navigation principale">
+    <button
+      id="boutonRetour"
+      class="bouton-navigation"
+      type="button"
+      aria-label="Revenir à la scène précédente"
+      disabled
+    >
+      ← Retour
     </button>
+
+    <a
+      class="bouton-navigation"
+      href="../index.html"
+      aria-label="Revenir au site AvelEscape"
+    >
+      Site AvelEscape
+    </a>
   </nav>
-</header>
 
-<main>
-  <section class="hero">
-    <div class="container hero-content">
-      <h1>Visitez <em>autrement</em></h1>
-      <div class="hero-buttons">
-        <a class="hero-btn hero-btn-primary" href="passeport/index.html">
-          <span class="btn-left">
-            MON PASSEPORT
-          </span>
-          <span class="arrow">›</span>
-        </a>
-    
-      </div>
-    </div>
-  </section>
+  <main id="jeu">
+    <section id="accueil" class="scene" aria-labelledby="titre-aventure">
+      <div class="contenu-scene">
+        <div class="panneau">
+          <p class="surtitre">Aventure à Quimper</p>
+          <h1 id="titre-aventure">Le secret du Roi Gradlon</h1>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="introduction">
+            Un carnet a récemment été découvert dans les archives de Quimper.
+            Il évoque des artefacts cachés dans la ville.
+          </p>
 
-  <section class="comment-cartes" aria-label="Comment ça marche">
-    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/07/0-webpexplications.webp" alt="Choisissez un lieu, résolvez les énigmes, validez votre aventure, collectionnez vos aventures">
-  </section>
+          <p class="question-aventure">Saurez-vous les découvrir&nbsp;?</p>
+          <p class="question-aventure">Quel secret cachent-ils&nbsp;?</p>
 
-  <section class="adventures-intro" id="fiches">
-    <div class="eyebrow">✦ Nos aventures ✦</div>
-    <h2>Découvrez nos aventures</h2>
-    <p>Visitez ou revisitez les lieux touristiques à travers des enquêtes captivantes inspirées de l’histoire ou des légendes locales.</p>
-    <a class="cta-all" href="#aventures">TROUVER UN LIEU </a>
-  </section>
+          <div class="rendez-vous">
+            <div class="rendez-vous-titre">
+              <svg
+                class="icone-localisation"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+                <circle cx="12" cy="10" r="2.6"></circle>
+              </svg>
+              <span>Point de départ de l'aventure</span>
+            </div>
 
-  <div class="bar">
-    <div class="bar-drop-wrap">
-      <a class="bar-tab active" href="#fiches" onclick="toggleBarDrop(event)">Trouver un lieu</a>
-      <div class="bar-drop" id="barDrop">
-        <span class="bar-drop-item bar-drop-parent-item" onclick="toggleBarSubdrop(event,'finistereDrop')">Finistère (29)</span>
-        <div class="bar-subdrop" id="finistereDrop">
-          <a class="bar-subdrop-item" href="stmathieuadulte/index.html">Plougonvelin</a>
-          <a class="bar-subdrop-item" href="stmathieukids/index.html">Saint-Mathieu Kids</a>
-           <a class="bar-subdrop-item" href="Quimperadulte/index.html">Quimper</a>
-          <a class="bar-subdrop-item" href="Quimperkids/index.html">Quimper</a>
-        </div>
-        <span class="bar-drop-item" onclick="filterDept('Morbihan')">Morbihan (56)</span>
-        <span class="bar-drop-item" onclick="filterDept('Ille-et-Vilaine')">Ille-et-Vilaine (35)</span>
-      </div>
-    </div>
-  </div>
-
-  <section id="aventures" class="adventures">
-    <div class="container">
-      <div class="carousel-outer">
-        <div class="carousel-mask"><div class="carousel-track" id="carouselTrack"></div></div>
-        <div class="carousel-dots" id="carouselDots"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CARTE INTERACTIVE -->
-  <section class="map-section" aria-label="Carte des aventures">
-    <div class="container">
-      <div class="eyebrow">✦ Où nous trouver ✦</div>
-      <h2 class="map-title">Localisez vos aventures</h2>
-      <div id="adventures-map"></div>
-    </div>
-  </section>
-
-  <!-- BANDEAU AVENTURES KIDS -->
-  <section class="kids-banner" aria-label="Aventures Kids">
-    <div class="container">
-      <div class="eyebrow eyebrow-kids">✦ Versions Kids ✦</div>
-      <img src="images-site/0-webpaventures-kids.webp" alt="Aventures Kids" loading="lazy">
-    </div>
-  </section>
-
-<!-- AVIS GOOGLE -->
-
-  <section class="reviews-section">
-    <div class="container">
-      <div class="reviews-eyebrow-wrap"><div class="eyebrow eyebrow-reviews">✦ Avis des aventuriers ✦</div></div>
-      <div class="reviews-grid">
-        <div class="review-photo-card"><img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpgroupesacados.webp" alt="Aventure AvelEscape"></div>
-        <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Parfait pour une balade culturelle originale et en famille. Nous avons adoré ! »</p><p class="review-author">Martine et Etienne.</p></div>
-        <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Les enfants ont adoré, vivement la prochaine aventure !!! Merci Billig »</p><p class="review-author">Maëlle.</p></div>
-        <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Hâte de valider de nouvelles aventures dans mon passeport. »</p><p class="review-author">Nathan.</p></div>
-      </div>
-    </div>
-  </section>
-
-<!-- DEVENEZ AUTEUR -->
-<section class="cta-section">
-    <div class="cta-inner">
-
-       <a href="proposez-aventure.html" class="cta-btn-author-img">
-    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpdevenezauteur.webp"
-         alt="Devenez auteur d'une aventure">
-</a>
-
-        <a class="cta-btn-cgv"
-           href="#"
-           target="_blank">
-            CGV
-        </a>
-
-        <div class="footer-social">
-          <a href="#" target="_blank" rel="noopener" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.9.3-1.5 1.6-1.5H16V4.2C15.7 4.1 14.8 4 13.7 4c-2.3 0-3.9 1.4-3.9 4v2.5H7.3v3H9.8V21h3.7z"/></svg>
-          </a>
-          <a href="#" target="_blank" rel="noopener" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>
-          </a>
-          <a href="#" target="_blank" rel="noopener" aria-label="X">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2H21l-6.53 7.47L22 22h-6.32l-4.95-6.47L4.99 22H2.23l7-8.01L2 2h6.48l4.47 5.9L18.24 2Zm-1.11 18h1.75L7.02 3.9H5.15L17.13 20Z"/></svg>
-          </a>
+            <p class="adresse-rendez-vous">
+              <strong>Angle de la rue du Roi Gradlon et de la rue Kéréon</strong>
+            </p>
+          </div>
         </div>
 
-    </div>
-</section>
+        <button
+          id="boutonCommencer"
+          class="bouton-action bouton-commencer"
+          type="button"
+          data-scene-suivante="scene-1"
+        >
+          Commencer
+        </button>
+      </div>
+    </section>
 
-</main>
+    <section id="scene-1" class="scene scene-enquete" aria-labelledby="titre-scene-1" hidden>
+      <div class="contenu-scene">
+        <div class="panneau">
+          <p class="surtitre">Cathédrale de Quimper</p>
+          <h2 id="titre-scene-1" class="titre-breton">Degemer mat en enklask</h2>
+          <p class="titre-aventure-breton">«&nbsp;Sekred ar Roue Gradlon&nbsp;»</p>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="bienvenue-enquete">Bienvenue dans l’enquête</p>
+          <p class="nom-enquete">«&nbsp;Le secret du Roi Gradlon&nbsp;»</p>
+        </div>
 
-<div class="modal-bg" id="modal">
-  <div class="modal">
-    <div class="modal-img" id="modal-img"></div>
-    <button class="modal-close" onclick="closeModal()">✕ Fermer</button>
-    <div class="modal-type" id="modal-type"></div>
-    <h2 id="modal-title"></h2>
-    <p id="modal-desc"></p>
-    <div class="modal-meta" id="modal-meta"></div>
-    <div class="modal-actions" id="modal-actions"></div>
-  </div>
-</div>
+        <img
+          class="image-scene"
+          src="images/3-webpstatue1.webp"
+          alt="Statue du roi Gradlon sur la cathédrale de Quimper"
+        >
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script>
-const sites=[
-  {id:1,title:"Le Mystère du Phare de St-Mathieu",city:"Plougonvelin",dept:"Finistère",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:true,desc:"1834 — Le gardien du phare de Saint-Mathieu a disparu, mettant en danger les bateaux navigant en mer d'Iroise.",lat:48.3327,lng:-4.7754,gmaps:"https://maps.google.com/?q=48.3327,-4.7754",img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpsaintmathieu.webp",url:"stmathieuadulte/index.html",urlKids:"stmathieukids/index.html"},
-  {id:3,title:"Le secret du roi Gradlon",city:"Quimper",dept:"Finistère",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:false,desc:"La découverte d’un carnet vous entraîne sur la piste d’artefacts cachés dans le vieux Quimper.",lat:48.0,lng:-4.1,gmaps:"https://maps.google.com/?q=Quimper",img:"images-site/3-webpaffiche.webp",url:"quimperadulte/index.html",urlKids:"quimperkids/index.html"},
-  {id:4,title:"Le canot de l'Empereur",city:"Brest",dept:"Finistère",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:false,desc:"Construit pour Napoléon, saurez-vous déchiffrer les symboles que Neptune protège depuis des siècles?.",lat:48.38,lng:-4.49,gmaps:"https://maps.google.com/?q=Brest",img:"images-site/4-webplecanotdelempereur.webp",url:"index.html"}
-];
-let currentFilter={dept:null};
-let carouselPos=0;
-function getCardsPerView(){return window.innerWidth<=760?2:4;}
-function renderCarousel(){
-  const track=document.getElementById('carouselTrack');
-  const dots=document.getElementById('carouselDots');
-  track.innerHTML='';dots.innerHTML='';
-  const filtered=sites.filter(s=>!currentFilter.dept || s.dept.includes(currentFilter.dept));
-  filtered.forEach(s=>{
-    track.innerHTML+=`<div class="adv-card" onclick="openModal(${s.id})"><div class="adv-card-img"><img src="${s.img}" alt="${s.title}" loading="lazy"></div><div class="adv-card-body"><h3 class="adv-card-title">${s.title}</h3><div class="adv-card-loc">📍 ${s.city} • ${s.dept}</div><div class="adv-card-actions"><button class="adv-btn-voir" onclick="event.stopPropagation();openModal(${s.id})">Voir</button></div></div></div>`;
-  });
-  const pages=Math.ceil(filtered.length/getCardsPerView());
-  for(let i=0;i<pages;i++){const d=document.createElement('button');d.className='carousel-dot';d.onclick=()=>goToPage(i);dots.appendChild(d)}
-  carouselPos=0;updateCarouselPos();
-}
-function updateCarouselPos(){
-  const track=document.getElementById('carouselTrack');if(!track)return;
-  const cpv=getCardsPerView();const gap=14;
-  const cardW=(track.parentElement.offsetWidth-(cpv-1)*gap)/cpv;
-  track.style.transform=`translateX(-${carouselPos*(cardW+gap)}px)`;
-  const cur=Math.floor(carouselPos/cpv);
-  document.querySelectorAll('.carousel-dot').forEach((d,i)=>d.className='carousel-dot'+(i===cur?' active':Math.abs(i-cur)<=2?' nearby':''));
-}
-function carouselPrev(){if(carouselPos>0){carouselPos--;updateCarouselPos()}}
-function carouselNext(){const max=document.querySelectorAll('.adv-card').length-getCardsPerView();if(carouselPos<max){carouselPos++;updateCarouselPos()}}
-function goToPage(p){const max=document.querySelectorAll('.adv-card').length-getCardsPerView();carouselPos=Math.min(p*getCardsPerView(),Math.max(0,max));updateCarouselPos()}
-window.addEventListener('resize',()=>{carouselPos=0;updateCarouselPos()});
-(function(){const mask=document.querySelector('.carousel-mask');if(!mask)return;let startX=0,startY=0,isHoriz=null;mask.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startY=e.touches[0].clientY;isHoriz=null},{passive:true});mask.addEventListener('touchmove',e=>{const dx=e.touches[0].clientX-startX;const dy=e.touches[0].clientY-startY;if(isHoriz===null)isHoriz=Math.abs(dx)>Math.abs(dy);if(isHoriz)e.preventDefault()},{passive:false});mask.addEventListener('touchend',e=>{if(!isHoriz)return;const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>40){dx<0?carouselNext():carouselPrev()}})})();
-function filterDept(d){currentFilter.dept=currentFilter.dept===d?null:d;renderCarousel()}
-function toggleBarDrop(e){e.preventDefault();document.getElementById('barDrop').classList.toggle('open')}
-function toggleBarSubdrop(e,id){e.stopPropagation();document.getElementById(id).classList.toggle('open')}
-function openModal(id){
-  const s=sites.find(x=>x.id===id);if(!s)return;
-  document.getElementById('modal-img').innerHTML=`<img src="${s.img}" alt="${s.title}" loading="lazy">`;
-  document.getElementById('modal-type').textContent='Aventure';
-  document.getElementById('modal-title').textContent=s.title;
-  document.getElementById('modal-desc').textContent=s.desc;
-  document.getElementById('modal-meta').innerHTML=`<span class="modal-tag">${s.city}</span><span class="modal-tag">${s.dept}</span>`;
-  document.getElementById('modal-actions').innerHTML=`${s.url?`<a class="btn-fiche-primary" href="${s.url}">Commencer</a>`:`<button class="btn-fiche-primary">Commencer</button>`}${s.kids&&s.urlKids?`<a class="btn-fiche-primary modal-btn-kids" href="${s.urlKids}">Commencer <em>— kids —</em></a>`:''}<a class="btn-itinerary" href="${s.gmaps}" target="_blank">Google Maps</a>`;
-  document.getElementById('modal').classList.add('open')
-}
-function closeModal(){document.getElementById('modal').classList.remove('open')}
-document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal()});
-function openFromMap(e,id){e.preventDefault();closeModal();openModal(id)}
-function initMap(){
-  const mapEl=document.getElementById('adventures-map');
-  if(!mapEl||typeof L==='undefined')return;
-  const map=L.map(mapEl,{scrollWheelZoom:false}).setView([48.25,-4.3],9);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
-    maxZoom:18
-  }).addTo(map);
-  const navyIcon=L.divIcon({
-    className:'avel-map-marker',
-    html:'<svg width="30" height="42" viewBox="0 0 30 42" xmlns="http://www.w3.org/2000/svg"><path d="M15 0C6.7 0 0 6.7 0 15c0 11.25 15 27 15 27s15-15.75 15-27C30 6.7 23.3 0 15 0z" fill="#071B34" stroke="#C89A4A" stroke-width="1.5"/><circle cx="15" cy="15" r="6" fill="#FCE7C9"/></svg>',
-    iconSize:[30,42],
-    iconAnchor:[15,42],
-    popupAnchor:[0,-38]
-  });
-  const markers=[];
-  sites.forEach(s=>{
-    if(!s.lat||!s.lng)return;
-    const marker=L.marker([s.lat,s.lng],{icon:navyIcon}).addTo(map);
-    const linkHtml=s.url&&s.url!=='#'?`<a href="#" onclick="openFromMap(event,${s.id})">Voir l'aventure</a>`:'';
-    marker.bindPopup(`<div class="map-popup"><strong>${s.title}</strong><div class="map-popup-loc">📍 ${s.city} • ${s.dept}</div>${linkHtml}</div>`);
-    markers.push(marker);
-  });
-  if(markers.length){
-    map.fitBounds(L.featureGroup(markers).getBounds().pad(0.35));
-  }
-}
-renderCarousel();
-initMap();
+        <div class="panneau bloc-enigme">
+          <p class="question-enigme">
+            En quelle année a été replacée la statue du roi Gradlon&nbsp;?
+          </p>
 
-// Retour visuel + vibration avant l'ouverture du passeport.
-const passportButton=document.querySelector('.hero-btn-primary');
-if(passportButton){
-  passportButton.addEventListener('click',event=>{
-    // Laisse les ouvertures dans un nouvel onglet fonctionner normalement.
-    if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||event.button!==0)return;
-    event.preventDefault();
-    if(passportButton.classList.contains('is-opening'))return;
+          <form id="formulaireAnneeGradlon" class="formulaire-reponse" novalidate>
+            <label class="sr-only" for="reponseAnneeGradlon">Année</label>
+            <input
+              id="reponseAnneeGradlon"
+              class="champ-reponse"
+              name="annee-gradlon"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              maxlength="4"
+              autocomplete="off"
+              placeholder="Année"
+              aria-describedby="messageAnneeGradlon"
+              required
+            >
 
-    passportButton.classList.add('is-opening');
-    if(navigator.vibrate)navigator.vibrate(28);
+            <button class="bouton-action" type="submit">Valider</button>
+            <p id="messageAnneeGradlon" class="message-reponse" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
 
-    window.setTimeout(()=>{
-      window.location.href=passportButton.href;
-    },340);
-  });
-}
-</script>
+    <section id="scene-2" class="scene" aria-labelledby="titre-scene-2" hidden>
+      <div class="contenu-scene">
+        <button id="ouvrirImageSocle" class="image-cliquable" type="button" aria-label="Agrandir l’image du socle">
+          <img
+            class="image-scene"
+            src="images/3-webpc4.webp"
+            alt="Le carnet à la page de la boîte"
+          >
+        </button>
+        <p class="indice-image">Toucher pour observer</p>
+
+        <div class="panneau">
+          <h2 id="titre-scene-2">Le Coffret</h2>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="texte-narratif">
+            La boîte a été dissimulée par le contremaître dans la façade d’une demeure au moyen d’un mécanisme secret.
+          </p>
+          <p class="texte-important">
+            La bâtisse se trouve à quelques pas de la place au Beurre.
+          </p>
+          <p class="citation-socle">«&nbsp;Elle se pare d’un bleu adouci par la brume de Cornouaille.&nbsp;»</p>
+          <p class="citation-socle">«&nbsp;La pierre, le bois, le verre et l’ardoise s’y unissent dans une parfaite harmonie.&nbsp;»</p>
+        </div>
+
+        <button class="bouton-action" type="button" data-scene-suivante="scene-3">
+          Suite
+        </button>
+      </div>
+    </section>
+
+    <section id="scene-3" class="scene scene-enquete" aria-labelledby="titre-scene-3" hidden>
+      <div class="contenu-scene">
+        <div class="panneau bloc-enigme">
+          <h2 id="titre-scene-3">Avez-vous trouvé la bâtisse évoquée&nbsp;?</h2>
+          <div class="ornement" aria-hidden="true"></div>
+
+          <p class="question-enigme">
+            Combien de croix de Saint-André voyez-vous sur le bâtiment&nbsp;?
+          </p>
+
+          <form id="formulaireCroixSaintAndre" class="formulaire-reponse" novalidate>
+            <label class="sr-only" for="reponseCroixSaintAndre">Nombre de croix de Saint-André</label>
+            <input
+              id="reponseCroixSaintAndre"
+              class="champ-reponse"
+              name="croix-saint-andre"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              maxlength="2"
+              autocomplete="off"
+              placeholder="Votre réponse"
+              aria-describedby="messageCroixSaintAndre"
+              required
+            >
+
+            <button class="bouton-action" type="submit">Valider</button>
+            <p id="messageCroixSaintAndre" class="message-reponse" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="scene-coffret-ouvert" class="scene" aria-labelledby="titre-coffret-ouvert" hidden>
+      <div class="contenu-scene">
+        <img
+          class="image-scene"
+          src="images/3-webpcoffretouvert.webp"
+          alt="Le Coffret et le disque découverts dans la cavité"
+        >
+
+        <div class="panneau">
+          <h2 id="titre-coffret-ouvert">Le coffret est ouvert</h2>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="texte-narratif">
+            Le coffret contient le disque, mais les artefacts sont absents...
+          </p>
+          <p class="appel-carnet">
+            Consultons le carnet de M. Le Gall pour les retrouver.
+          </p>
+        </div>
+
+        <button class="bouton-action" type="button" data-scene-suivante="scene-carnet-cle">
+          Consultons le carnet
+        </button>
+      </div>
+    </section>
+
+    <section id="scene-carnet-cle" class="scene" aria-labelledby="titre-carnet-cle" hidden>
+      <div class="contenu-scene">
+        <button id="ouvrirImageCle" class="image-cliquable image-carnet-mini" type="button" aria-label="Agrandir la page du carnet consacrée à l’artefact Clé">
+          <img
+            class="image-scene"
+            src="images/3-webpc5.webp"
+            alt="Page du carnet consacrée à l’artefact Clé"
+          >
+        </button>
+        <p class="indice-image">Toucher le carnet pour l’agrandir</p>
+
+        <div class="panneau">
+          <h2 id="titre-carnet-cle">La Clé</h2>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="texte-narratif">
+            Sébastien, le tailleur de pierres a également caché l’artefact dans un mur extérieur de sa maison qui est située dans une toute petite ruelle. C’est aujourd’hui la plus vieille bâtisse civile du Finistère.
+          </p>
+        </div>
+
+        <div class="groupe-actions">
+          <button id="boutonBatisseTrouvee" class="bouton-action" type="button">
+            Vous pensez avoir trouvé la bâtisse&nbsp;? Cliquer
+          </button>
+          <button id="boutonIndiceCle" class="bouton-indice" type="button" aria-expanded="false" aria-controls="indiceCle">
+            Indice
+          </button>
+          <p id="indiceCle" class="texte-indice" hidden>
+            Vous pouvez acceder à cette ruelle par la rue des boucheries.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="scene-enigme-panneau" class="scene" aria-labelledby="titre-enigme-panneau" hidden>
+      <div class="contenu-scene">
+        <div class="panneau bloc-enigme">
+          <h2 id="titre-enigme-panneau">L’énigme de l'Artefact Clé</h2>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="question-enigme">
+            Quels sont les deux objets présents sur le panneau indiquant qu’il s’agit de la plus vieille bâtisse civile du Finistère&nbsp;?
+          </p>
+
+          <form id="formulaireObjetsPanneau" class="formulaire-reponse" novalidate>
+            <div class="choix-multiples" role="group" aria-label="Choisissez deux objets">
+              <label class="choix-objet"><input type="checkbox" name="objet-panneau" value="truelle">Une truelle</label>
+              <label class="choix-objet"><input type="checkbox" name="objet-panneau" value="equerre">Une équerre</label>
+              <label class="choix-objet"><input type="checkbox" name="objet-panneau" value="compas">Un compas</label>
+              <label class="choix-objet"><input type="checkbox" name="objet-panneau" value="plan">Un plan</label>
+              <label class="choix-objet"><input type="checkbox" name="objet-panneau" value="marteau">Un marteau</label>
+              <label class="choix-objet"><input type="checkbox" name="objet-panneau" value="metre">Un mètre</label>
+            </div>
+            <button class="bouton-action" type="submit">Valider</button>
+            <p id="messageObjetsPanneau" class="message-reponse" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="scene-artefact-couronne" class="scene" aria-labelledby="titre-artefact-couronne" hidden>
+      <div class="contenu-scene">
+        <button id="ouvrirImageCouronne" class="image-cliquable image-carnet-mini" type="button" aria-label="Agrandir la page du carnet consacrée à l’artefact Couronne">
+          <img
+            class="image-scene"
+            src="images/3-webpc6.webp"
+            alt="Page du carnet consacrée à l’artefact Couronne"
+          >
+        </button>
+        <p class="indice-image">Toucher le carnet pour l’agrandir</p>
+
+        <div class="panneau">
+          <h2 id="titre-artefact-couronne">La Couronne</h2>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="texte-narratif">
+            L’artefact Couronne a été caché par l’un des ouvriers, qui a indiqué&nbsp;:
+          </p>
+          <p class="citation-socle">
+            «&nbsp;Oubliez la Sainte et son enfant, indiquez les initiales de mes amis ouvriers.&nbsp;»
+          </p>
+
+          <form id="formulaireArtefactCouronne" class="formulaire-reponse" novalidate>
+            <label class="sr-only" for="reponseArtefactCouronne">Initiales des ouvriers</label>
+            <input
+              id="reponseArtefactCouronne"
+              class="champ-reponse"
+              name="artefact-couronne"
+              type="text"
+              maxlength="4"
+              autocomplete="off"
+              autocapitalize="characters"
+              placeholder="Votre réponse"
+              aria-describedby="messageArtefactCouronne"
+              required
+            >
+
+            <button class="bouton-action" type="submit">Valider</button>
+            <p id="messageArtefactCouronne" class="message-reponse" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div class="groupe-actions">
+          <button id="boutonIndiceCouronne" class="bouton-indice" type="button" aria-expanded="false" aria-controls="indiceCouronne">
+            Indice
+          </button>
+          <p id="indiceCouronne" class="texte-indice" hidden>
+            Dans cette rue on manupulait les couteaux au quotidien...
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="scene-artefact-triskel" class="scene scene-enquete" aria-labelledby="titre-artefact-triskel" hidden>
+      <div class="contenu-scene">
+        <button id="ouvrirImageTriskel" class="image-cliquable image-carnet-mini" type="button" aria-label="Agrandir la page du carnet consacrée à l’artefact Triskel">
+          <img
+            class="image-scene"
+            src="images/3-webpc7.webp"
+            alt="Page du carnet consacrée au troisième artefact"
+          >
+        </button>
+        <p class="indice-image">Toucher le carnet pour l’agrandir</p>
+
+        <div class="panneau bloc-enigme">
+          <h2 id="titre-artefact-triskel">Le Triskel</h2>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="texte-narratif">
+            Le troisième artefact a été confié au tanneur installé le long de l’Odet.
+          </p>
+          <p class="question-enigme">
+            Quel est le nom de la passerelle de l’Ancienne Tannerie&nbsp;?
+          </p>
+
+          <form id="formulairePasserelle" class="formulaire-reponse" novalidate>
+            <label class="sr-only" for="reponsePasserelle">Nom de la passerelle</label>
+            <input
+              id="reponsePasserelle"
+              class="champ-reponse"
+              name="passerelle"
+              type="text"
+              maxlength="20"
+              autocomplete="off"
+              autocapitalize="words"
+              placeholder="Votre réponse"
+              aria-describedby="messagePasserelle"
+              required
+            >
+
+            <button class="bouton-action" type="submit">Valider</button>
+            <p id="messagePasserelle" class="message-reponse" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div class="groupe-actions">
+          <button id="boutonIndicePasserelle" class="bouton-indice" type="button" aria-expanded="false" aria-controls="indicePasserelle">
+            Indice
+          </button>
+          <p id="indicePasserelle" class="texte-indice" hidden>
+            Et si vous vous promeniez sur le pont de Sainte-Catherine&nbsp;?
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="scene-artefact-hermine" class="scene scene-enquete" aria-labelledby="titre-artefact-hermine" hidden>
+      <div class="contenu-scene">
+        <button id="ouvrirImageHermine" class="image-cliquable image-carnet-mini" type="button" aria-label="Agrandir la page du carnet consacrée à l’artefact Hermine">
+          <img
+            class="image-scene"
+            src="images/3-webpc8.webp"
+            alt="Page du carnet consacrée à l’artefact Hermine"
+          >
+        </button>
+        <p class="indice-image">Toucher le carnet pour l’agrandir</p>
+
+        <div class="panneau bloc-enigme">
+          <h2 id="titre-artefact-hermine">-L'Hermine-</h2>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="texte-narratif">
+            Le dernier artefact a été confié au maître verrier. Sa famille était spécialisée dans la faïence.
+          </p>
+          <p class="question-enigme">
+            Quel est le nom de la célèbre faïencerie de Quimper dont le magasin est dans un recoin de la place de la Cathédrale&nbsp;?
+          </p>
+
+          <form id="formulaireFaiencerie" class="formulaire-reponse" novalidate>
+            <label class="sr-only" for="reponseFaiencerie">Nom de la faïencerie</label>
+            <div class="champ-avec-prefixe">
+              <span class="prefixe-reponse" aria-hidden="true">H</span>
+              <input
+                id="reponseFaiencerie"
+                class="champ-reponse"
+                name="faiencerie"
+                type="text"
+                maxlength="6"
+                autocomplete="off"
+                autocapitalize="characters"
+                placeholder="......"
+                aria-label="Complétez le nom après la lettre H"
+                aria-describedby="messageFaiencerie"
+                required
+              >
+            </div>
+
+            <button class="bouton-action" type="submit">Valider</button>
+            <p id="messageFaiencerie" class="message-reponse" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <button class="bouton-indice" type="button" data-scene-suivante="scene-indice-hermine">
+          Indice
+        </button>
+      </div>
+    </section>
+
+    <section id="scene-indice-hermine" class="scene" aria-labelledby="titre-indice-hermine" hidden>
+      <div class="contenu-scene">
+        <img class="image-scene" src="images/bol.jpg" alt="Bol donnant un indice sur la faïencerie de Quimper">
+        <div class="panneau">
+          <h2 id="titre-indice-hermine">Indice</h2>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="texte-narratif">Observer attentivement le décor et les inscriptions de ce bol.</p>
+        </div>
+        <button class="bouton-action" type="button" data-scene-suivante="scene-artefact-hermine">
+          Retour à la question
+        </button>
+      </div>
+    </section>
+
+    <section id="scene-artefacts-reunis" class="scene" aria-labelledby="titre-artefacts-reunis" hidden>
+      <div class="contenu-scene">
+        <div class="artefacts-reunis" aria-label="Les quatre artefacts réunis">
+          <img src="images/3-webp1.webp" alt="La Clé">
+          <img src="images/3-webp2.webp" alt="La Couronne">
+          <img src="images/3-webp3.webp" alt="Le Triskel">
+          <img src="images/3-webp4.webp" alt="L’Hermine">
+        </div>
+
+        <div class="panneau">
+          <h2 id="titre-artefacts-reunis">Bravo!<br>Après tant d’années dispersés, les quatre artefacts sont enfin réunis…</h2>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="texte-narratif">
+            Allons <em class="mot-virtuellement">virtuellement</em> auprès de la statue du roi Gradlon pour découvrir le secret qu’elle pourrait nous révéler.
+          </p>
+        </div>
+
+        <button id="boutonMecanismeStatue" class="bouton-action" type="button">
+          Statue
+        </button>
+      </div>
+    </section>
+
+    <section id="scene-echelle" class="scene" aria-labelledby="titre-scene-echelle" hidden>
+      <div class="contenu-scene">
+        <img
+          class="image-scene"
+          src="images/3-webpechelle.webp"
+          alt="Échelle permettant de descendre vers le passage secret"
+        >
+
+        <div class="panneau">
+      
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="texte-narratif">
+            Un passage secret se dévoile dans l’obscurité.
+          </p>
+        </div>
+
+        <button id="boutonAccederPassage" class="bouton-action" type="button">
+          Accéder au passage
+        </button>
+      </div>
+    </section>
+
+    <section id="scene-final-ys" class="scene" aria-label="Découverte de la cité d’Ys" hidden>
+      <div class="contenu-scene">
+        <img
+          class="image-scene"
+          src="images/3-webpmaquetteys.webp"
+          alt="Maquette révélant le secret de la cité d’Ys"
+        >
+
+        <button class="bouton-action" type="button" data-scene-suivante="scene-conclusion">
+          Suite
+        </button>
+      </div>
+    </section>
+
+    <section id="scene-conclusion" class="scene" aria-labelledby="titre-conclusion" hidden>
+      <div class="contenu-scene">
+        <div class="panneau">
+          <h2 id="titre-conclusion">Le secret du roi Gradlon</h2>
+          <div class="ornement" aria-hidden="true"></div>
+          <p class="texte-narratif">
+            Et si la cité d’Ys n’était pas qu’une légende&nbsp;?
+          </p>
+          <p class="texte-narratif texte-gardien">
+            À compter de ce jour vous êtes Diwaller YS
+          </p>
+          <p class="designation-gardien">
+            Gardien d'YS
+          </p>
+        </div>
+
+        <button id="boutonFin" class="bouton-action" type="button">
+          Kenavo
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <button id="visionneuseSocle" class="visionneuse" type="button" aria-label="Fermer l’image agrandie" hidden>
+    <img src="images/3-webpc4.webp" alt="Page agrandie du carnet consacrée au coffret">
+  </button>
+
+  <button id="visionneuseCle" class="visionneuse" type="button" aria-label="Fermer la page agrandie du carnet" hidden>
+    <img src="images/3-webpc5.webp" alt="Page agrandie du carnet consacrée à l’artefact Clé">
+  </button>
+
+  <button id="visionneuseCouronne" class="visionneuse" type="button" aria-label="Fermer la page agrandie du carnet" hidden>
+    <img src="images/3-webpc6.webp" alt="Page agrandie du carnet consacrée à l’artefact Couronne">
+  </button>
+
+  <button id="visionneuseTriskel" class="visionneuse" type="button" aria-label="Fermer la page agrandie du carnet" hidden>
+    <img src="images/3-webpc7.webp" alt="Page agrandie du carnet consacrée à l’artefact Triskel">
+  </button>
+
+  <button id="visionneuseHermine" class="visionneuse" type="button" aria-label="Fermer la page agrandie du carnet" hidden>
+    <img src="images/3-webpc8.webp" alt="Page agrandie du carnet consacrée à l’artefact Hermine">
+  </button>
+
+  <script>
+    (() => {
+      "use strict";
+
+      /* Ouvre immédiatement la scène demandée, avant l'initialisation des
+         formulaires. Ainsi, même si une interaction secondaire rencontre une
+         erreur, le retour du mécanisme de collection n'affiche pas l'accueil. */
+      const sceneDansUrl = new URLSearchParams(window.location.search).get("scene");
+      const sceneDemandee =
+        (sceneDansUrl === "coffret-ouvert" || window.location.hash === "#coffret-ouvert")
+          ? "scene-coffret-ouvert"
+          : (sceneDansUrl === "artefact-triskel" || window.location.hash === "#artefact-triskel")
+          ? "scene-artefact-triskel"
+          : (sceneDansUrl === "artefact-hermine" || window.location.hash === "#artefact-hermine")
+          ? "scene-artefact-hermine"
+          : (sceneDansUrl === "artefacts-reunis" || window.location.hash === "#artefacts-reunis")
+          ? "scene-artefacts-reunis"
+          : (sceneDansUrl === "echelle" || window.location.hash === "#echelle")
+          ? "scene-echelle"
+          : (sceneDansUrl === "final-ys" || window.location.hash === "#final-ys")
+          ? "scene-final-ys"
+          : (sceneDansUrl === "conclusion" || window.location.hash === "#conclusion")
+          ? "scene-conclusion"
+          : (sceneDansUrl === "artefact-couronne" || window.location.hash === "#artefact-couronne")
+            ? "scene-artefact-couronne"
+            : null;
+
+      if (sceneDemandee) {
+        document.querySelectorAll(".scene").forEach((scene) => {
+          const estDemandee = scene.id === sceneDemandee;
+          scene.hidden = !estDemandee;
+          scene.setAttribute("aria-hidden", String(!estDemandee));
+        });
+      }
+
+      const boutonRetour = document.getElementById("boutonRetour");
+      const scenes = [...document.querySelectorAll(".scene")];
+      const formulaireAnneeGradlon = document.getElementById("formulaireAnneeGradlon");
+      const boutonMecanismeStatue = document.getElementById("boutonMecanismeStatue");
+      const boutonAccederPassage = document.getElementById("boutonAccederPassage");
+      const boutonFin = document.getElementById("boutonFin");
+
+      boutonMecanismeStatue.addEventListener("click", () => {
+        window.location.assign("./mecanisme-statue/index.html");
+      });
+      boutonAccederPassage.addEventListener("click", () => {
+        window.location.assign("./mecanisme-ouverture-porte/index.html");
+      });
+      boutonFin.addEventListener("click", () => {
+        window.location.assign("../index.html");
+      });
+      const reponseAnneeGradlon = document.getElementById("reponseAnneeGradlon");
+      const messageAnneeGradlon = document.getElementById("messageAnneeGradlon");
+      const formulaireCroixSaintAndre = document.getElementById("formulaireCroixSaintAndre");
+      const reponseCroixSaintAndre = document.getElementById("reponseCroixSaintAndre");
+      const messageCroixSaintAndre = document.getElementById("messageCroixSaintAndre");
+      const ouvrirImageSocle = document.getElementById("ouvrirImageSocle");
+      const visionneuseSocle = document.getElementById("visionneuseSocle");
+      const ouvrirImageCle = document.getElementById("ouvrirImageCle");
+      const visionneuseCle = document.getElementById("visionneuseCle");
+      const boutonBatisseTrouvee = document.getElementById("boutonBatisseTrouvee");
+      const boutonIndiceCle = document.getElementById("boutonIndiceCle");
+      const indiceCle = document.getElementById("indiceCle");
+      const formulaireObjetsPanneau = document.getElementById("formulaireObjetsPanneau");
+      const choixObjetsPanneau = [...document.querySelectorAll('input[name="objet-panneau"]')];
+      const messageObjetsPanneau = document.getElementById("messageObjetsPanneau");
+      const ouvrirImageCouronne = document.getElementById("ouvrirImageCouronne");
+      const visionneuseCouronne = document.getElementById("visionneuseCouronne");
+      const formulaireArtefactCouronne = document.getElementById("formulaireArtefactCouronne");
+      const reponseArtefactCouronne = document.getElementById("reponseArtefactCouronne");
+      const messageArtefactCouronne = document.getElementById("messageArtefactCouronne");
+      const boutonIndiceCouronne = document.getElementById("boutonIndiceCouronne");
+      const indiceCouronne = document.getElementById("indiceCouronne");
+      const ouvrirImageTriskel = document.getElementById("ouvrirImageTriskel");
+      const visionneuseTriskel = document.getElementById("visionneuseTriskel");
+      const formulairePasserelle = document.getElementById("formulairePasserelle");
+      const reponsePasserelle = document.getElementById("reponsePasserelle");
+      const messagePasserelle = document.getElementById("messagePasserelle");
+      const boutonIndicePasserelle = document.getElementById("boutonIndicePasserelle");
+      const indicePasserelle = document.getElementById("indicePasserelle");
+      const ouvrirImageHermine = document.getElementById("ouvrirImageHermine");
+      const visionneuseHermine = document.getElementById("visionneuseHermine");
+      const formulaireFaiencerie = document.getElementById("formulaireFaiencerie");
+      const reponseFaiencerie = document.getElementById("reponseFaiencerie");
+      const messageFaiencerie = document.getElementById("messageFaiencerie");
+      const historiqueScenes = [];
+      let sceneActuelle = sceneDemandee || "accueil";
+
+      function afficherScene(nouvelleScene, ajouterHistorique = true) {
+        const cible = document.getElementById(nouvelleScene);
+        if (!cible || nouvelleScene === sceneActuelle) return;
+
+        if (ajouterHistorique) historiqueScenes.push(sceneActuelle);
+
+        scenes.forEach((scene) => {
+          const estActive = scene === cible;
+          scene.hidden = !estActive;
+          scene.setAttribute("aria-hidden", String(!estActive));
+        });
+
+        sceneActuelle = nouvelleScene;
+        boutonRetour.disabled = historiqueScenes.length === 0;
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+
+      document.addEventListener("click", (evenement) => {
+        const declencheur = evenement.target.closest("[data-scene-suivante]");
+        if (!declencheur) return;
+        afficherScene(declencheur.dataset.sceneSuivante);
+      });
+
+      boutonRetour.addEventListener("click", () => {
+        const scenePrecedente = historiqueScenes.pop();
+        if (!scenePrecedente) return;
+        afficherScene(scenePrecedente, false);
+      });
+
+      reponseAnneeGradlon.addEventListener("input", () => {
+        reponseAnneeGradlon.value = reponseAnneeGradlon.value.replace(/\D/g, "").slice(0, 4);
+        messageAnneeGradlon.textContent = "";
+      });
+
+      formulaireAnneeGradlon.addEventListener("submit", (evenement) => {
+        evenement.preventDefault();
+
+        if (reponseAnneeGradlon.value.trim() === "1858") {
+          messageAnneeGradlon.textContent = "";
+          window.location.href = "carnet/index.html";
+          return;
+        }
+
+        messageAnneeGradlon.textContent = "Ce n’est pas la bonne année. Observe bien les panneaux d'informations autour du point de départ.";
+        reponseAnneeGradlon.focus();
+        reponseAnneeGradlon.select();
+      });
+
+      reponseCroixSaintAndre.addEventListener("input", () => {
+        reponseCroixSaintAndre.value = reponseCroixSaintAndre.value.replace(/\D/g, "").slice(0, 2);
+        messageCroixSaintAndre.textContent = "";
+      });
+
+      formulaireCroixSaintAndre.addEventListener("submit", (evenement) => {
+        evenement.preventDefault();
+
+        if (reponseCroixSaintAndre.value.trim() === "18") {
+          messageCroixSaintAndre.textContent = "";
+          window.location.assign("./mecanisme-trappe/index.html");
+          return;
+        }
+
+        messageCroixSaintAndre.textContent = "Ce n’est pas la bonne réponse. Observez attentivement toute la façade.";
+        reponseCroixSaintAndre.focus();
+        reponseCroixSaintAndre.select();
+      });
+
+      ouvrirImageSocle.addEventListener("click", () => {
+        visionneuseSocle.hidden = false;
+        document.body.style.overflow = "hidden";
+      });
+
+      visionneuseSocle.addEventListener("click", () => {
+        visionneuseSocle.hidden = true;
+        document.body.style.overflow = "";
+      });
+
+      ouvrirImageCle.addEventListener("click", () => {
+        visionneuseCle.hidden = false;
+        document.body.style.overflow = "hidden";
+      });
+
+      visionneuseCle.addEventListener("click", () => {
+        visionneuseCle.hidden = true;
+        document.body.style.overflow = "";
+      });
+
+      boutonIndiceCle.addEventListener("click", () => {
+        const doitAfficher = indiceCle.hidden;
+        indiceCle.hidden = !doitAfficher;
+        boutonIndiceCle.setAttribute("aria-expanded", String(doitAfficher));
+        boutonIndiceCle.textContent = doitAfficher ? "Masquer l’indice" : "Indice";
+      });
+
+      boutonBatisseTrouvee.addEventListener("click", () => {
+        afficherScene("scene-enigme-panneau");
+      });
+
+      choixObjetsPanneau.forEach((choix) => {
+        choix.addEventListener("change", () => {
+          const coches = choixObjetsPanneau.filter((element) => element.checked);
+          if (coches.length > 2) choix.checked = false;
+          messageObjetsPanneau.textContent = "";
+        });
+      });
+
+      formulaireObjetsPanneau.addEventListener("submit", (evenement) => {
+        evenement.preventDefault();
+        const reponses = choixObjetsPanneau.filter((choix) => choix.checked).map((choix) => choix.value);
+
+        if (reponses.length === 2 && reponses.includes("equerre") && reponses.includes("plan")) {
+          messageObjetsPanneau.textContent = "";
+          window.location.assign("./mecanisme-panneau/index.html");
+          return;
+        }
+
+        messageObjetsPanneau.textContent = reponses.length < 2
+          ? "Choisissez deux objets avant de valider."
+          : "Ce ne sont pas les deux bons objets. Observez attentivement le panneau.";
+      });
+
+      ouvrirImageCouronne.addEventListener("click", () => {
+        visionneuseCouronne.hidden = false;
+        document.body.style.overflow = "hidden";
+      });
+
+      visionneuseCouronne.addEventListener("click", () => {
+        visionneuseCouronne.hidden = true;
+        document.body.style.overflow = "";
+      });
+
+      reponseArtefactCouronne.addEventListener("input", () => {
+        reponseArtefactCouronne.value = reponseArtefactCouronne.value
+          .replace(/[^a-z]/gi, "")
+          .slice(0, 4);
+        messageArtefactCouronne.textContent = "";
+      });
+
+      formulaireArtefactCouronne.addEventListener("submit", (evenement) => {
+        evenement.preventDefault();
+
+        if (reponseArtefactCouronne.value.trim().toUpperCase() === "JSSZ") {
+          messageArtefactCouronne.textContent = "";
+          window.location.assign("./mecanisme-chute-piece/index.html");
+          return;
+        }
+
+        messageArtefactCouronne.textContent = "Ce ne sont pas les bonnes initiales. Observez attentivement les inscriptions.";
+        reponseArtefactCouronne.focus();
+        reponseArtefactCouronne.select();
+      });
+
+      boutonIndiceCouronne.addEventListener("click", () => {
+        const doitAfficher = indiceCouronne.hidden;
+        indiceCouronne.hidden = !doitAfficher;
+        boutonIndiceCouronne.setAttribute("aria-expanded", String(doitAfficher));
+        boutonIndiceCouronne.textContent = doitAfficher ? "Masquer l’indice" : "Indice";
+      });
+
+      ouvrirImageTriskel.addEventListener("click", () => {
+        visionneuseTriskel.hidden = false;
+        document.body.style.overflow = "hidden";
+      });
+
+      visionneuseTriskel.addEventListener("click", () => {
+        visionneuseTriskel.hidden = true;
+        document.body.style.overflow = "";
+      });
+
+      function normaliserReponse(texte) {
+        return texte
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z]/gi, "")
+          .toLowerCase();
+      }
+
+      reponsePasserelle.addEventListener("input", () => {
+        messagePasserelle.textContent = "";
+      });
+
+      formulairePasserelle.addEventListener("submit", (evenement) => {
+        evenement.preventDefault();
+
+        if (normaliserReponse(reponsePasserelle.value) === "guevel") {
+          messagePasserelle.textContent = "";
+          window.location.assign("./mecanisme-collection/index.html?artefact=triskel&logement=2&suite=artefact-hermine");
+          return;
+        }
+
+        messagePasserelle.textContent = "Ce n’est pas le bon nom. Observez les indications près de la passerelle.";
+        reponsePasserelle.focus();
+        reponsePasserelle.select();
+      });
+
+      boutonIndicePasserelle.addEventListener("click", () => {
+        const doitAfficher = indicePasserelle.hidden;
+        indicePasserelle.hidden = !doitAfficher;
+        boutonIndicePasserelle.setAttribute("aria-expanded", String(doitAfficher));
+        boutonIndicePasserelle.textContent = doitAfficher ? "Masquer l’indice" : "Indice";
+      });
+
+      ouvrirImageHermine.addEventListener("click", () => {
+        visionneuseHermine.hidden = false;
+        document.body.style.overflow = "hidden";
+      });
+
+      visionneuseHermine.addEventListener("click", () => {
+        visionneuseHermine.hidden = true;
+        document.body.style.overflow = "";
+      });
+
+      reponseFaiencerie.addEventListener("input", () => {
+        reponseFaiencerie.value = reponseFaiencerie.value
+          .replace(/[^a-z]/gi, "")
+          .toUpperCase()
+          .slice(0, 6);
+        messageFaiencerie.textContent = "";
+      });
+
+      formulaireFaiencerie.addEventListener("submit", (evenement) => {
+        evenement.preventDefault();
+
+        const reponse = normaliserReponse(`H${reponseFaiencerie.value}`);
+        if (reponse === "henriot" || reponse === "faienceriehenriot" || reponse === "henriotquimper") {
+          messageFaiencerie.textContent = "";
+          window.location.assign("./mecanisme-candy-crush/index.html");
+          return;
+        }
+
+        messageFaiencerie.textContent = "Ce n’est pas la bonne réponse. Observez le magasin dans le recoin de la place de la Cathédrale.";
+        reponseFaiencerie.focus();
+        reponseFaiencerie.select();
+      });
+
+      if (window.location.hash === "#socle") {
+        afficherScene("scene-2");
+      }
+
+      if (window.location.hash === "#coffret-ouvert") {
+        afficherScene("scene-coffret-ouvert");
+      }
+
+      if (window.location.hash === "#artefact-couronne") {
+        afficherScene("scene-artefact-couronne");
+      }
+
+      if (window.location.hash === "#artefact-triskel") {
+        afficherScene("scene-artefact-triskel");
+      }
+
+      if (window.location.hash === "#artefact-hermine") {
+        afficherScene("scene-artefact-hermine");
+      }
+
+      if (window.location.hash === "#artefacts-reunis") {
+        afficherScene("scene-artefacts-reunis");
+      }
+
+      window.afficherScene = afficherScene;
+    })();
+  </script>
 </body>
 </html>
