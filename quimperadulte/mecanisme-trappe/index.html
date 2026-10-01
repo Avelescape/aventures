@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>La trappe secrète</title>
+  <style>
+    :root {
+      /* Réglage principal : augmentez la valeur pour ralentir l'ouverture. */
+      --duree-ouverture: 2.8s;
+
+      /* Position mesurée sur l'image originale de 1152 × 2048 px. */
+      --trappe-x: 511;
+      --trappe-y: 1323;
+      --trappe-largeur: 140;
+      --trappe-hauteur: 154;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: #050708;
+      overflow: hidden;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+    }
+
+    #scene {
+      position: relative;
+      width: min(100vw, calc(100svh * 1152 / 2048));
+      aspect-ratio: 1152 / 2048;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    #batiment {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    /* Cette fenêtre masque la trappe pendant son coulissement vers la droite. */
+    #mecanisme {
+      position: absolute;
+      z-index: 2;
+      /* Chevauchement de 1 px : évite le filet dû à l'arrondi des sous-pixels. */
+      left: calc(var(--trappe-x) / 1152 * 100% - 1px);
+      top: calc(var(--trappe-y) / 2048 * 100% - 1px);
+      width: calc(var(--trappe-largeur) / 1152 * 100% + 2px);
+      height: calc(var(--trappe-hauteur) / 2048 * 100% + 2px);
+      overflow: hidden;
+      background: #17110d;
+    }
+
+    #cavite,
+    #trappe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    #cavite { object-fit: cover; }
+
+    #trappe {
+      z-index: 2;
+      object-fit: fill;
+      transform: translateX(0);
+      transition: transform var(--duree-ouverture) cubic-bezier(.42, 0, .3, 1);
+      will-change: transform;
+    }
+
+    #scene.ouverte #trappe { transform: translateX(105%); }
+
+    #instruction {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      bottom: max(4%, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      margin: 0;
+      padding: .65em 1.1em;
+      border: 1px solid rgba(237, 228, 206, .65);
+      border-radius: 999px;
+      background: rgba(15, 29, 48, .78);
+      color: #f5efe0;
+      font: 600 clamp(15px, 4vw, 21px)/1.2 Georgia, serif;
+      letter-spacing: .04em;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, .4);
+      transition: opacity .35s ease;
+    }
+
+    #scene.ouverte #instruction { opacity: 0; }
+
+    #sortir-coffret {
+      position: absolute;
+      z-index: 4;
+      left: 50%;
+      bottom: max(4%, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      width: min(82%, 300px);
+      padding: .48em 1.25em;
+      border: 1.5px solid #c75b1b;
+      border-radius: 999px;
+      background: #102b2f;
+      color: #d06a2c;
+      font: 400 clamp(18px, 5vw, 26px)/1.2 Georgia, serif;
+      letter-spacing: 0;
+      white-space: nowrap;
+      cursor: pointer;
+      box-shadow: none;
+    }
+
+    #sortir-coffret:focus-visible {
+      outline: 2px solid #d06a2c;
+      outline-offset: 4px;
+    }
+
+    #sortir-coffret[hidden] { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      #trappe { transition-duration: .8s; }
+    }
+  </style>
+</head>
+<body>
+  <main id="scene" role="button" tabindex="0" aria-label="Toucher l'écran pour ouvrir la trappe">
+    <img id="batiment" src="images/batiment.webp" alt="Façade de la maison">
+
+    <div id="mecanisme" aria-hidden="true">
+      <img id="cavite" src="images/cavite.webp" alt="cavité">
+      <img id="trappe" src="images/trappe.webp" alt="trappe">
+    </div>
+
+    <p id="instruction">Toucher l'écran</p>
+    <button id="sortir-coffret" type="button" hidden>Sortir le coffret</button>
+  </main>
+
+  <audio id="son-engrenage" src="sons/trappe.mp3" preload="auto"></audio>
+
+  <script>
+    const scene = document.querySelector('#scene');
+    const trappe = document.querySelector('#trappe');
+    const boutonSortirCoffret = document.querySelector('#sortir-coffret');
+    const sonEngrenage = document.querySelector('#son-engrenage');
+    let ouvertureLancee = false;
+
+    function afficherBoutonCoffret(event) {
+      if (event.propertyName !== 'transform') return;
+      boutonSortirCoffret.hidden = false;
+      boutonSortirCoffret.focus();
+    }
+
+    function ouvrirTrappe() {
+      if (ouvertureLancee) return;
+      ouvertureLancee = true;
+
+      // Le son doit être lancé directement pendant le geste pour fonctionner sur iPhone.
+      sonEngrenage.currentTime = 0;
+      sonEngrenage.play().catch(() => {
+        // L'animation reste fonctionnelle si le fichier audio n'est pas encore ajouté.
+      });
+
+      scene.classList.add('ouverte');
+      scene.setAttribute('aria-label', 'La trappe est ouverte');
+    }
+
+    trappe.addEventListener('transitionend', afficherBoutonCoffret, { once: true });
+    boutonSortirCoffret.addEventListener('click', (event) => {
+      event.stopPropagation();
+      window.location.href = '../index.html#coffret-ouvert';
+    });
+    scene.addEventListener('pointerdown', ouvrirTrappe, { once: true });
+    scene.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        ouvrirTrappe();
+      }
+    });
+  </script>
+</body>
+</html>
