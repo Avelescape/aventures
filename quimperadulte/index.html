@@ -13,6 +13,7 @@
         var editing = active && /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName);
         if (editing) return;
         document.documentElement.style.setProperty('--game-height', window.innerHeight + 'px');
+        document.documentElement.style.setProperty('--scene1-image-max', Math.round(window.innerHeight * 0.58) + 'px');
       }
       setGameHeight();
       window.addEventListener('orientationchange', function () { setTimeout(setGameHeight, 350); });
@@ -391,6 +392,19 @@
       border-radius: 22px;
       background: var(--ombre);
       box-shadow: 0 14px 32px rgba(7, 20, 23, 0.6);
+    }
+
+    /* Scène 1858 : sur iPhone, 58svh se recalculait à l’ouverture du clavier
+       et réduisait visiblement l’image puis toute la composition.
+       Cette scène utilise donc la hauteur mémorisée avant la saisie. */
+    #scene-1 .image-scene {
+      max-height: var(--scene1-image-max, 58svh);
+      flex-shrink: 0;
+    }
+
+    #scene-1 .panneau,
+    #scene-1 .bloc-enigme {
+      flex-shrink: 0;
     }
 
     .bloc-enigme {
