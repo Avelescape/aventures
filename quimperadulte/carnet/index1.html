@@ -15,9 +15,9 @@
       --fond-principal: #0E2228;
       --fond-panneau: #132F35;
       --or-patine: #B78B45;
-      --cuivre: #E28A50;
+      --cuivre: #B65D2A;
       --ivoire: #E9DDC7;
-      --beige-grise: #DED1BC;
+      --beige-grise: #CBBCA5;
       --ombre: #071417;
       --ys-sombre: #176B70;
       --paper: #f4eddf;
@@ -58,7 +58,7 @@
       background: rgba(19, 47, 53, .95);
       box-shadow: 0 5px 16px rgba(7, 20, 23, .55);
       text-decoration: none;
-      font-size: clamp(18px, 4.2vw, 21px);
+      font-size: clamp(15px, 4.2vw, 18px);
       font-weight: 600;
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
@@ -90,7 +90,7 @@
       background: rgba(19, 47, 53, .95);
       color: var(--ivoire);
       box-shadow: 0 5px 16px rgba(7, 20, 23, .55);
-      font-size: 27px;
+      font-size: 24px;
       text-decoration: none;
       cursor: pointer;
       backdrop-filter: blur(7px);
@@ -116,7 +116,7 @@
 
     .book {
       position: relative;
-      width: min(560px, 94vw);
+      width: min(430px, 90vw, calc((100svh - 150px) * .6667));
       aspect-ratio: 2 / 3;
       filter: drop-shadow(0 24px 28px rgba(0, 0, 0, .48));
     }
@@ -201,7 +201,7 @@
       color: var(--ivoire);
       background: rgba(19, 47, 53, .95);
       box-shadow: 0 5px 16px rgba(7, 20, 23, .55);
-      font: 600 25px/1 "Cormorant Garamond", Georgia, serif;
+      font: 600 22px/1 "Cormorant Garamond", Georgia, serif;
       cursor: pointer;
       transition: background 150ms ease, color 150ms ease, transform 150ms ease, opacity 150ms ease;
     }
@@ -218,7 +218,7 @@
       min-width: 50px;
       color: var(--beige-grise);
       text-align: center;
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 600;
     }
 
@@ -238,7 +238,7 @@
       background: rgba(19, 47, 53, .96);
       box-shadow: 0 8px 20px rgba(7, 20, 23, .48);
       transform: translateX(-50%);
-      font-size: clamp(17px, 3.8vw, 20px);
+      font-size: clamp(14px, 3.8vw, 17px);
       font-weight: 600;
       text-align: center;
       pointer-events: none;
@@ -253,7 +253,7 @@
     .swipe-hand {
       display: inline-block;
       flex: 0 0 auto;
-      font-size: 27px;
+      font-size: 24px;
       animation: swipe-left 1.6s ease-in-out infinite;
     }
 

@@ -2,8 +2,14 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=overlays-content">
   <meta name="theme-color" content="#0E2228">
+  <script>
+    // Garde la hauteur du jeu stable quand le clavier virtuel s’ouvre (1858, JSSZ, HENRIOT).
+    if ("virtualKeyboard" in navigator) {
+      navigator.virtualKeyboard.overlaysContent = true;
+    }
+  </script>
   <title>Le secret du Roi Gradlon — AvelEscape</title>
 
   <style>
@@ -421,6 +427,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 0.22em;
       padding: 10px 18px;
       border: 2px solid var(--or-patine);
       border-radius: 16px;
@@ -429,7 +436,8 @@
     }
 
     .champ-avec-prefixe .champ-reponse {
-      width: 6.5em;
+      width: 6ch;
+      flex: 0 0 6ch;
       min-height: 0;
       padding: 0;
       border: 0;
@@ -1024,7 +1032,7 @@
           <form id="formulaireFaiencerie" class="formulaire-reponse" novalidate>
             <label class="sr-only" for="reponseFaiencerie">Nom de la faïencerie</label>
             <div class="champ-avec-prefixe">
-              <span class="prefixe-reponse" aria-hidden="true">H</span>
+              <span class="prefixe-reponse" aria-hidden="true">Hb H</span>
               <input
                 id="reponseFaiencerie"
                 class="champ-reponse"
@@ -1057,7 +1065,7 @@
         <div class="panneau">
           <h2 id="titre-indice-hermine">Indice</h2>
           <div class="ornement" aria-hidden="true"></div>
-          <p class="texte-narratif">Observer attentivement le décor et les inscriptions de ce bol.</p>
+          <p class="texte-narratif">Observez la devanture du magasin créant et vendant ce fameux bol.</p>
         </div>
         <button class="bouton-action" type="button" data-scene-suivante="scene-artefact-hermine">
           Retour à la question
@@ -1140,8 +1148,12 @@
           </p>
         </div>
 
+        <button class="bouton-action" type="button" data-scene-suivante="scene-final-ys">
+          Retour
+        </button>
+
         <button id="boutonFin" class="bouton-action" type="button">
-          Kenavo
+          Kenavo ar wech all
         </button>
       </div>
     </section>
@@ -1216,7 +1228,7 @@
         window.location.assign("./mecanisme-ouverture-porte/index.html");
       });
       boutonFin.addEventListener("click", () => {
-        window.location.assign("../index.html");
+        window.location.assign("../../index.html");
       });
       const reponseAnneeGradlon = document.getElementById("reponseAnneeGradlon");
       const messageAnneeGradlon = document.getElementById("messageAnneeGradlon");
@@ -1270,6 +1282,18 @@
         sceneActuelle = nouvelleScene;
         boutonRetour.disabled = historiqueScenes.length === 0;
         window.scrollTo({ top: 0, behavior: "instant" });
+
+        if (nouvelleScene === "scene-coffret-ouvert") programmerSuiteCoffret();
+      }
+
+      let minuterieCoffret = null;
+      function programmerSuiteCoffret() {
+        window.clearTimeout(minuterieCoffret);
+        const coffret = document.getElementById("scene-coffret-ouvert");
+        if (!coffret) return;
+        minuterieCoffret = window.setTimeout(() => {
+          afficherScene("scene-carnet-cle");
+        }, 1500);
       }
 
       document.addEventListener("click", (evenement) => {
@@ -1496,6 +1520,7 @@
 
       if (window.location.hash === "#coffret-ouvert") {
         afficherScene("scene-coffret-ouvert");
+        programmerSuiteCoffret();
       }
 
       if (window.location.hash === "#artefact-couronne") {

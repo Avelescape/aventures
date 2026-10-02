@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#12181f">
+
+  <title>Le panneau secret</title>
+
+  <style>
+    :root {
+      /*
+        POSITION DU PANNEAU DANS L’IMAGE COMPLÈTE
+        Valeurs prévues pour l’image fournie.
+      */
+      --panneau-x: 30%;
+      --panneau-y: 11.2%;
+      --panneau-largeur: 34.7%;
+      --panneau-hauteur: 36%;
+
+      /*
+        POSITION DE LA VIS INFÉRIEURE GAUCHE
+        dans l’image panneau.webp.
+      */
+      --pivot-x: 8%;
+      --pivot-y: 95%;
+
+      /* Réglages de l’animation */
+      --angle-ouverture: 105deg;
+      --duree-ouverture: 1400ms;
+
+      /* Envol de l’artefact hors de la cavité */
+      --artefact-largeur: 25%;
+      --delai-envol: 2600ms;
+      --duree-envol: 1900ms;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+
+      background: #12181f;
+
+      font-family: Georgia, "Times New Roman", serif;
+
+      user-select: none;
+      -webkit-user-select: none;
+
+      touch-action: manipulation;
+    }
+
+    /*
+      La scène conserve le format vertical 3/4
+      de ton image 1536 × 2048 px.
+    */
+    .scene {
+      position: relative;
+
+      width: min(100vw, calc(100svh * 0.75));
+      aspect-ratio: 3 / 4;
+
+      overflow: hidden;
+      background: #1c2836;
+
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Image complète du mur */
+    .mur {
+      position: absolute;
+      inset: 0;
+
+      width: 100%;
+      height: 100%;
+
+      display: block;
+      object-fit: cover;
+
+      pointer-events: none;
+    }
+
+    /*
+      Zone placée exactement à l’endroit
+      où se trouve le panneau.
+    */
+    .mecanisme {
+      position: absolute;
+
+      left: var(--panneau-x);
+      top: var(--panneau-y);
+
+      width: var(--panneau-largeur);
+      height: var(--panneau-hauteur);
+
+      pointer-events: none;
+    }
+
+    /*
+      Artefact niché dans la cavité dès le départ,
+      mais invisible car recouvert par le panneau fermé
+      (z-index sous .panneau). Il apparaît naturellement
+      quand celui-ci pivote, puis s’envole hors de l’écran
+      par le milieu du haut. Positionné au centre de la
+      cavité (calculé depuis les variables du panneau),
+      indépendamment de celui-ci pour ne pas être limité
+      à sa boîte lors de l’envol.
+    */
+    .artefact {
+      position: absolute;
+      z-index: 3;
+
+      left: calc(var(--panneau-x) + var(--panneau-largeur) / 2);
+      top: calc(var(--panneau-y) + var(--panneau-hauteur) / 2 + 3%);
+
+      width: var(--artefact-largeur);
+
+      transform: translate(-50%, -50%);
+      opacity: 1;
+
+      pointer-events: none;
+
+      filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.55));
+    }
+
+    /* Cavité cachant le panneau présent sur l’image du mur */
+    .cavite {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+
+      width: 100%;
+      height: 100%;
+
+      display: block;
+      object-fit: cover;
+
+      opacity: 0;
+    }
+
+    /* Ombre intérieure de la cavité */
+    .ombre-cavite {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+
+      opacity: 0;
+    }
+
+    /* Panneau indépendant */
+    .panneau {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+
+      width: 100%;
+      height: 100%;
+
+      display: block;
+      object-fit: fill;
+
+      /*
+        Le panneau tourne autour de la vis
+        située en bas à gauche.
+      */
+      transform-origin: var(--pivot-x) var(--pivot-y);
+      transform: rotate(0deg);
+
+      transition:
+        transform var(--duree-ouverture)
+        cubic-bezier(0.22, 0.8, 0.25, 1);
+
+      filter:
+        drop-shadow(3px 5px 4px rgba(0, 0, 0, 0.35));
+
+      will-change: transform;
+    }
+
+    /*
+      Vis fixe affichée par-dessus le panneau.
+      Elle ne tourne pas avec celui-ci.
+    */
+    .vis-pivot {
+      position: absolute;
+      z-index: 8;
+
+      left: var(--pivot-x);
+      top: var(--pivot-y);
+
+      width: clamp(10px, 1.4vw, 18px);
+      aspect-ratio: 1;
+
+      transform: translate(-50%, -50%);
+
+      border: 1px solid #4c3828;
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          45deg,
+          transparent 42%,
+          #3f2d20 43%,
+          #3f2d20 55%,
+          transparent 56%
+        ),
+        radial-gradient(
+          circle at 35% 30%,
+          #d6bd9d 0%,
+          #927052 35%,
+          #4c3728 72%,
+          #241810 100%
+        );
+
+      box-shadow:
+        1px 2px 3px rgba(0, 0, 0, 0.75);
+    }
+
+    /* Message invitant à toucher l’écran */
+    .indication {
+      position: absolute;
+      z-index: 20;
+
+      left: 50%;
+      bottom: max(24px, env(safe-area-inset-bottom));
+
+      transform: translateX(-50%);
+
+      width: max-content;
+      max-width: calc(100% - 32px);
+
+      margin: 0;
+      padding: 10px 16px;
+
+      color: #f2ece0;
+      background: rgba(28, 40, 54, 0.82);
+
+      border: 1px solid rgba(60, 79, 99, 0.6);
+      border-radius: 999px;
+
+      text-align: center;
+      font-size: clamp(14px, 3.6vw, 18px);
+
+      backdrop-filter: blur(4px);
+
+      transition:
+        opacity 350ms ease,
+        transform 350ms ease;
+
+      pointer-events: none;
+    }
+
+    /* État ouvert */
+    .scene.ouverte .panneau {
+      transform: rotate(var(--angle-ouverture));
+
+      filter:
+        drop-shadow(16px 15px 9px rgba(0, 0, 0, 0.55));
+    }
+
+    .scene.ouverte .cavite {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .scene.ouverte .ombre-cavite {
+      opacity: 1;
+    }
+
+    .scene.ouverte .indication {
+      opacity: 0;
+      transform: translate(-50%, 12px);
+    }
+
+    /* L’artefact s’échappe par le milieu du haut de l’écran */
+    .scene.envolee .artefact {
+      left: 50%;
+      top: -25%;
+
+      opacity: 0;
+      transform: translate(-50%, -30%) scale(0.55) rotate(-10deg);
+
+      transition:
+        left var(--duree-envol) cubic-bezier(0.3, 0.6, 0.35, 1),
+        top var(--duree-envol) cubic-bezier(0.3, 0.6, 0.35, 1),
+        transform var(--duree-envol) cubic-bezier(0.3, 0.6, 0.35, 1),
+        opacity var(--duree-envol) ease-in;
+    }
+
+    /* Respect du réglage d’accessibilité du téléphone */
+    @media (prefers-reduced-motion: reduce) {
+      .panneau,
+      .cavite,
+      .ombre-cavite,
+      .artefact,
+      .indication {
+        transition-duration: 1ms;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main
+    class="scene"
+    id="scene"
+    role="button"
+    tabindex="0"
+    aria-label="Toucher pour faire pivoter le panneau"
+    aria-pressed="false"
+  >
+
+    <!-- Image complète du mur -->
+    <img
+      class="mur"
+      src="images/3-webpmur.webp"
+      alt=""
+      draggable="false"
+    >
+
+    <div class="mecanisme">
+
+      <!-- Image de la cavité -->
+      <img
+        class="cavite"
+        src="images/3-webpcavite.webp"
+        alt="Une cavité cachée derrière le panneau"
+        draggable="false"
+      >
+
+      <div class="ombre-cavite"></div>
+
+      <!-- Panneau détouré -->
+      <img
+        class="panneau"
+        src="images/3-webppanneau.webp"
+        alt=""
+        draggable="false"
+      >
+
+      <!-- Vis inférieure gauche restant immobile -->
+      <span class="vis-pivot" aria-hidden="true"></span>
+
+    </div>
+
+    <!-- Artefact qui s'envole hors de la cavité -->
+    <img
+      class="artefact"
+      src="images/3-webp1.webp"
+      alt="Artéfact1"
+      draggable="false"
+    >
+
+    <p class="indication">
+      Toucher l’écran
+    </p>
+
+  </main>
+
+  <script>
+    const scene = document.getElementById("scene");
+    const artefact = document.querySelector(".artefact");
+    const sonPanneau = new Audio("sons/panneau.mp3");
+
+    let animationEnCours = false;
+    let sceneSuivanteLancee = false;
+
+    function basculerPanneau() {
+      if (animationEnCours || scene.classList.contains("ouverte")) {
+        return;
+      }
+
+      animationEnCours = true;
+
+      sonPanneau.currentTime = 0;
+      sonPanneau.play();
+
+      scene.classList.add("ouverte");
+      scene.setAttribute("aria-pressed", "true");
+
+      /*
+        Petite vibration sur les téléphones compatibles.
+      */
+      if ("vibrate" in navigator) {
+        navigator.vibrate([40, 35, 70]);
+      }
+
+      window.setTimeout(() => {
+        animationEnCours = false;
+      }, 1500);
+
+      /*
+        Après quelques secondes, l’artefact s’envole
+        hors de la cavité et sort de l’écran par le haut.
+      */
+      window.setTimeout(() => {
+        scene.classList.add("envolee");
+      }, 2600);
+    }
+
+    /*
+      Une fois l’artefact complètement sorti de l’écran
+      (fin de la transition d’envol), on enchaîne sur
+      la scène suivante.
+    */
+    artefact.addEventListener("transitionend", (event) => {
+      if (sceneSuivanteLancee) {
+        return;
+      }
+      if (event.propertyName !== "opacity") {
+        return;
+      }
+      if (!scene.classList.contains("envolee")) {
+        return;
+      }
+
+      sceneSuivanteLancee = true;
+      window.location.href = "../mecanisme-collection/index.html?artefact=cle";
+    });
+
+    scene.addEventListener("pointerup", basculerPanneau);
+
+    scene.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        basculerPanneau();
+      }
+    });
+
+    /*
+      Empêche le navigateur de déplacer l’image
+      lors d’un glissement du doigt.
+    */
+    scene.addEventListener("dragstart", (event) => {
+      event.preventDefault();
+    });
+  </script>
+
+</body>
+</html>
