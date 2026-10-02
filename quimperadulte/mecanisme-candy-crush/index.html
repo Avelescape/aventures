@@ -49,15 +49,15 @@
 
 <script>
 /* PERSONNALISATION : placez vos images dans /images avec les noms ci-dessous. */
-const CONFIG={duration:90,goal:42,types:3,rows:8,cols:8,relicVisibleMs:0,relicExitMs:1300,collectionUrl:'../mecanisme-collection/index.html?artefact=hermine',continueUrl:'../index.html'};
-const IMAGES=['3-webp1.webp','3-webp2.webp','3-webp3.webp'];
+const CONFIG={duration:90,goal:42,types:4,rows:8,cols:8,relicVisibleMs:0,relicExitMs:1300,collectionUrl:'../mecanisme-collection/index.html?artefact=hermine',continueUrl:'../index.html'};
+const IMAGES=['3-webp1.webp','3-webp2.webp','3-webP3.webp','3-webp4.webp'];
 const boardEl=document.querySelector('#board'),timerEl=document.querySelector('#timer'),veil=document.querySelector('#veil'),stageEl=document.querySelector('#stage'),relicEl=document.querySelector('#relic');
 let grid=[],selected=null,score=0,time=CONFIG.duration,running=false,busy=false,tick,hintTick,soundOn=true,swipe=null,suppressClickUntil=0;
 const $=s=>document.querySelector(s),idx=(r,c)=>r*CONFIG.cols+c,rc=i=>[Math.floor(i/CONFIG.cols),i%CONFIG.cols];
 
 function randomType(){return Math.floor(Math.random()*CONFIG.types)}
 function makeGrid(){grid=[];for(let r=0;r<CONFIG.rows;r++)for(let c=0;c<CONFIG.cols;c++){let t;do{t=randomType()}while((c>1&&grid[idx(r,c-1)]===t&&grid[idx(r,c-2)]===t)||(r>1&&grid[idx(r-1,c)]===t&&grid[idx(r-2,c)]===t));grid.push(t)}if(!findMove())makeGrid()}
-function tileHTML(t,i){if(t===null)return `<span class="empty" data-i="${i}" aria-hidden="true"></span>`;const symbols=['◆','●','▲'];return `<button class="tile" data-i="${i}" aria-label="Artéfact ${t+1}"><img src="../images/${IMAGES[t]}" alt="" onerror="this.style.display='none';this.nextElementSibling.classList.add('visible')"><span class="fallback">${symbols[t]}</span></button>`}
+function tileHTML(t,i){if(t===null)return `<span class="empty" data-i="${i}" aria-hidden="true"></span>`;const symbols=['◆','●','▲','✦'];return `<button class="tile" data-i="${i}" aria-label="Artéfact ${t+1}"><img src="../images/${IMAGES[t]}" alt="" onerror="this.style.display='none';this.nextElementSibling.classList.add('visible')"><span class="fallback">${symbols[t]}</span></button>`}
 function render(){boardEl.innerHTML=grid.map(tileHTML).join('');boardEl.querySelectorAll('.tile').forEach(el=>{el.addEventListener('click',()=>{if(Date.now()>suppressClickUntil)choose(+el.dataset.i)});el.addEventListener('pointerdown',startSwipe);el.addEventListener('pointerup',endSwipe);el.addEventListener('pointercancel',()=>swipe=null)})}
 function startSwipe(e){if(!running||busy)return;swipe={i:+e.currentTarget.dataset.i,x:e.clientX,y:e.clientY,id:e.pointerId};e.currentTarget.setPointerCapture?.(e.pointerId)}
 function endSwipe(e){if(!swipe||swipe.id!==e.pointerId)return;const start=swipe;swipe=null;const dx=e.clientX-start.x,dy=e.clientY-start.y;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;e.preventDefault();suppressClickUntil=Date.now()+450;const [r,c]=rc(start.i);let nr=r,nc=c;if(Math.abs(dx)>Math.abs(dy))nc+=dx>0?1:-1;else nr+=dy>0?1:-1;if(nr<0||nr>=CONFIG.rows||nc<0||nc>=CONFIG.cols)return;const target=idx(nr,nc);if(grid[target]===null)return;selected=null;markSelected();trySwap(start.i,target)}
