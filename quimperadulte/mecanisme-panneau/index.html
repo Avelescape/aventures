@@ -380,8 +380,11 @@
     const scene = document.getElementById("scene");
     const artefact = document.querySelector(".artefact");
     const sonPanneau = new Audio("sons/panneau.mp3");
+    const sonPiece = new Audio("sons/piece.mp3");
     sonPanneau.preload = "auto";
     sonPanneau.setAttribute("playsinline", "");
+    sonPiece.preload = "auto";
+    sonPiece.setAttribute("playsinline", "");
     function deverrouillerSon() {
       const ancienVolume = sonPanneau.volume;
       sonPanneau.volume = 0;
@@ -408,6 +411,13 @@
       sonPanneau.currentTime = 0;
       sonPanneau.play().catch(() => {});
 
+      sonPiece.volume = 0;
+      sonPiece.loop = true;
+      sonPiece.currentTime = 0;
+      sonPiece.play().catch((erreur) => {
+        console.error("Impossible de préparer le son de la pièce.", erreur);
+      });
+
       scene.classList.add("ouverte");
       scene.setAttribute("aria-pressed", "true");
 
@@ -428,6 +438,9 @@
       */
       window.setTimeout(() => {
         scene.classList.add("envolee");
+        sonPiece.currentTime = 0;
+        sonPiece.volume = 1;
+        sonPiece.loop = false;
       }, 2600);
     }
 

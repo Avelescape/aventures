@@ -54,6 +54,13 @@ const IMAGES=['3-webp1.webp','3-webp2.webp','3-webP3.webp','3-webp4.webp'];
 const boardEl=document.querySelector('#board'),timerEl=document.querySelector('#timer'),veil=document.querySelector('#veil'),stageEl=document.querySelector('#stage'),relicEl=document.querySelector('#relic');
 let grid=[],selected=null,score=0,running=false,busy=false,hintTick,soundOn=true,swipe=null,suppressClickUntil=0;
 const $=s=>document.querySelector(s),idx=(r,c)=>r*CONFIG.cols+c,rc=i=>[Math.floor(i/CONFIG.cols),i%CONFIG.cols];
+const sonPiece=new Audio('../mecanisme-collection/sons/piece.mp3');
+sonPiece.preload='auto';
+sonPiece.setAttribute('playsinline','');
+let sonPiecePrepare=false;
+function preparerSonPiece(){if(sonPiecePrepare)return;sonPiecePrepare=true;sonPiece.volume=0;sonPiece.loop=true;sonPiece.currentTime=0;sonPiece.play().catch(erreur=>{sonPiecePrepare=false;console.error('Impossible de préparer le son de l’hermine.',erreur)})}
+document.addEventListener('pointerdown',preparerSonPiece,{once:true,passive:true});
+document.addEventListener('keydown',preparerSonPiece,{once:true});
 
 function randomType(){return Math.floor(Math.random()*CONFIG.types)}
 function makeGrid(){grid=[];for(let r=0;r<CONFIG.rows;r++)for(let c=0;c<CONFIG.cols;c++){let t;do{t=randomType()}while((c>1&&grid[idx(r,c-1)]===t&&grid[idx(r,c-2)]===t)||(r>1&&grid[idx(r-1,c)]===t&&grid[idx(r-2,c)]===t));grid.push(t)}if(!findMove())makeGrid()}
@@ -77,7 +84,7 @@ function showHint(){if(!running||busy||selected!==null)return;const move=findMov
 function clearHints(){boardEl.querySelectorAll('.hint').forEach(e=>e.classList.remove('hint'))}
 function start(){clearInterval(hintTick);score=0;selected=null;busy=false;running=true;boardEl.style.opacity='1';stageEl.classList.remove('exit');relicEl.classList.remove('exit');relicEl.style.removeProperty('--relic-exit-duration');$('#modal').classList.remove('show');$('#continueLink').hidden=true;makeGrid();render();updateProgress();timerEl.textContent='∞';timerEl.classList.remove('danger');hintTick=setInterval(showHint,4000)}
 function stop(){running=false;clearInterval(hintTick);clearHints()}
-function win(){if(!running)return;stop();boardEl.style.opacity='0';tone(660,.12);setTimeout(()=>tone(880,.25),150);setTimeout(()=>{stageEl.classList.add('exit');relicEl.style.setProperty('--relic-exit-duration',CONFIG.relicExitMs+'ms');relicEl.classList.add('exit');setTimeout(()=>window.location.assign(CONFIG.collectionUrl),CONFIG.relicExitMs+120)},CONFIG.relicVisibleMs)}
+function win(){if(!running)return;stop();boardEl.style.opacity='0';tone(660,.12);setTimeout(()=>tone(880,.25),150);setTimeout(()=>{sonPiece.currentTime=0;sonPiece.volume=1;sonPiece.loop=false;if(sonPiece.paused)sonPiece.play().catch(erreur=>console.error('Impossible de jouer le son de l’hermine.',erreur));stageEl.classList.add('exit');relicEl.style.setProperty('--relic-exit-duration',CONFIG.relicExitMs+'ms');relicEl.classList.add('exit');setTimeout(()=>window.location.assign(CONFIG.collectionUrl),CONFIG.relicExitMs+120)},CONFIG.relicVisibleMs)}
 function showResult(ok){$('#resultTitle').textContent=ok?'Artéfact découvert !':'Le mécanisme s’est refermé';$('#resultText').textContent=ok?'Bravo ! Vous avez révélé le dernier artéfact de l’aventure.':'Le temps est écoulé. Recommencez : la nouvelle grille vous offrira rapidement de nouveaux alignements.';$('#resultButton').textContent=ok?'Revoir l’artéfact':'Recommencer';$('#continueLink').hidden=!ok;$('#continueLink').href=CONFIG.continueUrl;$('#modal').classList.add('show')}
 function wait(ms){return new Promise(r=>setTimeout(r,ms))}
 function tone(freq,duration){if(!soundOn)return;try{const A=window.AudioContext||window.webkitAudioContext,a=new A(),o=a.createOscillator(),g=a.createGain();o.frequency.value=freq;o.type='triangle';g.gain.setValueAtTime(.08,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+duration);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+duration)}catch(e){}}

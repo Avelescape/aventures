@@ -255,9 +255,17 @@
       ], { duration: parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--duree-vol")),
            easing: "cubic-bezier(.22,.72,.28,1)", fill: "forwards" });
 
+      const lancerSonQuandVisible = () => {
+        if (animation.currentTime !== null && animation.currentTime >= animation.effect.getTiming().duration * .18) {
+          sonPiece.currentTime = 0;
+          sonPiece.play().catch(erreur => console.error("Impossible de jouer le son de l’artefact.", erreur));
+          return;
+        }
+        if (animation.playState !== "idle") requestAnimationFrame(lancerSonQuandVisible);
+      };
+      requestAnimationFrame(lancerSonQuandVisible);
+
       await animation.finished.catch(() => {});
-      sonPiece.currentTime = 0;
-      sonPiece.play().catch(() => {});
       volant.style.opacity = "0";
       afficherArtefactDans(cible, artefact, true);
       sauvegarderActuel();

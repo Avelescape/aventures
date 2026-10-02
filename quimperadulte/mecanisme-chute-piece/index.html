@@ -158,45 +158,84 @@
     </div>
   </main>
 
+  <audio id="sonPiece" src="sons/piece.mp3" preload="auto"></audio>
+
   <script>
     const scene = document.querySelector("#scene");
     const artefact = document.querySelector("#artefact");
+    const sonPiece = document.querySelector("#sonPiece");
     let sceneSuivanteLancee = false;
+    let chuteLancee = false;
 
-    function enigmeReussie() {
+    function demarrerChuteAvecSon() {
+      if (chuteLancee) return;
+      chuteLancee = true;
+
+      // IMPORTANT iPhone : démarrer l'audio pendant le clic du joueur, mais muet.
+      // La lecture est ainsi autorisée ; on rend le son audible au point bas de la chute.
+      sonPiece.loop = true;
+      sonPiece.volume = 0;
+      sonPiece.currentTime = 0;
+      const lecture = sonPiece.play();
+      if (lecture && lecture.catch) {
+        lecture.catch((erreur) => {
+          console.error("Impossible de démarrer le son de la pièce.", erreur);
+        });
+      }
+
+      artefact.addEventListener("animationstart", (evenement) => {
+        if (evenement.animationName !== "chute-et-collecte") return;
+
+        const animation = artefact.getAnimations().find((candidate) =>
+          candidate.animationName === "chute-et-collecte"
+        );
+        if (!animation) {
+          console.error("Animation de chute introuvable pour synchroniser le son.");
+          return;
+        }
+
+        const pointBas = parseFloat(getComputedStyle(artefact).animationDuration) * 1000 * 0.4;
+        const attendrePointBas = () => {
+          if (animation.currentTime !== null && animation.currentTime >= pointBas) {
+            sonPiece.currentTime = 0;
+            sonPiece.volume = 1;
+            sonPiece.loop = false;
+            return;
+          }
+          if (animation.playState !== "idle") {
+            window.requestAnimationFrame(attendrePointBas);
+          }
+        };
+        window.requestAnimationFrame(attendrePointBas);
+      }, { once: true });
+
       scene.classList.remove("animation-artefact");
-
-      // Force le navigateur à remettre l’animation au début.
       void scene.offsetWidth;
-
       scene.classList.add("animation-artefact");
 
       if (window.parent && window.parent !== window) {
         window.parent.postMessage("mecanisme-ouvert", "*");
       }
-
-      if (navigator.vibrate) {
-        navigator.vibrate([60, 40, 100]);
-      }
-
-      // Enregistre l’artefact dans la collection du joueur.
+      if (navigator.vibrate) navigator.vibrate([60, 40, 100]);
       localStorage.setItem("artefactMetal", "trouve");
     }
 
-    /*
-      Une fois l’artefact arrivé au bord de l’écran (fin de l’animation
-      de chute), on enchaîne directement sur le coffret.
-    */
+    // Rend la fonction accessible à l'index principal qui a préchargé cette page.
+    window.demarrerChuteAvecSon = demarrerChuteAvecSon;
+
     artefact.addEventListener("animationend", () => {
       if (sceneSuivanteLancee) return;
       sceneSuivanteLancee = true;
-      window.location.href = "../mecanisme-collection/index.html?artefact=couronne";
+      // Si le mécanisme est affiché dans l'iframe, sortir de l'iframe pour poursuivre l'aventure.
+      window.top.location.href = "../mecanisme-collection/index.html?artefact=couronne";
     });
 
-    /* Lance automatiquement la scène lorsque toutes les images sont chargées. */
-    window.addEventListener("load", () => {
-      window.setTimeout(enigmeReussie, 250);
-    });
+    // Ouverture directe de cette page : conserve le fonctionnement sur ordinateur.
+    if (window.top === window) {
+      window.addEventListener("load", () => {
+        window.setTimeout(demarrerChuteAvecSon, 250);
+      });
+    }
   </script>
 </body>
 </html>

@@ -1227,6 +1227,9 @@
     <img src="images/3-webpc8.webp" alt="Page agrandie du carnet consacrée à l’artefact Hermine">
   </button>
 
+  <!-- Mécanisme de chute préchargé : permet à iOS d'autoriser le son lors du clic Valider. -->
+  <iframe id="mecanismeChutePiece" src="./mecanisme-chute-piece/index.html" title="Découverte de la Couronne" style="position:fixed;inset:0;width:100%;height:100%;border:0;z-index:5000;background:#0f1d30;display:none;" allow="autoplay"></iframe>
+
   <script>
     (() => {
       "use strict";
@@ -1463,7 +1466,14 @@
 
         if (reponseArtefactCouronne.value.trim().toUpperCase() === "JSSZ") {
           messageArtefactCouronne.textContent = "";
-          window.location.assign("./mecanisme-chute-piece/index.html");
+          const cadreChute = document.getElementById("mecanismeChutePiece");
+          cadreChute.style.display = "block";
+          try {
+            cadreChute.contentWindow.demarrerChuteAvecSon();
+          } catch (erreur) {
+            // Secours si le mécanisme n'est pas encore préchargé.
+            window.location.assign("./mecanisme-chute-piece/index.html");
+          }
           return;
         }
 
