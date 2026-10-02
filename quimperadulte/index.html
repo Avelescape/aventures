@@ -1311,18 +1311,6 @@
         sceneActuelle = nouvelleScene;
         boutonRetour.disabled = historiqueScenes.length === 0;
         window.scrollTo({ top: 0, behavior: "instant" });
-
-        if (nouvelleScene === "scene-coffret-ouvert") programmerSuiteCoffret();
-      }
-
-      let minuterieCoffret = null;
-      function programmerSuiteCoffret() {
-        window.clearTimeout(minuterieCoffret);
-        const coffret = document.getElementById("scene-coffret-ouvert");
-        if (!coffret) return;
-        minuterieCoffret = window.setTimeout(() => {
-          afficherScene("scene-carnet-cle");
-        }, 1500);
       }
 
       document.addEventListener("click", (evenement) => {
@@ -1549,7 +1537,6 @@
 
       if (window.location.hash === "#coffret-ouvert") {
         afficherScene("scene-coffret-ouvert");
-        programmerSuiteCoffret();
       }
 
       if (window.location.hash === "#artefact-couronne") {
