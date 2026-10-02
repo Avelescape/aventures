@@ -27,6 +27,7 @@
       --ys: #35D3D0;
       --ys-sombre: #176B70;
       --hauteur-navigation: 74px;
+      --hauteur-jeu: 100svh;
     }
 
     * { box-sizing: border-box; }
@@ -37,7 +38,7 @@
     }
 
     body {
-      min-height: 100svh;
+      min-height: var(--hauteur-jeu);
       margin: 0;
       overflow-x: hidden;
       color: var(--ivoire);
@@ -110,11 +111,11 @@
     }
 
     #jeu {
-      min-height: 100svh;
+      min-height: var(--hauteur-jeu);
     }
 
     .scene {
-      min-height: 100svh;
+      min-height: var(--hauteur-jeu);
       padding:
         calc(var(--hauteur-navigation) + env(safe-area-inset-top) + 22px)
         calc(20px + env(safe-area-inset-right))
@@ -126,7 +127,7 @@
 
     .contenu-scene {
       width: min(100%, 560px);
-      min-height: calc(100svh - 140px);
+      min-height: calc(var(--hauteur-jeu) - 140px);
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -1180,6 +1181,25 @@
   </button>
 
   <script>
+    /* Fige la hauteur du jeu pendant l’ouverture du clavier mobile.
+       On ne la recalcule que lors d’un vrai changement d’orientation/largeur. */
+    (() => {
+      let largeurReference = window.innerWidth;
+      const fixerHauteurJeu = () => {
+        document.documentElement.style.setProperty("--hauteur-jeu", `${window.innerHeight}px`);
+        largeurReference = window.innerWidth;
+      };
+      fixerHauteurJeu();
+      window.addEventListener("resize", () => {
+        const saisieActive = document.activeElement?.matches?.("input, textarea, select");
+        const changementLargeur = Math.abs(window.innerWidth - largeurReference) > 80;
+        if (!saisieActive && changementLargeur) fixerHauteurJeu();
+      }, { passive: true });
+      window.addEventListener("orientationchange", () => {
+        window.setTimeout(fixerHauteurJeu, 250);
+      }, { passive: true });
+    })();
+
     (() => {
       "use strict";
 
