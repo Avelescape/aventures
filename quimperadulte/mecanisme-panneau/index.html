@@ -380,11 +380,8 @@
     const scene = document.getElementById("scene");
     const artefact = document.querySelector(".artefact");
     const sonPanneau = new Audio("sons/panneau.mp3");
-    const sonPiece = new Audio("sons/piece.mp3");
     sonPanneau.preload = "auto";
     sonPanneau.setAttribute("playsinline", "");
-    sonPiece.preload = "auto";
-    sonPiece.setAttribute("playsinline", "");
     function deverrouillerSon() {
       const ancienVolume = sonPanneau.volume;
       sonPanneau.volume = 0;
@@ -431,12 +428,6 @@
       */
       window.setTimeout(() => {
         scene.classList.add("envolee");
-        sonPiece.currentTime = 0;
-        sonPiece.volume = 1;
-        sonPiece.loop = false;
-        sonPiece.play().catch((erreur) => {
-          console.error("Impossible de lire le son de la pièce.", erreur);
-        });
       }, 2600);
     }
 

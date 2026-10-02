@@ -179,22 +179,6 @@
     const volant = document.getElementById("artefact-volant");
     const boutonSuite = document.getElementById("bouton-suite");
     const logements = [...document.querySelectorAll(".logement")];
-    const sonPiece = new Audio("sons/piece.mp3");
-    sonPiece.preload = "auto";
-    sonPiece.setAttribute("playsinline", "");
-    function deverrouillerSon() {
-      const ancienVolume = sonPiece.volume;
-      sonPiece.volume = 0;
-      const essai = sonPiece.play();
-      if (essai && typeof essai.then === "function") {
-        essai.then(() => { sonPiece.pause(); sonPiece.currentTime = 0; sonPiece.volume = ancienVolume; }).catch(() => { sonPiece.volume = ancienVolume; });
-      } else {
-        sonPiece.pause(); sonPiece.currentTime = 0; sonPiece.volume = ancienVolume;
-      }
-    }
-    document.addEventListener("touchstart", deverrouillerSon, { once: true, passive: true });
-    document.addEventListener("pointerdown", deverrouillerSon, { once: true, passive: true });
-    sonPiece.preload = "auto";
     let peutContinuer = false;
 
     function collectionSauvegardee() {
@@ -254,16 +238,6 @@
         { opacity: 1, transform: `translate(${dx}px, ${dy}px) scale(${echelle})` }
       ], { duration: parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--duree-vol")),
            easing: "cubic-bezier(.22,.72,.28,1)", fill: "forwards" });
-
-      const lancerSonQuandVisible = () => {
-        if (animation.currentTime !== null && animation.currentTime >= animation.effect.getTiming().duration * .18) {
-          sonPiece.currentTime = 0;
-          sonPiece.play().catch(erreur => console.error("Impossible de jouer le son de l’artefact.", erreur));
-          return;
-        }
-        if (animation.playState !== "idle") requestAnimationFrame(lancerSonQuandVisible);
-      };
-      requestAnimationFrame(lancerSonQuandVisible);
 
       await animation.finished.catch(() => {});
       volant.style.opacity = "0";

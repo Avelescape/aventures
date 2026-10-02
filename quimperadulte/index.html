@@ -1184,11 +1184,9 @@
       </div>
     </section>
 
-    <section id="scene-conclusion" class="scene" aria-labelledby="titre-conclusion" hidden>
+    <section id="scene-conclusion" class="scene" aria-label="Conclusion de l’aventure" hidden>
       <div class="contenu-scene">
         <div class="panneau">
-          <h2 id="titre-conclusion">Le secret du roi Gradlon</h2>
-          <div class="ornement" aria-hidden="true"></div>
           <p class="texte-narratif">
             Et si la cité d’Ys n’était pas qu’une légende&nbsp;?
           </p>
@@ -1196,7 +1194,7 @@
             À compter de ce jour vous êtes Diwaller YS
           </p>
           <p class="designation-gardien">
-            Gardien d'YS
+            Gardien d’Ys et du secret du roi Gradlon
           </p>
         </div>
 
@@ -1226,9 +1224,6 @@
   <button id="visionneuseHermine" class="visionneuse" type="button" aria-label="Fermer la page agrandie du carnet" hidden>
     <img src="images/3-webpc8.webp" alt="Page agrandie du carnet consacrée à l’artefact Hermine">
   </button>
-
-  <!-- Mécanisme de chute préchargé : permet à iOS d'autoriser le son lors du clic Valider. -->
-  <iframe id="mecanismeChutePiece" src="./mecanisme-chute-piece/index.html" title="Découverte de la Couronne" style="position:fixed;inset:0;width:100%;height:100%;border:0;z-index:5000;background:#0f1d30;display:none;" allow="autoplay"></iframe>
 
   <script>
     (() => {
@@ -1466,14 +1461,7 @@
 
         if (reponseArtefactCouronne.value.trim().toUpperCase() === "JSSZ") {
           messageArtefactCouronne.textContent = "";
-          const cadreChute = document.getElementById("mecanismeChutePiece");
-          cadreChute.style.display = "block";
-          try {
-            cadreChute.contentWindow.demarrerChute();
-          } catch (erreur) {
-            // Secours si le mécanisme n'est pas encore préchargé.
-            window.location.assign("./mecanisme-chute-piece/index.html");
-          }
+          window.location.assign("./mecanisme-chute-piece/index.html");
           return;
         }
 

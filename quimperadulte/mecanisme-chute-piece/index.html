@@ -158,106 +158,33 @@
     </div>
   </main>
 
-  <audio id="sonPiece" src="sons/piece.mp3" preload="auto"></audio>
-
   <script>
     const scene = document.querySelector("#scene");
     const artefact = document.querySelector("#artefact");
-    const sonPiece = document.querySelector("#sonPiece");
     let sceneSuivanteLancee = false;
     let chuteLancee = false;
-    let sonPieceJoueUneFois = false;
-    let sonPiecePrepare = false;
-
-    function preparerSonPiece() {
-      if (sonPiecePrepare) return;
-      sonPiecePrepare = true;
-      sonPiece.pause();
-      sonPiece.currentTime = 0;
-      sonPiece.loop = true;
-      sonPiece.volume = 0;
-      const lecture = sonPiece.play();
-      if (lecture && lecture.catch) {
-        lecture.catch((erreur) => {
-          console.error("Impossible de préparer le son de la pièce.", erreur);
-        });
-      }
-    }
-
-    function jouerSonPieceAuPointBas() {
-      if (sonPieceJoueUneFois) return;
-      sonPieceJoueUneFois = true;
-
-      sonPiece.pause();
-      sonPiece.currentTime = 0;
-      sonPiece.loop = false;
-      sonPiece.volume = 1;
-
-      const lecture = sonPiece.play();
-      if (lecture && lecture.catch) {
-        lecture.catch((erreur) => {
-          console.error("Impossible de jouer le son de la pièce.", erreur);
-        });
-      }
-    }
 
     function demarrerChute() {
       if (chuteLancee) return;
       chuteLancee = true;
 
-      preparerSonPiece();
-
-      artefact.addEventListener("animationstart", (evenement) => {
-        if (evenement.animationName !== "chute-et-collecte") return;
-
-        const animation = artefact.getAnimations().find((candidate) =>
-          candidate.animationName === "chute-et-collecte"
-        );
-        if (!animation) {
-          console.error("Animation de chute introuvable pour synchroniser le son.");
-          return;
-        }
-
-        const pointBas = parseFloat(getComputedStyle(artefact).animationDuration) * 1000 * 0.4;
-        const attendrePointBas = () => {
-          if (animation.currentTime !== null && animation.currentTime >= pointBas) {
-            jouerSonPieceAuPointBas();
-            return;
-          }
-          if (animation.playState !== "idle") {
-            window.requestAnimationFrame(attendrePointBas);
-          }
-        };
-        window.requestAnimationFrame(attendrePointBas);
-      }, { once: true });
-
       scene.classList.remove("animation-artefact");
       void scene.offsetWidth;
       scene.classList.add("animation-artefact");
 
-      if (window.parent && window.parent !== window) {
-        window.parent.postMessage("mecanisme-ouvert", "*");
-      }
       if (navigator.vibrate) navigator.vibrate([60, 40, 100]);
       localStorage.setItem("artefactMetal", "trouve");
     }
 
-    // Rend la fonction accessible à l'index principal qui a préchargé cette page.
-    window.demarrerChute = demarrerChute;
-
     artefact.addEventListener("animationend", () => {
       if (sceneSuivanteLancee) return;
       sceneSuivanteLancee = true;
-      // Si le mécanisme est affiché dans l'iframe, sortir de l'iframe pour poursuivre l'aventure.
-      window.top.location.href = "../mecanisme-collection/index.html?artefact=couronne";
+      window.location.href = "../mecanisme-collection/index.html?artefact=couronne";
     });
 
-    // Ouverture directe de cette page : conserve le fonctionnement sur ordinateur.
-    if (window.top === window) {
-      window.addEventListener("load", () => {
-        window.setTimeout(demarrerChute, 250);
-      });
-    }
+    window.addEventListener("load", () => {
+      window.setTimeout(demarrerChute, 250);
+    });
   </script>
 </body>
 </html>

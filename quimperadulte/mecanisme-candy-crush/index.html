@@ -38,7 +38,6 @@
 <div hidden aria-hidden="true">
   <span id="percent">0 %</span><i id="bar"></i><span id="remaining">42</span>
   <span id="timer">1:30</span><span id="combo"></span>
-  <button id="sound" type="button">Son activé</button>
 </div>
 
 <div class="modal" id="modal"><div class="card">
@@ -52,15 +51,8 @@
 const CONFIG={goal:44,types:4,rows:9,cols:6,relicVisibleMs:0,relicExitMs:1300,collectionUrl:'../mecanisme-collection/index.html?artefact=hermine',continueUrl:'../index.html'};
 const IMAGES=['3-webp1.webp','3-webp2.webp','3-webP3.webp','3-webp4.webp'];
 const boardEl=document.querySelector('#board'),timerEl=document.querySelector('#timer'),veil=document.querySelector('#veil'),stageEl=document.querySelector('#stage'),relicEl=document.querySelector('#relic');
-let grid=[],selected=null,score=0,running=false,busy=false,hintTick,soundOn=true,swipe=null,suppressClickUntil=0;
+let grid=[],selected=null,score=0,running=false,busy=false,hintTick,swipe=null,suppressClickUntil=0;
 const $=s=>document.querySelector(s),idx=(r,c)=>r*CONFIG.cols+c,rc=i=>[Math.floor(i/CONFIG.cols),i%CONFIG.cols];
-const sonPiece=new Audio('../mecanisme-collection/sons/piece.mp3');
-sonPiece.preload='auto';
-sonPiece.setAttribute('playsinline','');
-let sonPiecePrepare=false;
-function preparerSonPiece(){if(sonPiecePrepare)return;sonPiecePrepare=true;sonPiece.volume=0;sonPiece.loop=true;sonPiece.currentTime=0;sonPiece.play().catch(erreur=>{sonPiecePrepare=false;console.error('Impossible de préparer le son de l’hermine.',erreur)})}
-document.addEventListener('pointerdown',preparerSonPiece,{once:true,passive:true});
-document.addEventListener('keydown',preparerSonPiece,{once:true});
 
 function randomType(){return Math.floor(Math.random()*CONFIG.types)}
 function makeGrid(){grid=[];for(let r=0;r<CONFIG.rows;r++)for(let c=0;c<CONFIG.cols;c++){let t;do{t=randomType()}while((c>1&&grid[idx(r,c-1)]===t&&grid[idx(r,c-2)]===t)||(r>1&&grid[idx(r-1,c)]===t&&grid[idx(r-2,c)]===t));grid.push(t)}if(!findMove())makeGrid()}
@@ -73,8 +65,8 @@ async function choose(i){if(!running||busy||grid[i]===null)return;clearHints();i
 function markSelected(){boardEl.querySelectorAll('.tile').forEach(e=>e.classList.toggle('selected',+e.dataset.i===selected))}
 function swap(a,b){[grid[a],grid[b]]=[grid[b],grid[a]]}
 function matches(){const hit=new Set();for(let r=0;r<CONFIG.rows;r++){let start=0;for(let c=1;c<=CONFIG.cols;c++)if(c===CONFIG.cols||grid[idx(r,c)]!==grid[idx(r,start)]){if(grid[idx(r,start)]!==null&&c-start>=3)for(let x=start;x<c;x++)hit.add(idx(r,x));start=c}}for(let c=0;c<CONFIG.cols;c++){let start=0;for(let r=1;r<=CONFIG.rows;r++)if(r===CONFIG.rows||grid[idx(r,c)]!==grid[idx(start,c)]){if(grid[idx(start,c)]!==null&&r-start>=3)for(let x=start;x<r;x++)hit.add(idx(x,c));start=r}}return [...hit]}
-async function trySwap(a,b){busy=true;swap(a,b);render();let hit=matches();if(!hit.length){await wait(180);swap(a,b);render();tone(120,.08);busy=false;return}tone(520,.07);await resolve(hit);busy=false}
-async function resolve(hit){let chain=0;while(hit.length&&running){chain++;boardEl.querySelectorAll('.tile').forEach(e=>{if(hit.includes(+e.dataset.i))e.classList.add('matched')});score+=hit.length;updateProgress();$('#combo').textContent=chain>1?`Combo × ${chain} !`:'';hit.forEach((_,n)=>setTimeout(()=>tone(620+(n%5)*70,.055),n*32));await wait(320);hit.forEach(i=>grid[i]=null);for(let c=0;c<CONFIG.cols;c++){let vals=[];for(let r=CONFIG.rows-1;r>=0;r--)if(grid[idx(r,c)]!==null)vals.push(grid[idx(r,c)]);for(let r=CONFIG.rows-1,k=0;r>=0;r--,k++)grid[idx(r,c)]=k<vals.length?vals[k]:null}render();await wait(240);hit=matches()}if(running&&!findMove())reshuffleRemaining();setTimeout(()=>$('#combo').textContent='',700)}
+async function trySwap(a,b){busy=true;swap(a,b);render();let hit=matches();if(!hit.length){await wait(180);swap(a,b);render();busy=false;return}await resolve(hit);busy=false}
+async function resolve(hit){let chain=0;while(hit.length&&running){chain++;boardEl.querySelectorAll('.tile').forEach(e=>{if(hit.includes(+e.dataset.i))e.classList.add('matched')});score+=hit.length;updateProgress();$('#combo').textContent=chain>1?`Combo × ${chain} !`:'';await wait(320);hit.forEach(i=>grid[i]=null);for(let c=0;c<CONFIG.cols;c++){let vals=[];for(let r=CONFIG.rows-1;r>=0;r--)if(grid[idx(r,c)]!==null)vals.push(grid[idx(r,c)]);for(let r=CONFIG.rows-1,k=0;r>=0;r--,k++)grid[idx(r,c)]=k<vals.length?vals[k]:null}render();await wait(240);hit=matches()}if(running&&!findMove())reshuffleRemaining();setTimeout(()=>$('#combo').textContent='',700)}
 function updateProgress(){const p=Math.min(100,Math.round(score/CONFIG.goal*100));$('#percent').textContent=p+' %';$('#bar').style.width=p+'%';$('#remaining').textContent=Math.max(0,CONFIG.goal-score);if(score>=CONFIG.goal)win()}
 function createsMatch(a,b){if(grid[a]===null||grid[b]===null)return false;swap(a,b);const ok=matches().length>0;swap(a,b);return ok}
 function reshuffleRemaining(){const spots=grid.map((v,i)=>v===null?null:i).filter(i=>i!==null),values=spots.map(i=>grid[i]);for(let attempt=0;attempt<150;attempt++){for(let i=values.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[values[i],values[j]]=[values[j],values[i]]}spots.forEach((pos,i)=>grid[pos]=values[i]);if(!matches().length&&findMove()){render();$('#combo').textContent='Les artéfacts se réorganisent…';return}}render()}
@@ -84,12 +76,10 @@ function showHint(){if(!running||busy||selected!==null)return;const move=findMov
 function clearHints(){boardEl.querySelectorAll('.hint').forEach(e=>e.classList.remove('hint'))}
 function start(){clearInterval(hintTick);score=0;selected=null;busy=false;running=true;boardEl.style.opacity='1';stageEl.classList.remove('exit');relicEl.classList.remove('exit');relicEl.style.removeProperty('--relic-exit-duration');$('#modal').classList.remove('show');$('#continueLink').hidden=true;makeGrid();render();updateProgress();timerEl.textContent='∞';timerEl.classList.remove('danger');hintTick=setInterval(showHint,4000)}
 function stop(){running=false;clearInterval(hintTick);clearHints()}
-function win(){if(!running)return;stop();boardEl.style.opacity='0';tone(660,.12);setTimeout(()=>tone(880,.25),150);setTimeout(()=>{sonPiece.currentTime=0;sonPiece.volume=1;sonPiece.loop=false;if(sonPiece.paused)sonPiece.play().catch(erreur=>console.error('Impossible de jouer le son de l’hermine.',erreur));stageEl.classList.add('exit');relicEl.style.setProperty('--relic-exit-duration',CONFIG.relicExitMs+'ms');relicEl.classList.add('exit');setTimeout(()=>window.location.assign(CONFIG.collectionUrl),CONFIG.relicExitMs+120)},CONFIG.relicVisibleMs)}
+function win(){if(!running)return;stop();boardEl.style.opacity='0';setTimeout(()=>{stageEl.classList.add('exit');relicEl.style.setProperty('--relic-exit-duration',CONFIG.relicExitMs+'ms');relicEl.classList.add('exit');setTimeout(()=>window.location.assign(CONFIG.collectionUrl),CONFIG.relicExitMs+120)},CONFIG.relicVisibleMs)}
 function showResult(ok){$('#resultTitle').textContent=ok?'Artéfact découvert !':'Le mécanisme s’est refermé';$('#resultText').textContent=ok?'Bravo ! Vous avez révélé le dernier artéfact de l’aventure.':'Le temps est écoulé. Recommencez : la nouvelle grille vous offrira rapidement de nouveaux alignements.';$('#resultButton').textContent=ok?'Revoir l’artéfact':'Recommencer';$('#continueLink').hidden=!ok;$('#continueLink').href=CONFIG.continueUrl;$('#modal').classList.add('show')}
 function wait(ms){return new Promise(r=>setTimeout(r,ms))}
-function tone(freq,duration){if(!soundOn)return;try{const A=window.AudioContext||window.webkitAudioContext,a=new A(),o=a.createOscillator(),g=a.createGain();o.frequency.value=freq;o.type='triangle';g.gain.setValueAtTime(.08,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+duration);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+duration)}catch(e){}}
 $('#resultButton').addEventListener('click',()=>{$('#modal').classList.remove('show');if(running)return;if(score>=CONFIG.goal){boardEl.style.opacity='.12'}else start()});
-$('#sound').addEventListener('click',()=>{soundOn=!soundOn;$('#sound').textContent=soundOn?'🔊 Son activé':'🔇 Son coupé'});
 start();
 </script>
 </body>
