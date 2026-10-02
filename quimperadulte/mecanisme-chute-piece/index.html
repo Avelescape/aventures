@@ -171,16 +171,15 @@
     function jouerSonPieceAuPointBas() {
       if (sonPieceJoueUneFois) return;
       sonPieceJoueUneFois = true;
-      sonPiece.pause();
+
+      // Le son a déjà été autorisé silencieusement lors du clic.
+      // Au point le plus bas, on repart du début et on l'entend UNE seule fois.
+      sonPiece.loop = false;
       sonPiece.currentTime = 0;
       sonPiece.volume = 1;
-      sonPiece.loop = false;
-      const lecture = sonPiece.play();
-      if (lecture && lecture.catch) {
-        lecture.catch((erreur) => {
-          console.error("Impossible de lire le son de la pièce au point bas.", erreur);
-        });
-      }
+
+      // Pas de second appel à play() : sur iPhone il pourrait être bloqué.
+      // Le fichier est déjà en cours de lecture grâce au démarrage silencieux.
     }
 
     function demarrerChuteAvecSon() {
