@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Le mécanisme des artéfacts</title>
   <style>
-    :root{--cream:#E9DDC7;--gold:#d5a74b;--orange:#f25303;--ink:#24170d;--navy:#10243d;--cell:min(calc((100vw - 80px)/8),58px);--gap:4px}
+    :root{--cream:#E9DDC7;--gold:#d5a74b;--orange:#f25303;--ink:#24170d;--navy:#10243d;--cell:min(calc((100vw - 80px)/6),68px);--gap:4px}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#070d17;color:var(--cream);font-family:Georgia,serif}
     body{min-height:100svh;display:grid;place-items:center;overflow-x:hidden;background:radial-gradient(circle at 50% 20%,#29405e 0,#101d30 46%,#050912 100%)}
     button{font:inherit}.game{width:min(100%,520px);min-height:100svh;padding:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom));display:grid;place-items:center}
@@ -16,7 +16,7 @@
     .stage{position:relative;margin:auto;border-radius:18px;overflow:hidden;border:2px solid #b98a3f;box-shadow:0 15px 45px #000b;background:#101722}.stage.exit{overflow:visible;border-color:transparent;box-shadow:none;background:transparent}
     .relic{position:absolute;inset:0;display:grid;place-items:center;background:#03060c}.relic img{width:82%;height:82%;object-fit:contain;filter:drop-shadow(0 0 20px #f5be55);transform-origin:center;will-change:transform,opacity}.relic.exit img{animation:relicFly var(--relic-exit-duration,1.3s) cubic-bezier(.45,.05,.7,.3) forwards}
     .veil{display:none}
-    .board{position:relative;z-index:2;display:grid;grid-template-columns:repeat(8,var(--cell));grid-template-rows:repeat(8,var(--cell));gap:var(--gap);padding:8px;background:transparent;touch-action:none}
+    .board{position:relative;z-index:2;display:grid;grid-template-columns:repeat(6,var(--cell));grid-template-rows:repeat(6,var(--cell));gap:var(--gap);padding:8px;background:transparent;touch-action:none}
     .tile{width:var(--cell);height:var(--cell);border:1px solid #ffffff25;border-radius:12px;background:linear-gradient(145deg,#243750ee,#080f1dee);display:grid;place-items:center;padding:4px;cursor:pointer;transition:transform .16s,opacity .5s,filter .16s;box-shadow:inset 0 1px #ffffff33,0 2px 4px #0007}.tile img{width:100%;height:100%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 2px #0008)}.fallback{display:none;font-size:31px;color:#ffd36d;text-shadow:0 2px 5px #000}.fallback.visible{display:block}
     .tile.selected{outline:3px solid #ffd66f;transform:scale(.88);filter:brightness(1.3)}.tile.matched{animation:burst .34s forwards}.tile.hint{animation:hint 1s infinite}
     .combo{height:20px;text-align:center;color:#ffd56f;font:bold 19px Arial,sans-serif}.actions{text-align:center}.sound{border:1px solid #8f7445;border-radius:20px;background:#111a28;color:#DED1BC;padding:7px 14px;font:16px Arial,sans-serif}
@@ -49,7 +49,7 @@
 
 <script>
 /* PERSONNALISATION : placez vos images dans /images avec les noms ci-dessous. */
-const CONFIG={duration:90,goal:42,types:4,rows:8,cols:8,relicVisibleMs:0,relicExitMs:1300,collectionUrl:'../mecanisme-collection/index.html?artefact=hermine',continueUrl:'../index.html'};
+const CONFIG={duration:90,goal:42,types:4,rows:6,cols:6,relicVisibleMs:0,relicExitMs:1300,collectionUrl:'../mecanisme-collection/index.html?artefact=hermine',continueUrl:'../index.html'};
 const IMAGES=['3-webp1.webp','3-webp2.webp','3-webP3.webp','3-webp4.webp'];
 const boardEl=document.querySelector('#board'),timerEl=document.querySelector('#timer'),veil=document.querySelector('#veil'),stageEl=document.querySelector('#stage'),relicEl=document.querySelector('#relic');
 let grid=[],selected=null,score=0,time=CONFIG.duration,running=false,busy=false,tick,hintTick,soundOn=true,swipe=null,suppressClickUntil=0;
