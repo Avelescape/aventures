@@ -172,22 +172,22 @@
       if (sonPieceJoueUneFois) return;
       sonPieceJoueUneFois = true;
 
-      // Le son a déjà été autorisé silencieusement lors du clic.
-      // Au point le plus bas, on repart du début et on l'entend UNE seule fois.
       sonPiece.loop = false;
       sonPiece.currentTime = 0;
       sonPiece.volume = 1;
 
-      // Pas de second appel à play() : sur iPhone il pourrait être bloqué.
-      // Le fichier est déjà en cours de lecture grâce au démarrage silencieux.
+      const lecture = sonPiece.play();
+      if (lecture && lecture.catch) {
+        lecture.catch((erreur) => {
+          console.error("Impossible de jouer le son de la pièce.", erreur);
+        });
+      }
     }
 
-    function demarrerChuteAvecSon() {
+    function demarrerChute() {
       if (chuteLancee) return;
       chuteLancee = true;
 
-      // IMPORTANT iPhone : démarrer l'audio pendant le clic du joueur, mais muet.
-      // La lecture est ainsi autorisée ; on rend le son audible au point bas de la chute.
       sonPiece.loop = true;
       sonPiece.volume = 0;
       sonPiece.currentTime = 0;
@@ -234,7 +234,7 @@
     }
 
     // Rend la fonction accessible à l'index principal qui a préchargé cette page.
-    window.demarrerChuteAvecSon = demarrerChuteAvecSon;
+    window.demarrerChute = demarrerChute;
 
     artefact.addEventListener("animationend", () => {
       if (sceneSuivanteLancee) return;
@@ -246,7 +246,7 @@
     // Ouverture directe de cette page : conserve le fonctionnement sur ordinateur.
     if (window.top === window) {
       window.addEventListener("load", () => {
-        window.setTimeout(demarrerChuteAvecSon, 250);
+        window.setTimeout(demarrerChute, 250);
       });
     }
   </script>

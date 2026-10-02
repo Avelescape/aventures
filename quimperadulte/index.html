@@ -1469,7 +1469,7 @@
           const cadreChute = document.getElementById("mecanismeChutePiece");
           cadreChute.style.display = "block";
           try {
-            cadreChute.contentWindow.demarrerChuteAvecSon();
+            cadreChute.contentWindow.demarrerChute();
           } catch (erreur) {
             // Secours si le mécanisme n'est pas encore préchargé.
             window.location.assign("./mecanisme-chute-piece/index.html");
