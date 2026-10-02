@@ -166,6 +166,22 @@
     const sonPiece = document.querySelector("#sonPiece");
     let sceneSuivanteLancee = false;
     let chuteLancee = false;
+    let sonPieceJoueUneFois = false;
+
+    function jouerSonPieceAuPointBas() {
+      if (sonPieceJoueUneFois) return;
+      sonPieceJoueUneFois = true;
+      sonPiece.pause();
+      sonPiece.currentTime = 0;
+      sonPiece.volume = 1;
+      sonPiece.loop = false;
+      const lecture = sonPiece.play();
+      if (lecture && lecture.catch) {
+        lecture.catch((erreur) => {
+          console.error("Impossible de lire le son de la pièce au point bas.", erreur);
+        });
+      }
+    }
 
     function demarrerChuteAvecSon() {
       if (chuteLancee) return;
@@ -197,9 +213,7 @@
         const pointBas = parseFloat(getComputedStyle(artefact).animationDuration) * 1000 * 0.4;
         const attendrePointBas = () => {
           if (animation.currentTime !== null && animation.currentTime >= pointBas) {
-            sonPiece.currentTime = 0;
-            sonPiece.volume = 1;
-            sonPiece.loop = false;
+            jouerSonPieceAuPointBas();
             return;
           }
           if (animation.playState !== "idle") {
