@@ -411,13 +411,6 @@
       sonPanneau.currentTime = 0;
       sonPanneau.play().catch(() => {});
 
-      sonPiece.volume = 0;
-      sonPiece.loop = true;
-      sonPiece.currentTime = 0;
-      sonPiece.play().catch((erreur) => {
-        console.error("Impossible de préparer le son de la pièce.", erreur);
-      });
-
       scene.classList.add("ouverte");
       scene.setAttribute("aria-pressed", "true");
 
@@ -441,6 +434,9 @@
         sonPiece.currentTime = 0;
         sonPiece.volume = 1;
         sonPiece.loop = false;
+        sonPiece.play().catch((erreur) => {
+          console.error("Impossible de lire le son de la pièce.", erreur);
+        });
       }, 2600);
     }
 
