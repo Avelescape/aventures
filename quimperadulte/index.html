@@ -1296,9 +1296,14 @@
       const historiqueScenes = [];
       let sceneActuelle = sceneDemandee || "accueil";
 
-      function afficherScene(nouvelleScene, ajouterHistorique = true) {
+      function afficherScene(nouvelleScene, ajouterHistorique = true, interactionUtilisateur = false) {
         const cible = document.getElementById(nouvelleScene);
         if (!cible || nouvelleScene === sceneActuelle) return;
+        if (
+          sceneActuelle === "scene-coffret-ouvert" &&
+          nouvelleScene === "scene-carnet-cle" &&
+          !interactionUtilisateur
+        ) return;
 
         if (ajouterHistorique) historiqueScenes.push(sceneActuelle);
 
@@ -1316,7 +1321,7 @@
       document.addEventListener("click", (evenement) => {
         const declencheur = evenement.target.closest("[data-scene-suivante]");
         if (!declencheur) return;
-        afficherScene(declencheur.dataset.sceneSuivante);
+        afficherScene(declencheur.dataset.sceneSuivante, true, evenement.isTrusted);
       });
 
       boutonRetour.addEventListener("click", () => {
