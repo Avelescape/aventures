@@ -181,6 +181,20 @@
     const logements = [...document.querySelectorAll(".logement")];
     const sonPiece = new Audio("sons/piece.mp3");
     sonPiece.preload = "auto";
+    sonPiece.setAttribute("playsinline", "");
+    function deverrouillerSon() {
+      const ancienVolume = sonPiece.volume;
+      sonPiece.volume = 0;
+      const essai = sonPiece.play();
+      if (essai && typeof essai.then === "function") {
+        essai.then(() => { sonPiece.pause(); sonPiece.currentTime = 0; sonPiece.volume = ancienVolume; }).catch(() => { sonPiece.volume = ancienVolume; });
+      } else {
+        sonPiece.pause(); sonPiece.currentTime = 0; sonPiece.volume = ancienVolume;
+      }
+    }
+    document.addEventListener("touchstart", deverrouillerSon, { once: true, passive: true });
+    document.addEventListener("pointerdown", deverrouillerSon, { once: true, passive: true });
+    sonPiece.preload = "auto";
     let peutContinuer = false;
 
     function collectionSauvegardee() {

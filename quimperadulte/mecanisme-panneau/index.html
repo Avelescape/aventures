@@ -380,6 +380,20 @@
     const scene = document.getElementById("scene");
     const artefact = document.querySelector(".artefact");
     const sonPanneau = new Audio("sons/panneau.mp3");
+    sonPanneau.preload = "auto";
+    sonPanneau.setAttribute("playsinline", "");
+    function deverrouillerSon() {
+      const ancienVolume = sonPanneau.volume;
+      sonPanneau.volume = 0;
+      const essai = sonPanneau.play().catch(() => {});
+      if (essai && typeof essai.then === "function") {
+        essai.then(() => { sonPanneau.pause(); sonPanneau.currentTime = 0; sonPanneau.volume = ancienVolume; }).catch(() => { sonPanneau.volume = ancienVolume; });
+      } else {
+        sonPanneau.pause(); sonPanneau.currentTime = 0; sonPanneau.volume = ancienVolume;
+      }
+    }
+    document.addEventListener("touchstart", deverrouillerSon, { once: true, passive: true });
+    document.addEventListener("pointerdown", deverrouillerSon, { once: true, passive: true });
 
     let animationEnCours = false;
     let sceneSuivanteLancee = false;
@@ -392,7 +406,7 @@
       animationEnCours = true;
 
       sonPanneau.currentTime = 0;
-      sonPanneau.play();
+      sonPanneau.play().catch(() => {});
 
       scene.classList.add("ouverte");
       scene.setAttribute("aria-pressed", "true");

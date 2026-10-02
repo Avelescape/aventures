@@ -24,6 +24,20 @@ const SOURCE_OUVERTE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA60AAAaICA
 const canvas=document.getElementById('scene'), ctx=canvas.getContext('2d');
 const action=document.getElementById('action'), hit=document.getElementById('doorHit'), status=document.getElementById('status'), returnSite=document.getElementById('returnSite');
 const doorSound=new Audio('sons/porte.mp3');
+    doorSound.preload = "auto";
+    doorSound.setAttribute("playsinline", "");
+    function deverrouillerSon() {
+      const ancienVolume = doorSound.volume;
+      doorSound.volume = 0;
+      const essai = doorSound.play();
+      if (essai && typeof essai.then === "function") {
+        essai.then(() => { doorSound.pause(); doorSound.currentTime = 0; doorSound.volume = ancienVolume; }).catch(() => { doorSound.volume = ancienVolume; });
+      } else {
+        doorSound.pause(); doorSound.currentTime = 0; doorSound.volume = ancienVolume;
+      }
+    }
+    document.addEventListener("touchstart", deverrouillerSon, { once: true, passive: true });
+    document.addEventListener("pointerdown", deverrouillerSon, { once: true, passive: true });
 doorSound.preload='auto';
 const soundContext=window.AudioContext?new AudioContext():null;
 if(soundContext){

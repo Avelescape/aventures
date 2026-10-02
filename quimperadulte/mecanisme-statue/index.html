@@ -70,7 +70,7 @@
       <div class="slot" data-slot="cle"></div>
     </div>
     <!-- Emplacement sonore : ajoutez sons/grincement.mp3 dans votre dossier. -->
-    <audio id="stoneSound" preload="auto" src="sons/grincement.mp3"></audio>
+    <audio id="stoneSound" preload="auto" playsinline src="sons/grincement.mp3"></audio>
     <a class="continue-button" id="descendreEchelle" href="../index.html?scene=echelle#echelle" hidden>
       Approcher
     </a>
@@ -82,6 +82,14 @@
     const slots=[...document.querySelectorAll('.slot')];
     let placed=0,drag=null;
     const stoneSound=document.querySelector('#stoneSound');
+    function deverrouillerSonPierre(){
+      const ancienVolume=stoneSound.volume; stoneSound.volume=0;
+      const essai=stoneSound.play();
+      if(essai&&typeof essai.then==='function'){essai.then(()=>{stoneSound.pause();stoneSound.currentTime=0;stoneSound.volume=ancienVolume;}).catch(()=>{stoneSound.volume=ancienVolume;});}
+      else{stoneSound.pause();stoneSound.currentTime=0;stoneSound.volume=ancienVolume;}
+    }
+    document.addEventListener('touchstart',deverrouillerSonPierre,{once:true,passive:true});
+    document.addEventListener('pointerdown',deverrouillerSonPierre,{once:true,passive:true});
 
     document.querySelectorAll('.artifact').forEach(button=>button.addEventListener('pointerdown',e=>{
       if(button.classList.contains('used'))return;
