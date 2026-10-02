@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Le mécanisme des artéfacts</title>
   <style>
-    :root{--cream:#E9DDC7;--gold:#d5a74b;--orange:#f25303;--ink:#24170d;--navy:#10243d;--cell:min(calc((100vw - 80px)/6),68px);--gap:4px}
+    :root{--cream:#E9DDC7;--gold:#d5a74b;--orange:#f25303;--ink:#24170d;--navy:#10243d;--cell:min(calc((100vw - 48px)/8),52px);--gap:3px}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#070d17;color:var(--cream);font-family:Georgia,serif}
     body{min-height:100svh;display:grid;place-items:center;overflow-x:hidden;background:radial-gradient(circle at 50% 20%,#29405e 0,#101d30 46%,#050912 100%)}
     button{font:inherit}.game{width:min(100%,520px);min-height:100svh;padding:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom));display:grid;place-items:center}
@@ -16,8 +16,8 @@
     .stage{position:relative;margin:auto;border-radius:18px;overflow:hidden;border:2px solid #b98a3f;box-shadow:0 15px 45px #000b;background:#101722}.stage.exit{overflow:visible;border-color:transparent;box-shadow:none;background:transparent}
     .relic{position:absolute;inset:0;display:grid;place-items:center;background:#03060c}.relic img{width:82%;height:82%;object-fit:contain;filter:drop-shadow(0 0 20px #f5be55);transform-origin:center;will-change:transform,opacity}.relic.exit img{animation:relicFly var(--relic-exit-duration,1.3s) cubic-bezier(.45,.05,.7,.3) forwards}
     .veil{display:none}
-    .board{position:relative;z-index:2;display:grid;grid-template-columns:repeat(6,var(--cell));grid-template-rows:repeat(6,var(--cell));gap:var(--gap);padding:8px;background:transparent;touch-action:none}
-    .tile{width:var(--cell);height:var(--cell);border:1px solid #ffffff25;border-radius:12px;background:linear-gradient(145deg,#243750ee,#080f1dee);display:grid;place-items:center;padding:4px;cursor:pointer;transition:transform .16s,opacity .5s,filter .16s;box-shadow:inset 0 1px #ffffff33,0 2px 4px #0007}.tile img{width:100%;height:100%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 2px #0008)}.fallback{display:none;font-size:31px;color:#ffd36d;text-shadow:0 2px 5px #000}.fallback.visible{display:block}
+    .board{position:relative;z-index:2;display:grid;grid-template-columns:repeat(7,var(--cell));grid-template-rows:repeat(7,var(--cell));gap:var(--gap);padding:6px;background:transparent;touch-action:none}
+    .tile{width:var(--cell);height:var(--cell);border:1px solid #ffffff25;border-radius:7px;background:linear-gradient(145deg,#243750ee,#080f1dee);display:grid;place-items:center;padding:4px;cursor:pointer;transition:transform .16s,opacity .5s,filter .16s;box-shadow:inset 0 1px #ffffff33,0 2px 4px #0007}.tile img{width:100%;height:100%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 2px #0008)}.fallback{display:none;font-size:31px;color:#ffd36d;text-shadow:0 2px 5px #000}.fallback.visible{display:block}
     .tile.selected{outline:3px solid #ffd66f;transform:scale(.88);filter:brightness(1.3)}.tile.matched{animation:burst .34s forwards}.tile.hint{animation:hint 1s infinite}
     .combo{height:20px;text-align:center;color:#ffd56f;font:bold 19px Arial,sans-serif}.actions{text-align:center}.sound{border:1px solid #8f7445;border-radius:20px;background:#111a28;color:#DED1BC;padding:7px 14px;font:16px Arial,sans-serif}
     .modal{position:fixed;z-index:10;inset:0;display:none;place-items:center;padding:24px;background:#03060ddd;backdrop-filter:blur(6px)}.modal.show{display:grid}.card{width:min(100%,420px);padding:28px 22px;text-align:center;border:2px solid #c29546;border-radius:22px;background:linear-gradient(#182a42,#0a111d);box-shadow:0 20px 70px #000}.card h2{margin:0 0 10px;color:#E28A50;font-size:32px}.card p{line-height:1.5}.primary{border:0;border-radius:12px;padding:13px 24px;background:linear-gradient(#ff7a28,#db4100);color:#fff;font-weight:bold;box-shadow:0 6px 15px #0008;cursor:pointer}.secondary{display:inline-block;margin-top:10px;color:#DED1BC}
@@ -49,10 +49,10 @@
 
 <script>
 /* PERSONNALISATION : placez vos images dans /images avec les noms ci-dessous. */
-const CONFIG={duration:90,goal:42,types:4,rows:6,cols:6,relicVisibleMs:0,relicExitMs:1300,collectionUrl:'../mecanisme-collection/index.html?artefact=hermine',continueUrl:'../index.html'};
+const CONFIG={duration:90,goal:45,types:4,rows:7,cols:7,relicVisibleMs:0,relicExitMs:1300,collectionUrl:'../mecanisme-collection/index.html?artefact=hermine',continueUrl:'../index.html'};
 const IMAGES=['3-webp1.webp','3-webp2.webp','3-webP3.webp','3-webp4.webp'];
 const boardEl=document.querySelector('#board'),timerEl=document.querySelector('#timer'),veil=document.querySelector('#veil'),stageEl=document.querySelector('#stage'),relicEl=document.querySelector('#relic');
-let grid=[],selected=null,score=0,time=CONFIG.duration,running=false,busy=false,tick,hintTick,soundOn=true,swipe=null,suppressClickUntil=0;
+let grid=[],selected=null,score=0,time=CONFIG.duration,running=false,busy=false,tick,hintTick,soundOn=true,swipe=null,suppressClickUntil=0,assistRunning=false;
 const $=s=>document.querySelector(s),idx=(r,c)=>r*CONFIG.cols+c,rc=i=>[Math.floor(i/CONFIG.cols),i%CONFIG.cols];
 
 function randomType(){return Math.floor(Math.random()*CONFIG.types)}
@@ -72,9 +72,29 @@ function updateProgress(){const p=Math.min(100,Math.round(score/CONFIG.goal*100)
 function createsMatch(a,b){if(grid[a]===null||grid[b]===null)return false;swap(a,b);const ok=matches().length>0;swap(a,b);return ok}
 function reshuffleRemaining(){const spots=grid.map((v,i)=>v===null?null:i).filter(i=>i!==null),values=spots.map(i=>grid[i]);for(let attempt=0;attempt<150;attempt++){for(let i=values.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[values[i],values[j]]=[values[j],values[i]]}spots.forEach((pos,i)=>grid[pos]=values[i]);if(!matches().length&&findMove()){render();$('#combo').textContent='Les artéfacts se réorganisent…';return}}render()}
 function findMove(){for(let r=0;r<CONFIG.rows;r++)for(let c=0;c<CONFIG.cols;c++){let a=idx(r,c);if(c<CONFIG.cols-1&&createsMatch(a,a+1))return[a,a+1];if(r<CONFIG.rows-1&&createsMatch(a,a+CONFIG.cols))return[a,a+CONFIG.cols]}return null}
+
+async function finalAssist(){
+  if(assistRunning||!running||score<=0)return;
+  assistRunning=true;busy=true;selected=null;markSelected();clearHints();
+  $('#combo').textContent='Le mécanisme vous aide…';
+  while(running&&score<CONFIG.goal){
+    const occupied=grid.map((v,i)=>v===null?null:i).filter(i=>i!==null);
+    if(!occupied.length)break;
+    for(let i=occupied.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[occupied[i],occupied[j]]=[occupied[j],occupied[i]]}
+    const need=CONFIG.goal-score;
+    const chosen=occupied.slice(0,Math.min(8,need,occupied.length));
+    boardEl.querySelectorAll('.tile').forEach(e=>{if(chosen.includes(+e.dataset.i))e.classList.add('matched')});
+    tone(620,.08);await wait(220);
+    chosen.forEach(i=>grid[i]=null);score+=chosen.length;updateProgress();
+    for(let c=0;c<CONFIG.cols;c++){let vals=[];for(let r=CONFIG.rows-1;r>=0;r--)if(grid[idx(r,c)]!==null)vals.push(grid[idx(r,c)]);for(let r=CONFIG.rows-1,k=0;r>=0;r--,k++)grid[idx(r,c)]=k<vals.length?vals[k]:null}
+    render();await wait(180);
+  }
+  busy=false;assistRunning=false;
+}
+
 function showHint(){if(!running||busy||selected!==null)return;const move=findMove();if(move)move.forEach(i=>boardEl.children[i]?.classList.add('hint'))}
 function clearHints(){boardEl.querySelectorAll('.hint').forEach(e=>e.classList.remove('hint'))}
-function start(){clearInterval(tick);clearInterval(hintTick);score=0;time=CONFIG.duration;selected=null;busy=false;running=true;boardEl.style.opacity='1';stageEl.classList.remove('exit');relicEl.classList.remove('exit');relicEl.style.removeProperty('--relic-exit-duration');$('#modal').classList.remove('show');$('#continueLink').hidden=true;makeGrid();render();updateProgress();showTime();tick=setInterval(()=>{time--;showTime();if(time<=0)lose()},1000);hintTick=setInterval(showHint,10000)}
+function start(){clearInterval(tick);clearInterval(hintTick);score=0;time=CONFIG.duration;selected=null;busy=false;assistRunning=false;running=true;boardEl.style.opacity='1';stageEl.classList.remove('exit');relicEl.classList.remove('exit');relicEl.style.removeProperty('--relic-exit-duration');$('#modal').classList.remove('show');$('#continueLink').hidden=true;makeGrid();render();updateProgress();showTime();tick=setInterval(()=>{time--;showTime();if(time===15&&score>0&&score<CONFIG.goal)finalAssist();if(time<=0&&running)lose()},1000);hintTick=setInterval(showHint,4000)}
 function showTime(){timerEl.textContent=Math.floor(time/60)+':'+String(time%60).padStart(2,'0');timerEl.classList.toggle('danger',time<=15)}
 function stop(){running=false;clearInterval(tick);clearInterval(hintTick);clearHints()}
 function win(){if(!running)return;stop();boardEl.style.opacity='0';tone(660,.12);setTimeout(()=>tone(880,.25),150);setTimeout(()=>{stageEl.classList.add('exit');relicEl.style.setProperty('--relic-exit-duration',CONFIG.relicExitMs+'ms');relicEl.classList.add('exit');setTimeout(()=>window.location.assign(CONFIG.collectionUrl),CONFIG.relicExitMs+120)},CONFIG.relicVisibleMs)}
