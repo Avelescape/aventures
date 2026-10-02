@@ -46,29 +46,29 @@ header{
   padding-top:env(safe-area-inset-top,0px);
 }
 .nav{
-  height:170px;
-  padding:0 36px;
+  height:64px;
+  padding:0 28px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   position:relative;
 }
 .nav-center{display:flex;align-items:center}
-.nav-logo-img{width:225px;height:150px;object-fit:contain}
+.nav-logo-img{width:120px;height:64px;object-fit:contain}
 .nav-connexion{
-  height:56px;
+  height:40px;
   display:flex;align-items:center;gap:14px;
-  padding:0 26px;
+  padding:0 16px;
   border:1.5px solid rgba(255,255,255,.9);
   border-radius:999px;
   background:rgba(255,255,255,.02);
   color:white;
   font-family:Georgia,serif;
-  font-size:22px;
+  font-size:16px;
   cursor:pointer;
   margin-left:auto;
 }
-.nav-connexion svg{width:28px;height:28px}
+.nav-connexion svg{width:21px;height:21px}
 
 /* HERO */
 .hero{
@@ -77,7 +77,7 @@ header{
   overflow:visible;
   background:
     linear-gradient(90deg,rgba(252,231,201,.55) 0%,rgba(252,231,201,.18) 36%,rgba(7,27,52,.05) 65%,rgba(7,27,52,.25) 100%),
-    url('https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpheropasseport.webp') center bottom/cover no-repeat;
+    url('images-site/webpheropasseport.webp') center -25px/cover no-repeat;
 }
 .hero::after{display:none}
 .hero-content{
@@ -268,7 +268,7 @@ header{
 /* ADVENTURES */
 .adventures{background:var(--cream);padding:18px 0 34px}
 .carousel-outer{position:relative}.carousel-mask{overflow:hidden}.carousel-track{display:flex;gap:14px;transition:transform .4s cubic-bezier(.4,0,.2,1)}.carousel-nav-btn{display:none}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:5px;margin-top:2px;margin-bottom:0}.carousel-dot{width:6px;height:6px;border-radius:50%;background:var(--sand);cursor:pointer;transition:all .2s;flex-shrink:0;border:0}.carousel-dot.active{background:var(--gold);width:18px;border-radius:3px}.carousel-dot.nearby{width:4px;height:4px;background:#D9C3A0}
-.adv-card{flex:0 0 calc(25% - 11px);display:flex;flex-direction:column;background:#FFF8EE;border:1px solid #D9C3A0;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(7,27,52,.14);cursor:pointer}.adv-card:active{transform:scale(.99)}.adv-card-img{height:160px;position:relative;overflow:hidden}.adv-card-img img{width:100%;height:100%;object-fit:cover;display:block}.adv-card-body{display:flex;flex:1;flex-direction:column;padding:14px 14px}.adv-card-title{font-family:Georgia,serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.2}.adv-card-loc{display:flex;align-items:center;gap:5px;font-size:11px;color:#6D6253;margin-bottom:12px;font-weight:500}.adv-card-actions{display:flex;gap:8px;margin-top:auto;width:100%}.adv-btn-voir{flex:1;background:var(--orange);color:white;border:none;border-radius:9px;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:42px;transition:background .2s ease}
+.adv-card{flex:0 0 calc(25% - 11px);display:flex;flex-direction:column;background:#FFF8EE;border:1px solid #D9C3A0;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(7,27,52,.14);cursor:pointer}.adv-card:active{transform:scale(.99)}.adv-card-img{height:160px;position:relative;overflow:hidden}.adv-card-img img{width:100%;height:100%;object-fit:cover;display:block}.adv-card-body{display:flex;flex:1;flex-direction:column;padding:14px 14px}.adv-card-title{font-family:Georgia,serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.2;height:2.4em;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2}.adv-card-loc{display:flex;align-items:center;gap:5px;font-size:11px;color:#6D6253;margin-bottom:12px;font-weight:500}.adv-card-actions{display:flex;gap:8px;margin-top:auto;width:100%}.adv-btn-voir{flex:1;background:var(--orange);color:white;border:none;border-radius:9px;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:42px;transition:background .2s ease}
 .adv-btn-voir:hover{background:var(--orange-dark)}
 
 /* CARTE INTERACTIVE */
@@ -324,8 +324,8 @@ header{
 
 @media(max-width:760px){
   body{max-width:480px}
-  .nav{height:110px;padding:0 18px}.nav-logo-img{width:142px;height:95px}.nav-connexion{height:42px;padding:0 14px;font-size:14px;gap:8px}.nav-connexion svg{width:20px;height:20px}
-  .hero{min-height:545px;background-position:center bottom}.hero::after{display:none}.container{padding:0 28px}
+  .nav{height:52px;padding:0 18px}.nav-logo-img{width:82px;height:48px}.nav-connexion{height:34px;padding:0 10px;font-size:12px;gap:6px}.nav-connexion svg{width:16px;height:16px}
+  .hero{min-height:545px;background-position:center -18px}.hero::after{display:none}.container{padding:0 28px}
   .kids-banner .container{padding:0 18px;}
   .kids-banner{
   background:var(--cream);
@@ -394,7 +394,7 @@ header{
   </section>
 
   <section class="comment-cartes" aria-label="Comment ça marche">
-    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/07/0-webpexplications.webp" alt="Choisissez un lieu, résolvez les énigmes, validez votre aventure, collectionnez vos aventures">
+    <img src="images-site/0-webpexplications.webp" alt="Choisissez un lieu, résolvez les énigmes, validez votre aventure, collectionnez vos aventures">
   </section>
 
   <section class="adventures-intro" id="fiches">
@@ -442,7 +442,7 @@ header{
   <!-- BANDEAU AVENTURES KIDS -->
   <section class="kids-banner" aria-label="Aventures Kids">
     <div class="container">
-      <img src="images-site/0-webpaventures-kids.webp" alt="Aventures Kids" loading="lazy">
+      <img src="images-site/webpaventures-kids.webp" alt="Aventures Kids" loading="lazy">
     </div>
   </section>
 
@@ -452,7 +452,7 @@ header{
     <div class="container">
       <div class="reviews-eyebrow-wrap"><div class="eyebrow eyebrow-reviews">✦ Avis des aventuriers ✦</div></div>
       <div class="reviews-grid">
-        <div class="review-photo-card"><img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpgroupesacados.webp" alt="Aventure AvelEscape"></div>
+        <div class="review-photo-card"><img src="images-site/webpgroupesacados.webp" alt="Aventure AvelEscape"></div>
         <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Parfait pour une balade culturelle originale et en famille. Nous avons adoré ! »</p><p class="review-author">Sandra.</p></div>
         <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Les enfants ont adoré, vivement la prochaine aventure !!! Merci Billig »</p><p class="review-author">Maëlle.</p></div>
         <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Hâte de valider de nouvelles aventures dans mon passeport. »</p><p class="review-author">Nathan.</p></div>
@@ -465,7 +465,7 @@ header{
     <div class="cta-inner">
 
        <a href="proposez-aventure.html" class="cta-btn-author-img">
-    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpdevenezauteur.webp"
+    <img src="images-site/webpdevenezauteur.webp"
          alt="Devenez auteur d'une aventure">
 </a>
 
@@ -499,8 +499,8 @@ header{
 <script>
 const sites=[
   {id:1,title:"Le Mystère du Phare de St-Mathieu",city:"Plougonvelin",dept:"Finistère",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:true,desc:"1834 — Le gardien du phare de Saint-Mathieu a disparu, mettant en danger les bateaux navigant en mer d'Iroise.",lat:48.3327,lng:-4.7754,gmaps:"https://maps.google.com/?q=48.3327,-4.7754",img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpsaintmathieu.webp",url:"stmathieuadulte/index.html",urlKids:"stmathieukids/index.html"},
-  {id:2,title:"Les irrépressibles Conquetois",city:"Le Conquet",dept:"Finistère",duration:"90 MIN",players:"2–6 joueurs",difficulty:"Facile",kids:true,desc:"1874 — Visitez Le Conquet à travers une aventure humoristique.",lat:48.3594,lng:-4.7739,gmaps:"https://maps.google.com/?q=48.3594,-4.7739",img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpleconquet.webp",url:"leconquetadulte/index.html",urlKids:"leconquetkids/index.html"},
-  {id:3,title:"Aventure à venir",city:"Quimper",dept:"Finistère",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:false,desc:"Une nouvelle aventure AvelEscape arrive bientôt.",lat:48.0,lng:-4.1,gmaps:"https://maps.google.com/?q=Quimper",img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpsaintmathieu.webp",url:"#"},
+  {id:2,title:"Le canot de l'Empereur",city:"Brest",dept:"Finistère",duration:"90 MIN",difficulty:"Facile",kids:true,comingSoon:true,desc:"Decouvrez les secrets du Canot de l'Empereur auc capuçins Le Conquet.",lat:48.3594,lng:-4.7739,gmaps:"https://maps.google.com/?q=48.3594,-4.7739",img:"images-site/4-webplecanotdelempereur.webp",url:"",urlKids:"quiperkids/index.html"},
+  {id:3,title:"Le secret du Roi Gradlon",city:"Quimper",dept:"Finistère",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:true,desc:"Retrouvez des artefacts dans les rues du vieux Quimper.",lat:48.0,lng:-4.1,gmaps:"https://maps.google.com/?q=Quimper",img:"images-site/3-webpgradlon.webp",url:"quimperadulte/index.html"},
   {id:4,title:"Mission secrète",city:"Bretagne",dept:"Bretagne",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:false,desc:"Débloquez des missions secrètes grâce à votre passeport.",lat:48.0,lng:-3.0,gmaps:"https://maps.google.com/?q=Bretagne",img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpleconquet.webp",url:"#"}
 ];
 let currentFilter={dept:null};
@@ -534,6 +534,7 @@ window.addEventListener('resize',()=>{carouselPos=0;updateCarouselPos()});
 function filterDept(d){currentFilter.dept=currentFilter.dept===d?null:d;renderCarousel()}
 function toggleBarDrop(e){e.preventDefault();document.getElementById('barDrop').classList.toggle('open')}
 function toggleBarSubdrop(e,id){e.stopPropagation();document.getElementById(id).classList.toggle('open')}
+function showConstructionMessage(button,message){button.textContent=message;button.disabled=true}
 function openModal(id){
   const s=sites.find(x=>x.id===id);if(!s)return;
   document.getElementById('modal-img').innerHTML=`<img src="${s.img}" alt="${s.title}" loading="lazy">`;
@@ -541,7 +542,7 @@ function openModal(id){
   document.getElementById('modal-title').textContent=s.title;
   document.getElementById('modal-desc').textContent=s.desc;
   document.getElementById('modal-meta').innerHTML=`<span class="modal-tag">${s.city}</span><span class="modal-tag">${s.dept}</span>`;
-  document.getElementById('modal-actions').innerHTML=`${s.url?`<a class="btn-fiche-primary" href="${s.url}">Commencer</a>`:`<button class="btn-fiche-primary">Commencer</button>`}${s.kids&&s.urlKids?`<a class="btn-fiche-primary modal-btn-kids" href="${s.urlKids}">Commencer <em>— kids —</em></a>`:''}<a class="btn-itinerary" href="${s.gmaps}" target="_blank">Google Maps</a>`;
+  document.getElementById('modal-actions').innerHTML=`${s.url?`<a class="btn-fiche-primary" href="${s.url}">Commencer</a>`:s.comingSoon?`<button class="btn-fiche-primary" onclick="showConstructionMessage(this,'Aventure en construction')">Commencer</button>`:`<button class="btn-fiche-primary">Commencer</button>`}${s.kids&&s.urlKids?s.kidsComingSoon?`<button class="btn-fiche-primary modal-btn-kids" onclick="showConstructionMessage(this,'Reviens bientôt')">Commencer <em>— kids —</em></button>`:`<a class="btn-fiche-primary modal-btn-kids" href="${s.urlKids}">Commencer <em>— kids —</em></a>`:''}<a class="btn-itinerary" href="${s.gmaps}" target="_blank">Google Maps</a>`;
   document.getElementById('modal').classList.add('open')
 }
 function closeModal(){document.getElementById('modal').classList.remove('open')}
