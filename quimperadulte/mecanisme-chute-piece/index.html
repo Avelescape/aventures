@@ -167,13 +167,30 @@
     let sceneSuivanteLancee = false;
     let chuteLancee = false;
     let sonPieceJoueUneFois = false;
+    let sonPiecePrepare = false;
+
+    function preparerSonPiece() {
+      if (sonPiecePrepare) return;
+      sonPiecePrepare = true;
+      sonPiece.pause();
+      sonPiece.currentTime = 0;
+      sonPiece.loop = true;
+      sonPiece.volume = 0;
+      const lecture = sonPiece.play();
+      if (lecture && lecture.catch) {
+        lecture.catch((erreur) => {
+          console.error("Impossible de préparer le son de la pièce.", erreur);
+        });
+      }
+    }
 
     function jouerSonPieceAuPointBas() {
       if (sonPieceJoueUneFois) return;
       sonPieceJoueUneFois = true;
 
-      sonPiece.loop = false;
+      sonPiece.pause();
       sonPiece.currentTime = 0;
+      sonPiece.loop = false;
       sonPiece.volume = 1;
 
       const lecture = sonPiece.play();
@@ -188,15 +205,7 @@
       if (chuteLancee) return;
       chuteLancee = true;
 
-      sonPiece.loop = true;
-      sonPiece.volume = 0;
-      sonPiece.currentTime = 0;
-      const lecture = sonPiece.play();
-      if (lecture && lecture.catch) {
-        lecture.catch((erreur) => {
-          console.error("Impossible de démarrer le son de la pièce.", erreur);
-        });
-      }
+      preparerSonPiece();
 
       artefact.addEventListener("animationstart", (evenement) => {
         if (evenement.animationName !== "chute-et-collecte") return;
