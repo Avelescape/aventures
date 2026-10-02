@@ -240,8 +240,7 @@ header{
   color:#071B34;
 }
 .cta-all{
-  margin:28px auto 0;
-  width:min(380px,100%);
+  width:100%;
   min-height:60px;
   display:flex;
   align-items:center;
@@ -255,7 +254,20 @@ header{
   font-weight:700;
   letter-spacing:.5px;
   box-shadow:0 10px 20px rgba(198,50,9,.20);
+  cursor:pointer;
 }
+.location-picker{position:relative;margin:28px auto 0;width:min(380px,100%)}
+.location-picker .cta-all{border:0}
+.location-picker .cta-all::after{content:"⌄";font:300 28px/1 Inter,system-ui,sans-serif}
+.location-menu{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:100;background:#FFF8EE;border:1px solid #D9C3A0;border-radius:12px;padding:8px 16px;box-shadow:0 10px 24px rgba(7,27,52,.2);text-align:left}
+.location-menu[hidden]{display:none}
+.location-department{padding:10px 0;border-bottom:1px solid rgba(217,195,160,.7)}
+.location-department:last-child{border-bottom:0}
+.location-department h3{font:700 15px Georgia,serif;color:var(--navy)}
+.location-cities{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.location-city{border:1px solid #D9C3A0;border-radius:999px;background:#fff;color:var(--navy);padding:7px 12px;font:500 13px Inter,system-ui,sans-serif;cursor:pointer}
+.location-city:hover,.location-city:focus-visible{background:var(--navy);color:#fff}
+.location-empty{margin-top:6px;color:var(--muted);font:13px Georgia,serif}
 .cta-all span{font-size:34px;font-family:Inter,system-ui,sans-serif;font-weight:300}
 
 /* BAR CATÉGORIES */
@@ -268,6 +280,9 @@ header{
 /* ADVENTURES */
 .adventures{background:var(--cream);padding:18px 0 34px}
 .carousel-outer{position:relative}.carousel-mask{overflow:hidden}.carousel-track{display:flex;gap:14px;transition:transform .4s cubic-bezier(.4,0,.2,1)}.carousel-nav-btn{display:none}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:5px;margin-top:2px;margin-bottom:0}.carousel-dot{width:6px;height:6px;border-radius:50%;background:var(--sand);cursor:pointer;transition:all .2s;flex-shrink:0;border:0}.carousel-dot.active{background:var(--gold);width:18px;border-radius:3px}.carousel-dot.nearby{width:4px;height:4px;background:#D9C3A0}
+.carousel-track.is-hinting{animation:carousel-nudge 1s ease-in-out}
+@keyframes carousel-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(-12px)}}
+@media(prefers-reduced-motion:reduce){.carousel-track.is-hinting{animation:none}}
 .adv-card{flex:0 0 calc(25% - 11px);display:flex;flex-direction:column;background:#FFF8EE;border:1px solid #D9C3A0;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(7,27,52,.14);cursor:pointer}.adv-card:active{transform:scale(.99)}.adv-card-img{height:160px;position:relative;overflow:hidden}.adv-card-img img{width:100%;height:100%;object-fit:cover;display:block}.adv-card-body{display:flex;flex:1;flex-direction:column;padding:14px 14px}.adv-card-title{font-family:Georgia,serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.2;height:2.4em;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2}.adv-card-loc{display:flex;align-items:center;gap:5px;font-size:11px;color:#6D6253;margin-bottom:12px;font-weight:500}.adv-card-actions{display:flex;gap:8px;margin-top:auto;width:100%}.adv-btn-voir{flex:1;background:var(--orange);color:white;border:none;border-radius:9px;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:42px;transition:background .2s ease}
 .adv-btn-voir:hover{background:var(--orange-dark)}
 
@@ -401,27 +416,15 @@ header{
     <div class="eyebrow">✦ Nos aventures ✦</div>
     <h2>Découvrez nos aventures</h2>
     <p>Visitez ou revisitez les lieux touristiques à travers des enquêtes captivantes inspirées de l’histoire ou des légendes locales.</p>
-    <a class="cta-all" href="#aventures">TROUVER UN LIEU </a>
-  </section>
-
-  <div class="bar">
-    <div class="bar-drop-wrap">
-      <a class="bar-tab active" href="#fiches" onclick="toggleBarDrop(event)">Trouver un lieu</a>
-      <div class="bar-drop" id="barDrop">
-        <span class="bar-drop-item bar-drop-parent-item" onclick="toggleBarSubdrop(event,'finistereDrop')">Finistère (29)</span>
-        <div class="bar-subdrop" id="finistereDrop">
-          <a class="bar-subdrop-item" href="stmathieuadulte/index.html">Plougonvelin</a>
-          <a class="bar-subdrop-item" href="stmathieukids/index.html">Saint-Mathieu Kids</a>
-          <a class="bar-subdrop-item" href="Leconquetadulte/index.html">Le Conquet</a>
-          <a class="bar-subdrop-item" href="Leconquetkids/index.html">Le Conquet</a>
-        </div>
-        <span class="bar-drop-item" onclick="filterDept('Morbihan')">Morbihan (56)</span>
-        <span class="bar-drop-item" onclick="filterDept('Ille-et-Vilaine')">Ille-et-Vilaine (35)</span>
+      <div class="location-picker">
+        <button class="cta-all" id="locationMenuToggle" type="button" aria-expanded="false" aria-controls="locationMenu">
+          TROUVER UNE AVENTURE
+        </button>
+        <div class="location-menu" id="locationMenu" aria-label="Choisir un département et une ville" hidden></div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <section id="aventures" class="adventures">
+    <section id="aventures" class="adventures">
     <div class="container">
       <div class="carousel-outer">
         <div class="carousel-mask"><div class="carousel-track" id="carouselTrack"></div></div>
@@ -442,7 +445,7 @@ header{
   <!-- BANDEAU AVENTURES KIDS -->
   <section class="kids-banner" aria-label="Aventures Kids">
     <div class="container">
-      <img src="images-site/webpaventures-kids.webp" alt="Aventures Kids" loading="lazy">
+      <img src="images-site/0-webpaventures-kids.webp" alt="Aventures Kids" loading="lazy">
     </div>
   </section>
 
@@ -503,20 +506,90 @@ const sites=[
   {id:3,title:"Le secret du Roi Gradlon",city:"Quimper",dept:"Finistère",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:true,desc:"Retrouvez des artefacts dans les rues du vieux Quimper.",lat:48.0,lng:-4.1,gmaps:"https://maps.google.com/?q=Quimper",img:"images-site/3-webpgradlon.webp",url:"quimperadulte/index.html"},
   {id:4,title:"Mission secrète",city:"Bretagne",dept:"Bretagne",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:false,desc:"Débloquez des missions secrètes grâce à votre passeport.",lat:48.0,lng:-3.0,gmaps:"https://maps.google.com/?q=Bretagne",img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpleconquet.webp",url:"#"}
 ];
-let currentFilter={dept:null};
+const departments=[
+  {name:"Finistère",code:"29"},
+  {name:"Morbihan",code:"56"},
+  {name:"Ille-et-Vilaine",code:"35"}
+];
 let carouselPos=0;
+let carouselHintShown=false;
+let selectedCity=null;
 function getCardsPerView(){return window.innerWidth<=760?2:4;}
+function renderLocationMenu(){
+  const menu=document.getElementById('locationMenu');
+  menu.replaceChildren();
+  departments.forEach(department=>{
+    const section=document.createElement('section');
+    section.className='location-department';
+    const heading=document.createElement('h3');
+    heading.textContent=`${department.name} (${department.code})`;
+    section.appendChild(heading);
+    const cities=[...new Set(sites
+      .filter(site=>site.dept===department.name && site.city!=="Bretagne" && !site.comingSoon)
+      .map(site=>site.city))].sort((a,b)=>a.localeCompare(b,'fr'));
+    if(!cities.length){
+      const empty=document.createElement('p');
+      empty.className='location-empty';
+      empty.textContent='Aucune aventure disponible pour le moment';
+      section.appendChild(empty);
+    }else{
+      const cityList=document.createElement('div');
+      cityList.className='location-cities';
+      cities.forEach(city=>{
+        const button=document.createElement('button');
+        button.className='location-city';
+        button.type='button';
+        button.textContent=city;
+        button.addEventListener('click',()=>selectCity(city));
+        cityList.appendChild(button);
+      });
+      section.appendChild(cityList);
+    }
+    menu.appendChild(section);
+  });
+}
+function selectCity(city){
+  selectedCity=city;
+  renderCarousel();
+  const menu=document.getElementById('locationMenu');
+  menu.hidden=true;
+  document.getElementById('locationMenuToggle').setAttribute('aria-expanded','false');
+  document.getElementById('aventures').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function distanceBetween(first,second){
+  const radians=degrees=>degrees*Math.PI/180;
+  const latitudeDelta=radians(second.lat-first.lat);
+  const longitudeDelta=radians(second.lng-first.lng);
+  const latitude1=radians(first.lat);
+  const latitude2=radians(second.lat);
+  const a=Math.sin(latitudeDelta/2)**2+
+    Math.cos(latitude1)*Math.cos(latitude2)*Math.sin(longitudeDelta/2)**2;
+  return 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
 function renderCarousel(){
   const track=document.getElementById('carouselTrack');
   const dots=document.getElementById('carouselDots');
   track.innerHTML='';dots.innerHTML='';
-  const filtered=sites.filter(s=>!currentFilter.dept || s.dept.includes(currentFilter.dept));
+  let filtered=sites;
+  if(selectedCity){
+    const cityAdventures=sites.filter(site=>site.city===selectedCity && !site.comingSoon);
+    const cityCoordinates=cityAdventures[0];
+    const nearby=sites
+      .filter(site=>site.city!=="Bretagne" && site.city!==selectedCity && !site.comingSoon && Number.isFinite(site.lat) && Number.isFinite(site.lng))
+      .sort((first,second)=>distanceBetween(cityCoordinates,first)-distanceBetween(cityCoordinates,second));
+    filtered=[...cityAdventures,...nearby];
+  }
   filtered.forEach(s=>{
     track.innerHTML+=`<div class="adv-card" onclick="openModal(${s.id})"><div class="adv-card-img"><img src="${s.img}" alt="${s.title}" loading="lazy"></div><div class="adv-card-body"><h3 class="adv-card-title">${s.title}</h3><div class="adv-card-loc">📍 ${s.city} • ${s.dept}</div><div class="adv-card-actions"><button class="adv-btn-voir" onclick="event.stopPropagation();openModal(${s.id})">Voir</button></div></div></div>`;
   });
   const pages=Math.ceil(filtered.length/getCardsPerView());
   for(let i=0;i<pages;i++){const d=document.createElement('button');d.className='carousel-dot';d.onclick=()=>goToPage(i);dots.appendChild(d)}
   carouselPos=0;updateCarouselPos();
+  if(!carouselHintShown && filtered.length>getCardsPerView() && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    carouselHintShown=true;
+    track.classList.add('is-hinting');
+    track.addEventListener('animationend',()=>track.classList.remove('is-hinting'),{once:true});
+  }
 }
 function updateCarouselPos(){
   const track=document.getElementById('carouselTrack');if(!track)return;
@@ -531,9 +604,6 @@ function carouselNext(){const max=document.querySelectorAll('.adv-card').length-
 function goToPage(p){const max=document.querySelectorAll('.adv-card').length-getCardsPerView();carouselPos=Math.min(p*getCardsPerView(),Math.max(0,max));updateCarouselPos()}
 window.addEventListener('resize',()=>{carouselPos=0;updateCarouselPos()});
 (function(){const mask=document.querySelector('.carousel-mask');if(!mask)return;let startX=0,startY=0,isHoriz=null;mask.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startY=e.touches[0].clientY;isHoriz=null},{passive:true});mask.addEventListener('touchmove',e=>{const dx=e.touches[0].clientX-startX;const dy=e.touches[0].clientY-startY;if(isHoriz===null)isHoriz=Math.abs(dx)>Math.abs(dy);if(isHoriz)e.preventDefault()},{passive:false});mask.addEventListener('touchend',e=>{if(!isHoriz)return;const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>40){dx<0?carouselNext():carouselPrev()}})})();
-function filterDept(d){currentFilter.dept=currentFilter.dept===d?null:d;renderCarousel()}
-function toggleBarDrop(e){e.preventDefault();document.getElementById('barDrop').classList.toggle('open')}
-function toggleBarSubdrop(e,id){e.stopPropagation();document.getElementById(id).classList.toggle('open')}
 function showConstructionMessage(button,message){button.textContent=message;button.disabled=true}
 function openModal(id){
   const s=sites.find(x=>x.id===id);if(!s)return;
@@ -568,6 +638,19 @@ function initMap(){
     map.fitBounds(L.featureGroup(markers).getBounds().pad(0.35));
   }
 }
+renderLocationMenu();
+document.getElementById('locationMenuToggle').addEventListener('click',event=>{
+  const menu=document.getElementById('locationMenu');
+  menu.hidden=!menu.hidden;
+  event.currentTarget.setAttribute('aria-expanded',String(!menu.hidden));
+});
+document.addEventListener('click',event=>{
+  const picker=document.querySelector('.location-picker');
+  if(!picker.contains(event.target)){
+    document.getElementById('locationMenu').hidden=true;
+    document.getElementById('locationMenuToggle').setAttribute('aria-expanded','false');
+  }
+});
 renderCarousel();
 initMap();
 
