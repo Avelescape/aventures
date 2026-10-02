@@ -280,6 +280,7 @@ header{
 /* ADVENTURES */
 .adventures{background:var(--cream);padding:18px 0 34px}
 .carousel-outer{position:relative}.carousel-mask{overflow:hidden}.carousel-track{display:flex;gap:14px;transition:transform .4s cubic-bezier(.4,0,.2,1)}.carousel-nav-btn{display:none}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:5px;margin-top:2px;margin-bottom:0}.carousel-dot{width:6px;height:6px;border-radius:50%;background:var(--sand);cursor:pointer;transition:all .2s;flex-shrink:0;border:0}.carousel-dot.active{background:var(--gold);width:18px;border-radius:3px}.carousel-dot.nearby{width:4px;height:4px;background:#D9C3A0}
+.carousel-swipe-hint{display:none}
 .carousel-track.is-hinting{animation:carousel-nudge 1s ease-in-out}
 @keyframes carousel-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(-12px)}}
 @media(prefers-reduced-motion:reduce){.carousel-track.is-hinting{animation:none}}
@@ -348,7 +349,12 @@ header{
   margin-top:-20px;
   padding:0 0 20px;
 }.hero-content{padding-top:72px;width:78%}.hero h1{font-size:58px}.hero-subtitle{font-size:18px;margin-top:18px}.hero-free{font-size:23px;margin-top:18px}.hero-buttons{gap:12px;width:100%;max-width:350px}.hero-btn{min-height:56px;font-size:17px;padding:0 15px}.hero-btn .arrow{font-size:30px}.hero-btn svg{width:24px;height:24px}.comment-cartes{margin-top:-90px;padding:0 18px}.comment-cartes img{border-radius:0}.adventures-intro{margin-top:-38px;padding:24px 28px 20px}.eyebrow{font-size:15px}.eyebrow-reviews::before,.eyebrow-reviews::after{width:20px}.adventures-intro h2{font-size:34px}.adventures-intro p{font-size:17px}.cta-all{min-height:54px;font-size:16px}.adv-card{flex-basis:calc(50% - 7px)}.adv-card-img{height:160px}.adventures{padding:18px 0 0}
-  .carousel-dots{margin-top:2px;margin-bottom:0}
+  .carousel-dots{margin-top:8px;margin-bottom:0}
+  .carousel-mask{overflow:hidden;margin-right:-28px;padding-right:28px}
+  .adv-card{flex-basis:calc(82% - 7px)}
+  .carousel-swipe-hint{display:flex;align-items:center;justify-content:center;gap:8px;margin:7px 0 0;font:600 12px Inter,system-ui,sans-serif;color:#6D6253}
+  .carousel-swipe-hint .swipe-arrow{font-size:20px;color:var(--orange);animation:swipe-arrow 1.4s ease-in-out infinite}
+  @keyframes swipe-arrow{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
   .kids-banner{margin-top:-20px;padding:0 0 20px}
   .kids-banner .container{padding:0 18px}
   .reviews-section{padding:0 0 8px}
@@ -429,6 +435,7 @@ header{
       <div class="carousel-outer">
         <div class="carousel-mask"><div class="carousel-track" id="carouselTrack"></div></div>
         <div class="carousel-dots" id="carouselDots"></div>
+        <div class="carousel-swipe-hint" aria-hidden="true"><span>Faites glisser pour voir les autres aventures</span><span class="swipe-arrow">›</span></div>
       </div>
     </div>
   </section>
