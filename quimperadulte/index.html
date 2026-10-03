@@ -329,15 +329,61 @@
       transition: background 160ms ease, color 160ms ease, transform 160ms ease;
     }
 
+    .formulaire-reponse .bouton-action {
+      border-color: var(--ys);
+      background: var(--ys-sombre);
+    }
+
     .bouton-action:active {
       color: #FFF4E3;
       background: var(--cuivre);
       transform: scale(0.97);
     }
 
+    .formulaire-reponse .bouton-action:active {
+      color: var(--fond-principal);
+      background: var(--ys);
+    }
+
     .bouton-commencer {
       margin-top: 4px;
       flex: 0 0 auto;
+    }
+
+    .choix-reprise {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      width: 100%;
+    }
+
+    .choix-reprise[hidden] { display: none; }
+
+    .bouton-reprise {
+      min-width: min(100%, 230px);
+      min-height: 58px;
+      padding: 14px 22px;
+      border: 2px solid var(--cuivre);
+      border-radius: 999px;
+      color: var(--fond-principal);
+      background: var(--cuivre);
+      box-shadow: 0 9px 22px rgba(7, 20, 23, 0.48);
+      font: 700 clamp(22px, 5.4vw, 26px)/1.2 "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      cursor: pointer;
+      transition: filter 160ms ease, transform 160ms ease;
+    }
+
+    .bouton-reprise:hover { filter: brightness(1.08); }
+
+    .bouton-reprise:active {
+      filter: brightness(0.9);
+      transform: scale(0.97);
+    }
+
+    .bouton-reprise:focus-visible {
+      outline: 3px solid var(--ivoire);
+      outline-offset: 3px;
     }
 
     .effet-ys {
@@ -761,6 +807,14 @@
         >
           Commencer
         </button>
+        <div id="choixReprise" class="choix-reprise" aria-label="Choix de reprise du jeu" hidden>
+          <button id="boutonContinuerJeu" class="bouton-reprise" type="button">
+            Continuer le jeu
+          </button>
+          <button id="boutonRecommencerJeu" class="bouton-reprise" type="button">
+            Recommencer le jeu
+          </button>
+        </div>
       </div>
     </section>
 
@@ -1228,6 +1282,9 @@
     (() => {
       "use strict";
 
+      const cleProgression = "aventures-quimperadulte-scene";
+      const sceneSauvegardee = localStorage.getItem(cleProgression);
+
       /* Ouvre immédiatement la scène demandée, avant l'initialisation des
          formulaires. Ainsi, même si une interaction secondaire rencontre une
          erreur, le retour du mécanisme de collection n'affiche pas l'accueil. */
@@ -1265,6 +1322,10 @@
       const boutonMecanismeStatue = document.getElementById("boutonMecanismeStatue");
       const boutonAccederPassage = document.getElementById("boutonAccederPassage");
       const boutonFin = document.getElementById("boutonFin");
+      const boutonCommencer = document.getElementById("boutonCommencer");
+      const choixReprise = document.getElementById("choixReprise");
+      const boutonContinuerJeu = document.getElementById("boutonContinuerJeu");
+      const boutonRecommencerJeu = document.getElementById("boutonRecommencerJeu");
 
       boutonMecanismeStatue.addEventListener("click", () => {
         window.location.assign("./mecanisme-statue/index.html");
@@ -1273,6 +1334,7 @@
         window.location.assign("./mecanisme-ouverture-porte/index.html");
       });
       boutonFin.addEventListener("click", () => {
+        localStorage.removeItem(cleProgression);
         window.location.assign("../index.html");
       });
       const reponseAnneeGradlon = document.getElementById("reponseAnneeGradlon");
@@ -1311,6 +1373,24 @@
       const messageFaiencerie = document.getElementById("messageFaiencerie");
       const historiqueScenes = [];
       let sceneActuelle = sceneDemandee || "accueil";
+      const sceneRepriseValide = sceneSauvegardee &&
+        sceneSauvegardee !== "accueil" &&
+        scenes.some((scene) => scene.id === sceneSauvegardee)
+        ? sceneSauvegardee
+        : null;
+
+      if (sceneSauvegardee && !sceneRepriseValide) {
+        localStorage.removeItem(cleProgression);
+      }
+
+      if (sceneDemandee && sceneDemandee !== "accueil") {
+        localStorage.setItem(cleProgression, sceneDemandee);
+      }
+
+      if (sceneRepriseValide && !sceneDemandee) {
+        boutonCommencer.hidden = true;
+        choixReprise.hidden = false;
+      }
 
       function afficherScene(nouvelleScene, ajouterHistorique = true, interactionUtilisateur = false) {
         const cible = document.getElementById(nouvelleScene);
@@ -1330,9 +1410,27 @@
         });
 
         sceneActuelle = nouvelleScene;
+        localStorage.setItem(cleProgression, sceneActuelle);
         boutonRetour.disabled = historiqueScenes.length === 0;
         window.scrollTo({ top: 0, behavior: "instant" });
       }
+
+      boutonContinuerJeu.addEventListener("click", () => {
+        if (sceneRepriseValide) afficherScene(sceneRepriseValide, false);
+      });
+
+      boutonRecommencerJeu.addEventListener("click", () => {
+        localStorage.removeItem(cleProgression);
+        historiqueScenes.length = 0;
+        boutonRetour.disabled = true;
+        document.querySelectorAll(".formulaire-reponse").forEach((formulaire) => formulaire.reset());
+        document.querySelectorAll(".message-reponse").forEach((message) => {
+          message.textContent = "";
+        });
+        choixReprise.hidden = true;
+        boutonCommencer.hidden = false;
+        afficherScene("scene-1", false);
+      });
 
       document.addEventListener("click", (evenement) => {
         const declencheur = evenement.target.closest("[data-scene-suivante]");

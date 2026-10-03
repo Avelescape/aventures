@@ -84,6 +84,34 @@
       animation: chute-et-collecte 4.2s forwards;
     }
 
+    .instruction-chute {
+      display: block;
+      width: 100%;
+      margin-top: 16px;
+      padding: 14px 20px;
+      border: 2px solid var(--bordure);
+      border-radius: 999px;
+      color: var(--creme);
+      background: #263c4c;
+      font: 600 18px/1.3 Georgia, "Times New Roman", serif;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .instruction-chute:focus-visible {
+      outline: 3px solid #E28A50;
+      outline-offset: 3px;
+    }
+
+    .message-audio {
+      margin: 12px 0 0;
+      color: var(--creme);
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .message-audio[hidden] { display: none; }
+
     @keyframes chute-et-collecte {
       0% {
         left: 50%;
@@ -156,17 +184,42 @@
       <img class="artefact" id="artefact" src="images/3-webp2.webp" alt="Artefact2">
       <img class="pierre-premier-plan" src="images/3-webppierrepremierplan.webp" alt="">
     </div>
+    <button class="instruction-chute" id="boutonChute" type="button">
+      Récupérer l’artefact
+    </button>
+    <p class="message-audio" id="messageAudio" role="status" aria-live="polite" hidden></p>
   </main>
+
+  <audio id="sonChute" src="sons/piecechute.mp3" preload="auto" playsinline></audio>
 
   <script>
     const scene = document.querySelector("#scene");
     const artefact = document.querySelector("#artefact");
+    const boutonChute = document.querySelector("#boutonChute");
+    const sonChute = document.querySelector("#sonChute");
+    const messageAudio = document.querySelector("#messageAudio");
     let sceneSuivanteLancee = false;
     let chuteLancee = false;
+
+    function signalerEchecAudio() {
+      messageAudio.textContent = "Le son n’a pas pu être lu sur cet appareil. L’animation continue.";
+      messageAudio.hidden = false;
+    }
 
     function demarrerChute() {
       if (chuteLancee) return;
       chuteLancee = true;
+      boutonChute.hidden = true;
+
+      let lectureAudio;
+      try {
+        lectureAudio = sonChute.play();
+      } catch {
+        signalerEchecAudio();
+      }
+      if (lectureAudio && typeof lectureAudio.catch === "function") {
+        lectureAudio.catch(signalerEchecAudio);
+      }
 
       scene.classList.remove("animation-artefact");
       void scene.offsetWidth;
@@ -176,14 +229,13 @@
       localStorage.setItem("artefactMetal", "trouve");
     }
 
+    sonChute.addEventListener("error", signalerEchecAudio);
+    boutonChute.addEventListener("click", demarrerChute, { once: true });
+
     artefact.addEventListener("animationend", () => {
       if (sceneSuivanteLancee) return;
       sceneSuivanteLancee = true;
       window.location.href = "../mecanisme-collection/index.html?artefact=couronne";
-    });
-
-    window.addEventListener("load", () => {
-      window.setTimeout(demarrerChute, 250);
     });
   </script>
 </body>

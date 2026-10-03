@@ -54,6 +54,34 @@ const boardEl=document.querySelector('#board'),timerEl=document.querySelector('#
 let grid=[],selected=null,score=0,running=false,busy=false,hintTick,swipe=null,suppressClickUntil=0;
 const $=s=>document.querySelector(s),idx=(r,c)=>r*CONFIG.cols+c,rc=i=>[Math.floor(i/CONFIG.cols),i%CONFIG.cols];
 
+
+/* Sons arcade générés par le navigateur : aucun fichier audio externe nécessaire. */
+let audioCtx=null;
+function audio(){
+  if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended') audioCtx.resume();
+  return audioCtx;
+}
+function tone(freq=440,dur=.08,type='square',vol=.045,slide=0,delay=0){
+  const a=audio(), t=a.currentTime+delay, o=a.createOscillator(), g=a.createGain();
+  o.type=type; o.frequency.setValueAtTime(freq,t);
+  if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(35,freq+slide),t+dur);
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.008);
+  g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur+.02);
+}
+function sfxSelect(){tone(620,.045,'square',.025,90)}
+function sfxBad(){tone(150,.09,'square',.025,-45)}
+function sfxMatch(chain=1){
+  const base=430+Math.min(chain-1,4)*70;
+  tone(base,.075,'square',.045,180,0);
+  tone(base*1.28,.09,'triangle',.035,240,.045);
+}
+function sfxWin(){
+  [523,659,784,1047].forEach((f,i)=>tone(f,.14,'square',.045,120,i*.09));
+}
+document.addEventListener('pointerdown',()=>audio(),{once:true});
+
 function randomType(){return Math.floor(Math.random()*CONFIG.types)}
 function makeGrid(){grid=[];for(let r=0;r<CONFIG.rows;r++)for(let c=0;c<CONFIG.cols;c++){let t;do{t=randomType()}while((c>1&&grid[idx(r,c-1)]===t&&grid[idx(r,c-2)]===t)||(r>1&&grid[idx(r-1,c)]===t&&grid[idx(r-2,c)]===t));grid.push(t)}if(!findMove())makeGrid()}
 function tileHTML(t,i){if(t===null)return `<span class="empty" data-i="${i}" aria-hidden="true"></span>`;const symbols=['◆','●','▲','✦'];return `<button class="tile" data-i="${i}" aria-label="Artéfact ${t+1}"><img src="../images/${IMAGES[t]}" alt="" onerror="this.style.display='none';this.nextElementSibling.classList.add('visible')"><span class="fallback">${symbols[t]}</span></button>`}
@@ -61,12 +89,12 @@ function render(){boardEl.innerHTML=grid.map(tileHTML).join('');boardEl.querySel
 function startSwipe(e){if(!running||busy)return;swipe={i:+e.currentTarget.dataset.i,x:e.clientX,y:e.clientY,id:e.pointerId};e.currentTarget.setPointerCapture?.(e.pointerId)}
 function endSwipe(e){if(!swipe||swipe.id!==e.pointerId)return;const start=swipe;swipe=null;const dx=e.clientX-start.x,dy=e.clientY-start.y;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;e.preventDefault();suppressClickUntil=Date.now()+450;const [r,c]=rc(start.i);let nr=r,nc=c;if(Math.abs(dx)>Math.abs(dy))nc+=dx>0?1:-1;else nr+=dy>0?1:-1;if(nr<0||nr>=CONFIG.rows||nc<0||nc>=CONFIG.cols)return;const target=idx(nr,nc);if(grid[target]===null)return;selected=null;markSelected();trySwap(start.i,target)}
 function adjacent(a,b){const [ar,ac]=rc(a),[br,bc]=rc(b);return Math.abs(ar-br)+Math.abs(ac-bc)===1}
-async function choose(i){if(!running||busy||grid[i]===null)return;clearHints();if(selected===null){selected=i;markSelected();return}if(i===selected){selected=null;markSelected();return}if(!adjacent(selected,i)){selected=i;markSelected();return}const a=selected;selected=null;markSelected();await trySwap(a,i)}
+async function choose(i){if(!running||busy||grid[i]===null)return;clearHints();if(selected===null){selected=i;markSelected();sfxSelect();return}if(i===selected){selected=null;markSelected();return}if(!adjacent(selected,i)){selected=i;markSelected();return}const a=selected;selected=null;markSelected();await trySwap(a,i)}
 function markSelected(){boardEl.querySelectorAll('.tile').forEach(e=>e.classList.toggle('selected',+e.dataset.i===selected))}
 function swap(a,b){[grid[a],grid[b]]=[grid[b],grid[a]]}
 function matches(){const hit=new Set();for(let r=0;r<CONFIG.rows;r++){let start=0;for(let c=1;c<=CONFIG.cols;c++)if(c===CONFIG.cols||grid[idx(r,c)]!==grid[idx(r,start)]){if(grid[idx(r,start)]!==null&&c-start>=3)for(let x=start;x<c;x++)hit.add(idx(r,x));start=c}}for(let c=0;c<CONFIG.cols;c++){let start=0;for(let r=1;r<=CONFIG.rows;r++)if(r===CONFIG.rows||grid[idx(r,c)]!==grid[idx(start,c)]){if(grid[idx(start,c)]!==null&&r-start>=3)for(let x=start;x<r;x++)hit.add(idx(x,c));start=r}}return [...hit]}
-async function trySwap(a,b){busy=true;swap(a,b);render();let hit=matches();if(!hit.length){await wait(180);swap(a,b);render();busy=false;return}await resolve(hit);busy=false}
-async function resolve(hit){let chain=0;while(hit.length&&running){chain++;boardEl.querySelectorAll('.tile').forEach(e=>{if(hit.includes(+e.dataset.i))e.classList.add('matched')});score+=hit.length;updateProgress();$('#combo').textContent=chain>1?`Combo × ${chain} !`:'';await wait(320);hit.forEach(i=>grid[i]=null);for(let c=0;c<CONFIG.cols;c++){let vals=[];for(let r=CONFIG.rows-1;r>=0;r--)if(grid[idx(r,c)]!==null)vals.push(grid[idx(r,c)]);for(let r=CONFIG.rows-1,k=0;r>=0;r--,k++)grid[idx(r,c)]=k<vals.length?vals[k]:null}render();await wait(240);hit=matches()}if(running&&!findMove())reshuffleRemaining();setTimeout(()=>$('#combo').textContent='',700)}
+async function trySwap(a,b){busy=true;swap(a,b);render();let hit=matches();if(!hit.length){sfxBad();await wait(180);swap(a,b);render();busy=false;return}await resolve(hit);busy=false}
+async function resolve(hit){let chain=0;while(hit.length&&running){chain++;sfxMatch(chain);boardEl.querySelectorAll('.tile').forEach(e=>{if(hit.includes(+e.dataset.i))e.classList.add('matched')});score+=hit.length;updateProgress();$('#combo').textContent=chain>1?`Combo × ${chain} !`:'';await wait(320);hit.forEach(i=>grid[i]=null);for(let c=0;c<CONFIG.cols;c++){let vals=[];for(let r=CONFIG.rows-1;r>=0;r--)if(grid[idx(r,c)]!==null)vals.push(grid[idx(r,c)]);for(let r=CONFIG.rows-1,k=0;r>=0;r--,k++)grid[idx(r,c)]=k<vals.length?vals[k]:null}render();await wait(240);hit=matches()}if(running&&!findMove())reshuffleRemaining();setTimeout(()=>$('#combo').textContent='',700)}
 function updateProgress(){const p=Math.min(100,Math.round(score/CONFIG.goal*100));$('#percent').textContent=p+' %';$('#bar').style.width=p+'%';$('#remaining').textContent=Math.max(0,CONFIG.goal-score);if(score>=CONFIG.goal)win()}
 function createsMatch(a,b){if(grid[a]===null||grid[b]===null)return false;swap(a,b);const ok=matches().length>0;swap(a,b);return ok}
 function reshuffleRemaining(){const spots=grid.map((v,i)=>v===null?null:i).filter(i=>i!==null),values=spots.map(i=>grid[i]);for(let attempt=0;attempt<150;attempt++){for(let i=values.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[values[i],values[j]]=[values[j],values[i]]}spots.forEach((pos,i)=>grid[pos]=values[i]);if(!matches().length&&findMove()){render();$('#combo').textContent='Les artéfacts se réorganisent…';return}}render()}
@@ -74,12 +102,14 @@ function findMove(){for(let r=0;r<CONFIG.rows;r++)for(let c=0;c<CONFIG.cols;c++)
 
 function showHint(){if(!running||busy||selected!==null)return;const move=findMove();if(move)move.forEach(i=>boardEl.children[i]?.classList.add('hint'))}
 function clearHints(){boardEl.querySelectorAll('.hint').forEach(e=>e.classList.remove('hint'))}
-function start(){clearInterval(hintTick);score=0;selected=null;busy=false;running=true;boardEl.style.opacity='1';stageEl.classList.remove('exit');relicEl.classList.remove('exit');relicEl.style.removeProperty('--relic-exit-duration');$('#modal').classList.remove('show');$('#continueLink').hidden=true;makeGrid();render();updateProgress();timerEl.textContent='∞';timerEl.classList.remove('danger');hintTick=setInterval(showHint,4000)}
+function start(){clearInterval(hintTick);score=0;selected=null;busy=false;running=true;flightStarted=false;boardEl.style.opacity='1';stageEl.classList.remove('exit');relicEl.classList.remove('exit');relicEl.style.removeProperty('--relic-exit-duration');$('#modal').classList.remove('show');$('#continueLink').hidden=true;makeGrid();render();updateProgress();timerEl.textContent='∞';timerEl.classList.remove('danger');hintTick=setInterval(showHint,4000)}
 function stop(){running=false;clearInterval(hintTick);clearHints()}
-function win(){if(!running)return;stop();boardEl.style.opacity='0';setTimeout(()=>{stageEl.classList.add('exit');relicEl.style.setProperty('--relic-exit-duration',CONFIG.relicExitMs+'ms');relicEl.classList.add('exit');setTimeout(()=>window.location.assign(CONFIG.collectionUrl),CONFIG.relicExitMs+120)},CONFIG.relicVisibleMs)}
-function showResult(ok){$('#resultTitle').textContent=ok?'Artéfact découvert !':'Le mécanisme s’est refermé';$('#resultText').textContent=ok?'Bravo ! Vous avez révélé le dernier artéfact de l’aventure.':'Le temps est écoulé. Recommencez : la nouvelle grille vous offrira rapidement de nouveaux alignements.';$('#resultButton').textContent=ok?'Revoir l’artéfact':'Recommencer';$('#continueLink').hidden=!ok;$('#continueLink').href=CONFIG.continueUrl;$('#modal').classList.add('show')}
+let flightStarted=false;
+function win(){if(!running)return;stop();sfxWin();boardEl.style.opacity='0';showResult(true)}
+function launchRelic(){if(flightStarted)return;flightStarted=true;$('#modal').classList.remove('show');const flightSound=new Audio('sons/pieceenvol.mp3');flightSound.play().catch(error=>console.error('Impossible de lire sons/pieceenvol.mp3',error));stageEl.classList.add('exit');relicEl.style.setProperty('--relic-exit-duration',CONFIG.relicExitMs+'ms');relicEl.classList.add('exit');setTimeout(()=>window.location.assign(CONFIG.collectionUrl),CONFIG.relicExitMs+120)}
+function showResult(ok){$('#resultTitle').textContent=ok?'Artéfact découvert !':'Le mécanisme s’est refermé';$('#resultText').textContent=ok?'Bravo ! Vous avez révélé le dernier artéfact de l’aventure. Récupérez-le pour l’ajouter à votre collection.':'Le temps est écoulé. Recommencez : la nouvelle grille vous offrira rapidement de nouveaux alignements.';$('#resultButton').textContent=ok?'Récupérer l’artefact':'Recommencer';$('#continueLink').hidden=!ok;$('#continueLink').href=CONFIG.continueUrl;$('#modal').classList.add('show')}
 function wait(ms){return new Promise(r=>setTimeout(r,ms))}
-$('#resultButton').addEventListener('click',()=>{$('#modal').classList.remove('show');if(running)return;if(score>=CONFIG.goal){boardEl.style.opacity='.12'}else start()});
+$('#resultButton').addEventListener('click',()=>{if(score>=CONFIG.goal){launchRelic();return}$('#modal').classList.remove('show');if(!running)start()});
 start();
 </script>
 </body>

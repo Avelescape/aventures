@@ -130,6 +130,7 @@
     <div class="logement" data-index="3"></div>
   </main>
   <img class="artefact-volant" id="artefact-volant" alt="">
+  <audio id="son-arrivee" src="sons/piecearrivee.mp3" preload="auto"></audio>
   <button class="bouton-suite" id="bouton-suite" type="button">Continuer la quête</button>
 
   <script>
@@ -178,8 +179,11 @@
     const scene = document.getElementById("scene");
     const volant = document.getElementById("artefact-volant");
     const boutonSuite = document.getElementById("bouton-suite");
+    const sonArrivee = document.getElementById("son-arrivee");
     const logements = [...document.querySelectorAll(".logement")];
+    const recuperationManuelle = ["triskel", "hermine"].includes(CONFIG.artefactActuel);
     let peutContinuer = false;
+    let animationEnCours = false;
 
     function collectionSauvegardee() {
       if (!CONFIG.sauvegarder) return [];
@@ -219,13 +223,14 @@
     }
 
     async function lancerAnimation() {
+      if (animationEnCours || peutContinuer) return;
       const artefact = CONFIG.artefacts[CONFIG.artefactActuel];
       const cible = logements[CONFIG.logementActuel];
       if (!artefact || !cible) return;
+      animationEnCours = true;
 
       volant.src = artefact.image;
       volant.alt = artefact.nom;
-      await volant.decode().catch(() => {});
       const depart = volant.getBoundingClientRect();
       const arrivee = cible.getBoundingClientRect();
       const echelle = (arrivee.width * .86) / depart.width;
@@ -244,9 +249,10 @@
       afficherArtefactDans(cible, artefact, true);
       sauvegarderActuel();
       peutContinuer = true;
-      if (CONFIG.artefactActuel === "hermine") {
-        boutonSuite.textContent = "Poursuivre l'aventure";
-      }
+      boutonSuite.disabled = false;
+      boutonSuite.textContent = CONFIG.artefactActuel === "hermine"
+        ? "Poursuivre l'aventure"
+        : "Continuer la quête";
       boutonSuite.classList.add("visible");
       if (window.parent && window.parent !== window) {
         window.parent.postMessage("mecanisme-ouvert", "*");
@@ -275,14 +281,31 @@
 
       location.href = CONFIG.pageSuivante;
     }
-    boutonSuite.addEventListener("click", continuer);
+    boutonSuite.addEventListener("click", () => {
+      if (!recuperationManuelle || peutContinuer) {
+        continuer();
+        return;
+      }
+
+      boutonSuite.disabled = true;
+      sonArrivee.currentTime = 0;
+      sonArrivee.play().catch(erreur => {
+        console.warn("Impossible de lire le son d’arrivée de l’artefact.", erreur);
+      });
+      lancerAnimation();
+    });
     scene.addEventListener("click", continuer);
     scene.addEventListener("keydown", e => {
       if (e.key === "Enter" || e.key === " ") continuer();
     });
 
     restaurerCollection();
-    setTimeout(lancerAnimation, CONFIG.delaiAvantVol);
+    if (recuperationManuelle) {
+      boutonSuite.textContent = "Récupérer l’artefact";
+      boutonSuite.classList.add("visible");
+    } else {
+      setTimeout(lancerAnimation, CONFIG.delaiAvantVol);
+    }
   </script>
 </body>
 </html>

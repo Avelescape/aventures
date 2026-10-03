@@ -379,17 +379,63 @@
   <script>
     const scene = document.getElementById("scene");
     const artefact = document.querySelector(".artefact");
+    const panneau = document.querySelector(".panneau");
     const sonPanneau = new Audio("sons/panneau.mp3");
+    const sonPieceDepart = new Audio("sons/piecedepart.mp3");
     sonPanneau.preload = "auto";
-    sonPanneau.setAttribute("playsinline", "");
+    sonPieceDepart.preload = "auto";
+    sonPieceDepart.setAttribute("playsinline", "");
+    let sonPieceDepartPret = false;
+    let sonPieceDepartEnAttente = false;
+    let deverrouillagePieceTente = false;
+
+    function lancerSon(son, nom) {
+      try {
+        const lecture = son.play();
+        if (lecture && typeof lecture.catch === "function") {
+          lecture.catch((error) => {
+            console.warn(`Le son ${nom} n’a pas pu être lu.`, error);
+          });
+        }
+      } catch (error) {
+        console.warn(`Le son ${nom} n’a pas pu être lu.`, error);
+      }
+    }
+
     function deverrouillerSon() {
-      const ancienVolume = sonPanneau.volume;
-      sonPanneau.volume = 0;
-      const essai = sonPanneau.play().catch(() => {});
-      if (essai && typeof essai.then === "function") {
-        essai.then(() => { sonPanneau.pause(); sonPanneau.currentTime = 0; sonPanneau.volume = ancienVolume; }).catch(() => { sonPanneau.volume = ancienVolume; });
-      } else {
-        sonPanneau.pause(); sonPanneau.currentTime = 0; sonPanneau.volume = ancienVolume;
+      if (deverrouillagePieceTente) {
+        return;
+      }
+      deverrouillagePieceTente = true;
+
+      sonPieceDepart.muted = true;
+      try {
+        const essai = sonPieceDepart.play();
+        if (essai && typeof essai.then === "function") {
+          essai.then(() => {
+            sonPieceDepart.pause();
+            sonPieceDepart.currentTime = 0;
+            sonPieceDepart.muted = false;
+            sonPieceDepartPret = true;
+            if (sonPieceDepartEnAttente) {
+              jouerPieceDepart();
+            }
+          }).catch(() => {
+            sonPieceDepart.muted = false;
+            sonPieceDepartPret = true;
+            if (sonPieceDepartEnAttente) {
+              jouerPieceDepart();
+            }
+          });
+        } else {
+          sonPieceDepart.pause();
+          sonPieceDepart.currentTime = 0;
+          sonPieceDepart.muted = false;
+          sonPieceDepartPret = true;
+        }
+      } catch {
+        sonPieceDepart.muted = false;
+        sonPieceDepartPret = true;
       }
     }
     document.addEventListener("touchstart", deverrouillerSon, { once: true, passive: true });
@@ -397,16 +443,33 @@
 
     let animationEnCours = false;
     let sceneSuivanteLancee = false;
+    let sonPieceDepartJoue = false;
+
+    function jouerPieceDepart() {
+      if (!sonPieceDepartJoue) {
+        return;
+      }
+      if (!sonPieceDepartPret) {
+        sonPieceDepartEnAttente = true;
+        return;
+      }
+
+      sonPieceDepartEnAttente = false;
+      sonPieceDepart.muted = false;
+      sonPieceDepart.currentTime = 0;
+      lancerSon(sonPieceDepart, "piecedepart");
+    }
 
     function basculerPanneau() {
       if (animationEnCours || scene.classList.contains("ouverte")) {
         return;
       }
 
+      deverrouillerSon();
       animationEnCours = true;
 
       sonPanneau.currentTime = 0;
-      sonPanneau.play().catch(() => {});
+      lancerSon(sonPanneau, "panneau");
 
       scene.classList.add("ouverte");
       scene.setAttribute("aria-pressed", "true");
@@ -430,6 +493,19 @@
         scene.classList.add("envolee");
       }, 2600);
     }
+
+    panneau.addEventListener("transitionend", (event) => {
+      if (
+        event.propertyName !== "transform" ||
+        sonPieceDepartJoue ||
+        !scene.classList.contains("ouverte")
+      ) {
+        return;
+      }
+
+      sonPieceDepartJoue = true;
+      jouerPieceDepart();
+    });
 
     /*
       Une fois l’artefact complètement sorti de l’écran
