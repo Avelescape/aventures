@@ -231,6 +231,8 @@
 
       volant.src = artefact.image;
       volant.alt = artefact.nom;
+      /* Attendre les dimensions réelles avant de calculer le trajet. */
+      await volant.decode().catch(() => {});
       const depart = volant.getBoundingClientRect();
       const arrivee = cible.getBoundingClientRect();
       const echelle = (arrivee.width * .86) / depart.width;
@@ -245,8 +247,11 @@
            easing: "cubic-bezier(.22,.72,.28,1)", fill: "forwards" });
 
       await animation.finished.catch(() => {});
+      /* Le remplissage forwards de Web Animations prime sur le style inline.
+         Annuler l’animation retire son image finale avant la pose définitive. */
+      animation.cancel();
       volant.style.opacity = "0";
-      afficherArtefactDans(cible, artefact, true);
+      afficherArtefactDans(cible, artefact);
       sauvegarderActuel();
       peutContinuer = true;
       boutonSuite.disabled = false;
