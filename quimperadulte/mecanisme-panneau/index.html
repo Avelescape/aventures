@@ -379,98 +379,29 @@
   <script>
     const scene = document.getElementById("scene");
     const artefact = document.querySelector(".artefact");
-    const panneau = document.querySelector(".panneau");
     const sonPanneau = new Audio("sons/panneau.mp3");
-    const sonPieceDepart = new Audio("sons/piecedepart.mp3");
     sonPanneau.preload = "auto";
-    sonPieceDepart.preload = "auto";
-    sonPieceDepart.setAttribute("playsinline", "");
-    let sonPieceDepartPret = false;
-    let sonPieceDepartEnAttente = false;
-    let deverrouillagePieceTente = false;
-
-    function lancerSon(son, nom) {
-      try {
-        const lecture = son.play();
-        if (lecture && typeof lecture.catch === "function") {
-          lecture.catch((error) => {
-            console.warn(`Le son ${nom} n’a pas pu être lu.`, error);
-          });
-        }
-      } catch (error) {
-        console.warn(`Le son ${nom} n’a pas pu être lu.`, error);
-      }
-    }
-
-    function deverrouillerSon() {
-      if (deverrouillagePieceTente) {
-        return;
-      }
-      deverrouillagePieceTente = true;
-
-      sonPieceDepart.muted = true;
-      try {
-        const essai = sonPieceDepart.play();
-        if (essai && typeof essai.then === "function") {
-          essai.then(() => {
-            sonPieceDepart.pause();
-            sonPieceDepart.currentTime = 0;
-            sonPieceDepart.muted = false;
-            sonPieceDepartPret = true;
-            if (sonPieceDepartEnAttente) {
-              jouerPieceDepart();
-            }
-          }).catch(() => {
-            sonPieceDepart.muted = false;
-            sonPieceDepartPret = true;
-            if (sonPieceDepartEnAttente) {
-              jouerPieceDepart();
-            }
-          });
-        } else {
-          sonPieceDepart.pause();
-          sonPieceDepart.currentTime = 0;
-          sonPieceDepart.muted = false;
-          sonPieceDepartPret = true;
-        }
-      } catch {
-        sonPieceDepart.muted = false;
-        sonPieceDepartPret = true;
-      }
-    }
-    document.addEventListener("touchstart", deverrouillerSon, { once: true, passive: true });
-    document.addEventListener("pointerdown", deverrouillerSon, { once: true, passive: true });
-
+    sonPanneau.setAttribute("playsinline", "");
     let animationEnCours = false;
     let sceneSuivanteLancee = false;
-    let sonPieceDepartJoue = false;
-
-    function jouerPieceDepart() {
-      if (!sonPieceDepartJoue) {
-        return;
-      }
-      if (!sonPieceDepartPret) {
-        sonPieceDepartEnAttente = true;
-        return;
-      }
-
-      sonPieceDepartEnAttente = false;
-      sonPieceDepart.muted = false;
-      sonPieceDepart.currentTime = 0;
-      lancerSon(sonPieceDepart, "piecedepart");
-    }
 
     function basculerPanneau() {
       if (animationEnCours || scene.classList.contains("ouverte")) {
         return;
       }
 
-      deverrouillerSon();
       animationEnCours = true;
 
-      sonPanneau.currentTime = 0;
-      lancerSon(sonPanneau, "panneau");
-
+      // Le son et le pivotement démarrent dans le même geste utilisateur.
+      try {
+        sonPanneau.currentTime = 0;
+        const lecture = sonPanneau.play();
+        if (lecture && typeof lecture.catch === "function") {
+          lecture.catch(() => {});
+        }
+      } catch (_) {
+        // Le panneau reste utilisable si le fichier sonore est indisponible.
+      }
       scene.classList.add("ouverte");
       scene.setAttribute("aria-pressed", "true");
 
@@ -493,19 +424,6 @@
         scene.classList.add("envolee");
       }, 2600);
     }
-
-    panneau.addEventListener("transitionend", (event) => {
-      if (
-        event.propertyName !== "transform" ||
-        sonPieceDepartJoue ||
-        !scene.classList.contains("ouverte")
-      ) {
-        return;
-      }
-
-      sonPieceDepartJoue = true;
-      jouerPieceDepart();
-    });
 
     /*
       Une fois l’artefact complètement sorti de l’écran

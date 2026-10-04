@@ -103,15 +103,6 @@
       outline-offset: 3px;
     }
 
-    .message-audio {
-      margin: 12px 0 0;
-      color: var(--creme);
-      font-size: 16px;
-      text-align: center;
-    }
-
-    .message-audio[hidden] { display: none; }
-
     @keyframes chute-et-collecte {
       0% {
         left: 50%;
@@ -187,39 +178,20 @@
     <button class="instruction-chute" id="boutonChute" type="button">
       Récupérer l’artefact
     </button>
-    <p class="message-audio" id="messageAudio" role="status" aria-live="polite" hidden></p>
   </main>
 
-  <audio id="sonChute" src="sons/piecechute.mp3" preload="auto" playsinline></audio>
 
   <script>
     const scene = document.querySelector("#scene");
     const artefact = document.querySelector("#artefact");
     const boutonChute = document.querySelector("#boutonChute");
-    const sonChute = document.querySelector("#sonChute");
-    const messageAudio = document.querySelector("#messageAudio");
     let sceneSuivanteLancee = false;
     let chuteLancee = false;
-
-    function signalerEchecAudio() {
-      messageAudio.textContent = "Le son n’a pas pu être lu sur cet appareil. L’animation continue.";
-      messageAudio.hidden = false;
-    }
 
     function demarrerChute() {
       if (chuteLancee) return;
       chuteLancee = true;
       boutonChute.hidden = true;
-
-      let lectureAudio;
-      try {
-        lectureAudio = sonChute.play();
-      } catch {
-        signalerEchecAudio();
-      }
-      if (lectureAudio && typeof lectureAudio.catch === "function") {
-        lectureAudio.catch(signalerEchecAudio);
-      }
 
       scene.classList.remove("animation-artefact");
       void scene.offsetWidth;
@@ -229,7 +201,6 @@
       localStorage.setItem("artefactMetal", "trouve");
     }
 
-    sonChute.addEventListener("error", signalerEchecAudio);
     boutonChute.addEventListener("click", demarrerChute, { once: true });
 
     artefact.addEventListener("animationend", () => {
