@@ -133,6 +133,10 @@
     }
 
     .scene[hidden] { display: none; }
+
+    #scene-indice-croix {
+      background: #102a30;
+    }
     /* iOS : le clavier ne doit jamais redimensionner les panneaux. */
     html, body, #jeu { min-height: var(--game-height, 100svh); }
     .scene { min-height: var(--game-height, 100svh); }
@@ -937,12 +941,20 @@
               required
             >
 
-            <button id="boutonIndiceCroixSaintAndre" class="bouton-indice" type="button" aria-expanded="false" aria-controls="indiceCroixSaintAndre">Indice</button>
-            <img id="indiceCroixSaintAndre" class="image-scene" src="images/3-webppinceau.webp" alt="Indice" hidden>
+            <button id="boutonIndiceCroixSaintAndre" class="bouton-indice" type="button" data-scene-suivante="scene-indice-croix">Indice</button>
             <button class="bouton-action" type="submit">Valider</button>
             <p id="messageCroixSaintAndre" class="message-reponse" role="status" aria-live="polite"></p>
           </form>
         </div>
+      </div>
+    </section>
+
+    <section id="scene-indice-croix" class="scene scene-indice-croix" aria-label="Indice pour le nombre de croix de Saint-André" hidden>
+      <div class="contenu-scene">
+        <img class="image-scene" src="images/3-webppinceau.webp" alt="Indice pour compter les croix de Saint-André">
+        <button class="bouton-action" type="button" data-scene-suivante="scene-3">
+          Retour
+        </button>
       </div>
     </section>
 
