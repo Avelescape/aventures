@@ -2330,109 +2330,6 @@ html, body, body *, button, .btn-primary, input, textarea, select {
 </div>
 
 <script>
-/* Gestion commune des MP3 : préchargement, déverrouillage et erreurs isolées. */
-window.AvelAudio = (() => {
-  const states = new Map();
-  const pending = new Map();
-  let button;
-  const scene = () => document.querySelector('.screen.active')?.id;
-  function state(audio) {
-    if (!states.has(audio)) {
-      audio.preload = 'auto';
-      audio.setAttribute('playsinline', '');
-      audio.setAttribute('webkit-playsinline', '');
-      states.set(audio, {version: 0, primed: false});
-    }
-    return states.get(audio);
-  }
-  function refresh() {
-    for (const [audio, request] of pending) {
-      if (Date.now() > request.until || request.scene !== scene()) pending.delete(audio);
-    }
-    if (!button && pending.size) {
-      button = document.createElement('button');
-      button.type = 'button';
-      button.textContent = 'Activer les sons';
-      button.setAttribute('aria-label', 'Activer les sons bloqués par le navigateur');
-      button.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:10000;padding:12px 20px;border:2px solid #fff;border-radius:24px;background:#102a30;color:white;font:inherit;cursor:pointer';
-      button.addEventListener('click', unlock);
-      document.body.appendChild(button);
-    }
-    if (button) button.hidden = !pending.size;
-  }
-  function stop(audio) {
-    if (!audio) return;
-    const st = state(audio);
-    st.version++;
-    if (st.restoreMuted !== undefined) {
-      audio.muted = st.restoreMuted;
-      delete st.restoreMuted;
-    }
-    pending.delete(audio);
-    audio.pause();
-    refresh();
-  }
-  function play(audio) {
-    if (!audio) return Promise.resolve(false);
-    const st = state(audio), version = ++st.version;
-    pending.delete(audio);
-    // Toute lecture réelle annule un éventuel amorçage silencieux.
-    if (st.restoreMuted !== undefined) {
-      audio.muted = st.restoreMuted;
-      delete st.restoreMuted;
-    }
-    let result;
-    try { result = audio.play(); } catch (error) { result = Promise.reject(error); }
-    return Promise.resolve(result).then(() => {
-      if (st.version === version) { st.primed = true; pending.delete(audio); refresh(); }
-      return true;
-    }, error => {
-      if (st.version !== version) return false;
-      if (error && error.name === 'NotAllowedError') {
-        const request = {scene: scene(), until: Date.now() + 8000};
-        pending.set(audio, request);
-        refresh();
-        setTimeout(refresh, 8100);
-      } else if (!error || error.name !== 'AbortError') {
-        console.warn('Son indisponible :', audio.getAttribute('src'), error?.name);
-      }
-      return false;
-    });
-  }
-  function unlock(event) {
-    if (event && !event.isTrusted) return;
-    refresh();
-    const retry = new Set(pending.keys());
-    retry.forEach(play);
-    document.querySelectorAll('audio').forEach(audio => {
-      const st = state(audio);
-      if (st.primed || !audio.paused || retry.has(audio) || st.restoreMuted !== undefined) return;
-      const version = ++st.version;
-      const muted = audio.muted;
-      st.restoreMuted = muted;
-      audio.muted = true;
-      const finish = success => {
-        if (st.version !== version) return;
-        audio.pause();
-        try { audio.currentTime = 0; } catch (_) {}
-        audio.muted = muted;
-        delete st.restoreMuted;
-        st.primed = success;
-      };
-      try { Promise.resolve(audio.play()).then(() => finish(true), () => finish(false)); }
-      catch (_) { finish(false); }
-    });
-  }
-  document.querySelectorAll('audio').forEach(state);
-  ['pointerdown', 'touchend', 'click', 'keydown'].forEach(type =>
-    document.addEventListener(type, unlock, {capture: true, passive: true}));
-  new MutationObserver(refresh).observe(document.body, {
-    subtree: true, attributes: true, attributeFilter: ['class']
-  });
-  return {play, stop};
-})();
-</script>
-<script>
 
 function vibrerEchec() {
   // Fonctionne surtout sur Android/Chrome.
@@ -2640,7 +2537,7 @@ function showScreen(name, addHist = true) {
 
   if (chantAudio && name === 'mauvaiscode') {
     chantAudio.currentTime = 0;
-    AvelAudio.play(chantAudio).catch(() => {
+    chantAudio.play().catch(() => {
       console.log("Lecture audio bloquée par le navigateur.");
     });
   }
@@ -2913,7 +2810,7 @@ function stopperChant() {
   const chantAudio = document.getElementById('chant-audio');
 
   if (chantAudio) {
-    AvelAudio.stop(chantAudio);
+    chantAudio.pause();
     chantAudio.currentTime = 0;
   }
 }
@@ -3091,7 +2988,7 @@ function verifierMotPhare() {
     const cloche = document.getElementById("cloche-audio");
     if (cloche) {
         cloche.currentTime = 0;
-        AvelAudio.play(cloche).catch(() => {});
+        cloche.play().catch(() => {});
     }
 
     showScreen("naufrageursfuient");
@@ -3208,10 +3105,10 @@ function jouerSuccesMecanisme() {
   const son = document.getElementById("sonSuccesMecanisme");
   if (!son) return;
 
-  AvelAudio.stop(son);
+  son.pause();
   son.currentTime = 0;
 
-  AvelAudio.play(son).catch(error => {
+  son.play().catch(error => {
     console.log("Son succès bloqué :", error);
   });
 }
@@ -3220,10 +3117,10 @@ function jouerSonZoneMecanisme() {
   const son = document.getElementById("sonZoneMecanisme");
   if (!son) return;
 
-  AvelAudio.stop(son);
+  son.pause();
   son.currentTime = 0;
 
-  AvelAudio.play(son).catch(error => {
+  son.play().catch(error => {
     console.log("Son zone bloqué :", error);
   });
 }
@@ -3232,10 +3129,10 @@ function jouerSonErreurMecanisme() {
   const son = document.getElementById("sonErreurMecanisme");
   if (!son) return;
 
-  AvelAudio.stop(son);
+  son.pause();
   son.currentTime = 0;
 
-  AvelAudio.play(son).catch(error => {
+  son.play().catch(error => {
     console.log("Son d'erreur bloqué :", error);
   });
 }
@@ -3658,7 +3555,7 @@ function retourSite() {
         }
 
         if (audioCtx.state === "suspended") {
-          audioCtx.resume().catch(() => {});
+          audioCtx.resume();
         }
 
         return true;
@@ -3692,10 +3589,10 @@ function retourSite() {
 
       /* Joue le fichier audio une fois à chaque tour complet. */
       function jouerClacDeTour() {
-        AvelAudio.stop(sonTour);
+        sonTour.pause();
         sonTour.currentTime = 0;
 
-        const lectureTour = AvelAudio.play(sonTour);
+        const lectureTour = sonTour.play();
 
         if (lectureTour) {
           lectureTour.catch(() => {
@@ -3945,7 +3842,7 @@ function retourSite() {
 
         /* Démarre en boucle le son externe du mécanisme. */
         sonEngrenages.currentTime = 0;
-        const lectureEngrenages = AvelAudio.play(sonEngrenages);
+        const lectureEngrenages = sonEngrenages.play();
 
         if (lectureEngrenages) {
           lectureEngrenages.catch(() => {
@@ -4002,7 +3899,7 @@ function retourSite() {
         clearTimeout(minuteriePremierEclair);
         clearTimeout(minuterieRetourFond);
         clearInterval(minuterieEclairsSuivants);
-        AvelAudio.stop(sonEngrenages);
+        sonEngrenages.pause();
         showScreen("finaventure");
       }
 
