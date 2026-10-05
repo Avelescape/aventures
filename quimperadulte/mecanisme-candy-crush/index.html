@@ -40,12 +40,6 @@
   <span id="timer">1:30</span><span id="combo"></span>
 </div>
 
-<div class="modal" id="modal"><div class="card">
-  <h2 id="resultTitle"></h2><p id="resultText"></p>
-  <button class="primary" id="resultButton"></button><br>
-  <a class="secondary" id="continueLink" href="../index.html" hidden>Continuer l’aventure</a>
-</div></div>
-
 <script>
 /* PERSONNALISATION : placez vos images dans /images avec les noms ci-dessous. */
 const CONFIG={goal:44,types:4,rows:9,cols:6,relicVisibleMs:0,relicExitMs:1300,collectionUrl:'../mecanisme-collection/index.html?artefact=hermine',continueUrl:'../index.html'};
@@ -102,14 +96,12 @@ function findMove(){for(let r=0;r<CONFIG.rows;r++)for(let c=0;c<CONFIG.cols;c++)
 
 function showHint(){if(!running||busy||selected!==null)return;const move=findMove();if(move)move.forEach(i=>boardEl.children[i]?.classList.add('hint'))}
 function clearHints(){boardEl.querySelectorAll('.hint').forEach(e=>e.classList.remove('hint'))}
-function start(){clearInterval(hintTick);score=0;selected=null;busy=false;running=true;flightStarted=false;boardEl.style.opacity='1';stageEl.classList.remove('exit');relicEl.classList.remove('exit');relicEl.style.removeProperty('--relic-exit-duration');$('#modal').classList.remove('show');$('#continueLink').hidden=true;makeGrid();render();updateProgress();timerEl.textContent='∞';timerEl.classList.remove('danger');hintTick=setInterval(showHint,4000)}
+function start(){clearInterval(hintTick);score=0;selected=null;busy=false;running=true;flightStarted=false;boardEl.style.opacity='1';stageEl.classList.remove('exit');relicEl.classList.remove('exit');relicEl.style.removeProperty('--relic-exit-duration');makeGrid();render();updateProgress();timerEl.textContent='∞';timerEl.classList.remove('danger');hintTick=setInterval(showHint,4000)}
 function stop(){running=false;clearInterval(hintTick);clearHints()}
 let flightStarted=false;
-function win(){if(!running)return;stop();sfxWin();boardEl.style.opacity='0';showResult(true)}
-function launchRelic(){if(flightStarted)return;flightStarted=true;$('#modal').classList.remove('show');const flightSound=new Audio('sons/pieceenvol.mp3');flightSound.play().catch(error=>console.error('Impossible de lire sons/pieceenvol.mp3',error));stageEl.classList.add('exit');relicEl.style.setProperty('--relic-exit-duration',CONFIG.relicExitMs+'ms');relicEl.classList.add('exit');setTimeout(()=>window.location.assign(CONFIG.collectionUrl),CONFIG.relicExitMs+120)}
-function showResult(ok){$('#resultTitle').textContent=ok?'Artéfact découvert !':'Le mécanisme s’est refermé';$('#resultText').textContent=ok?'Bravo ! Vous avez révélé le dernier artéfact de l’aventure. Récupérez-le pour l’ajouter à votre collection.':'Le temps est écoulé. Recommencez : la nouvelle grille vous offrira rapidement de nouveaux alignements.';$('#resultButton').textContent=ok?'Récupérer l’artefact':'Recommencer';$('#continueLink').hidden=!ok;$('#continueLink').href=CONFIG.continueUrl;$('#modal').classList.add('show')}
+function win(){if(!running)return;stop();sfxWin();boardEl.style.opacity='0';launchRelic()}
+function launchRelic(){if(flightStarted)return;flightStarted=true;const flightSound=new Audio('sons/pieceenvol.mp3');flightSound.play().catch(error=>console.error('Impossible de lire sons/pieceenvol.mp3',error));stageEl.classList.add('exit');relicEl.style.setProperty('--relic-exit-duration',CONFIG.relicExitMs+'ms');relicEl.classList.add('exit');setTimeout(()=>window.location.assign(CONFIG.collectionUrl),CONFIG.relicExitMs+120)}
 function wait(ms){return new Promise(r=>setTimeout(r,ms))}
-$('#resultButton').addEventListener('click',()=>{if(score>=CONFIG.goal){launchRelic();return}$('#modal').classList.remove('show');if(!running)start()});
 start();
 </script>
 </body>
