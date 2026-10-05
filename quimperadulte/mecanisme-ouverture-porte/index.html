@@ -5,11 +5,11 @@
 .hint.final-message{max-width:calc(100% - 24px);margin:0 auto;padding:12px 14px;border:1px solid #E28A50;border-radius:8px;background:#100e0bd9;color:#DED1BC;font-size:clamp(20px,4.8vw,27px);font-weight:700;line-height:1.3;white-space:pre-line}
 .final-return{display:inline-block;margin-top:10px;padding:13px 23px;border:1px solid #E28A50;border-radius:8px;background:#211a12e8;color:#E9DDC7;font:inherit;line-height:1.4;text-decoration:none;box-shadow:0 4px 24px #0009}
 .final-return:focus-visible{outline:3px solid #f5d799;outline-offset:4px}
-.final-return[hidden]{display:none}
+.final-return[hidden]{display:none}.back-return{position:fixed;top:12px;left:14px;z-index:1000;margin:0;padding:10px 16px;border:2px solid #C58A2A;border-radius:999px;background:#0b2529;color:#E9DDC7;font-size:clamp(18px,2vw,24px);line-height:1.2;box-shadow:0 4px 18px #0005}
 </style></head><body><main aria-label="Une porte ancienne donnant sur un atelier secret">
 <canvas id="scene" width="941" height="1672" role="img" aria-label="Porte fermée"></canvas>
 <button id="doorHit" aria-label="Ouvrir la porte" disabled></button>
-<div class="controls"><button id="action" disabled>Chargement…</button><p class="hint" id="status" aria-live="polite"> </p><a class="final-return" id="returnSite" href="../index.html" hidden>Kenavo, retour au site</a></div>
+<div class="controls"><a class="final-return back-return" href="../mecanisme-statue/index.html">← Retour</a><br><button id="action" disabled>Chargement…</button><p class="hint" id="status" aria-live="polite"> </p><a class="final-return" id="returnSite" href="../index.html" hidden>Kenavo, retour au site</a></div>
 </main><script>
 // Durée de l'ouverture, en millisecondes.
 const DUREE_OUVERTURE = 4200;
@@ -24,27 +24,16 @@ const SOURCE_OUVERTE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA60AAAaICA
 const canvas=document.getElementById('scene'), ctx=canvas.getContext('2d');
 const action=document.getElementById('action'), hit=document.getElementById('doorHit'), status=document.getElementById('status'), returnSite=document.getElementById('returnSite');
 const doorSound=new Audio('sons/porte.mp3');
-    doorSound.preload = "auto";
-    doorSound.setAttribute("playsinline", "");
-    function deverrouillerSon() {
-      const ancienVolume = doorSound.volume;
-      doorSound.volume = 0;
-      const essai = doorSound.play();
-      if (essai && typeof essai.then === "function") {
-        essai.then(() => { doorSound.pause(); doorSound.currentTime = 0; doorSound.volume = ancienVolume; }).catch(() => { doorSound.volume = ancienVolume; });
-      } else {
-        doorSound.pause(); doorSound.currentTime = 0; doorSound.volume = ancienVolume;
-      }
-    }
-    document.addEventListener("touchstart", deverrouillerSon, { once: true, passive: true });
-    document.addEventListener("pointerdown", deverrouillerSon, { once: true, passive: true });
 doorSound.preload='auto';
-const soundContext=window.AudioContext?new AudioContext():null;
-if(soundContext){
- const soundSource=soundContext.createMediaElementSource(doorSound);
- const soundGain=soundContext.createGain();
- soundGain.gain.value=1.8;
- soundSource.connect(soundGain).connect(soundContext.destination);
+doorSound.setAttribute('playsinline','');
+function jouerSonPorte(){
+ try{
+  doorSound.currentTime=0;
+  const lecture=doorSound.play();
+  if(lecture && typeof lecture.catch==='function'){
+   lecture.catch(()=>{status.textContent='Le son de la porte n’a pas pu être lu.';});
+  }
+ }catch(erreur){status.textContent='Le son de la porte n’a pas pu être lu.';}
 }
 let closed,opened,isOpen=false,running=false;
 const smooth=t=>t*t*(3-2*t);
@@ -135,14 +124,26 @@ function openDoor(){
   return;
  }
  running=true;action.disabled=true;hit.disabled=true;action.textContent='La porte s’ouvre…';status.textContent='';
- doorSound.currentTime=0;
- if(soundContext)soundContext.resume().catch(()=>{status.textContent='Le son de la porte n’a pas pu être lu.';});
- doorSound.play().catch(()=>{status.textContent='Le son de la porte n’a pas pu être lu.';});
+ jouerSonPorte();
  const duration=matchMedia('(prefers-reduced-motion: reduce)').matches?250:DUREE_OUVERTURE;
  let start;
  function frame(now){if(start===undefined)start=now;const t=clamp((now-start)/duration);draw(smooth(t));if(t<1){requestAnimationFrame(frame);}else{running=false;isOpen=true;action.disabled=false;action.textContent='Approcher';canvas.setAttribute('aria-label','Porte ouverte sur un atelier secret');}}
  requestAnimationFrame(frame);
 }
+document.querySelector('.back-return').addEventListener('click',function(event){
+ if(running){event.preventDefault();return;}
+ if(!isOpen)return;
+ event.preventDefault();
+ doorSound.pause();
+ try{doorSound.currentTime=0;}catch(erreur){}
+ isOpen=false;
+ draw(0);
+ action.disabled=false;
+ hit.disabled=false;
+ action.textContent='Ouvrir la porte';
+ status.textContent='';
+ canvas.setAttribute('aria-label','Porte fermée');
+});
 action.addEventListener('click',openDoor);hit.addEventListener('click',openDoor);
 Promise.all([load(SOURCE_FERMEE),load(SOURCE_OUVERTE)]).then(images=>{[closed,opened]=images;draw(0);action.disabled=false;hit.disabled=false;action.textContent='Ouvrir la porte';status.textContent='';}).catch(()=>{action.textContent='Images indisponibles';status.textContent='Impossible de charger les images.';});
 </script></body></html>

@@ -175,24 +175,18 @@
       <img class="artefact" id="artefact" src="images/3-webp2.webp" alt="Artefact2">
       <img class="pierre-premier-plan" src="images/3-webppierrepremierplan.webp" alt="">
     </div>
-    <button class="instruction-chute" id="boutonChute" type="button">
-      Récupérer l’artefact
-    </button>
   </main>
 
 
   <script>
     const scene = document.querySelector("#scene");
     const artefact = document.querySelector("#artefact");
-    const boutonChute = document.querySelector("#boutonChute");
     let sceneSuivanteLancee = false;
     let chuteLancee = false;
 
     function demarrerChute() {
       if (chuteLancee) return;
       chuteLancee = true;
-      boutonChute.hidden = true;
-
       scene.classList.remove("animation-artefact");
       void scene.offsetWidth;
       scene.classList.add("animation-artefact");
@@ -201,7 +195,11 @@
       localStorage.setItem("artefactMetal", "trouve");
     }
 
-    boutonChute.addEventListener("click", demarrerChute, { once: true });
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", demarrerChute, { once: true });
+    } else {
+      demarrerChute();
+    }
 
     artefact.addEventListener("animationend", () => {
       if (sceneSuivanteLancee) return;

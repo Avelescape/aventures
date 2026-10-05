@@ -11,8 +11,9 @@
     html,body{margin:0;min-height:100%;background:var(--fond-principal);color:var(--ivoire);font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;overflow-x:hidden}
     body{display:grid;place-items:start center;overscroll-behavior:none;background:radial-gradient(circle at 50% 0%,rgba(23,107,112,.14),transparent 42%),linear-gradient(180deg,var(--fond-principal),var(--ombre))}
     .game{position:relative;width:min(100vw,576px);aspect-ratio:1152/2048;overflow:hidden;background:var(--fond-principal);touch-action:none;user-select:none}
-    .scene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+    .scene{position:absolute;left:0;top:8%;width:100%;height:100%;object-fit:cover;pointer-events:none}
     .instructions{position:absolute;z-index:20;top:calc(env(safe-area-inset-top) + 1.2%);left:5%;right:5%;margin:0;color:var(--ivoire);text-align:center;font-weight:700;font-size:clamp(19px,4.2vw,26px);text-shadow:0 2px 5px #000,0 0 12px #000}
+    .back-button{position:absolute;z-index:50;top:calc(env(safe-area-inset-top) + 1%);left:3%;min-height:44px;padding:9px 14px;border:2px solid var(--or-patine);border-radius:999px;background:rgba(19,47,53,.95);color:var(--ivoire);font:600 clamp(18px,4.2vw,21px)/1.1 "Cormorant Garamond",Georgia,serif;text-decoration:none;box-shadow:0 5px 16px rgba(7,20,23,.55);touch-action:manipulation}
     .tray{position:absolute;z-index:25;top:6.2%;left:3%;right:3%;display:flex;justify-content:space-around;gap:2%;padding:2.3% 2%;border:2px solid var(--or-patine);border-radius:18px;background:linear-gradient(145deg,rgba(19,47,53,.97),rgba(14,34,40,.97));box-shadow:0 7px 25px #0008}
     .artifact{width:21%;aspect-ratio:1;border:1px solid rgba(183,139,69,.72);border-radius:50%;padding:0;background:var(--fond-panneau);overflow:hidden;cursor:grab;touch-action:none;box-shadow:0 3px 9px #000b;transition:opacity .25s,transform .2s,border-color .2s}
     .artifact img,.placed img{width:100%;height:100%;object-fit:cover;pointer-events:none}
@@ -54,6 +55,7 @@
 </head>
 <body>
   <main class="game" id="game" aria-label="Placez les quatre artefacts sur le disque">
+    <a class="back-button" href="../index.html?scene=artefacts-reunis#artefacts-reunis" aria-label="Revenir à la page Bravo">← Retour</a>
     <img class="scene" src="images/3-webpstatueouverte.webp" alt="Statue du roi Gradlon">
     <p class="instructions" id="instructions">Faites glisser chaque artefact sur le bon logement</p>
     <section class="tray" aria-label="Artefacts">
@@ -82,14 +84,7 @@
     const slots=[...document.querySelectorAll('.slot')];
     let placed=0,drag=null;
     const stoneSound=document.querySelector('#stoneSound');
-    function deverrouillerSonPierre(){
-      const ancienVolume=stoneSound.volume; stoneSound.volume=0;
-      const essai=stoneSound.play();
-      if(essai&&typeof essai.then==='function'){essai.then(()=>{stoneSound.pause();stoneSound.currentTime=0;stoneSound.volume=ancienVolume;}).catch(()=>{stoneSound.volume=ancienVolume;});}
-      else{stoneSound.pause();stoneSound.currentTime=0;stoneSound.volume=ancienVolume;}
-    }
-    document.addEventListener('touchstart',deverrouillerSonPierre,{once:true,passive:true});
-    document.addEventListener('pointerdown',deverrouillerSonPierre,{once:true,passive:true});
+
 
     document.querySelectorAll('.artifact').forEach(button=>button.addEventListener('pointerdown',e=>{
       if(button.classList.contains('used'))return;

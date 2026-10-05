@@ -1004,7 +1004,7 @@
 
         <div class="groupe-actions">
           <button id="boutonBatisseTrouvee" class="bouton-action" type="button">
-            Vous pensez avoir trouvé la bâtisse&nbsp;? Cliquer
+            Vous pensez l'avoir trouvé&nbsp;? Cliquer
           </button>
           <button id="boutonIndiceCle" class="bouton-indice" type="button" aria-expanded="false" aria-controls="indiceCle">
             Indice
@@ -1429,6 +1429,10 @@
         localStorage.setItem(cleProgression, sceneDemandee);
       }
 
+      if (sceneActuelle === "scene-coffret-ouvert" || sceneActuelle === "scene-artefact-couronne" || sceneActuelle === "scene-artefact-triskel" || sceneActuelle === "scene-artefact-hermine" || sceneActuelle === "scene-artefacts-reunis") {
+        boutonRetour.disabled = false;
+      }
+
       if (sceneRepriseValide && !sceneDemandee) {
         boutonCommencer.hidden = true;
         choixReprise.hidden = false;
@@ -1453,7 +1457,12 @@
 
         sceneActuelle = nouvelleScene;
         localStorage.setItem(cleProgression, sceneActuelle);
-        boutonRetour.disabled = historiqueScenes.length === 0;
+        boutonRetour.disabled = historiqueScenes.length === 0 &&
+          sceneActuelle !== "scene-coffret-ouvert" &&
+          sceneActuelle !== "scene-artefact-couronne" &&
+          sceneActuelle !== "scene-artefact-triskel" &&
+          sceneActuelle !== "scene-artefact-hermine" &&
+          sceneActuelle !== "scene-artefacts-reunis";
         window.scrollTo({ top: 0, behavior: "instant" });
       }
 
@@ -1481,6 +1490,42 @@
       });
 
       boutonRetour.addEventListener("click", () => {
+        // Depuis « Le coffret est ouvert », Retour ramène toujours à
+        // la question « Combien de croix de Saint-André… ? ».
+        if (sceneActuelle === "scene-coffret-ouvert") {
+          historiqueScenes.length = 0;
+          afficherScene("scene-3", false);
+          return;
+        }
+
+        // Depuis « La Couronne », Retour ramène toujours à « La Clé ».
+        if (sceneActuelle === "scene-artefact-couronne") {
+          historiqueScenes.length = 0;
+          afficherScene("scene-carnet-cle", false);
+          return;
+        }
+
+        // Depuis « Le Triskel », Retour ramène toujours à « La Couronne ».
+        if (sceneActuelle === "scene-artefact-triskel") {
+          historiqueScenes.length = 0;
+          afficherScene("scene-artefact-couronne", false);
+          return;
+        }
+
+        // Depuis « L’Hermine », Retour ramène toujours au « Triskel ».
+        if (sceneActuelle === "scene-artefact-hermine") {
+          historiqueScenes.length = 0;
+          afficherScene("scene-artefact-triskel", false);
+          return;
+        }
+
+        // Depuis « Bravo ! Après tant d’années… », Retour ramène toujours à « L’Hermine ».
+        if (sceneActuelle === "scene-artefacts-reunis") {
+          historiqueScenes.length = 0;
+          afficherScene("scene-artefact-hermine", false);
+          return;
+        }
+
         const scenePrecedente = historiqueScenes.pop();
         if (!scenePrecedente) return;
         afficherScene(scenePrecedente, false);
