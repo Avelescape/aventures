@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AvelEscape — Les six dorures de l'Empire</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap');
+:root{--green:#123f36;--gold:#b58b3c;--cream:#f5f0e5}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--green);font-family:Georgia,serif}
+main{max-width:800px;margin:auto;padding:12px 12px 30px}h1{font:700 clamp(30px,7vw,46px) 'Cormorant Garamond',serif;text-align:center;margin:8px 0}
+.intro,.help{text-align:center;font-size:15px;line-height:1.45;margin:7px 0 12px}.top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:bold}
+.progress{height:9px;background:#dcd2bd;border-radius:9px;margin:9px 0 13px;overflow:hidden}.bar{height:100%;width:0;background:var(--gold);transition:width .3s}
+.viewport{position:relative;overflow-x:auto;overflow-y:hidden;border:4px solid var(--gold);border-radius:12px;background:#e5dcc8;touch-action:pan-x;scrollbar-width:thin;box-shadow:0 4px 18px #123f3620}
+.panorama-wrap{position:relative}.nav-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:42px;height:64px;border:1px solid #d6b76c;background:#123f36df;color:#f5e2aa;border-radius:10px;font:700 35px Georgia;cursor:pointer;box-shadow:0 3px 9px #0005}.nav-arrow.left{left:5px}.nav-arrow.right{right:5px}.nav-arrow:disabled{opacity:.25;cursor:default}.explore-guide{text-align:center;background:#123f36;color:#f5f0e5;border-radius:10px;padding:10px;margin:9px 0;font-size:14px;line-height:1.5}.explore-guide strong{color:#f0d18a}.scroll-track{height:7px;background:#d6c9ae;border-radius:20px;margin:8px 4px 2px;overflow:hidden}.scroll-thumb{height:100%;width:20%;background:#b58b3c;border-radius:20px;transform:translateX(0);transition:transform .12s}.panorama{position:relative;height:clamp(290px,88vw,405px);width:max-content}
+.panorama>img{display:block;height:100%;width:auto;max-width:none;user-select:none;pointer-events:none}
+.mount{position:absolute;transform:translate(-50%,-50%);width:1px;height:1px;border:2px dashed #80591f;border-radius:42% 42% 15% 15%;background:#f5f0e5e0;display:flex;justify-content:center;align-items:center;cursor:pointer;padding:3px;touch-action:pan-x;box-shadow:0 2px 5px #0002}
+.mount:not(.correct){border:0;background:transparent;box-shadow:none;outline:none;color:transparent}.mount:not(.correct):focus-visible{outline:2px solid #3b9b81;outline-offset:2px}.mount .question{font:bold 34px Georgia;color:#85652b}.mount.correct{border:0;background:transparent;box-shadow:none;outline:none;padding:0;border-radius:0}
+.mount.correct{width:8%;height:37%;aspect-ratio:auto}.mount img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 1px 2px #0006);pointer-events:none}
+.mount:focus-visible,.choice:focus-visible,button:focus-visible{outline:4px solid #3b9b81;outline-offset:2px}
+.hint{text-align:center;font-size:13px;margin:8px 0;color:#506b5e}
+.panel{border:2px solid var(--gold);border-radius:13px;background:#eae1cf;padding:10px;margin-top:10px}
+.panel h2{text-align:center;font:700 25px 'Cormorant Garamond',serif;margin:0 0 6px}
+.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.choice{min-width:0;background:#fffaf1;border:2px solid #c9b48a;border-radius:9px;cursor:pointer;padding:5px;color:var(--green);font:700 14px 'Cormorant Garamond',serif;display:flex;flex-direction:column;align-items:center}
+.choice{touch-action:none;user-select:none;-webkit-user-select:none}.choice img{width:100%;height:100px;object-fit:contain;pointer-events:none}.choice.active{border-color:#126f54;box-shadow:0 0 0 2px #126f54}
+.choice.used{opacity:.35;pointer-events:none}
+.drag-ghost{position:fixed;z-index:100;pointer-events:none;width:92px;height:125px;object-fit:contain;filter:drop-shadow(0 6px 9px #0008);transform:translate(-50%,-50%)}.mount.drag-over{outline:none;background:transparent;box-shadow:none}.choice.dragging{opacity:.4}.feedback{min-height:2.5em;text-align:center;line-height:1.4;margin:10px 0;font-size:15px}
+.actions{text-align:center}button.action{border:0;border-radius:9px;background:var(--green);color:white;padding:10px 22px;font:700 22px 'Cormorant Garamond',serif;cursor:pointer}
+.modal{display:none;position:fixed;inset:0;z-index:10;background:#0a2a22cf;align-items:center;justify-content:center;padding:16px}
+.modal.show{display:flex}.dialog{width:min(100%,530px);max-height:90vh;overflow:auto;background:var(--cream);border:4px solid var(--gold);border-radius:15px;padding:20px;text-align:center}
+.dialog h2{font:700 32px 'Cormorant Garamond',serif;margin:0 0 8px}.dialog p{font:600 25px/1.25 'Cormorant Garamond',serif}
+.disclaimer{font-size:12px;line-height:1.4;color:#68756b;text-align:center;margin:16px 0}
+@media(min-width:600px){.choices{grid-template-columns:repeat(6,minmax(0,1fr))}.choice img{height:130px}}
+</style></head><body><main>
+<h1>Les six dorures de l'Empire</h1>
+<div style="display:none" aria-hidden="true"><span id="progressLabel">0 / 6 emblèmes placés</span><span id="status">À toi de jouer !</span></div><div class="progress"><div class="bar" id="bar"></div></div>
+<div class="explore-guide" id="exploreGuide"><strong>↔ La cabine se déplace !</strong> Fais-la glisser vers la gauche ou la droite, ou utilise les flèches dorées.</div>
+<div class="panorama-wrap"><button class="nav-arrow left" id="navLeft" type="button" aria-label="Faire défiler la cabine vers la gauche">‹</button><div class="viewport" id="viewport" aria-label="Cabine panoramique à faire défiler horizontalement">
+ <div class="panorama" id="panorama"><img src="images/cabine.png" alt="Cabine du Canot de l'Empereur" draggable="false"><div id="mounts"></div></div>
+</div><button class="nav-arrow right" id="navRight" type="button" aria-label="Faire défiler la cabine vers la droite">›</button></div>
+<div class="scroll-track" aria-hidden="true"><div class="scroll-thumb" id="scrollThumb"></div></div>
+<p class="hint">Déplace la cabine avec le doigt ou les flèches, puis glisse l'emblème à sa place.</p>
+<section class="panel"><h2>Glisse un emblème sur sa place</h2><div class="choices" id="choices"></div></section>
+<p class="feedback" id="feedback" aria-live="polite">Glisse un emblème sur la cabine à l'endroit où tu penses qu'il doit aller.</p>
+<div class="actions"><button class="action" id="reset">Recommencer</button></div>
+</main>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="heading"><div class="dialog"><h2 id="heading">Neptune raconte…</h2><p id="story"></p><button class="action" id="continue">Continuer</button></div></div>
+<script>
+const stories=[
+"Regarde ces ornements, le bulot ! Même les extrémités de la cabine participent au grand spectacle impérial. Ici, rien n'est laissé au hasard !",
+"Des armes et des emblèmes réunis : c'est un trophée décoratif. Il célèbre la puissance militaire. Napoléon ne faisait décidément pas dans la discrétion !",
+"Ces drapeaux et attributs militaires rappellent les armées de l'Empire. Moi, je préfère mon trident : au moins, je sais où je l'ai rangé !",
+"Un casque, une cuirasse, des armes : tout l'équipement du guerrier ! Le message est clair : l'Empereur veut montrer sa force. Quelle modestie !",
+"Les instruments, les armes et les insignes composent une véritable mise en scène du prestige impérial. À croire qu'il fallait impressionner jusqu'aux poissons !",
+"Et voilà la dernière dorure ! Toutes ces sculptures proclament la grandeur du pouvoir. Moi, le bulot, j'ai tout l'océan… sans avoir besoin d'en couvrir les murs d'or !"
+];
+// Coordonnées relevées dans GIMP sur l'image originale (2048 × 682 pixels).
+const IMAGE_WIDTH=2048, IMAGE_HEIGHT=682, TOLERANCE=50;
+const locations=[[140,265],[470,265],[800,265],[1140,265],[1500,265],[1800,265]];
+let selected=null;let done=new Set();let activeDrag=null;let suppressClick=false;
+function shuffledOrder(){const a=[0,1,2,3,4,5];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+let choiceOrder=shuffledOrder();
+const mounts=document.getElementById('mounts'),choices=document.getElementById('choices'),modal=document.getElementById('modal'),feedback=document.getElementById('feedback');
+function render(){
+ mounts.innerHTML='';choices.innerHTML='';
+ for(let i=0;i<6;i++){
+  const m=document.createElement('button');m.type='button';m.className='mount'+(done.has(i)?' correct':'');m.style.left=(locations[i][0]/IMAGE_WIDTH*100)+'%';m.style.top=(locations[i][1]/IMAGE_HEIGHT*100)+'%';m.setAttribute('aria-label','Emplacement '+(i+1));m.dataset.index=i;
+  if(done.has(i)){const im=document.createElement('img');im.src=`images/embleme${i+1}.png`;im.alt=`Emblème ${i+1} placé`;m.append(im)}
+  else {m.title='Zone de dépôt invisible'}
+  m.addEventListener('click',e=>{e.stopPropagation();place(i)});mounts.append(m);
+ }
+ for(const i of choiceOrder){
+  const c=document.createElement('button');c.type='button';c.className='choice'+(selected===i?' active':'')+(done.has(i)?' used':'');c.disabled=done.has(i);c.setAttribute('aria-pressed',selected===i?'true':'false');
+  c.innerHTML=`<img src="images/embleme${i+1}.png" alt="Emblème à placer">`;c.setAttribute("aria-label",`Sélectionner l’emblème ${i+1}`);
+  c.addEventListener('click',()=>{if(suppressClick){suppressClick=false;return}selected=i;feedback.textContent=`Emblème ${i+1} sélectionné. Cherche sa place sur la cabine !`;render()});
+  c.addEventListener('pointerdown',e=>beginDrag(e,i,c));
+  choices.append(c);
+ }
+ document.getElementById('progressLabel').textContent=`${done.size} / 6 emblèmes placés`;
+ document.getElementById('bar').style.width=(done.size/6*100)+'%';
+ document.getElementById('status').textContent=done.size===6?'Mission accomplie':selected===null?'À toi de jouer !':`Emblème ${selected+1} choisi`;
+}
+function place(i){
+ if(done.has(i))return;
+ if(selected===null){feedback.textContent='Choisis d’abord un emblème, le bulot !';return}
+ if(i!==selected){feedback.textContent='Raté, le bulot ! Essaie un autre endroit.';return}
+ done.add(i);selected=null;render();
+ document.getElementById('heading').textContent=done.size===6?'Mission accomplie !':'Neptune raconte…';
+ document.getElementById('story').textContent=stories[i];
+ document.getElementById('continue').textContent=done.size===6?'Terminer':'Continuer';
+ modal.classList.add('show');document.getElementById('continue').focus();
+}
+
+// Glisser-déposer tactile / souris : l'image suit réellement le doigt.
+function beginDrag(e,i,button){
+ if(done.has(i)||e.button!==0)return;
+ activeDrag={id:i,pointerId:e.pointerId,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,button,ghost:null,over:null};
+ button.setPointerCapture(e.pointerId);
+ button.addEventListener('pointermove',dragMove);
+ button.addEventListener('pointerup',dragEnd,{once:true});
+ button.addEventListener('pointercancel',dragCancel,{once:true});
+}
+function dragMove(e){
+ const d=activeDrag;if(!d||e.pointerId!==d.pointerId)return;
+ d.x=e.clientX;d.y=e.clientY;
+ if(!d.ghost && Math.hypot(d.x-d.startX,d.y-d.startY)>7){
+  d.ghost=document.createElement('img');d.ghost.className='drag-ghost';d.ghost.src=`images/embleme${d.id+1}.png`;d.ghost.alt='';document.body.append(d.ghost);d.button.classList.add('dragging');
+ }
+ if(!d.ghost)return;
+ e.preventDefault();
+ d.ghost.style.left=d.x+'px';d.ghost.style.top=d.y+'px';
+ const viewport=document.getElementById('viewport'),r=viewport.getBoundingClientRect();
+ if(d.y>=r.top-25 && d.y<=r.bottom+25){
+  if(d.x<r.left+55)viewport.scrollLeft-=Math.max(8,(r.left+55-d.x)*.35);
+  if(d.x>r.right-55)viewport.scrollLeft+=Math.max(8,(d.x-r.right+55)*.35);
+ }
+ // Si le plateau sort de l'écran, on peut remonter ou descendre pendant le glissement.
+ if(d.y<65)window.scrollBy(0,-12);
+ if(d.y>window.innerHeight-65)window.scrollBy(0,12);
+ document.querySelectorAll('.mount.drag-over').forEach(el=>el.classList.remove('drag-over'));
+ const target=findDropTarget(d.x,d.y);
+ d.over=target;
+ if(d.over)d.over.classList.add('drag-over');
+}
+// Convertit le point de dépôt écran en pixels de la photographie originale.
+function findDropTarget(clientX,clientY){
+ const panorama=document.getElementById('panorama');
+ const viewport=document.getElementById('viewport');
+ const rect=panorama.getBoundingClientRect(), vr=viewport.getBoundingClientRect();
+ if(clientX<vr.left||clientX>vr.right||clientY<vr.top||clientY>vr.bottom)return null;
+ const x=(clientX-rect.left)/rect.width*IMAGE_WIDTH;
+ const y=(clientY-rect.top)/rect.height*IMAGE_HEIGHT;
+ let closest=null, dist=Infinity;
+ for(let i=0;i<locations.length;i++){
+  if(done.has(i))continue;
+  const [cx,cy]=locations[i], delta=Math.hypot(x-cx,y-cy);
+  if(delta<=TOLERANCE&&delta<dist){closest=i;dist=delta}
+ }
+ return closest===null?null:mounts.querySelector(`[data-index="${closest}"]`);
+}
+function finishDrag(d){
+ d.button.removeEventListener('pointermove',dragMove);
+ d.button.classList.remove('dragging');
+ if(d.ghost)d.ghost.remove();
+ document.querySelectorAll('.mount.drag-over').forEach(el=>el.classList.remove('drag-over'));
+ activeDrag=null;
+}
+function dragEnd(e){
+ const d=activeDrag;if(!d||e.pointerId!==d.pointerId)return;
+ const wasDrag=!!d.ghost, target=findDropTarget(e.clientX,e.clientY);
+ finishDrag(d);
+ if(!wasDrag)return; // Un simple toucher sélectionne encore l'emblème.
+ suppressClick=true;
+ // L'événement click synthétique n'est pas toujours émis après un glissement.
+ setTimeout(()=>{suppressClick=false},80);
+ if(!target){feedback.textContent='Pas ici, le bulot ! Cherche le bon emplacement sur la cabine.';return}
+ selected=d.id;place(Number(target.dataset.index));
+}
+function dragCancel(e){const d=activeDrag;if(d&&e.pointerId===d.pointerId)finishDrag(d)}
+
+document.getElementById('viewport').addEventListener('click',e=>{
+ if(selected===null||activeDrag)return;
+ const target=findDropTarget(e.clientX,e.clientY);
+ if(target)place(Number(target.dataset.index));
+});
+document.getElementById('continue').addEventListener('click',()=>{
+ modal.classList.remove('show');feedback.textContent=done.size===6?'Bravo ! Les six trophées sont replacés.': 'Choisis un autre emblème pour continuer.';
+ if(done.size===6)document.getElementById('reset').focus();
+});
+document.getElementById('reset').addEventListener('click',()=>{
+ done.clear();selected=null;choiceOrder=shuffledOrder();render();document.getElementById('viewport').scrollLeft=0;
+ feedback.textContent='Nouvelle partie ! Choisis un emblème, le bulot.';
+});
+// Sur mobile, les emblèmes sont placés au-dessus de la cabine pour faciliter le geste.
+const panel=document.querySelector('.panel');document.querySelector('.viewport').before(panel);
+render();
+// Repères de navigation : flèches, barre de position et courte démonstration au lancement.
+const viewportNav=document.getElementById('viewport');
+const navLeft=document.getElementById('navLeft'),navRight=document.getElementById('navRight');
+const thumb=document.getElementById('scrollThumb'),guide=document.getElementById('exploreGuide');
+let explored=false;
+function updateNavigation(){
+ const max=Math.max(0,viewportNav.scrollWidth-viewportNav.clientWidth);
+ const fraction=viewportNav.scrollWidth?viewportNav.clientWidth/viewportNav.scrollWidth:1;
+ thumb.style.width=(fraction*100)+'%';
+ thumb.style.transform=`translateX(${max?viewportNav.scrollLeft/max*(100/fraction-100):0}%)`;
+ navLeft.disabled=viewportNav.scrollLeft<2;
+ navRight.disabled=viewportNav.scrollLeft>=max-2;
+}
+function markExplored(){if(!explored){explored=true;guide.hidden=true}}
+navLeft.addEventListener('click',()=>{markExplored();viewportNav.scrollBy({left:-viewportNav.clientWidth*.7,behavior:'smooth'})});
+navRight.addEventListener('click',()=>{markExplored();viewportNav.scrollBy({left:viewportNav.clientWidth*.7,behavior:'smooth'})});
+viewportNav.addEventListener('scroll',updateNavigation,{passive:true});
+viewportNav.addEventListener('pointerdown',e=>{if(e.target.closest('.mount'))return;markExplored()});
+window.addEventListener('resize',updateNavigation);
+window.addEventListener('load',()=>{
+ updateNavigation();
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const distance=Math.min(110,Math.max(0,viewportNav.scrollWidth-viewportNav.clientWidth));
+ if(distance<20)return;
+ // Démonstration courte, sans perturber le placement des emblèmes.
+ setTimeout(()=>{if(!explored && !activeDrag){viewportNav.scrollTo({left:distance,behavior:'smooth'});setTimeout(()=>{if(!explored && !activeDrag)viewportNav.scrollTo({left:0,behavior:'smooth'})},800)}},650);
+});
+</script></body></html>
