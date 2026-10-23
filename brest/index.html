@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AvelEscape — Les six dorures de l'Empire</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap');
+:root{--green:#123f36;--gold:#b58b3c;--cream:#f5f0e5}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--green);font-family:Georgia,serif}
+main{max-width:800px;margin:auto;padding:12px 12px 30px}h1{font:700 clamp(30px,7vw,46px) 'Cormorant Garamond',serif;text-align:center;margin:8px 0}
+.intro,.help{text-align:center;font-size:15px;line-height:1.45;margin:7px 0 12px}.top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:bold}
+.progress{height:9px;background:#dcd2bd;border-radius:9px;margin:9px 0 13px;overflow:hidden}.bar{height:100%;width:0;background:var(--gold);transition:width .3s}
+.viewport{position:relative;overflow-x:auto;overflow-y:hidden;border:4px solid var(--gold);border-radius:12px;background:#e5dcc8;touch-action:pan-x;scrollbar-width:thin;box-shadow:0 4px 18px #123f3620}
+.panorama{position:relative;height:clamp(290px,88vw,405px);width:max-content}
+.panorama>img{display:block;height:100%;width:auto;max-width:none;user-select:none;pointer-events:none}
+.mount{position:absolute;top:66%;transform:translate(-50%,-50%);height:34%;aspect-ratio:0.8;border:2px dashed #80591f;border-radius:42% 42% 15% 15%;background:#f5f0e5e0;display:flex;justify-content:center;align-items:center;cursor:pointer;padding:3px;touch-action:pan-x;box-shadow:0 2px 5px #0002}
+.mount .question{font:bold 34px Georgia;color:#85652b}.mount.correct{border:2px solid #b58b3c;background:#123f36c9}
+.mount img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 1px 2px #0006);pointer-events:none}
+.mount:focus-visible,.choice:focus-visible,button:focus-visible{outline:4px solid #3b9b81;outline-offset:2px}
+.hint{text-align:center;font-size:13px;margin:8px 0;color:#506b5e}
+.panel{border:2px solid var(--gold);border-radius:13px;background:#eae1cf;padding:10px;margin-top:10px}
+.panel h2{text-align:center;font:700 25px 'Cormorant Garamond',serif;margin:0 0 6px}
+.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.choice{min-width:0;background:#fffaf1;border:2px solid #c9b48a;border-radius:9px;cursor:pointer;padding:5px;color:var(--green);font:700 14px 'Cormorant Garamond',serif;display:flex;flex-direction:column;align-items:center}
+.choice img{width:100%;height:100px;object-fit:contain;pointer-events:none}.choice.active{border-color:#126f54;box-shadow:0 0 0 2px #126f54}
+.choice.used{opacity:.35;pointer-events:none}.choice span{margin-top:3px}
+.feedback{min-height:2.5em;text-align:center;line-height:1.4;margin:10px 0;font-size:15px}
+.actions{text-align:center}button.action{border:0;border-radius:9px;background:var(--green);color:white;padding:10px 22px;font:700 22px 'Cormorant Garamond',serif;cursor:pointer}
+.modal{display:none;position:fixed;inset:0;z-index:10;background:#0a2a22cf;align-items:center;justify-content:center;padding:16px}
+.modal.show{display:flex}.dialog{width:min(100%,530px);max-height:90vh;overflow:auto;background:var(--cream);border:4px solid var(--gold);border-radius:15px;padding:20px;text-align:center}
+.dialog h2{font:700 32px 'Cormorant Garamond',serif;margin:0 0 8px}.dialog p{font:600 25px/1.25 'Cormorant Garamond',serif}
+.disclaimer{font-size:12px;line-height:1.4;color:#68756b;text-align:center;margin:16px 0}
+@media(min-width:600px){.choices{grid-template-columns:repeat(6,minmax(0,1fr))}.choice img{height:130px}}
+</style></head><body><main>
+<h1>Les six dorures de l'Empire</h1>
+<p class="intro">Napoléon a perdu ses trophées ! À toi de retrouver leur emplacement sur la cabine, le bulot.</p>
+<div class="top"><span id="progressLabel">0 / 6 emblèmes placés</span><span id="status">À toi de jouer !</span></div><div class="progress"><div class="bar" id="bar"></div></div>
+<div class="viewport" id="viewport" aria-label="Cabine panoramique à faire défiler horizontalement">
+ <div class="panorama" id="panorama"><img src="images/cabine.png" alt="Cabine du Canot de l'Empereur" draggable="false"><div id="mounts"></div></div>
+</div>
+<p class="hint">← Fais glisser la cabine vers la gauche ou la droite →</p>
+<section class="panel"><h2>Choisis un emblème</h2><div class="choices" id="choices"></div></section>
+<p class="feedback" id="feedback" aria-live="polite">Touche un emblème ci-dessus, puis l'une des silhouettes sur la cabine.</p>
+<div class="actions"><button class="action" id="reset">Recommencer</button></div>
+<p class="disclaimer">Prototype de jeu : les emplacements des trophées sont des positions de jeu illustratives, et non une reconstitution historique certifiée.</p>
+</main>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="heading"><div class="dialog"><h2 id="heading">Neptune raconte…</h2><p id="story"></p><button class="action" id="continue">Continuer</button></div></div>
+<script>
+const stories=[
+"Regarde ces ornements, le bulot ! Même les extrémités de la cabine participent au grand spectacle impérial. Ici, rien n'est laissé au hasard !",
+"Des armes et des emblèmes réunis : c'est un trophée décoratif. Il célèbre la puissance militaire. Napoléon ne faisait décidément pas dans la discrétion !",
+"Ces drapeaux et attributs militaires rappellent les armées de l'Empire. Moi, je préfère mon trident : au moins, je sais où je l'ai rangé !",
+"Un casque, une cuirasse, des armes : tout l'équipement du guerrier ! Le message est clair : l'Empereur veut montrer sa force. Quelle modestie !",
+"Les instruments, les armes et les insignes composent une véritable mise en scène du prestige impérial. À croire qu'il fallait impressionner jusqu'aux poissons !",
+"Et voilà la dernière dorure ! Toutes ces sculptures proclament la grandeur du pouvoir. Moi, le bulot, j'ai tout l'océan… sans avoir besoin d'en couvrir les murs d'or !"
+];
+const locations=[7.5,23.5,39.5,60.5,76.5,92.5];
+let selected=null;let done=new Set();
+const mounts=document.getElementById('mounts'),choices=document.getElementById('choices'),modal=document.getElementById('modal'),feedback=document.getElementById('feedback');
+function render(){
+ mounts.innerHTML='';choices.innerHTML='';
+ for(let i=0;i<6;i++){
+  const m=document.createElement('button');m.type='button';m.className='mount'+(done.has(i)?' correct':'');m.style.left=locations[i]+'%';m.setAttribute('aria-label','Emplacement '+(i+1));m.dataset.index=i;
+  if(done.has(i)){const im=document.createElement('img');im.src=`images/embleme${i+1}.png`;im.alt=`Emblème ${i+1} placé`;m.append(im)}
+  else {const q=document.createElement('span');q.className='question';q.textContent='?';m.append(q)}
+  m.addEventListener('click',()=>place(i));mounts.append(m);
+  const c=document.createElement('button');c.type='button';c.className='choice'+(selected===i?' active':'')+(done.has(i)?' used':'');c.disabled=done.has(i);c.setAttribute('aria-pressed',selected===i?'true':'false');
+  c.innerHTML=`<img src="images/embleme${i+1}.png" alt=""><span>Emblème ${i+1}</span>`;
+  c.addEventListener('click',()=>{selected=i;feedback.textContent=`Emblème ${i+1} sélectionné. Cherche sa silhouette sur la cabine !`;render()});
+  choices.append(c);
+ }
+ document.getElementById('progressLabel').textContent=`${done.size} / 6 emblèmes placés`;
+ document.getElementById('bar').style.width=(done.size/6*100)+'%';
+ document.getElementById('status').textContent=done.size===6?'Mission accomplie':selected===null?'À toi de jouer !':`Emblème ${selected+1} choisi`;
+}
+function place(i){
+ if(done.has(i))return;
+ if(selected===null){feedback.textContent='Choisis d’abord un emblème, le bulot !';return}
+ if(i!==selected){feedback.textContent='Raté, le bulot ! Essaie une autre silhouette.';return}
+ done.add(i);selected=null;render();
+ document.getElementById('heading').textContent=done.size===6?'Mission accomplie !':'Neptune raconte…';
+ document.getElementById('story').textContent=stories[i];
+ document.getElementById('continue').textContent=done.size===6?'Terminer':'Continuer';
+ modal.classList.add('show');document.getElementById('continue').focus();
+}
+document.getElementById('continue').addEventListener('click',()=>{
+ modal.classList.remove('show');feedback.textContent=done.size===6?'Bravo ! Les six trophées sont replacés.': 'Choisis un autre emblème pour continuer.';
+ if(done.size===6)document.getElementById('reset').focus();
+});
+document.getElementById('reset').addEventListener('click',()=>{
+ done.clear();selected=null;render();document.getElementById('viewport').scrollLeft=0;
+ feedback.textContent='Nouvelle partie ! Choisis un emblème, le bulot.';
+});
+render();
+</script></body></html>
