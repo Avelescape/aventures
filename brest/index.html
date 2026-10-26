@@ -74,10 +74,41 @@ let storageOK=true;
 try{localStorage.setItem(KEY+'-test','1');localStorage.removeItem(KEY+'-test')}catch(e){storageOK=false;$('storage-notice').hidden=false}
 function save(){state.updatedAt=new Date().toISOString();if(storageOK){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){storageOK=false;$('storage-notice').hidden=false}}}
 function render(){$('launch-reveil').hidden=true;$('launch-saut').hidden=true;if(state.validatedSteps.neptune){$('answer').value='Neptune';$('answer-feedback').textContent='Bravo ! C’est bien Neptune.';$('answer-feedback').hidden=false}else{$('answer-feedback').hidden=true}document.querySelectorAll('[data-scene]').forEach(el=>{el.hidden=el.dataset.scene!==state.current});$('suite-reveil').hidden=!state.watchedVideos.reveil;if(state.current==='saut'&&!state.watchedVideos.saut){const v=$('saut-video');v.play().catch(()=>{})}else{$('saut-video').pause()}if(state.current==='reveil'&&!state.watchedVideos.reveil){const v=$('reveil-video');v.play().catch(()=>{})}else{$('reveil-video').pause()}$('joufflus-next').hidden=!state.validatedSteps.joufflus;if(state.validatedSteps.joufflus){$('joufflus-answer').value='8';$('joufflus-feedback').textContent='Bravo ! Il y en a bien 8 !';$('joufflus-feedback').hidden=false}$('back').hidden=state.history.length===0;window.scrollTo(0,0)}
-function go(id,{record=true}={}){if(!scenes.has(id))return;if(record&&id!==state.current)state.history.push(state.current);state.current=id;save();render()}
-function back(){if(!state.history.length)return;state.current=state.history.pop();save();render()}
+// Préparer l'image de la scène suivante avant de remplacer la scène visible.
+// Évite l'apparition fugace d'une image vide ou d'un ancien écran.
+let navigationToken=0;
+async function prepareScene(id){
+ const scene=$('scene-'+id);
+ if(!scene)return;
+ const imgs=[...scene.querySelectorAll('img')];
+ await Promise.all(imgs.map(async img=>{
+   img.loading='eager';
+   if(img.complete && img.naturalWidth)return;
+   try{
+     const pre=new Image();pre.src=img.currentSrc||img.src;
+     if(pre.decode)await pre.decode();
+     else await new Promise(resolve=>{pre.onload=resolve;pre.onerror=resolve});
+   }catch(e){} // En cas d'image absente, conserver la gestion d'erreur existante.
+ }));
+}
+async function go(id,{record=true}={}){
+ if(!scenes.has(id)||id===state.current)return;
+ const token=++navigationToken;
+ await prepareScene(id);
+ if(token!==navigationToken)return;
+ if(record)state.history.push(state.current);
+ state.current=id;save();render();
+}
+async function back(){
+ if(!state.history.length)return;
+ const token=++navigationToken;
+ const id=state.history[state.history.length-1];
+ await prepareScene(id);
+ if(token!==navigationToken)return;
+ state.history.pop();state.current=id;save();render();
+}
 function closeDialogs(){$('resume-dialog').hidden=true;$('confirm-dialog').hidden=true}
-function reset(){$('reveil-video').pause();$('reveil-video').currentTime=0;$('saut-video').pause();$('saut-video').currentTime=0;$('suite-reveil').hidden=true;$('answer').value='';$('joufflus-answer').value='';$('joufflus-feedback').hidden=true;$('joufflus-next').hidden=true;$('hint').hidden=true;$('hint-button').setAttribute('aria-expanded','false');if(storageOK){try{localStorage.removeItem(KEY)}catch(e){}}state={current:'couverture',history:[],completedGames:{},validatedSteps:{},choices:{},watchedVideos:{},updatedAt:null};closeDialogs();render()}
+function reset(){++navigationToken;$('reveil-video').pause();$('reveil-video').currentTime=0;$('saut-video').pause();$('saut-video').currentTime=0;$('suite-reveil').hidden=true;$('answer').value='';$('joufflus-answer').value='';$('joufflus-feedback').hidden=true;$('joufflus-next').hidden=true;$('hint').hidden=true;$('hint-button').setAttribute('aria-expanded','false');if(storageOK){try{localStorage.removeItem(KEY)}catch(e){}}state={current:'couverture',history:[],completedGames:{},validatedSteps:{},choices:{},watchedVideos:{},updatedAt:null};closeDialogs();render()}
 ['reveil','saut'].forEach(name=>{$('launch-'+name).addEventListener('click',()=>{const v=$(name+'-video');v.play().then(()=>{$('launch-'+name).hidden=true}).catch(()=>{})})});
 $('start').addEventListener('click',()=>go('neptune'));
 $('hint-button').addEventListener('click',()=>{const show=$('hint').hidden;$('hint').hidden=!show;$('hint-button').setAttribute('aria-expanded',String(show))});
