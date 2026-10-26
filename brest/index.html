@@ -1,197 +1,117 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>AvelEscape — Les six dorures de l'Empire</title>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F5F0E5">
+<title>AvelEscape — Le Canot de l’Empereur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="images/4-webpcouverture.webp">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap');
-:root{--green:#123f36;--gold:#b58b3c;--cream:#f5f0e5}
-*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--green);font-family:Georgia,serif}
-main{max-width:800px;margin:auto;padding:12px 12px 30px}h1{font:700 clamp(30px,7vw,46px) 'Cormorant Garamond',serif;text-align:center;margin:8px 0}
-.intro,.help{text-align:center;font-size:15px;line-height:1.45;margin:7px 0 12px}.top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:bold}
-.progress{height:9px;background:#dcd2bd;border-radius:9px;margin:9px 0 13px;overflow:hidden}.bar{height:100%;width:0;background:var(--gold);transition:width .3s}
-.viewport{position:relative;overflow-x:auto;overflow-y:hidden;border:4px solid var(--gold);border-radius:12px;background:#e5dcc8;touch-action:pan-x;scrollbar-width:thin;box-shadow:0 4px 18px #123f3620}
-.panorama-wrap{position:relative}.nav-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:42px;height:64px;border:1px solid #d6b76c;background:#123f36df;color:#f5e2aa;border-radius:10px;font:700 35px Georgia;cursor:pointer;box-shadow:0 3px 9px #0005}.nav-arrow.left{left:5px}.nav-arrow.right{right:5px}.nav-arrow:disabled{opacity:.25;cursor:default}.explore-guide{text-align:center;background:#123f36;color:#f5f0e5;border-radius:10px;padding:10px;margin:9px 0;font-size:14px;line-height:1.5}.explore-guide strong{color:#f0d18a}.scroll-track{height:7px;background:#d6c9ae;border-radius:20px;margin:8px 4px 2px;overflow:hidden}.scroll-thumb{height:100%;width:20%;background:#b58b3c;border-radius:20px;transform:translateX(0);transition:transform .12s}.panorama{position:relative;height:clamp(290px,88vw,405px);width:max-content}
-.panorama>img{display:block;height:100%;width:auto;max-width:none;user-select:none;pointer-events:none}
-.mount{position:absolute;transform:translate(-50%,-50%);width:1px;height:1px;border:2px dashed #80591f;border-radius:42% 42% 15% 15%;background:#f5f0e5e0;display:flex;justify-content:center;align-items:center;cursor:pointer;padding:3px;touch-action:pan-x;box-shadow:0 2px 5px #0002}
-.mount:not(.correct){border:0;background:transparent;box-shadow:none;outline:none;color:transparent}.mount:not(.correct):focus-visible{outline:2px solid #3b9b81;outline-offset:2px}.mount .question{font:bold 34px Georgia;color:#85652b}.mount.correct{border:0;background:transparent;box-shadow:none;outline:none;padding:0;border-radius:0}
-.mount.correct{width:8%;height:37%;aspect-ratio:auto}.mount img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 1px 2px #0006);pointer-events:none}
-.mount:focus-visible,.choice:focus-visible,button:focus-visible{outline:4px solid #3b9b81;outline-offset:2px}
-.hint{text-align:center;font-size:13px;margin:8px 0;color:#506b5e}
-.panel{border:2px solid var(--gold);border-radius:13px;background:#eae1cf;padding:10px;margin-top:10px}
-.panel h2{text-align:center;font:700 25px 'Cormorant Garamond',serif;margin:0 0 6px}
-.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.choice{min-width:0;background:#fffaf1;border:2px solid #c9b48a;border-radius:9px;cursor:pointer;padding:5px;color:var(--green);font:700 14px 'Cormorant Garamond',serif;display:flex;flex-direction:column;align-items:center}
-.choice{touch-action:none;user-select:none;-webkit-user-select:none}.choice img{width:100%;height:100px;object-fit:contain;pointer-events:none}.choice.active{border-color:#126f54;box-shadow:0 0 0 2px #126f54}
-.choice.used{opacity:.35;pointer-events:none}
-.drag-ghost{position:fixed;z-index:100;pointer-events:none;width:92px;height:125px;object-fit:contain;filter:drop-shadow(0 6px 9px #0008);transform:translate(-50%,-50%)}.mount.drag-over{outline:none;background:transparent;box-shadow:none}.choice.dragging{opacity:.4}.feedback{min-height:2.5em;text-align:center;line-height:1.4;margin:10px 0;font-size:15px}
-.actions{text-align:center}button.action{border:0;border-radius:9px;background:var(--green);color:white;padding:10px 22px;font:700 22px 'Cormorant Garamond',serif;cursor:pointer}
-.modal{display:none;position:fixed;inset:0;z-index:10;background:#0a2a22cf;align-items:center;justify-content:center;padding:16px}
-.modal.show{display:flex}.dialog{width:min(100%,530px);max-height:90vh;overflow:auto;background:var(--cream);border:4px solid var(--gold);border-radius:15px;padding:20px;text-align:center}
-.dialog h2{font:700 32px 'Cormorant Garamond',serif;margin:0 0 8px}.dialog p{font:600 25px/1.25 'Cormorant Garamond',serif}
-.success-emblem{display:block;height:clamp(145px,32vh,260px);max-width:100%;width:auto;object-fit:contain;margin:8px auto 12px;filter:drop-shadow(0 3px 4px #0003)}.dialog .emblem-description{white-space:pre-line;font:normal 18px/1.5 Georgia,serif;margin:8px 0 18px}.disclaimer{font-size:12px;line-height:1.4;color:#68756b;text-align:center;margin:16px 0}
-@media(min-width:600px){.choices{grid-template-columns:repeat(6,minmax(0,1fr))}.choice img{height:130px}}
-</style></head><body><main>
-<h1>Les six dorures de l'Empire</h1>
-<div style="display:none" aria-hidden="true"><span id="progressLabel">0 / 6 emblèmes placés</span><span id="status">À toi de jouer !</span></div><div class="progress"><div class="bar" id="bar"></div></div>
-<div class="explore-guide" id="exploreGuide"><strong>↔ La cabine se déplace !</strong> Fais-la glisser vers la gauche ou la droite, ou utilise les flèches dorées.</div>
-<div class="panorama-wrap"><button class="nav-arrow left" id="navLeft" type="button" aria-label="Faire défiler la cabine vers la gauche">‹</button><div class="viewport" id="viewport" aria-label="Cabine panoramique à faire défiler horizontalement">
- <div class="panorama" id="panorama"><img src="images/cabine.png" alt="Cabine du Canot de l'Empereur" draggable="false"><div id="mounts"></div></div>
-</div><button class="nav-arrow right" id="navRight" type="button" aria-label="Faire défiler la cabine vers la droite">›</button></div>
-<div class="scroll-track" aria-hidden="true"><div class="scroll-thumb" id="scrollThumb"></div></div>
-<p class="hint">Déplace la cabine avec le doigt ou les flèches, puis glisse l'emblème à sa place.</p>
-<section class="panel"><h2>Glisse un emblème sur sa place</h2><div class="choices" id="choices"></div></section>
-<p class="feedback" id="feedback" aria-live="polite">Glisse un emblème sur la cabine à l'endroit où tu penses qu'il doit aller.</p>
-<div class="actions"><button class="action" id="reset">Recommencer</button></div>
+:root{--ivoire:#F5F0E5;--vert:#123F36;--or:#D7BD7B;--papier:#FFF9ED}*{box-sizing:border-box}html{background:var(--ivoire)}body{margin:0;background:var(--ivoire);color:var(--vert);font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;min-height:100vh}button,a{font:inherit}.topbar{position:fixed;z-index:20;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:calc(env(safe-area-inset-top) + 10px) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));pointer-events:none}.topbar>*{pointer-events:auto}.btn{background:var(--vert);color:var(--ivoire);border:2px solid var(--or);border-radius:14px;min-height:48px;padding:9px 22px;font-size:24px;font-weight:600;line-height:1.15;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 3px 9px #123f361f}.btn:focus-visible{outline:3px solid #9a7330;outline-offset:3px}.back{width:46px;height:46px;border-radius:50%;padding:0;font-size:28px}.back[hidden]{visibility:hidden;display:inline-flex}.site{font-size:19px;min-height:44px;padding:8px 14px}.scene{width:100%;max-width:560px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 84px) 12px 40px;text-align:center}.scene[hidden]{display:none}.cover{display:block;width:100%;height:auto;object-fit:contain}.media-wrap{position:relative}.media-status{font-size:19px;padding:14px}.media-status[hidden]{display:none}.actions{margin-top:24px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.start{font-size:27px;padding:12px 25px}.cartouche{width:92%;max-width:480px;margin:22px auto 0;background:var(--papier);color:var(--vert);border:2px solid var(--or);border-radius:18px;padding:20px;text-align:left;box-shadow:0 5px 18px #123f3615;font-size:27px;line-height:1.42}.cartouche.vert{background:var(--vert);color:var(--ivoire)}.modal-backdrop{position:fixed;inset:0;z-index:40;background:#0b221dc0;display:grid;place-items:center;padding:18px}.modal-backdrop[hidden]{display:none}.modal{width:min(100%,480px);background:var(--papier);border:2px solid var(--or);border-radius:18px;padding:24px;text-align:center;box-shadow:0 12px 35px #0004}.modal p{font-size:27px;line-height:1.35;margin:0 0 22px}.modal .actions{margin-top:0}.modal .btn{font-size:21px}.notice{font-size:17px;text-align:center;max-width:560px;margin:12px auto;color:#705a35}@media(max-width:350px){.scene{padding-left:8px;padding-right:8px}.site{font-size:17px}.start{font-size:24px}.cartouche{font-size:25px}}
+ .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.scene-video{display:block;width:100%;height:auto;background:#123F36;border-radius:8px}.answer-input{width:100%;min-height:50px;border:2px solid var(--or);border-radius:12px;background:#fffdf7;color:var(--vert);font:500 27px 'Cormorant Garamond',Georgia,serif;padding:8px 12px}.answer-label{display:block;margin:16px 0 8px}.feedback{font-size:24px;margin:12px 0 0}.hint[hidden],.feedback[hidden]{display:none}.hint{margin-top:18px}.question-actions{margin-top:16px}.media-image{display:block;width:100%;height:auto}.cartouche.colle-image{margin-top:0}.bouc-image{position:relative;z-index:2}.cartouche.sous-pattes{position:relative;z-index:1;margin-top:-9%;padding-top:calc(20px + 7%)}.fama-image{position:relative;z-index:2}.cartouche.sous-fama{position:relative;z-index:1;margin-top:-20%;padding-top:calc(20px + 19%)} .nl-dialogue{display:grid;grid-template-columns:35% minmax(0,1fr);gap:12px;align-items:center}.nl-neptune{display:block;width:100%;height:auto;object-fit:contain}.nl-dialogue strong{font-weight:500;font-size:clamp(19px,4.6vw,25px);line-height:1.3}@media(max-width:350px){.nl-dialogue{grid-template-columns:32% minmax(0,1fr);gap:8px}.nl-dialogue strong{font-size:19px}} </style>
+<style>.brest-off-dialogue{font-size:clamp(22px,5vw,27px)}.brest-off-dialogue p{margin:0 0 1.2em}.brest-off-dialogue p:last-child{margin-bottom:0}</style>
+<style>
+/* Mise en page exclusive de la dernière scène Brest-off */
+#scene-brest-off .brest-off-visual{position:relative}
+#scene-brest-off .brest-off-title{position:absolute;top:6%;left:0;right:0;margin:0;text-align:center;color:#D7BD7B;font-size:clamp(40px,10vw,64px);font-weight:700;letter-spacing:.045em;text-shadow:0 3px 8px #000b,0 1px 2px #123F36;z-index:2}
+#scene-brest-off .brest-off-dialogue{position:relative;z-index:3;margin-top:-33.333%;padding-top:20px}
+</style>
+</head>
+<body>
+<header class="topbar"><button id="back" class="btn back" type="button" aria-label="Revenir à la scène précédente" hidden>←</button><a class="btn site" href="https://avelescape.github.io/aventures/" target="_blank" rel="noopener noreferrer">Site AvelEscape</a></header>
+<main>
+<section class="scene" id="scene-couverture" data-scene="couverture" aria-label="Couverture de l'aventure"><div class="media-wrap"><img id="cover" class="cover" src="images/4-webpcouverture.webp" alt="Couverture du Canot de l’Empereur" fetchpriority="high"><div id="media-error" class="media-status" hidden>Impossible de charger la couverture. Vérifie le fichier <strong>images/4-webpcouverture.webp</strong>.<div class="actions"><button id="retry" class="btn" type="button">Réessayer</button></div></div></div><div class="actions"><button id="start" class="btn start" type="button">Commencer l'aventure</button></div></section>
+<section class="scene" id="scene-neptune" data-scene="neptune" aria-label="Question sur Neptune" hidden>
+<div class="media-wrap"><img id="neptune-image" class="media-image" src="images/4-webpneptune1.webp" alt="Neptune sur la proue du Canot de l’Empereur" loading="lazy"><div id="neptune-error" class="media-status" hidden>Impossible de charger l’image images/4-webpneptune1.webp.<div class="actions"><button id="retry-neptune" class="btn" type="button">Réessayer</button></div></div></div>
+<div class="cartouche"><div>Quel dieu des mers veille sur la proue du Canot de l’Empereur ?</div><form id="answer-form"><label for="answer" class="sr-only">Réponse à la question</label><input class="answer-input" id="answer" name="answer" type="text" autocomplete="off" autocapitalize="words" required><div class="actions question-actions"><button class="btn" type="submit">Valider</button></div></form><p class="feedback" id="answer-feedback" role="status" aria-live="polite" hidden></p></div>
+<div class="actions"><button id="hint-button" class="btn" type="button" aria-expanded="false" aria-controls="hint">Indice</button></div><div id="hint" class="cartouche vert hint" hidden>Il porte le même nom qu'une planète du système solaire.</div>
+</section>
+<section class="scene" id="scene-reveil" data-scene="reveil" aria-label="Le réveil de Neptune" hidden><video id="reveil-video" class="scene-video" playsinline preload="metadata" controls><source src="videos/4-mp4reveil.mp4" type="video/mp4">Votre navigateur ne prend pas en charge cette vidéo.</video><div class="actions"><button id="suite-reveil" class="btn" type="button" hidden>Suite</button></div><div id="video-error" class="media-status" hidden>La vidéo ne peut pas être chargée.<div class="actions"><button id="retry-video" class="btn" type="button">Réessayer</button></div></div></section>
+<section class="scene" id="scene-saut" data-scene="saut" aria-label="Le saut de Neptune" hidden><video id="saut-video" class="scene-video" playsinline preload="metadata" controls><source src="videos/4-mp4saut.mp4" type="video/mp4">Votre navigateur ne prend pas en charge cette vidéo.</video><div id="saut-error" class="media-status" hidden>Impossible de charger la vidéo du saut.</div></section>
+<section class="scene" id="scene-neptune-dore" data-scene="neptune-dore" aria-label="Neptune doré" hidden><img class="media-image" src="images/4-webpneptunedore.webp" alt="Neptune doré" loading="lazy"><div class="cartouche colle-image"><strong>Tu m’as vu ?</strong><p style="margin:12px 0 0">Je ressemble à un chandelier de Versailles ! C’est Napoléon qui aimait les dorures…</p></div><div class="actions"><a class="btn" id="continuer-grattage" href="jeu-grattage/index.html">Continuer</a></div><div class="media-status" id="dore-error" hidden>Impossible de charger l’image 4-webpneptunedore.webp.</div></section>
+<section class="scene" id="scene-neptune-b" data-scene="neptune-b" aria-label="Neptune après le grattage" hidden><img class="media-image" src="images/4-webpneptuneb.webp" alt="Neptune après le grattage" loading="lazy"><div class="cartouche colle-image"><p style="margin:0"><strong>Bon… Maintenant que tu as fini de m’admirer, on pourrait peut-être s’intéresser à ce magnifique canot ?</strong></p><p style="margin:16px 0 0"><strong>Allez, ouvre l’œil, le bulot ! Je vais te faire découvrir quelques-uns de ses secrets…</strong></p></div><div class="actions"><button class="btn" id="decouvrir-canot" type="button">Découverte du canot</button></div><div class="media-status" id="neptune-b-error" hidden>Impossible de charger l’image 4-webpneptuneb.webp.</div></section>
+<section class="scene" id="scene-neptune-c" data-scene="neptune-c" aria-label="Les joufflus du canot" hidden><img class="media-image" src="images/4-webpneptunec.webp" alt="Les décors du Canot de l’Empereur" loading="lazy"><div class="cartouche colle-image"><strong>Tu vois les deux joufflus qui sont à côté de moi sur le canot ? Peux-tu me dire combien il y en a en tout sur le bateau ?</strong><form id="joufflus-form"><label for="joufflus-answer" class="sr-only">Nombre de joufflus</label><input id="joufflus-answer" class="answer-input" type="number" min="0" step="1" inputmode="numeric" required><div class="actions question-actions"><button class="btn" type="submit">Valider</button></div></form><p class="feedback" id="joufflus-feedback" role="status" aria-live="polite" hidden></p><div class="actions" id="joufflus-next" hidden><button class="btn" id="joufflus-continue" type="button">Continuer</button></div></div></section>
+<section class="scene" id="scene-putto" data-scene="putto" aria-label="Les putti du canot" hidden><img class="media-image" src="images/4-webpputto.webp" alt="Les putti du Canot de l’Empereur" loading="lazy"><div class="cartouche colle-image"><p style="margin:0"><strong>Ah ! Mes petits joufflus à queue de poisson !</strong></p><p style="margin:16px 0 0">Ce sont des putti, le bulot !<br>De petits personnages inspirés de l’art antique, souvent représentés avec des ailes.</p><p style="margin:16px 0 0">Et pourquoi une queue de poisson ? Parce qu’ici, on est dans MON royaume ! Les artistes en ont fait des créatures marines, mi-enfants, mi-poissons.</p></div><div class="actions"><button class="btn" id="suite-putto" type="button">Suite</button></div></section>
+<section class="scene" id="scene-bassin" data-scene="bassin" aria-label="Le Bassin des imposteurs" hidden><img class="media-image" src="images/4-webpneptuneassiscaisse.webp" alt="Neptune assis sur une caisse" loading="lazy"><div class="cartouche colle-image"><strong>Je te propose un jeu, le bulot, ça s’appelle « Le Bassin des imposteurs » !</strong></div><div class="actions"><button class="btn" id="jouer-bassin" type="button">Jouer</button></div></section>
+<section class="scene" id="scene-sortie-eau" data-scene="sortie-eau" aria-label="Neptune sort de l’eau" hidden><img class="media-image" src="images/4-webpneptunetrempe.webp" alt="Neptune trempé, sorti de l’eau" loading="lazy"><div class="cartouche colle-image"><strong>Pendant que je me sèche, va donc jeter un œil à l’arrière du Canot des Napoléon.<br><br>Vérifie si les deux chipies sont toujours là… Minerve et Fama !</strong></div><div class="actions"><button class="btn" id="chipies-la" type="button">Elles sont là</button><button class="btn" id="chipies-absentes" type="button">Elles ne sont pas là</button></div></section>
+<section class="scene" id="scene-bouc" data-scene="bouc" aria-label="Le bouc de Neptune" hidden><img class="media-image bouc-image" src="images/4-webpbouc.webp" alt="Le bouc marin de Neptune, ses pattes posées sur le bloc de dialogue" loading="lazy"><div class="cartouche sous-pattes"><strong>Tu veux que je lâche mon bouc ?</strong></div><div class="actions"><button class="btn" id="excuses-bouc" type="button">Excusez-moi...</button></div></section>
+<section class="scene" id="scene-minerve" data-scene="minerve" aria-label="Minerve et le vote d’Athènes" hidden><img class="media-image" src="images/4-webpminerve.webp" alt="Minerve sur le Canot de l’Empereur" loading="lazy"><div class="cartouche colle-image"><strong>Minerve...<br><br>Figure-toi qu'il y a bien longtemps, nous nous sommes disputé la protection de la cité d'Athènes !<br><br>Pour nous départager, chacun devait offrir un présent aux habitants.<br><br>Minerve, avec ses grands airs, leur a offert un olivier…<br><br>Moi, j'ai frappé le sol de mon puissant trident et fait jaillir une source d'eau...<br><br>Les habitants devaient choisir le présent le plus utile.<br><br>Alors, le bulot, à toi de voter !</strong></div><div class="actions"><button class="btn" id="vote-source" type="button">Une source</button><button class="btn" id="vote-olivier" type="button">Un olivier</button></div></section>
+<section class="scene" id="scene-grimace" data-scene="grimace" aria-label="Neptune fait la grimace" hidden><img class="media-image" src="images/4-webpneptunegrimace.webp" alt="Neptune fait la grimace" loading="lazy"><div class="cartouche colle-image"><strong>Eh ben non ! Les habitants ont choisi l’olivier…<br><br>Bon… Il y a juste un tout petit détail que j’ai oublié de te préciser… Mon eau était salée.<br><br>Quoi ?! On ne va pas chipoter pour une pincée de sel !</strong></div><div class="actions"><button class="btn" id="suite-grimace" type="button">Suite</button></div></section>
+<section class="scene" id="scene-grimace-olivier" data-scene="grimace-olivier" aria-label="Neptune fait la grimace" hidden><img class="media-image" src="images/4-webpneptunegrimace.webp" alt="Neptune fait la grimace" loading="lazy"><div class="cartouche colle-image"><strong>Tu connaissais l’histoire ?<br><br>Effectivement, les habitants ont choisi l’olivier…<br><br>Bon… Il y a juste un tout petit détail que j’ai oublié de te préciser… Mon eau était salée.<br><br>Quoi ?! On ne va pas chipoter pour une pincée de sel !</strong></div><div class="actions"><button class="btn" id="suite-grimace-olivier" type="button">Suite</button></div></section>
+<section class="scene" id="scene-fama" data-scene="fama" aria-label="Fama" hidden><img class="media-image fama-image" src="images/4-webpfama.webp" alt="Fama sur le Canot de l’Empereur" loading="lazy"><div class="cartouche sous-fama"><strong>Ah ! Fama ! La déesse de la Renommée !<br><br>Avec sa trompette, elle est censée faire connaître les exploits des grands personnages.<br><br>Moi, par exemple, je règne sur tous les océans ! Pas besoin d’en faire des tonnes !<br><br>Napoléon, lui… Des aigles, des couronnes, des N à tous les coins du canot !<br><br>Et après, c’est MOI qu’on accuse d’avoir la grosse tête !<br><br>Allez, le bulot ! Ouvre l’œil, on va voir si tu reconnais les symboles de l’Empire !</strong></div><div class="actions"><button class="btn" id="continuer-fama" type="button">Continuer</button></div></section>
+<section class="scene" id="scene-neptune-colere" data-scene="neptune-colere" aria-label="Neptune en colère devant les colonnes" hidden><img class="media-image" src="images/4-webpgneptunecolere1.webp" alt="Neptune en colère" loading="lazy"><div class="cartouche colle-image"><strong>Des colonnes romaines ?! Avec des casques posés dessus ?!<br><br>MAIS C’EST QUOI CE DÉLIRE ?!<br><br> Un temple à la gloire de Napoléon ?! Ou un étendoir à linge impérial ?!<br><br>Il y a de la verdure partout !!!<br><br>Manque plus que des poireaux et on a un potager militaire!!!</strong></div><div class="actions"><button class="btn" id="calmer-neptune" type="button">Calmer Neptune</button></div></section>
+<section class="scene" id="scene-neptune-colere-suite" data-scene="neptune-colere-suite" aria-label="Neptune et les poissons des rames" hidden><img class="media-image" src="images/4-webpneptunecolere2.webp" alt="Neptune encore en colère" loading="lazy"><div class="cartouche colle-image"><strong>ME CALMER??? Et regarde-moi ces poissons qui pendouillent sur les rames !!!<br><br>ON SE CROIRAIT DEVANT L’ÉTAL D’UN POISSONNIER !!!<br><br>AH, MAIS C’EST ENCORE PLUS RIDICULE QUE ÇA !<br><br>Quand les matelots ramaient, les poissons semblaient sortir de l'eau !!!<br><br>MAGNIFIQUE !!! Des poiscailles qui font de cabrioles pour saluer l'Empereur !<br><br>Manque plus qu'un marchand de crêpe et on est sur un marché impérial Flottant!</strong></div><div class="actions"><button class="btn" id="continuer-poupe" type="button">Continuer</button></div></section>
+<section class="scene" id="scene-poupe" data-scene="poupe" aria-label="L’aigle et la couronne impériale" hidden><img class="media-image" src="images/4-webppoupe.webp" alt="Les sculptures dorées de la poupe, l’aigle et la couronne impériale" loading="lazy"><div class="cartouche colle-image"><p style="margin:0">Au centre, un aigle aux ailes déployées se détache sur un médaillon vert. Emblème de Napoléon, inspiré de l’Empire romain, il symbolise la puissance, la souveraineté et la victoire militaire.</p><p>Au-dessus, une imposante couronne impériale, ornée de rouge et d’or, rappelle l’autorité de l’Empereur et son accession au trône en 1804.</p><p style="margin-bottom:0">Sous l’aigle, une étoile à cinq branches évoque la Légion d’honneur, instituée par Napoléon en 1802.</p></div><div class="actions"><button class="btn" id="suite-poupe" type="button">Suite</button></div></section>
+<section class="scene" id="scene-poupe-suite" data-scene="poupe-suite" aria-label="Les ornements de la poupe" hidden><img class="media-image" src="images/4-webppoupe.webp" alt="Le soubassement vert et or de la poupe" loading="lazy"><div class="cartouche colle-image">L'ensemble repose sur un soubassement vert et or, couvert de feuillages sculptés, notamment de feuilles de chêne et de laurier, traditionnellement associées à la force, à la victoire et à la gloire.</div><div class="actions"><button class="btn" id="suite-poupe-suite" type="button">Suite</button></div></section>
+<section class="scene" id="scene-nl" data-scene="nl" aria-label="Les initiales de Louis-Napoléon" hidden><img class="media-image" src="images/4-webpnl.webp" alt="Deux putti dorés encadrant le médaillon NL" loading="lazy"><div class="cartouche colle-image"><div class="nl-dialogue"><img src="images/4-webpneptunecanala.webp" alt="Neptune taquin" class="nl-neptune"><strong>Les putti portent un médaillon aux initiales NL, pour Louis-Napoléon. Ils s’en sortent plutôt bien… Ils auraient pu finir avec un N tatoué sur la fesse de l’un et un L sur celle de l’autre !</strong></div></div><div class="actions"><button class="btn" id="suite-et-fin" type="button">Suite et fin</button></div></section>
+<section class="scene" id="scene-attente" data-scene="attente" aria-label="Fin de l’aventure" hidden><div class="cartouche vert"><strong>Bravo, le bulot ! Tu as terminé l’aventure du Canot de l’Empereur.</strong></div><div class="actions"><button class="btn" id="ouvrir-brest-off" type="button">BREST-OFF</button></div></section>
+<section class="scene" id="scene-brest-off" data-scene="brest-off" aria-label="Brest-Off : les dernières répliques de Neptune" hidden>
+<div class="brest-off-visual"><img class="media-image" src="images/4-webppalaisneptune.webp" alt="Neptune au palais" loading="lazy"><h2 class="brest-off-title">Brest-off</h2></div>
+<div class="cartouche colle-image brest-off-dialogue">
+<p>« Je suis Neptune, dieu des mers… et ces cons de sculpteurs m’ont inscrit à l’aquaponey. »</p>
+
+<p>« Napoléon et sa couronne… Le mec s’est carrément couronné lui-même. À ce niveau-là, c’est plus de l’ambition, c’est se mettre cinq étoiles sur Google avant même d’avoir ouvert. »</p>
+<p>« Voilà l’aigle impérial. Fier, majestueux, redoutable… Un goéland avec un très bon service de communication, quoi. »</p>
+<p>« Tu vas finir en mayonnaise, le bulot ! »</p>
+<p>« Kenavo ! Ça veut dire “Au revoir” en breton. D’ailleurs, c’est le premier mot que le soleil a appris en arrivant à Brest… et visiblement, le seul qu’il a retenu! »</p>
+</div><div class="actions"><a class="btn" href="https://avelescape.github.io/aventures/">Retour au site AvelEscape</a></div>
+</section>
 </main>
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="heading"><div class="dialog"><h2 id="heading">Neptune raconte…</h2><img id="successEmblem" class="success-emblem" alt=""><p id="story" class="emblem-description"></p><button class="action" id="continue">Continuer</button></div></div>
+<div id="resume-dialog" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="resume-text" hidden><div class="modal"><p id="resume-text">Une aventure est déjà en cours. Souhaites-tu la reprendre ou recommencer depuis le début ?</p><div class="actions"><button class="btn" id="continue" type="button">Continuer l'aventure</button><button class="btn" id="restart" type="button">Recommencer l'aventure</button></div></div></div>
+<div id="confirm-dialog" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="confirm-text" hidden><div class="modal"><p id="confirm-text">Effacer la progression de cette aventure et recommencer depuis la couverture ?</p><div class="actions"><button class="btn" id="confirm-yes" type="button">Oui, recommencer</button><button class="btn" id="confirm-no" type="button">Annuler</button></div></div></div>
+<p id="storage-notice" class="notice" hidden>La sauvegarde est indisponible sur ce navigateur. Tu peux jouer, mais ta progression ne sera pas conservée.</p>
 <script>
-const emblemInfo=[{"title": "Les armoiries impériales", "text": "Regarde-moi tout ce bazar doré, le bulot ! Une couronne pour rappeler qui commande, un blason pour afficher son autorité, des drapeaux et des armes pour montrer sa puissance !\n\nEt là, tu vois la balance et cette petite main dressée ? Ce sont les symboles de la Justice ! Parce que Napoléon ne se contentait pas de commander les armées : il voulait aussi incarner la loi et l'autorité.\n\nQuel modeste personnage, cet Empereur !"}, {"title": "La Marine impériale", "text": "Ah ! Voilà un emblème qui me parle, le bulot ! Une ancre pour tenir les navires en place, des cordages et des pavillons pour rappeler le travail des marins !\n\nEt ce trident ? C’est le MIEN ! Le symbole de Neptune, maître des mers ! Sans oublier les armes, parce que les navires de l’Empereur n’étaient pas là pour faire de jolies promenades !\n\nNapoléon commandait sa flotte… mais sur les océans, le patron, c’est MOI !"}, {"title": "La gloire militaire", "text": "Ah ! Voilà de quoi impressionner les ennemis, le bulot ! Un casque et une cuirasse pour protéger les soldats, des lances et des étendards pour rappeler la puissance des armées !\n\nAvec toutes ces décorations, Napoléon voulait être certain qu’on n’oublie pas ses victoires ! Quel sens de la discrétion !"}, {"title": "Les honneurs militaires", "text": "Encore des armes! Des épées, des lances et un bouclier pour rappeler la bravoure des soldats de l’Empire !\n\nEt ces trompettes ? Elles servaient à transmettre les ordres et à sonner les rassemblements. Mais aussi à annoncer les grandes cérémonies militaires !\n\nAvec Napoléon, même les victoires avaient besoin de fanfare !"}, {"title": "L’artillerie impériale", "text": "Ah ! Voilà du lourd! Une cuirasse pour protéger les soldats, des drapeaux pour représenter les armées… et surtout, des canons !\n\nCes gros engins étaient redoutables sur les champs de bataille. Napoléon, lui-même ancien officier d’artillerie, savait parfaitement s’en servir !\n\nAvec lui, quand les négociations échouaient, les canons prenaient la parole !"}, {"title": "La cavalerie impériale", "text": "Ah ! Voilà les cavaliers de l’Empereur ! Un casque à tête de cheval, des lances et des haches pour rappeler ces soldats qui fonçaient au combat à toute allure !\n\nQuant aux chevaux… ! Eux aussi devaient supporter les rêves de grandeur de ce cher Napoléon !"}];
-// Coordonnées relevées dans GIMP sur l'image originale (2048 × 682 pixels).
-const IMAGE_WIDTH=2048, IMAGE_HEIGHT=682, TOLERANCE=50;
-const locations=[[140,265],[470,265],[800,265],[1140,265],[1500,265],[1800,265]];
-let selected=null;let done=new Set();let activeDrag=null;let suppressClick=false;
-function shuffledOrder(){const a=[0,1,2,3,4,5];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-let choiceOrder=shuffledOrder();
-const mounts=document.getElementById('mounts'),choices=document.getElementById('choices'),modal=document.getElementById('modal'),feedback=document.getElementById('feedback');
-function render(){
- mounts.innerHTML='';choices.innerHTML='';
- for(let i=0;i<6;i++){
-  const m=document.createElement('button');m.type='button';m.className='mount'+(done.has(i)?' correct':'');m.style.left=(locations[i][0]/IMAGE_WIDTH*100)+'%';m.style.top=(locations[i][1]/IMAGE_HEIGHT*100)+'%';m.setAttribute('aria-label','Emplacement '+(i+1));m.dataset.index=i;
-  if(done.has(i)){const im=document.createElement('img');im.src=`images/embleme${i+1}.png`;im.alt=`Emblème ${i+1} placé`;m.append(im)}
-  else {m.title='Zone de dépôt invisible'}
-  m.addEventListener('click',e=>{e.stopPropagation();place(i)});mounts.append(m);
- }
- for(const i of choiceOrder){
-  const c=document.createElement('button');c.type='button';c.className='choice'+(selected===i?' active':'')+(done.has(i)?' used':'');c.disabled=done.has(i);c.setAttribute('aria-pressed',selected===i?'true':'false');
-  c.innerHTML=`<img src="images/embleme${i+1}.png" alt="Emblème à placer">`;c.setAttribute("aria-label",`Sélectionner l’emblème ${i+1}`);
-  c.addEventListener('click',()=>{if(suppressClick){suppressClick=false;return}selected=i;feedback.textContent=`Emblème ${i+1} sélectionné. Cherche sa place sur la cabine !`;render()});
-  c.addEventListener('pointerdown',e=>beginDrag(e,i,c));
-  choices.append(c);
- }
- document.getElementById('progressLabel').textContent=`${done.size} / 6 emblèmes placés`;
- document.getElementById('bar').style.width=(done.size/6*100)+'%';
- document.getElementById('status').textContent=done.size===6?'Mission accomplie':selected===null?'À toi de jouer !':`Emblème ${selected+1} choisi`;
-}
-function place(i){
- if(done.has(i))return;
- if(selected===null){feedback.textContent='Choisis d’abord un emblème, le bulot !';return}
- if(i!==selected){feedback.textContent='Raté, le bulot ! Essaie un autre endroit.';return}
- done.add(i);selected=null;render();
- document.getElementById('heading').textContent=emblemInfo[i].title;
- document.getElementById('successEmblem').src=`images/embleme${i+1}.png`;
-  document.getElementById('successEmblem').alt=`Emblème ${i+1} : ${emblemInfo[i].title}`;
-  document.getElementById('story').textContent=emblemInfo[i].text;
- document.getElementById('continue').textContent=done.size===6?'Terminer':'Continuer';
- modal.classList.add('show');document.getElementById('continue').focus();
-}
-
-// Glisser-déposer tactile / souris : l'image suit réellement le doigt.
-function beginDrag(e,i,button){
- if(done.has(i)||e.button!==0)return;
- activeDrag={id:i,pointerId:e.pointerId,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,button,ghost:null,over:null};
- button.setPointerCapture(e.pointerId);
- button.addEventListener('pointermove',dragMove);
- button.addEventListener('pointerup',dragEnd,{once:true});
- button.addEventListener('pointercancel',dragCancel,{once:true});
-}
-function dragMove(e){
- const d=activeDrag;if(!d||e.pointerId!==d.pointerId)return;
- d.x=e.clientX;d.y=e.clientY;
- if(!d.ghost && Math.hypot(d.x-d.startX,d.y-d.startY)>7){
-  d.ghost=document.createElement('img');d.ghost.className='drag-ghost';d.ghost.src=`images/embleme${d.id+1}.png`;d.ghost.alt='';document.body.append(d.ghost);d.button.classList.add('dragging');
- }
- if(!d.ghost)return;
- e.preventDefault();
- d.ghost.style.left=d.x+'px';d.ghost.style.top=d.y+'px';
- const viewport=document.getElementById('viewport'),r=viewport.getBoundingClientRect();
- if(d.y>=r.top-25 && d.y<=r.bottom+25){
-  if(d.x<r.left+55)viewport.scrollLeft-=Math.max(8,(r.left+55-d.x)*.35);
-  if(d.x>r.right-55)viewport.scrollLeft+=Math.max(8,(d.x-r.right+55)*.35);
- }
- // Si le plateau sort de l'écran, on peut remonter ou descendre pendant le glissement.
- if(d.y<65)window.scrollBy(0,-12);
- if(d.y>window.innerHeight-65)window.scrollBy(0,12);
- document.querySelectorAll('.mount.drag-over').forEach(el=>el.classList.remove('drag-over'));
- const target=findDropTarget(d.x,d.y);
- d.over=target;
- if(d.over)d.over.classList.add('drag-over');
-}
-// Convertit le point de dépôt écran en pixels de la photographie originale.
-function findDropTarget(clientX,clientY){
- const panorama=document.getElementById('panorama');
- const viewport=document.getElementById('viewport');
- const rect=panorama.getBoundingClientRect(), vr=viewport.getBoundingClientRect();
- if(clientX<vr.left||clientX>vr.right||clientY<vr.top||clientY>vr.bottom)return null;
- const x=(clientX-rect.left)/rect.width*IMAGE_WIDTH;
- const y=(clientY-rect.top)/rect.height*IMAGE_HEIGHT;
- let closest=null, dist=Infinity;
- for(let i=0;i<locations.length;i++){
-  if(done.has(i))continue;
-  const [cx,cy]=locations[i], delta=Math.hypot(x-cx,y-cy);
-  if(delta<=TOLERANCE&&delta<dist){closest=i;dist=delta}
- }
- return closest===null?null:mounts.querySelector(`[data-index="${closest}"]`);
-}
-function finishDrag(d){
- d.button.removeEventListener('pointermove',dragMove);
- d.button.classList.remove('dragging');
- if(d.ghost)d.ghost.remove();
- document.querySelectorAll('.mount.drag-over').forEach(el=>el.classList.remove('drag-over'));
- activeDrag=null;
-}
-function dragEnd(e){
- const d=activeDrag;if(!d||e.pointerId!==d.pointerId)return;
- const wasDrag=!!d.ghost, target=findDropTarget(e.clientX,e.clientY);
- finishDrag(d);
- if(!wasDrag)return; // Un simple toucher sélectionne encore l'emblème.
- suppressClick=true;
- // L'événement click synthétique n'est pas toujours émis après un glissement.
- setTimeout(()=>{suppressClick=false},80);
- if(!target){feedback.textContent='Pas ici, le bulot ! Cherche le bon emplacement sur la cabine.';return}
- selected=d.id;place(Number(target.dataset.index));
-}
-function dragCancel(e){const d=activeDrag;if(d&&e.pointerId===d.pointerId)finishDrag(d)}
-
-document.getElementById('viewport').addEventListener('click',e=>{
- if(selected===null||activeDrag)return;
- const target=findDropTarget(e.clientX,e.clientY);
- if(target)place(Number(target.dataset.index));
-});
-document.getElementById('continue').addEventListener('click',()=>{
- modal.classList.remove('show');feedback.textContent=done.size===6?'Bravo ! Les six trophées sont replacés.': 'Choisis un autre emblème pour continuer.';
- if(done.size===6)document.getElementById('reset').focus();
-});
-document.getElementById('reset').addEventListener('click',()=>{
- done.clear();selected=null;choiceOrder=shuffledOrder();render();document.getElementById('viewport').scrollLeft=0;
- feedback.textContent='Nouvelle partie ! Choisis un emblème, le bulot.';
-});
-// Sur mobile, les emblèmes sont placés au-dessus de la cabine pour faciliter le geste.
-const panel=document.querySelector('.panel');document.querySelector('.viewport').before(panel);
-render();
-// Repères de navigation : flèches, barre de position et courte démonstration au lancement.
-const viewportNav=document.getElementById('viewport');
-const navLeft=document.getElementById('navLeft'),navRight=document.getElementById('navRight');
-const thumb=document.getElementById('scrollThumb'),guide=document.getElementById('exploreGuide');
-let explored=false;
-function updateNavigation(){
- const max=Math.max(0,viewportNav.scrollWidth-viewportNav.clientWidth);
- const fraction=viewportNav.scrollWidth?viewportNav.clientWidth/viewportNav.scrollWidth:1;
- thumb.style.width=(fraction*100)+'%';
- thumb.style.transform=`translateX(${max?viewportNav.scrollLeft/max*(100/fraction-100):0}%)`;
- navLeft.disabled=viewportNav.scrollLeft<2;
- navRight.disabled=viewportNav.scrollLeft>=max-2;
-}
-function markExplored(){if(!explored){explored=true;guide.hidden=true}}
-navLeft.addEventListener('click',()=>{markExplored();viewportNav.scrollBy({left:-viewportNav.clientWidth*.7,behavior:'smooth'})});
-navRight.addEventListener('click',()=>{markExplored();viewportNav.scrollBy({left:viewportNav.clientWidth*.7,behavior:'smooth'})});
-viewportNav.addEventListener('scroll',updateNavigation,{passive:true});
-viewportNav.addEventListener('pointerdown',e=>{if(e.target.closest('.mount'))return;markExplored()});
-window.addEventListener('resize',updateNavigation);
-window.addEventListener('load',()=>{
- updateNavigation();
- if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
- const distance=Math.min(110,Math.max(0,viewportNav.scrollWidth-viewportNav.clientWidth));
- if(distance<20)return;
- // Démonstration courte, sans perturber le placement des emblèmes.
- setTimeout(()=>{if(!explored && !activeDrag){viewportNav.scrollTo({left:distance,behavior:'smooth'});setTimeout(()=>{if(!explored && !activeDrag)viewportNav.scrollTo({left:0,behavior:'smooth'})},800)}},650);
-});
-</script></body></html>
+(()=>{'use strict';
+const KEY='avelescape-canot-empereur-v1';
+const $=id=>document.getElementById(id);
+const scenes=new Set(['couverture','neptune','reveil','saut','neptune-dore','neptune-b','neptune-c','putto','bassin','sortie-eau','bouc','minerve','grimace','grimace-olivier','fama','neptune-colere','neptune-colere-suite','poupe','poupe-suite','nl','attente','brest-off']);
+let state={current:'couverture',history:[],completedGames:{},validatedSteps:{},choices:{},watchedVideos:{},updatedAt:null};
+let storageOK=true;
+try{localStorage.setItem(KEY+'-test','1');localStorage.removeItem(KEY+'-test')}catch(e){storageOK=false;$('storage-notice').hidden=false}
+function save(){state.updatedAt=new Date().toISOString();if(storageOK){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){storageOK=false;$('storage-notice').hidden=false}}}
+function render(){if(state.validatedSteps.neptune){$('answer').value='Neptune';$('answer-feedback').textContent='Bravo ! C’est bien Neptune.';$('answer-feedback').hidden=false}else{$('answer-feedback').hidden=true}document.querySelectorAll('[data-scene]').forEach(el=>{el.hidden=el.dataset.scene!==state.current});$('suite-reveil').hidden=!state.watchedVideos.reveil;if(state.current==='saut'&&!state.watchedVideos.saut){const v=$('saut-video');v.play().catch(()=>{v.controls=true})}else{$('saut-video').pause()}if(state.current==='reveil'&&!state.watchedVideos.reveil){const v=$('reveil-video');v.play().catch(()=>{v.controls=true})}else{$('reveil-video').pause()}$('joufflus-next').hidden=!state.validatedSteps.joufflus;if(state.validatedSteps.joufflus){$('joufflus-answer').value='8';$('joufflus-feedback').textContent='Bravo ! Il y en a bien 8 !';$('joufflus-feedback').hidden=false}$('back').hidden=state.history.length===0;window.scrollTo(0,0)}
+function go(id,{record=true}={}){if(!scenes.has(id))return;if(record&&id!==state.current)state.history.push(state.current);state.current=id;save();render()}
+function back(){if(!state.history.length)return;state.current=state.history.pop();save();render()}
+function closeDialogs(){$('resume-dialog').hidden=true;$('confirm-dialog').hidden=true}
+function reset(){$('reveil-video').pause();$('reveil-video').currentTime=0;$('saut-video').pause();$('saut-video').currentTime=0;$('suite-reveil').hidden=true;$('answer').value='';$('joufflus-answer').value='';$('joufflus-feedback').hidden=true;$('joufflus-next').hidden=true;$('hint').hidden=true;$('hint-button').setAttribute('aria-expanded','false');if(storageOK){try{localStorage.removeItem(KEY)}catch(e){}}state={current:'couverture',history:[],completedGames:{},validatedSteps:{},choices:{},watchedVideos:{},updatedAt:null};closeDialogs();render()}
+$('start').addEventListener('click',()=>go('neptune'));
+$('hint-button').addEventListener('click',()=>{const show=$('hint').hidden;$('hint').hidden=!show;$('hint-button').setAttribute('aria-expanded',String(show))});
+$('answer-form').addEventListener('submit',event=>{event.preventDefault();const answer=$('answer').value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();if(answer==='neptune'){state.validatedSteps.neptune=true;save();go('reveil')}else{$('answer-feedback').textContent='Ce n’est pas la bonne réponse. Essaie encore !';$('answer-feedback').hidden=false}});
+$('reveil-video').addEventListener('ended',()=>{state.watchedVideos.reveil=true;$('suite-reveil').hidden=false;save()});$('suite-reveil').addEventListener('click',()=>go('saut'));$('saut-video').addEventListener('ended',()=>{state.watchedVideos.saut=true;save();go('neptune-dore')});document.querySelector('#scene-neptune-dore img').addEventListener('error',()=>{$('dore-error').hidden=false});$('saut-video').addEventListener('error',()=>{$('saut-error').hidden=false});$('reveil-video').addEventListener('error',()=>{$('video-error').hidden=false});$('retry-video').addEventListener('click',()=>{$('video-error').hidden=true;$('reveil-video').load();$('reveil-video').play().catch(()=>{})});const neptuneImage=$('neptune-image');neptuneImage.addEventListener('error',()=>{$('neptune-error').hidden=false});neptuneImage.addEventListener('load',()=>{$('neptune-error').hidden=true});$('retry-neptune').addEventListener('click',()=>{neptuneImage.src='images/4-webpneptune1.webp?retry='+Date.now()});
+document.querySelector('#scene-neptune-b img').addEventListener('error',()=>{$('neptune-b-error').hidden=false});
+$('decouvrir-canot').addEventListener('click',()=>go('neptune-c'));
+$('joufflus-form').addEventListener('submit',event=>{event.preventDefault();const correct=$('joufflus-answer').value.trim()==='8';$('joufflus-feedback').hidden=false;if(correct){state.validatedSteps.joufflus=true;$('joufflus-feedback').textContent='Bravo ! Il y en a bien 8 !';$('joufflus-next').hidden=false;save();go('putto')}else{$('joufflus-feedback').textContent='Ce n’est pas la bonne réponse. Essaie encore !';$('joufflus-next').hidden=true}});
+$('joufflus-continue').addEventListener('click',()=>{if(state.validatedSteps.joufflus)go('putto')});
+$('suite-putto').addEventListener('click',()=>go('bassin'));
+ $('jouer-bassin').addEventListener('click',()=>{ save(); window.location.href='jeu-bassin-des-imposteurs/index.html'; });
+$('chipies-la').addEventListener('click',()=>{state.choices.chipies='la';go('minerve')});
+$('excuses-bouc').addEventListener('click',()=>go('minerve'));
+$('vote-source').addEventListener('click',()=>{state.choices.vote='source';go('grimace')});
+$('suite-grimace').addEventListener('click',()=>go('fama'));
+$('vote-olivier').addEventListener('click',()=>{state.choices.vote='olivier';go('grimace-olivier')});
+$('suite-grimace-olivier').addEventListener('click',()=>go('fama'));
+$('calmer-neptune').addEventListener('click',()=>go('neptune-colere-suite'));
+$('continuer-poupe').addEventListener('click',()=>go('poupe'));
+$('suite-poupe').addEventListener('click',()=>go('poupe-suite'));
+ $('suite-poupe-suite').addEventListener('click',()=>go('nl'));
+ $('suite-et-fin').addEventListener('click',()=>go('attente'));
+$('ouvrir-brest-off').addEventListener('click',()=>go('brest-off'));
+$('continuer-fama').addEventListener('click',()=>{ save(); window.location.href='jeu-emblemes/index.html'; });
+$('chipies-absentes').addEventListener('click',()=>{state.choices.chipies='absentes';go('bouc')});
+$('back').addEventListener('click',back);
+$('continue').addEventListener('click',()=>{closeDialogs();render()});
+$('restart').addEventListener('click',()=>{$('resume-dialog').hidden=true;$('confirm-dialog').hidden=false});
+$('confirm-yes').addEventListener('click',reset);
+$('confirm-no').addEventListener('click',()=>{$('confirm-dialog').hidden=true;$('resume-dialog').hidden=false});
+const cover=$('cover');cover.addEventListener('error',()=>{$('media-error').hidden=false});cover.addEventListener('load',()=>{$('media-error').hidden=true});if(cover.complete&&!cover.naturalWidth)$('media-error').hidden=false;
+$('retry').addEventListener('click',()=>{cover.src='images/4-webpcouverture.webp?retry='+Date.now()});
+if(storageOK){try{const raw=localStorage.getItem(KEY);if(raw){const previous=JSON.parse(raw);if(previous&&scenes.has(previous.current)&&Array.isArray(previous.history)){state={...state,...previous,history:previous.history.filter(id=>scenes.has(id))};$('resume-dialog').hidden=false}}}catch(e){}}
+if(new URLSearchParams(location.search).get('retour_grattage')==='1'){state.completedGames.grattage=true;state.history=state.history.filter(id=>id!=='neptune-b');if(state.current!=='neptune-b')state.history.push('neptune-dore');state.current='neptune-b';save();history.replaceState(null,'',location.pathname+location.hash);closeDialogs()}
+if(new URLSearchParams(location.search).get('retour_bassin')==='1'){state.completedGames.bassin=true;state.history=state.history.filter(id=>id!=='sortie-eau');if(state.current!=='sortie-eau')state.history.push('bassin');state.current='sortie-eau';save();history.replaceState(null,'',location.pathname+location.hash);closeDialogs()}
+if(new URLSearchParams(location.search).get('retour_emblemes')==='1'){state.completedGames.emblemes=true;state.history=state.history.filter(id=>id!=='neptune-colere');if(state.current!=='neptune-colere')state.history.push('fama');state.current='neptune-colere';save();history.replaceState(null,'',location.pathname+location.hash);closeDialogs()}
+ render();
+ window.AvelEscape={go,back,getState:()=>structuredClone(state),save,registerScene:id=>scenes.add(id)};
+})();
+</script>
+</body></html>
