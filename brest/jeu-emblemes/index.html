@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AvelEscape — Le jeu des emblèmes</title>
@@ -41,7 +40,7 @@ main{max-width:800px;margin:auto;padding:12px 12px 30px}h1{font:700 clamp(30px,7
 <p class="hint">Déplace la cabine avec le doigt ou les flèches, puis glisse l'emblème à sa place.</p>
 <section class="panel"><h2>Glisse un emblème sur sa place</h2><div class="choices" id="choices"></div></section>
 <p class="feedback" id="feedback" aria-live="polite">Glisse un emblème sur la cabine à l'endroit où tu penses qu'il doit aller.</p>
-<div class="actions"><button class="action" id="reset">Recommencer</button><button class="action" id="nextMain" type="button" hidden>Retrouver Neptune</button></div>
+<div class="actions"><button class="action" id="reset">Recommencer</button><button class="action" id="nextMain" type="button" hidden>Continuer</button></div>
 </main>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="heading"><div class="dialog"><h2 id="heading">Neptune raconte…</h2><img id="successEmblem" class="success-emblem" alt=""><p id="story" class="emblem-description"></p><button class="action" id="continue">Continuer</button></div></div>
 <script>
@@ -81,7 +80,7 @@ function place(i){
  document.getElementById('successEmblem').src=`images/4-webpembleme${i+1}.webp`;
   document.getElementById('successEmblem').alt=`Emblème ${i+1} : ${emblemInfo[i].title}`;
   document.getElementById('story').textContent=emblemInfo[i].text;
- document.getElementById('continue').textContent=done.size===6?'Terminer':'Continuer';
+ document.getElementById('continue').textContent=done.size===6?'Continuer':'Continuer';
  modal.classList.add('show');document.getElementById('continue').focus();
 }
 
