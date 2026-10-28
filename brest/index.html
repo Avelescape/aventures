@@ -10,12 +10,11 @@
 <style>
 :root{--ivoire:#F5F0E5;--vert:#123F36;--or:#D7BD7B;--papier:#FFF9ED}*{box-sizing:border-box}html{background:var(--ivoire)}body{margin:0;background:var(--ivoire);color:var(--vert);font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;min-height:100vh}button,a{font:inherit}.topbar{position:fixed;z-index:20;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:calc(env(safe-area-inset-top) + 10px) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));pointer-events:none}.topbar>*{pointer-events:auto}.btn{background:var(--vert);color:var(--ivoire);border:2px solid var(--or);border-radius:14px;min-height:48px;padding:9px 22px;font-size:24px;font-weight:600;line-height:1.15;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 3px 9px #123f361f}.btn:focus-visible{outline:3px solid #9a7330;outline-offset:3px}.back{width:46px;height:46px;border-radius:50%;padding:0;font-size:28px}.back[hidden]{visibility:hidden;display:inline-flex}.site{font-size:19px;min-height:44px;padding:8px 14px}.scene{width:100%;max-width:560px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 84px) 12px 40px;text-align:center}.scene[hidden]{display:none}.cover{display:block;width:100%;height:auto;object-fit:contain}.media-wrap{position:relative}.media-status{font-size:19px;padding:14px}.media-status[hidden]{display:none}.actions{margin-top:24px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.start{font-size:27px;padding:12px 25px}.cartouche{width:92%;max-width:480px;margin:22px auto 0;background:var(--papier);color:var(--vert);border:2px solid var(--or);border-radius:18px;padding:20px;text-align:left;box-shadow:0 5px 18px #123f3615;font-size:27px;line-height:1.42}.cartouche.vert{background:var(--vert);color:var(--ivoire)}.modal-backdrop{position:fixed;inset:0;z-index:40;background:#0b221dc0;display:grid;place-items:center;padding:18px}.modal-backdrop[hidden]{display:none}.modal{width:min(100%,480px);background:var(--papier);border:2px solid var(--or);border-radius:18px;padding:24px;text-align:center;box-shadow:0 12px 35px #0004}.modal p{font-size:27px;line-height:1.35;margin:0 0 22px}.modal .actions{margin-top:0}.modal .btn{font-size:21px}.notice{font-size:17px;text-align:center;max-width:560px;margin:12px auto;color:#705a35}@media(max-width:350px){.scene{padding-left:8px;padding-right:8px}.site{font-size:17px}.start{font-size:24px}.cartouche{font-size:25px}}
  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.scene-video{display:block;width:100%;height:auto;background:#123F36;border-radius:8px}.answer-input{width:100%;min-height:50px;border:2px solid var(--or);border-radius:12px;background:#fffdf7;color:var(--vert);font:500 27px 'Cormorant Garamond',Georgia,serif;padding:8px 12px}.answer-label{display:block;margin:16px 0 8px}.feedback{font-size:24px;margin:12px 0 0}.hint[hidden],.feedback[hidden]{display:none}.hint{margin-top:18px}.question-actions{margin-top:16px}.media-image{display:block;width:100%;height:auto}.cartouche.colle-image{margin-top:0}.bouc-image{position:relative;z-index:2}.cartouche.sous-pattes{position:relative;z-index:1;margin-top:-9%;padding-top:calc(20px + 7%)}.fama-image{position:relative;z-index:2}.cartouche.sous-fama{position:relative;z-index:1;margin-top:-20%;padding-top:calc(20px + 19%)} .nl-dialogue{display:grid;grid-template-columns:35% minmax(0,1fr);gap:12px;align-items:center}.nl-neptune{display:block;width:100%;height:auto;object-fit:contain}.nl-dialogue strong{font-weight:500;font-size:inherit;line-height:1.42}@media(max-width:350px){.nl-dialogue{grid-template-columns:32% minmax(0,1fr);gap:8px}.nl-dialogue strong{font-size:inherit}} </style>
-<style>.brest-off-dialogue{font-size:clamp(22px,5vw,27px)}.brest-off-dialogue p{margin:0 0 1.2em}.brest-off-dialogue p:last-child{margin-bottom:0}</style>
 <style>
-/* Mise en page exclusive de la dernière scène Brest-off */
-#scene-brest-off .brest-off-visual{position:relative}
-#scene-brest-off .brest-off-title{position:absolute;top:5%;left:0;right:0;margin:0;text-align:center;color:#FFF1C6;font-size:clamp(46px,11vw,70px);font-weight:700;letter-spacing:.045em;-webkit-text-stroke:1px #483519;text-shadow:0 3px 2px #102c28,0 0 12px #071d1b,0 0 22px #071d1b;z-index:2}
-#scene-brest-off .brest-off-dialogue{position:relative;z-index:3;margin-top:-33.333%;padding-top:20px}
+#scene-attente .final-dialogue p{margin:0 0 1em}
+#scene-attente .final-dialogue p:last-child{margin-bottom:0}
+#scene-attente .final-image{display:block;width:100%;height:auto;margin:20px auto;border-radius:12px}
+#scene-attente .final-pause{margin-top:28px;padding-top:20px;border-top:1px solid var(--or)}
 </style>
 <style>/* Centrage de la réponse numérique des joufflus */
 #joufflus-answer, #answer { text-align:center; text-align-last:center; }
@@ -80,17 +79,25 @@ main,.scene,.media-wrap,.cartouche,.actions,.nl-dialogue,.nl-dialogue>*{min-widt
 
 
 <section class="scene" id="scene-nl" data-scene="nl" aria-label="Les initiales de Louis-Napoléon" hidden><img class="media-image" src="images/4-webpnl.webp" alt="Deux putti dorés encadrant le médaillon NL" loading="eager" decoding="async"><div class="cartouche colle-image"><div class="nl-dialogue"><img src="images/4-webpneptunecanala.webp" alt="Neptune taquin" class="nl-neptune"><strong>Ah ! Et pour finir, admire ces deux putti qui portent un médaillon aux initiales <b class="nl-lettre">NL</b>, pour <b>Louis-Napoléon</b> !<br><br>Ils s’en sortent plutôt bien, les deux joufflus ! Avec la folie des grandeurs de l’Empereur, ils auraient pu finir avec un <b class="nl-lettre">N</b> tatoué sur la fesse de l’un et un <b class="nl-lettre">L</b> sur celle de l’autre !</strong></div></div><div class="actions"><button class="btn" id="suite-et-fin" type="button">Suite et fin</button></div></section>
-<section class="scene" id="scene-attente" data-scene="attente" aria-label="Fin de l’aventure" hidden><div class="cartouche vert"><strong>Bravo, le bulot ! Tu as terminé l’aventure du Canot de l’Empereur.</strong></div><div class="actions"><button class="btn" id="ouvrir-brest-off" type="button">BREST-OFF</button></div></section>
-<section class="scene" id="scene-brest-off" data-scene="brest-off" aria-label="Brest-Off : les dernières répliques de Neptune" hidden>
-<div class="brest-off-visual"><img class="media-image" src="images/4-webpbrestoff.webp" alt="Brest-off — Neptune dans son palais sous-marin" loading="eager" decoding="async"></div>
-<div class="cartouche colle-image brest-off-dialogue">
-<p>« Je suis Neptune, dieu des mers… et ces c..s de sculpteurs m’ont inscrit à l’aquaponey. »</p>
-
-<p>« Napoléon et sa couronne… Le mec s’est carrément couronné lui-même. À ce niveau-là, c’est plus de l’ambition, c’est se mettre cinq étoiles sur Google avant même d’avoir ouvert. »</p>
-<p>« Voilà l’aigle impérial. Fier, majestueux, redoutable… Un goéland avec un très bon service de communication, quoi. »</p>
-<p>« Tu vas finir en mayonnaise, le bulot ! »</p>
-<p>« Kenavo ! Ça veut dire “Au revoir” en breton. D’ailleurs, c’est le premier mot que le soleil a appris en arrivant à Brest… et visiblement, le seul qu’il a retenu! »</p>
-</div><div class="actions"><a class="btn" href="https://avelescape.github.io/aventures/">Retour au site AvelEscape</a></div>
+<section class="scene" id="scene-attente" data-scene="attente" aria-label="Conclusion de l’aventure" hidden>
+  <div class="cartouche final-dialogue">
+    <p>Bon… Je crois qu'on a fait le tour !</p>
+    <p>Faut quand même reconnaître une chose…</p>
+    <p><em>Neptune contemple le canot.</em></p>
+    <p>Ils avaient des artisans sacrément doués, ces humains !</p>
+    <p><strong>Il est magnifique, ce canot !</strong></p>
+    <p>Mais que ça reste entre nous, hein ?</p>
+    <p>J'ai une réputation de dieu à tenir !</p>
+    <p>Et surtout… <strong>pas un mot à Minerve !</strong></p>
+    <img class="final-image" src="images/4-webpfinal.webp" alt="Neptune contemple avec admiration le Canot de l’Empereur" loading="eager" decoding="async">
+    <div class="final-pause">
+      <p>Allez, kenavo, le bulot !</p>
+      <p>Ça veut dire « Au revoir » en breton !</p>
+      <p>D'ailleurs, c'est le premier mot que le soleil a appris en arrivant à Brest…</p>
+      <p><strong>Et visiblement, le seul qu'il a retenu !</strong></p>
+    </div>
+  </div>
+  <div class="actions"><a class="btn" href="https://avelescape.github.io/aventures/">Retour aux aventures</a></div>
 </section>
 </main>
 <div id="resume-dialog" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="resume-text" hidden><div class="modal"><p id="resume-text">Une aventure est déjà en cours. Souhaites-tu la reprendre ou recommencer depuis le début ?</p><div class="actions"><button class="btn" id="continue" type="button">Continuer l'aventure</button><button class="btn" id="restart" type="button">Recommencer l'aventure</button></div></div></div>
@@ -100,7 +107,7 @@ main,.scene,.media-wrap,.cartouche,.actions,.nl-dialogue,.nl-dialogue>*{min-widt
 (()=>{'use strict';
 const KEY='avelescape-canot-empereur-v1';
 const $=id=>document.getElementById(id);
-const scenes=new Set(['couverture','neptune','reveil','saut','neptune-dore','neptune-b','neptune-c','putto','bassin','sortie-eau','bouc','minerve','grimace','grimace-olivier','fama','neptune-colere','neptune-colere-suite','nl','attente','brest-off']);
+const scenes=new Set(['couverture','neptune','reveil','saut','neptune-dore','neptune-b','neptune-c','putto','bassin','sortie-eau','bouc','minerve','grimace','grimace-olivier','fama','neptune-colere','neptune-colere-suite','nl','attente']);
 let state={current:'couverture',history:[],completedGames:{},validatedSteps:{},choices:{},watchedVideos:{},updatedAt:null};
 let storageOK=true;
 try{localStorage.setItem(KEY+'-test','1');localStorage.removeItem(KEY+'-test')}catch(e){storageOK=false;$('storage-notice').hidden=false}
@@ -129,7 +136,6 @@ $('suite-grimace-olivier').addEventListener('click',()=>go('fama'));
 $('calmer-neptune').addEventListener('click',()=>go('neptune-colere-suite'));
 $('continuer-poupe').addEventListener('click',()=>{save();window.location.href='jeu-precede-succede/index.html';});
  $('suite-et-fin').addEventListener('click',()=>go('attente'));
-$('ouvrir-brest-off').addEventListener('click',()=>go('brest-off'));
 $('continuer-fama').addEventListener('click',()=>{ save(); window.location.href='jeu-emblemes/index.html'; });
 $('chipies-absentes').addEventListener('click',()=>{state.choices.chipies='absentes';go('bouc')});
 $('back').addEventListener('click',back);
