@@ -1,158 +1,592 @@
-<!doctype html>
-<html lang="fr" class="app-loading">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#F5F0E5">
-<title>AvelEscape — Le Canot de l’Empereur</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="images/4-webpcouverture.webp">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#071B34" />
+<title>AvelEscape — Aventures & Patrimoine</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <style>
-:root{--ivoire:#F5F0E5;--vert:#123F36;--or:#D7BD7B;--papier:#FFF9ED}*{box-sizing:border-box}html{background:var(--ivoire)}body{margin:0;background:var(--ivoire);color:var(--vert);font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;min-height:100vh}button,a{font:inherit}.topbar{position:fixed;z-index:20;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:calc(env(safe-area-inset-top) + 10px) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));pointer-events:none}.topbar>*{pointer-events:auto}.btn{background:var(--vert);color:var(--ivoire);border:2px solid var(--or);border-radius:14px;min-height:48px;padding:9px 22px;font-size:24px;font-weight:600;line-height:1.15;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 3px 9px #123f361f}.btn:focus-visible{outline:3px solid #9a7330;outline-offset:3px}.back{width:46px;height:46px;border-radius:50%;padding:0;font-size:28px}.back[hidden]{visibility:hidden;display:inline-flex}.site{font-size:19px;min-height:44px;padding:8px 14px}.scene{width:100%;max-width:560px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 84px) 12px 40px;text-align:center}.scene[hidden]{display:none}.cover{display:block;width:100%;height:auto;object-fit:contain}.media-wrap{position:relative}.media-status{font-size:19px;padding:14px}.media-status[hidden]{display:none}.actions{margin-top:24px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.start{font-size:27px;padding:12px 25px}.cartouche{width:92%;max-width:480px;margin:22px auto 0;background:var(--papier);color:var(--vert);border:2px solid var(--or);border-radius:18px;padding:20px;text-align:left;box-shadow:0 5px 18px #123f3615;font-size:27px;line-height:1.42}.cartouche.vert{background:var(--vert);color:var(--ivoire)}.modal-backdrop{position:fixed;inset:0;z-index:40;background:#0b221dc0;display:grid;place-items:center;padding:18px}.modal-backdrop[hidden]{display:none}.modal{width:min(100%,480px);background:var(--papier);border:2px solid var(--or);border-radius:18px;padding:24px;text-align:center;box-shadow:0 12px 35px #0004}.modal p{font-size:27px;line-height:1.35;margin:0 0 22px}.modal .actions{margin-top:0}.modal .btn{font-size:21px}.notice{font-size:17px;text-align:center;max-width:560px;margin:12px auto;color:#705a35}@media(max-width:350px){.scene{padding-left:8px;padding-right:8px}.site{font-size:17px}.start{font-size:24px}.cartouche{font-size:25px}}
- .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.scene-video{display:block;width:100%;height:auto;background:#123F36;border-radius:8px}.answer-input{width:100%;min-height:50px;border:2px solid var(--or);border-radius:12px;background:#fffdf7;color:var(--vert);font:500 27px 'Cormorant Garamond',Georgia,serif;padding:8px 12px}.answer-label{display:block;margin:16px 0 8px}.feedback{font-size:24px;margin:12px 0 0}.hint[hidden],.feedback[hidden]{display:none}.hint{margin-top:18px}.question-actions{margin-top:16px}.media-image{display:block;width:100%;height:auto}.cartouche.colle-image{margin-top:0}.bouc-image{position:relative;z-index:2}.cartouche.sous-pattes{position:relative;z-index:1;margin-top:-9%;padding-top:calc(20px + 7%)}.fama-image{position:relative;z-index:2}.cartouche.sous-fama{position:relative;z-index:1;margin-top:-20%;padding-top:calc(20px + 19%)} .nl-dialogue{display:grid;grid-template-columns:35% minmax(0,1fr);gap:12px;align-items:center}.nl-neptune{display:block;width:100%;height:auto;object-fit:contain}.nl-dialogue strong{font-weight:500;font-size:inherit;line-height:1.42}@media(max-width:350px){.nl-dialogue{grid-template-columns:32% minmax(0,1fr);gap:8px}.nl-dialogue strong{font-size:inherit}} </style>
-<style>
-#scene-attente .final-dialogue p{margin:0 0 1em}
-#scene-attente .final-dialogue p:last-child{margin-bottom:0}
-#scene-attente .final-image{display:block;width:100%;height:auto;margin:20px auto;border-radius:12px}
-#scene-attente .final-pause{margin-top:28px;padding-top:20px;border-top:1px solid var(--or)}
-</style>
-<style>/* Centrage de la réponse numérique des joufflus */
-#joufflus-answer, #answer { text-align:center; text-align-last:center; }
-</style>
-<style>#scene-minerve .cartouche b{font-weight:700}</style>
-<style>#scene-grimace .emphase,#scene-grimace-olivier .emphase,#scene-fama .emphase{font-weight:700}</style>
-<style>#scene-neptune-colere .emphase,#scene-neptune-colere-suite .emphase{font-weight:700}</style>
-<style>#scene-nl .nl-lettre{font-size:1.22em;font-weight:700;line-height:1}#scene-nl .nl-dialogue b{font-weight:700}</style>
-<style id="site-button-discreet">
-.topbar a.site{font-size:16px;font-weight:500;min-height:40px;padding:6px 11px;border:1px solid #c4b385;border-radius:10px;box-shadow:none}
-@media(max-width:600px){.topbar a.site{font-size:15px}}
-</style>
-<style id="startup-flash-fix">
-/* Ne jamais peindre la couverture avant de restaurer la bonne scène. */
-html.app-loading main,html.app-loading .topbar,html.app-loading .modal-backdrop{visibility:hidden}
-/* Garder les scènes cachées même lorsque les styles mobiles s’appliquent. */
-.scene[hidden], .actions [hidden], button[hidden], video[hidden], img[hidden]{display:none!important}
-html.scene-switching main{visibility:hidden}
-</style>
-<noscript><style>html.app-loading main,html.app-loading .topbar{visibility:visible}</style></noscript>
-<style id="mobile-layout-fix">
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
-body{width:100%;min-width:0;overflow-x:clip}
-main,.scene,.media-wrap,.cartouche,.actions,.nl-dialogue,.nl-dialogue>*{min-width:0}
-.scene{padding-bottom:calc(40px + env(safe-area-inset-bottom));overflow-wrap:anywhere;overflow-anchor:none}
-.scene img,.scene video{max-width:100%}
-.btn{max-width:100%;white-space:normal;overflow-wrap:anywhere}
-.answer-input{min-width:0;max-width:100%}
-.topbar{gap:12px}.topbar .back{flex-shrink:0}
-.modal-backdrop{overflow-y:auto}.modal{min-width:0;max-height:100%;overflow-y:auto;overflow-wrap:anywhere}
-@media(max-width:600px){
- .cartouche{width:100%;padding:18px}
- .nl-dialogue{grid-template-columns:minmax(0,1fr);gap:16px}
- .nl-neptune{width:38%;max-width:150px;margin:0 auto}
+:root{
+  --navy:#071B34;
+  --navy-deep:#031529;
+  --gold:#C89A4A;
+  --orange:#E04412;
+  --orange-dark:#C83209;
+  --cream:#FCE7C9;
+  --cream-2:#FFF8EE;
+  --sand:#D9C3A0;
+  --text:#071B34;
+  --muted:#4f463b;
 }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--cream)}
+body{
+  font-family:Inter,system-ui,sans-serif;
+  background:var(--cream);
+  color:var(--text);
+  max-width:1024px;
+  margin:0 auto;
+  min-height:100vh;
+  box-shadow:0 0 50px rgba(0,0,0,.16);
+}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+.container{width:100%;padding:0 7.5%}
+
+/* HEADER */
+header{
+  background:linear-gradient(180deg,#082542 0%,#041a31 100%);
+  color:white;
+  position:sticky;
+  top:0;
+  z-index:200;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding-top:env(safe-area-inset-top,0px);
+}
+.nav{
+  height:170px;
+  padding:0 36px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:relative;
+}
+.nav-center{display:flex;align-items:center}
+.nav-logo-img{width:225px;height:150px;object-fit:contain}
+.nav-connexion{
+  height:56px;
+  display:flex;align-items:center;gap:14px;
+  padding:0 26px;
+  border:1.5px solid rgba(255,255,255,.9);
+  border-radius:999px;
+  background:rgba(255,255,255,.02);
+  color:white;
+  font-family:Georgia,serif;
+  font-size:22px;
+  cursor:pointer;
+  margin-left:auto;
+}
+.nav-connexion svg{width:28px;height:28px}
+
+/* HERO */
+.hero{
+  position:relative;
+  min-height:620px;
+  overflow:visible;
+  background:
+    linear-gradient(90deg,rgba(252,231,201,.55) 0%,rgba(252,231,201,.18) 36%,rgba(7,27,52,.05) 65%,rgba(7,27,52,.25) 100%),
+    url('https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpheropasseport.webp') center bottom/cover no-repeat;
+}
+.hero::after{display:none}
+.hero-content{
+  position:relative;
+  /* Le bouton doit rester cliquable au-dessus des cartes qui chevauchent le héros. */
+  z-index:60;
+  padding-top:104px;
+  width:min(460px,55%);
+}
+.hero h1{
+  font-family:Georgia,serif;
+  font-weight:700;
+  color:#061a33;
+  font-size:clamp(58px,7vw,86px);
+  line-height:.92;
+  letter-spacing:-1px;
+  text-shadow:0 2px 8px rgba(255,255,255,.35);
+}
+.hero h1 em{
+  display:block;
+  font-style:italic;
+  color:var(--orange);
+  font-weight:700;
+}
+.hero-subtitle{
+  margin-top:24px;
+  font-family:Georgia,serif;
+  font-size:25px;
+  line-height:1.25;
+  color:#071B34;
+  max-width:410px;
+}
+.hero-free{
+  margin-top:22px;
+  font-family:Georgia,serif;
+  font-size:28px;
+  font-weight:700;
+  letter-spacing:.5px;
+}
+.hero-buttons{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+
+    margin-top:250px;      /* descend le bouton */
+
+}
+.hero-btn{
+  min-height:72px;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  border-radius:12px;
+  padding:0 22px;
+  font-family:Georgia,serif;
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:.3px;
+  box-shadow:0 8px 20px rgba(0,0,0,.20);
+}
+.hero-btn .btn-left{display:flex;align-items:center;gap:18px}
+.hero-btn svg{flex:none}
+.hero-btn-primary{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  background:linear-gradient(180deg,#082542 0%,#03172E 100%);
+  color:#FFF8EE;
+  border:2px solid var(--gold);
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+  animation:passeport-pulse 3.8s ease-in-out infinite;
+}
+.hero-btn-primary > *{position:relative;z-index:1}
+.hero-btn-primary:hover,
+.hero-btn-primary:focus-visible{
+  transform:translateY(-3px) scale(1.015);
+  border-color:#E2BD70;
+  box-shadow:0 13px 27px rgba(0,0,0,.28),0 0 20px rgba(200,154,74,.30);
+}
+.hero-btn-primary:active{
+  transform:translateY(1px) scale(.985);
+  box-shadow:0 5px 12px rgba(0,0,0,.24);
+}
+.hero-btn-primary.is-opening{
+  pointer-events:none;
+  animation:passeport-click .34s cubic-bezier(.2,.8,.25,1) both;
+  border-color:#F9DE8A;
+  box-shadow:0 5px 14px rgba(0,0,0,.30),0 0 0 5px rgba(200,154,74,.22),0 0 28px rgba(247,189,74,.72);
+}
+@keyframes passeport-click{
+  0%{transform:translateY(0) scale(1)}
+  35%{transform:translateY(3px) scale(.965)}
+  68%{transform:translateY(-2px) scale(1.025)}
+  100%{transform:translateY(0) scale(1)}
+}
+@keyframes passeport-pulse{
+  0%,55%,100%{box-shadow:0 8px 20px rgba(0,0,0,.20)}
+  68%{box-shadow:0 10px 24px rgba(0,0,0,.25),0 0 16px rgba(200,154,74,.25)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-btn-primary{animation:none}
+}
+.hero-btn-secondary{
+  background:#FFF8EE;
+  color:#071B34;
+  border:2px solid #F1DAB0;
+}
+.hero-btn .arrow{font-size:38px;line-height:1;font-family:Inter,system-ui,sans-serif;font-weight:300}
+
+/* CARTES QUI CHEVAUCHENT LE HERO */
+.comment-cartes{
+  position:relative;
+  z-index:50;
+  margin-top:-180px; /* chevauchement plus marqué sur l’image du hero */
+  padding:0 56px;
+}
+.comment-cartes img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:0;
+  filter:drop-shadow(0 18px 24px rgba(0,0,0,.18));
+}
+
+/* INTRO AVENTURES */
+.adventures-intro{
+  position:relative;
+  z-index:5;
+  text-align:center;
+  margin-top:-80px; /* remonte Nos aventures sous les cartes */
+  padding:22px 7.5% 24px;
+  background:var(--cream);
+}
+.eyebrow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:18px;
+  color:var(--orange);
+  font-family:Georgia,serif;
+  font-size:21px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+.eyebrow::before,.eyebrow::after{content:"";width:42px;height:1px;background:rgba(200,154,74,.4)}
+.eyebrow-reviews{white-space:nowrap;margin:0}
+.adventures-intro h2{
+  font-family:Georgia,serif;
+  color:#071B34;
+  font-size:44px;
+  line-height:1.08;
+  margin-bottom:18px;
+}
+.adventures-intro p{
+  font-family:Georgia,serif;
+  font-size:21px;
+  line-height:1.45;
+  max-width:700px;
+  margin:0 auto;
+  color:#071B34;
+}
+.cta-all{
+  margin:28px auto 0;
+  width:min(380px,100%);
+  min-height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:22px;
+  border-radius:9px;
+  background:linear-gradient(180deg,var(--orange),var(--orange-dark));
+  color:#fff;
+  font-family:Georgia,serif;
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:.5px;
+  box-shadow:0 10px 20px rgba(198,50,9,.20);
+}
+.cta-all span{font-size:34px;font-family:Inter,system-ui,sans-serif;font-weight:300}
+
+/* BAR CATÉGORIES */
+.bar{display:none;background:var(--navy);align-items:stretch;overflow-x:auto;scrollbar-width:none;position:relative;border-top:1px solid rgba(201,162,39,.16);border-bottom:1px solid rgba(201,162,39,.16)}
+.bar::-webkit-scrollbar{display:none}
+.bar-tab{flex:none;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:13px 16px;color:rgba(245,239,224,.7);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:5px;text-decoration:none;min-height:44px}
+.bar-tab.active{color:#F5EFE0;border-bottom-color:var(--gold)}
+.bar-drop-wrap{position:static;display:flex}.bar-drop{display:none;position:absolute;top:100%;left:0;right:0;background:#EAD9BC;border:.5px solid #D9C3A0;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,.25);border-radius:0 0 12px 12px}.bar-drop.open{display:block}.bar-drop-item{display:block;padding:12px 18px;font-size:14px;color:var(--navy);cursor:pointer;border-top:.5px solid rgba(201,184,138,.4);min-height:44px;display:flex;align-items:center}.bar-drop-parent-item{display:flex;align-items:center;justify-content:space-between}.bar-subdrop{display:none}.bar-subdrop.open{display:block}.bar-subdrop-item{display:flex;align-items:center;padding:11px 18px 11px 30px;font-size:13px;color:var(--navy);text-decoration:none;border-top:.5px solid rgba(201,184,138,.25);min-height:44px}
+
+/* ADVENTURES */
+.adventures{background:var(--cream);padding:18px 0 34px}
+.carousel-outer{position:relative}.carousel-mask{overflow:hidden}.carousel-track{display:flex;gap:14px;transition:transform .4s cubic-bezier(.4,0,.2,1)}.carousel-nav-btn{display:none}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:5px;margin-top:2px;margin-bottom:0}.carousel-dot{width:6px;height:6px;border-radius:50%;background:var(--sand);cursor:pointer;transition:all .2s;flex-shrink:0;border:0}.carousel-dot.active{background:var(--gold);width:18px;border-radius:3px}.carousel-dot.nearby{width:4px;height:4px;background:#D9C3A0}
+.adv-card{flex:0 0 calc(25% - 11px);display:flex;flex-direction:column;background:#FFF8EE;border:1px solid #D9C3A0;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(7,27,52,.14);cursor:pointer}.adv-card:active{transform:scale(.99)}.adv-card-img{height:160px;position:relative;overflow:hidden}.adv-card-img img{width:100%;height:100%;object-fit:cover;display:block}.adv-card-body{display:flex;flex:1;flex-direction:column;padding:14px 14px}.adv-card-title{font-family:Georgia,serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.2}.adv-card-loc{display:flex;align-items:center;gap:5px;font-size:11px;color:#6D6253;margin-bottom:12px;font-weight:500}.adv-card-actions{display:flex;gap:8px;margin-top:auto;width:100%}.adv-btn-voir{flex:1;background:var(--orange);color:white;border:none;border-radius:9px;padding:12px 10px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:42px;transition:background .2s ease}
+.adv-btn-voir:hover{background:var(--orange-dark)}
+
+/* CARTE INTERACTIVE */
+.map-section{background:var(--cream);padding:10px 0 30px}
+.map-title{font-family:Georgia,serif;color:#071B34;font-size:28px;text-align:center;margin-bottom:16px}
+#adventures-map{width:100%;height:400px;border-radius:16px;overflow:hidden;border:1px solid #D9C3A0;box-shadow:0 8px 24px rgba(7,27,52,.14);background:#EAD9BC;position:relative;isolation:isolate;z-index:0}
+.map-popup{font-family:Inter,system-ui,sans-serif}
+.map-popup strong{font-family:Georgia,serif;color:var(--navy);font-size:14px}
+.map-popup .map-popup-loc{font-size:11px;color:#6D6253;margin:2px 0 6px}
+.map-popup a{display:inline-block;background:var(--orange);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:6px 10px;border-radius:6px}
+@media(max-width:760px){#adventures-map{height:300px}.map-title{font-size:24px}}
+
+/* BANDEAU AVENTURES KIDS */
+.kids-banner{
+  background:var(--cream);
+  width:100%;
+  margin-top: 90px;
+  padding:0;
+}
+.kids-banner .container{
+  width:100%;
+  padding:0 7.5%;       /* même largeur que les cartes */
+}
+.kids-banner img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+/* AVIS + CTA */
+.reviews-section{background:var(--cream);padding:0 0 20px}
+.reviews-eyebrow-wrap{display:flex;align-items:center;justify-content:center;min-height:56px}.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.review-photo-card{border-radius:12px;overflow:hidden;background:var(--navy);min-height:100px}.review-photo-card img{width:100%;height:100%;object-fit:cover}.review-card{background:#FFF8EE;border:1px solid #D9C3A0;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:5px;min-height:100px}.review-stars{color:var(--orange);font-size:13px;letter-spacing:1px}.review-text{font-size:12px;color:#1D1A16;line-height:1.5;flex:1;font-style:italic}.review-author{font-size:11px;font-weight:700;color:var(--navy)}
+.cta-section{background:var(--navy);overflow:hidden;border:1px solid rgba(201,162,39,.16);border-radius:0;margin:48px 0 24px;width:100%;max-width:none}.cta-inner{display:grid;grid-template-columns:1fr 2fr;gap:8px;padding:2px 10px;align-items:center}.cta-btn-cgv{display:inline-flex;align-items:center;justify-content:center;background:transparent;color:rgba(255,255,255,.55);border-radius:6px;padding:6px 8px;font-size:10px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;text-decoration:underline;min-height:32px}
+.cta-inner{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:7px 16px;
+}
+/* DEVENEZ AUTEUR */
+.cta-btn-author-img img{
+    width:180px;
+    height:auto;
+    display:block;
+    transition:transform .25s;
+}
+
+.cta-btn-author-img:hover img{
+    transform:scale(1.05);
+}
+/* MODALE */
+.modal-bg{display:none;position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:1024px;background:rgba(7,20,40,.65);z-index:2000;overflow-y:auto;padding:20px 16px}.modal-bg.open{display:flex;align-items:flex-start;justify-content:center}.modal{background:#FFF8EE;max-width:480px;width:100%;border-radius:22px;padding:20px;position:relative;border:1px solid #D9C3A0;box-shadow:0 16px 50px rgba(0,0,0,.25)}.modal-img{margin:-20px -20px 16px;height:180px;overflow:hidden;border-radius:22px 22px 0 0;background:#EAD9BC}.modal-img img{width:100%;height:100%;object-fit:cover}.modal-close{float:right;background:transparent;border:1px solid #D9C3A0;border-radius:8px;padding:7px 14px;cursor:pointer;font-size:12px;font-weight:600;color:#6D6253;min-height:36px}.modal-type{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-top:14px}.modal h2{font-family:Georgia,serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin:6px 0 5px}.modal p{font-size:13px;color:#6D6253;line-height:1.65;margin-bottom:14px;font-style:italic;font-family:Georgia,serif}.modal-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.modal-tag{font-size:11px;background:#EAD9BC;border:1px solid #D9C3A0;color:#6D6253;padding:4px 12px;border-radius:6px}.modal-actions{display:flex;flex-direction:column;gap:10px}.btn-fiche-primary{padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;background:var(--navy);color:white;border:none;border-radius:9px;cursor:pointer;min-height:44px;display:block;width:100%;text-align:center}.modal-btn-kids{background:var(--orange)!important}.modal-btn-kids em{font-style:italic;font-family:Georgia,serif;font-size:12px}.btn-itinerary{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--orange);border:1.5px solid var(--orange);padding:12px 14px;border-radius:9px;background:transparent;cursor:pointer;min-height:44px;text-decoration:none}
+
+@media(max-width:760px){
+  body{max-width:480px}
+  .nav{height:110px;padding:0 18px}.nav-logo-img{width:142px;height:95px}.nav-connexion{height:42px;padding:0 14px;font-size:14px;gap:8px}.nav-connexion svg{width:20px;height:20px}
+  .hero{min-height:545px;background-position:center bottom}.hero::after{display:none}.container{padding:0 28px}
+  .kids-banner .container{padding:0 18px;}
+  .kids-banner{
+  background:var(--cream);
+  width:100%;
+  margin-top:-20px;
+  padding:0 0 20px;
+}.hero-content{padding-top:72px;width:78%}.hero h1{font-size:58px}.hero-subtitle{font-size:18px;margin-top:18px}.hero-free{font-size:23px;margin-top:18px}.hero-buttons{gap:12px;width:100%;max-width:350px}.hero-btn{min-height:56px;font-size:17px;padding:0 15px}.hero-btn .arrow{font-size:30px}.hero-btn svg{width:24px;height:24px}.comment-cartes{margin-top:-90px;padding:0 18px}.comment-cartes img{border-radius:0}.adventures-intro{margin-top:-38px;padding:24px 28px 20px}.eyebrow{font-size:15px}.eyebrow-reviews::before,.eyebrow-reviews::after{width:20px}.adventures-intro h2{font-size:34px}.adventures-intro p{font-size:17px}.cta-all{min-height:54px;font-size:16px}.adv-card{flex-basis:calc(50% - 7px)}.adv-card-img{height:160px}.adventures{padding:18px 0 0}
+  .carousel-dots{margin-top:2px;margin-bottom:0}
+  .kids-banner{margin-top:-20px;padding:0 0 20px}
+  .kids-banner .container{padding:0 18px}
+  .reviews-section{padding:0 0 8px}
+  .cta-section{width:100%;margin:32px 0 20px;border-radius:0}
+  .cta-inner{padding:6px 14px}
+  .cta-btn-author-img img{width:155px}
+  .reviews-eyebrow-wrap{min-height:44px}
+  .reviews-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+    align-items:stretch;
+  }
+  .review-photo-card{min-height:120px}
+  .review-card{
+    min-height:unset;
+    height:auto;
+    padding:8px;
+    gap:3px;
+    border-radius:10px;
+  }
+  .review-stars{font-size:11px;letter-spacing:.5px;line-height:1}
+  .review-text{
+    font-size:10.5px;
+    line-height:1.22;
+    margin:0;
+    flex:0;
+  }
+  .review-author{font-size:10px;line-height:1.1;margin-top:2px}
+}
+@media(max-width:390px){.hero h1{font-size:50px}.hero-content{width:86%}.comment-cartes{margin-top:-82px;padding:0 14px}.adventures-intro{margin-top:-34px}.adventures-intro h2{font-size:30px}.hero{min-height:515px}.adv-card-img{height:145px}.review-text{font-size:10px}.review-card{padding:7px}}
 </style>
 </head>
 <body>
-<header class="topbar"><button id="back" class="btn back" type="button" aria-label="Revenir à la scène précédente" hidden>←</button><a class="btn site" href="https://avelescape.github.io/aventures/" target="_blank" rel="noopener noreferrer">Site AvelEscape</a></header>
+<header>
+  <nav class="nav" aria-label="Navigation principale">
+    <div class="nav-center"><img class="nav-logo-img" src="images-site/0-webpogo-hd.webp" alt="AvelEscape"></div>
+    <button class="nav-connexion" type="button">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="7" r="4"/><path d="M3 18c0-4 3.1-7 7-7s7 3 7 7"/></svg>
+      Connexion
+    </button>
+  </nav>
+</header>
+
 <main>
-<section class="scene" id="scene-couverture" data-scene="couverture" aria-label="Couverture de l'aventure"><div class="media-wrap"><img id="cover" class="cover" src="images/4-webpcouverture.webp" alt="Couverture du Canot de l’Empereur" fetchpriority="high"><div id="media-error" class="media-status" hidden>Impossible de charger la couverture. Vérifie le fichier <strong>images/4-webpcouverture.webp</strong>.<div class="actions"><button id="retry" class="btn" type="button">Réessayer</button></div></div></div><div class="actions"><button id="start" class="btn start" type="button">Commencer l'aventure</button></div></section>
-<section class="scene" id="scene-neptune" data-scene="neptune" aria-label="Question sur Neptune" hidden>
-<div class="media-wrap"><img id="neptune-image" class="media-image" src="images/4-webpneptune1.webp" alt="Neptune sur la proue du Canot de l’Empereur" loading="eager" decoding="async"><div id="neptune-error" class="media-status" hidden>Impossible de charger l’image images/4-webpneptune1.webp.<div class="actions"><button id="retry-neptune" class="btn" type="button">Réessayer</button></div></div></div>
-<div class="cartouche"><div>Quel dieu des mers veille sur la proue du Canot de l’Empereur ?</div><form id="answer-form"><label for="answer" class="sr-only">Réponse à la question</label><input class="answer-input" id="answer" name="answer" type="text" autocomplete="off" autocapitalize="words" required><div class="actions question-actions"><button class="btn" type="submit">Valider</button></div></form><p class="feedback" id="answer-feedback" role="status" aria-live="polite" hidden></p></div>
-<div class="actions"><button id="hint-button" class="btn" type="button" aria-expanded="false" aria-controls="hint">Indice</button></div><div id="hint" class="cartouche vert hint" hidden>Il porte le même nom qu'une planète du système solaire.</div>
-</section>
-<section class="scene" id="scene-reveil" data-scene="reveil" aria-label="Le réveil de Neptune" hidden><video id="reveil-video" class="scene-video" playsinline preload="metadata"><source src="videos/4-mp4reveil.mp4" type="video/mp4">Votre navigateur ne prend pas en charge cette vidéo.</video><div class="actions"><button id="suite-reveil" class="btn" type="button" hidden>Suite</button></div><div id="video-error" class="media-status" hidden>La vidéo ne peut pas être chargée.<div class="actions"><button id="retry-video" class="btn" type="button">Réessayer</button></div></div></section>
-<section class="scene" id="scene-saut" data-scene="saut" aria-label="Le saut de Neptune" hidden><video id="saut-video" class="scene-video" playsinline preload="metadata"><source src="videos/4-mp4saut.mp4" type="video/mp4">Votre navigateur ne prend pas en charge cette vidéo.</video><div id="saut-error" class="media-status" hidden>Impossible de charger la vidéo du saut.</div></section>
-<section class="scene" id="scene-neptune-dore" data-scene="neptune-dore" aria-label="Neptune doré" hidden><img class="media-image" src="images/4-webpneptunedore.webp" alt="Neptune doré" loading="eager" decoding="async"><div class="cartouche colle-image"><strong>Tu m’as vu ?</strong><p style="margin:12px 0 0">Je ressemble à un chandelier de Versailles !</p></div><div class="actions"><a class="btn" id="continuer-grattage" href="jeu-grattage/index.html">Continuer</a></div><div class="media-status" id="dore-error" hidden>Impossible de charger l’image 4-webpneptunedore.webp.</div></section>
-<section class="scene" id="scene-neptune-b" data-scene="neptune-b" aria-label="Neptune après le grattage" hidden><img class="media-image" src="images/4-webpneptuneb.webp" alt="Neptune après le grattage" loading="eager" decoding="async"><div class="cartouche colle-image"><p style="margin:0"><strong>Bon… Maintenant que tu as fini de m’admirer, on pourrait peut-être s’intéresser à ce magnifique canot ?</strong></p><p style="margin:16px 0 0"><strong>Allez, ouvre l’œil, le bulot ! Je vais te faire découvrir quelques-uns de ses secrets…</strong></p></div><div class="actions"><button class="btn" id="decouvrir-canot" type="button">Découverte du canot</button></div><div class="media-status" id="neptune-b-error" hidden>Impossible de charger l’image 4-webpneptuneb.webp.</div></section>
-<section class="scene" id="scene-neptune-c" data-scene="neptune-c" aria-label="Les joufflus du canot" hidden><img class="media-image" src="images/4-webpneptunec.webp" alt="Les décors du Canot de l’Empereur" loading="eager" decoding="async"><div class="cartouche colle-image"><strong>Tu vois les deux joufflus qui sont à côté de moi sur le canot ? Peux-tu me dire combien il y en a en tout sur le bateau ?</strong><form id="joufflus-form"><label for="joufflus-answer" class="sr-only">Nombre de joufflus</label><input id="joufflus-answer" class="answer-input" type="number" min="0" step="1" inputmode="numeric" required><div class="actions question-actions"><button class="btn" type="submit">Valider</button></div></form><p class="feedback" id="joufflus-feedback" role="status" aria-live="polite" hidden></p></div></section>
-<section class="scene" id="scene-putto" data-scene="putto" aria-label="Les putti du canot" hidden><img class="media-image" src="images/4-webpputto.webp" alt="Les putti du Canot de l’Empereur" loading="eager" decoding="async"><div class="cartouche colle-image"><p style="margin:0"><strong>Ah ! Mes petits joufflus à queue de poisson !</strong></p><p style="margin:16px 0 0">Ce sont des <strong>putti</strong>, le bulot !<br>De petits personnages inspirés de l’art antique, souvent représentés avec des ailes.</p><p style="margin:16px 0 0">Et pourquoi une queue de poisson ? Parce qu’ici, on est dans <strong>MON royaume</strong> !</p></div><div class="actions"><button class="btn" id="suite-putto" type="button">Suite</button></div></section>
-<section class="scene" id="scene-bassin" data-scene="bassin" aria-label="Le Bassin des imposteurs" hidden><img class="media-image" src="images/4-webpneptuneassiscaisse.webp" alt="Neptune assis sur une caisse" loading="eager" decoding="async"><div class="cartouche colle-image"><strong>Je te propose un jeu, le bulot, ça s’appelle « Le Bassin des imposteurs » !</strong></div><div class="actions"><button class="btn" id="jouer-bassin" type="button">Jouer</button></div></section>
-<section class="scene" id="scene-sortie-eau" data-scene="sortie-eau" aria-label="Neptune sort de l’eau" hidden><img class="media-image" src="images/4-webpneptunetrempe.webp" alt="Neptune trempé, sorti de l’eau" loading="eager" decoding="async"><div class="cartouche colle-image"><strong>Pendant que je me sèche, va donc jeter un œil à l’arrière du Canot des Napoléon.<br><br>Vérifie si les deux chipies sont toujours là… Minerve et Fama !</strong></div><div class="actions"><button class="btn" id="chipies-la" type="button">Elles sont là</button><button class="btn" id="chipies-absentes" type="button">Elles ne sont pas là</button></div></section>
-<section class="scene" id="scene-bouc" data-scene="bouc" aria-label="Le bouc de Neptune" hidden><img class="media-image bouc-image" src="images/4-webpbouc.webp" alt="Le bouc marin de Neptune, ses pattes posées sur le bloc de dialogue" loading="eager" decoding="async"><div class="cartouche sous-pattes"><strong>Tu veux que je lâche mon bouc ?</strong></div><div class="actions"><button class="btn" id="excuses-bouc" type="button">Excusez-moi...</button></div></section>
-<section class="scene" id="scene-minerve" data-scene="minerve" aria-label="Minerve et le vote d’Athènes" hidden><img class="media-image" src="images/4-webpminerve.webp" alt="Minerve sur le Canot de l’Empereur" loading="eager" decoding="async"><div class="cartouche colle-image"><b>Minerve...</b><br><br>Figure-toi qu'il y a bien longtemps, nous nous sommes disputé la protection de <b>la cité d'Athènes</b> !<br><br>Pour nous départager, chacun devait offrir un présent aux habitants.<br><br>Minerve, avec ses grands airs, leur a offert <b>un olivier…</b><br><br>Moi, j'ai frappé le sol de mon puissant trident et fait jaillir <b>une source d'eau...</b><br><br>Les habitants devaient choisir le présent le plus utile.<br><br><b>Alors, le bulot, à toi de voter !</b></div><div class="actions"><button class="btn" id="vote-source" type="button">Une source</button><button class="btn" id="vote-olivier" type="button">Un olivier</button></div></section>
-<section class="scene" id="scene-grimace" data-scene="grimace" aria-label="Neptune fait la grimace" hidden><img class="media-image" src="images/4-webpneptunegrimace.webp" alt="Neptune fait la grimace" loading="eager" decoding="async"><div class="cartouche colle-image"><strong class="emphase">Eh ben non ! Les habitants ont choisi l’olivier…</strong><br><br>Bon… Il y a juste un tout petit détail que j’ai oublié de te préciser… <strong class="emphase">Mon eau était salée.</strong><br><br>Quoi ?! On ne va pas chipoter pour une pincée de sel !</div><div class="actions"><button class="btn" id="suite-grimace" type="button">Suite</button></div></section>
-<section class="scene" id="scene-grimace-olivier" data-scene="grimace-olivier" aria-label="Neptune fait la grimace" hidden><img class="media-image" src="images/4-webpneptunegrimace.webp" alt="Neptune fait la grimace" loading="eager" decoding="async"><div class="cartouche colle-image"><strong class="emphase">Tu connaissais l’histoire ?</strong><br><br><strong class="emphase">Effectivement, les habitants ont choisi l’olivier…</strong><br><br>Bon… Il y a juste un tout petit détail que j’ai oublié de te préciser… <strong class="emphase">Mon eau était salée.</strong><br><br>Quoi ?! On ne va pas chipoter pour une pincée de sel !</div><div class="actions"><button class="btn" id="suite-grimace-olivier" type="button">Suite</button></div></section>
-<section class="scene" id="scene-fama" data-scene="fama" aria-label="Fama" hidden><img class="media-image fama-image" src="images/4-webpfama.webp" alt="Fama sur le Canot de l’Empereur" loading="eager" decoding="async"><div class="cartouche sous-fama"><strong class="emphase">Ah ! Fama ! La déesse de la Renommée !</strong><br><br>Avec sa trompette, elle est censée faire connaître les exploits des grands personnages.<br><br>Des aigles, des couronnes, des <strong class="emphase">N</strong> à tous les coins du canot ! Pour les Napoléons<br><br>Et c’est <strong class="emphase">MOI</strong> qu’on accuse d’avoir la grosse tête !<br><br><strong class="emphase">Allez, le bulot ! Ouvre l’œil, on va voir si tu reconnais les symboles de l’Empire !</strong></div><div class="actions"><button class="btn" id="continuer-fama" type="button">Continuer</button></div></section>
-<section class="scene" id="scene-neptune-colere" data-scene="neptune-colere" aria-label="Neptune en colère devant les colonnes" hidden><img class="media-image" src="images/4-webpgneptunecolere1.webp" alt="Neptune en colère" loading="eager" decoding="async"><div class="cartouche colle-image"><strong class="emphase">Des colonnes romaines ? Avec des casques posés dessus ?</strong><br><br>MAIS C’EST QUOI CE DÉLIRE !<br><br> Un temple à la gloire de Napoléon ? Ou un étendoir à linge impérial...<br><br>De la verdure partout !<br><br>Manque plus que des poireaux et on a un potager militaire!</div><div class="actions"><button class="btn" id="calmer-neptune" type="button">Calmer Neptune</button></div></section>
-<section class="scene" id="scene-neptune-colere-suite" data-scene="neptune-colere-suite" aria-label="Neptune et les poissons des rames" hidden><img class="media-image" src="images/4-webpneptunecolere2.webp" alt="Neptune encore en colère" loading="eager" decoding="async"><div class="cartouche colle-image"><strong class="emphase">ME CALMER ?</strong> Regarde-moi ces poissons qui pendouillent sur les rames...<br><br><strong class="emphase">ON SE CROIRAIT DEVANT L’ÉTAL D’UN POISSONNIER !</strong><br><br>Quand les matelots ramaient, les poissons semblaient sortir de l’eau.<br><br><strong class="emphase">MAGNIFIQUE !!!</strong> Des poiscailles qui font des cabrioles pour saluer l’Empereur !</div><div class="actions"><button class="btn" id="continuer-poupe" type="button">Continuer</button></div></section>
+  <section class="hero">
+    <div class="container hero-content">
+      <h1>Visitez <em>autrement</em></h1>
+      <div class="hero-buttons">
+        <a class="hero-btn hero-btn-primary" href="passeport/index.html">
+          <span class="btn-left">
+            MON PASSEPORT
+          </span>
+          <span class="arrow">›</span>
+        </a>
+    
+      </div>
+    </div>
+  </section>
 
+  <section class="comment-cartes" aria-label="Comment ça marche">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/07/0-webpexplications.webp" alt="Choisissez un lieu, résolvez les énigmes, validez votre aventure, collectionnez vos aventures">
+  </section>
 
-<section class="scene" id="scene-nl" data-scene="nl" aria-label="Les initiales de Louis-Napoléon" hidden><img class="media-image" src="images/4-webpnl.webp" alt="Deux putti dorés encadrant le médaillon NL" loading="eager" decoding="async"><div class="cartouche colle-image"><div class="nl-dialogue"><img src="images/4-webpneptunecanala.webp" alt="Neptune taquin" class="nl-neptune"><strong>Ah ! Et pour finir, admire ces deux putti qui portent un médaillon aux initiales <b class="nl-lettre">NL</b>, pour <b>Louis-Napoléon</b> !<br><br>Ils s’en sortent plutôt bien, les deux joufflus ! Avec la folie des grandeurs de l’Empereur, ils auraient pu finir avec un <b class="nl-lettre">N</b> tatoué sur la fesse de l’un et un <b class="nl-lettre">L</b> sur celle de l’autre !</strong></div></div><div class="actions"><button class="btn" id="suite-et-fin" type="button">Suite et fin</button></div></section>
-<section class="scene" id="scene-attente" data-scene="attente" aria-label="Conclusion de l’aventure" hidden>
-  <div class="cartouche final-dialogue">
-    <p>Bon… Je crois qu'on a fait le tour !</p>
-    <p>Faut quand même reconnaître une chose…</p>
-    <p><em>Neptune contemple le canot.</em></p>
-    <p>Ils avaient des artisans sacrément doués, ces humains !</p>
-    <p><strong>Il est magnifique, ce canot !</strong></p>
-    <p>Mais que ça reste entre nous, hein ?</p>
-    <p>J'ai une réputation de dieu à tenir !</p>
-    <p>Et surtout… <strong>pas un mot à Minerve !</strong></p>
-    <img class="final-image" src="images/4-webpfinal.webp" alt="Neptune contemple avec admiration le Canot de l’Empereur" loading="eager" decoding="async">
-    <div class="final-pause">
-      <p>Allez, kenavo, le bulot !</p>
-      <p>Ça veut dire « Au revoir » en breton !</p>
-      <p>D'ailleurs, c'est le premier mot que le soleil a appris en arrivant à Brest…</p>
-      <p><strong>Et visiblement, le seul qu'il a retenu !</strong></p>
+  <section class="adventures-intro" id="fiches">
+    <div class="eyebrow">✦ Nos aventures ✦</div>
+    <h2>Découvrez nos aventures</h2>
+    <p>Visitez ou revisitez les lieux touristiques à travers des enquêtes captivantes inspirées de l’histoire ou des légendes locales.</p>
+    <a class="cta-all" href="#aventures">TROUVER UN LIEU </a>
+  </section>
+
+  <div class="bar">
+    <div class="bar-drop-wrap">
+      <a class="bar-tab active" href="#fiches" onclick="toggleBarDrop(event)">Trouver un lieu</a>
+      <div class="bar-drop" id="barDrop">
+        <span class="bar-drop-item bar-drop-parent-item" onclick="toggleBarSubdrop(event,'finistereDrop')">Finistère (29)</span>
+        <div class="bar-subdrop" id="finistereDrop">
+          <a class="bar-subdrop-item" href="stmathieuadulte/index.html">Plougonvelin</a>
+          <a class="bar-subdrop-item" href="stmathieukids/index.html">Saint-Mathieu Kids</a>
+          <a class="bar-subdrop-item" href="Leconquetadulte/index.html">Le Conquet</a>
+          <a class="bar-subdrop-item" href="Leconquetkids/index.html">Le Conquet</a>
+        </div>
+        <span class="bar-drop-item" onclick="filterDept('Morbihan')">Morbihan (56)</span>
+        <span class="bar-drop-item" onclick="filterDept('Ille-et-Vilaine')">Ille-et-Vilaine (35)</span>
+      </div>
     </div>
   </div>
-  <div class="actions"><a class="btn" href="https://avelescape.github.io/aventures/">Retour aux aventures</a></div>
-</section>
-</main>
-<div id="resume-dialog" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="resume-text" hidden><div class="modal"><p id="resume-text">Une aventure est déjà en cours. Souhaites-tu la reprendre ou recommencer depuis le début ?</p><div class="actions"><button class="btn" id="continue" type="button">Continuer l'aventure</button><button class="btn" id="restart" type="button">Recommencer l'aventure</button></div></div></div>
-<div id="confirm-dialog" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="confirm-text" hidden><div class="modal"><p id="confirm-text">Effacer la progression de cette aventure et recommencer depuis la couverture ?</p><div class="actions"><button class="btn" id="confirm-yes" type="button">Oui, recommencer</button><button class="btn" id="confirm-no" type="button">Annuler</button></div></div></div>
-<p id="storage-notice" class="notice" hidden>La sauvegarde est indisponible sur ce navigateur. Tu peux jouer, mais ta progression ne sera pas conservée.</p>
-<script>
-(()=>{'use strict';
-const KEY='avelescape-canot-empereur-v1';
-const $=id=>document.getElementById(id);
-const scenes=new Set(['couverture','neptune','reveil','saut','neptune-dore','neptune-b','neptune-c','putto','bassin','sortie-eau','bouc','minerve','grimace','grimace-olivier','fama','neptune-colere','neptune-colere-suite','nl','attente']);
-let state={current:'couverture',history:[],completedGames:{},validatedSteps:{},choices:{},watchedVideos:{},updatedAt:null};
-let storageOK=true;
-try{localStorage.setItem(KEY+'-test','1');localStorage.removeItem(KEY+'-test')}catch(e){storageOK=false;$('storage-notice').hidden=false}
-function save(){state.updatedAt=new Date().toISOString();if(storageOK){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){storageOK=false;$('storage-notice').hidden=false}}}
-function render(){document.documentElement.classList.add('scene-switching');const active=document.activeElement;if(active&&active.matches('input,textarea,select'))active.blur();if(state.validatedSteps.neptune){$('answer').value='Neptune';$('answer-feedback').textContent='Bravo ! C’est bien Neptune.';$('answer-feedback').hidden=false}else{$('answer-feedback').hidden=true}document.querySelectorAll('[data-scene]').forEach(el=>{el.hidden=el.dataset.scene!==state.current});$('suite-reveil').hidden=!$('reveil-video').ended;if(state.current==='saut'&&!state.watchedVideos.saut){const v=$('saut-video');v.play().catch(()=>{})}else{$('saut-video').pause()}if(state.current==='reveil'){const v=$('reveil-video');if(!v.ended)v.play().catch(()=>{})}else{$('reveil-video').pause()}if(state.validatedSteps.joufflus){$('joufflus-answer').value='8';$('joufflus-feedback').textContent='Bravo ! Il y en a bien 8 !';$('joufflus-feedback').hidden=false}$('back').hidden=state.history.length===0;window.scrollTo({top:0,left:0,behavior:'instant'});requestAnimationFrame(()=>{window.scrollTo({top:0,left:0,behavior:'instant'});document.documentElement.classList.remove('scene-switching')})}
-function go(id,{record=true}={}){if(!scenes.has(id))return;if(record&&id!==state.current)state.history.push(state.current);state.current=id;save();render()}
-function back(){if(!state.history.length)return;state.current=state.history.pop();save();render()}
-function closeDialogs(){$('resume-dialog').hidden=true;$('confirm-dialog').hidden=true}
-function reset(){$('reveil-video').pause();$('reveil-video').currentTime=0;$('saut-video').pause();$('saut-video').currentTime=0;$('suite-reveil').hidden=true;$('answer').value='';$('joufflus-answer').value='';$('joufflus-feedback').hidden=true;$('hint').hidden=true;$('hint-button').setAttribute('aria-expanded','false');if(storageOK){try{localStorage.removeItem(KEY)}catch(e){}}state={current:'couverture',history:[],completedGames:{},validatedSteps:{},choices:{},watchedVideos:{},updatedAt:null};closeDialogs();render()}
-$('start').addEventListener('click',()=>go('neptune'));
-$('hint-button').addEventListener('click',()=>{const show=$('hint').hidden;$('hint').hidden=!show;$('hint-button').setAttribute('aria-expanded',String(show))});
-$('answer-form').addEventListener('submit',event=>{event.preventDefault();const answer=$('answer').value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();if(answer==='neptune'){state.validatedSteps.neptune=true;save();go('reveil')}else{$('answer-feedback').textContent='Ce n’est pas la bonne réponse. Essaie encore !';$('answer-feedback').hidden=false}});
-$('reveil-video').addEventListener('play',()=>{$('suite-reveil').hidden=true});$('reveil-video').addEventListener('ended',()=>{state.watchedVideos.reveil=true;$('suite-reveil').hidden=false;save()});$('suite-reveil').addEventListener('click',()=>go('saut'));$('saut-video').addEventListener('ended',()=>{state.watchedVideos.saut=true;save();go('neptune-dore')});document.querySelector('#scene-neptune-dore img').addEventListener('error',()=>{$('dore-error').hidden=false});$('saut-video').addEventListener('error',()=>{$('saut-error').hidden=false});$('reveil-video').addEventListener('error',()=>{$('video-error').hidden=false});$('retry-video').addEventListener('click',()=>{$('video-error').hidden=true;$('reveil-video').load();$('reveil-video').play().catch(()=>{})});const neptuneImage=$('neptune-image');neptuneImage.addEventListener('error',()=>{$('neptune-error').hidden=false});neptuneImage.addEventListener('load',()=>{$('neptune-error').hidden=true});$('retry-neptune').addEventListener('click',()=>{neptuneImage.src='images/4-webpneptune1.webp?retry='+Date.now()});
-document.querySelector('#scene-neptune-b img').addEventListener('error',()=>{$('neptune-b-error').hidden=false});
-$('decouvrir-canot').addEventListener('click',()=>go('neptune-c'));
-$('joufflus-form').addEventListener('submit',event=>{event.preventDefault();const correct=$('joufflus-answer').value.trim()==='8';$('joufflus-feedback').hidden=false;if(correct){state.validatedSteps.joufflus=true;$('joufflus-feedback').textContent='Bravo ! Il y en a bien 8 !';save();go('putto')}else{$('joufflus-feedback').textContent='Ce n’est pas la bonne réponse. Essaie encore !';/* Le bouton suivant a été supprimé : aucune référence à masquer. */}});
 
-$('suite-putto').addEventListener('click',()=>go('bassin'));
- $('jouer-bassin').addEventListener('click',()=>{ save(); window.location.href='jeu-bassin-des-imposteurs/index.html'; });
-$('chipies-la').addEventListener('click',()=>{state.choices.chipies='la';go('minerve')});
-$('excuses-bouc').addEventListener('click',()=>go('minerve'));
-$('vote-source').addEventListener('click',()=>{state.choices.vote='source';go('grimace')});
-$('suite-grimace').addEventListener('click',()=>go('fama'));
-$('vote-olivier').addEventListener('click',()=>{state.choices.vote='olivier';go('grimace-olivier')});
-$('suite-grimace-olivier').addEventListener('click',()=>go('fama'));
-$('calmer-neptune').addEventListener('click',()=>go('neptune-colere-suite'));
-$('continuer-poupe').addEventListener('click',()=>{save();window.location.href='jeu-precede-succede/index.html';});
- $('suite-et-fin').addEventListener('click',()=>go('attente'));
-$('continuer-fama').addEventListener('click',()=>{ save(); window.location.href='jeu-emblemes/index.html'; });
-$('chipies-absentes').addEventListener('click',()=>{state.choices.chipies='absentes';go('bouc')});
-$('back').addEventListener('click',back);
-$('continue').addEventListener('click',()=>{closeDialogs();render()});
-$('restart').addEventListener('click',()=>{$('resume-dialog').hidden=true;$('confirm-dialog').hidden=false});
-$('confirm-yes').addEventListener('click',reset);
-$('confirm-no').addEventListener('click',()=>{$('confirm-dialog').hidden=true;$('resume-dialog').hidden=false});
-const cover=$('cover');cover.addEventListener('error',()=>{$('media-error').hidden=false});cover.addEventListener('load',()=>{$('media-error').hidden=true});if(cover.complete&&!cover.naturalWidth)$('media-error').hidden=false;
-$('retry').addEventListener('click',()=>{cover.src='images/4-webpcouverture.webp?retry='+Date.now()});
-if(storageOK){try{const raw=localStorage.getItem(KEY);if(raw){const previous=JSON.parse(raw);if(previous&&Array.isArray(previous.history)){state={...state,...previous,current:scenes.has(previous.current)?previous.current:'neptune-colere-suite',history:previous.history.filter(id=>scenes.has(id))};$('resume-dialog').hidden=false}}}catch(e){}}
-if(new URLSearchParams(location.search).get('retour_grattage')==='1'){state.completedGames.grattage=true;state.history=state.history.filter(id=>id!=='neptune-b');if(state.current!=='neptune-b')state.history.push('neptune-dore');state.current='neptune-b';save();history.replaceState(null,'',location.pathname+location.hash);closeDialogs()}
-if(new URLSearchParams(location.search).get('retour_bassin')==='1'){state.completedGames.bassin=true;state.history=state.history.filter(id=>id!=='sortie-eau');if(state.current!=='sortie-eau')state.history.push('bassin');state.current='sortie-eau';save();history.replaceState(null,'',location.pathname+location.hash);closeDialogs()}
-if(new URLSearchParams(location.search).get('retour_precede_succede')==='1'){state.completedGames.precedeSuccede=true;state.history=state.history.filter(id=>id!=='nl');if(state.current!=='nl')state.history.push('neptune-colere-suite');state.current='nl';save();history.replaceState(null,'',location.pathname+location.hash);closeDialogs()}
-if(new URLSearchParams(location.search).get('retour_emblemes')==='1'){state.completedGames.emblemes=true;state.history=state.history.filter(id=>id!=='neptune-colere');if(state.current!=='neptune-colere')state.history.push('fama');state.current='neptune-colere';save();history.replaceState(null,'',location.pathname+location.hash);closeDialogs()}
- render();
- document.documentElement.classList.remove('app-loading');
- window.AvelEscape={go,back,getState:()=>structuredClone(state),save,registerScene:id=>scenes.add(id)};
-})();
+  <section id="aventures" class="adventures">
+    <div class="container">
+      <div class="carousel-outer">
+        <div class="carousel-mask"><div class="carousel-track" id="carouselTrack"></div></div>
+        <div class="carousel-dots" id="carouselDots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARTE INTERACTIVE -->
+  <section class="map-section" aria-label="Carte des aventures">
+    <div class="container">
+      <div class="eyebrow">✦ Où nous trouver ✦</div>
+      <h2 class="map-title">Localisez vos aventures</h2>
+      <div id="adventures-map"></div>
+    </div>
+  </section>
+
+  <!-- BANDEAU AVENTURES KIDS -->
+  <section class="kids-banner" aria-label="Aventures Kids">
+    <div class="container">
+      <img src="images-site/0-webpaventures-kids.webp" alt="Aventures Kids" loading="lazy">
+    </div>
+  </section>
+
+<!-- AVIS GOOGLE -->
+
+  <section class="reviews-section">
+    <div class="container">
+      <div class="reviews-eyebrow-wrap"><div class="eyebrow eyebrow-reviews">✦ Avis des aventuriers ✦</div></div>
+      <div class="reviews-grid">
+        <div class="review-photo-card"><img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpgroupesacados.webp" alt="Aventure AvelEscape"></div>
+        <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Parfait pour une balade culturelle originale et en famille. Nous avons adoré ! »</p><p class="review-author">Sandra.</p></div>
+        <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Les enfants ont adoré, vivement la prochaine aventure !!! Merci Billig »</p><p class="review-author">Maëlle.</p></div>
+        <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">« Hâte de valider de nouvelles aventures dans mon passeport. »</p><p class="review-author">Nathan.</p></div>
+      </div>
+    </div>
+  </section>
+
+<!-- DEVENEZ AUTEUR -->
+<section class="cta-section">
+    <div class="cta-inner">
+
+       <a href="proposez-aventure.html" class="cta-btn-author-img">
+    <img src="https://avelescape.wordpress.com/wp-content/uploads/2026/05/webpdevenezauteur.webp"
+         alt="Devenez auteur d'une aventure">
+</a>
+
+        <a class="cta-btn-cgv"
+           href="#"
+           target="_blank">
+            CGV
+        </a>
+
+    </div>
+</section>
+
+  </div>
+</section>
+  </section>
+</main>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-img" id="modal-img"></div>
+    <button class="modal-close" onclick="closeModal()">✕ Fermer</button>
+    <div class="modal-type" id="modal-type"></div>
+    <h2 id="modal-title"></h2>
+    <p id="modal-desc"></p>
+    <div class="modal-meta" id="modal-meta"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+const sites=[
+  {id:1,title:"Le Mystère du Phare de St-Mathieu",city:"Plougonvelin",dept:"Finistère",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:true,desc:"1834 — Le gardien du phare de Saint-Mathieu a disparu, mettant en danger les bateaux navigant en mer d'Iroise.",lat:48.3327,lng:-4.7754,gmaps:"https://maps.google.com/?q=48.3327,-4.7754",img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpsaintmathieu.webp",url:"stmathieuadulte/index.html",urlKids:"stmathieukids/index.html"},
+  {id:2,title:"Les irrépressibles Conquetois",city:"Le Conquet",dept:"Finistère",duration:"90 MIN",players:"2–6 joueurs",difficulty:"Facile",kids:true,desc:"1874 — Visitez Le Conquet à travers une aventure humoristique.",lat:48.3594,lng:-4.7739,gmaps:"https://maps.google.com/?q=48.3594,-4.7739",img:"https://avelescape.wordpress.com/wp-content/uploads/2026/06/0-webpleconquet.webp",url:"leconquetadulte/index.html",urlKids:"leconquetkids/index.html"},
+  {id:3,title:"Le secret du Roi Gradlon",city:"Quimper",dept:"Finistère",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:true,desc:"Saurez-vous retrouver les artefacts cachés dans les rues de Quimper? ces pièces retrouvées vous feront découvrir le secret du Roi Gradlon.",lat:47.999785,lng:-4.102090,gmaps:"https://maps.google.com/?q=47.999785,-4.102090",src:"images/3-webpaffiche.webp",url:"quimper/index.html",urlKids:"quimperkids/index.html"},
+  {id:4,title:"Le canot de l'Empereur",city:"Bretagne",dept:"Bretagne",duration:"90 MIN",players:"Famille",difficulty:"Facile",kids:true,desc:"Et si le canot de Brest vous racontait une histoire que vous n'êtes pas près d'oublier?.",lat: 48.38932,lng:-4.49815,gmaps:"https://maps.google.com/?q=48.38932,-4.49815",src:"images/4-webpaffiche.webp",url:"brest/index.html",urlKids:"brestkids/index.html"}
+];
+let currentFilter={dept:null};
+let carouselPos=0;
+function getCardsPerView(){return window.innerWidth<=760?2:4;}
+function renderCarousel(){
+  const track=document.getElementById('carouselTrack');
+  const dots=document.getElementById('carouselDots');
+  track.innerHTML='';dots.innerHTML='';
+  const filtered=sites.filter(s=>!currentFilter.dept || s.dept.includes(currentFilter.dept));
+  filtered.forEach(s=>{
+    track.innerHTML+=`<div class="adv-card" onclick="openModal(${s.id})"><div class="adv-card-img"><img src="${s.img}" alt="${s.title}" loading="lazy"></div><div class="adv-card-body"><h3 class="adv-card-title">${s.title}</h3><div class="adv-card-loc">📍 ${s.city} • ${s.dept}</div><div class="adv-card-actions"><button class="adv-btn-voir" onclick="event.stopPropagation();openModal(${s.id})">Voir</button></div></div></div>`;
+  });
+  const pages=Math.ceil(filtered.length/getCardsPerView());
+  for(let i=0;i<pages;i++){const d=document.createElement('button');d.className='carousel-dot';d.onclick=()=>goToPage(i);dots.appendChild(d)}
+  carouselPos=0;updateCarouselPos();
+}
+function updateCarouselPos(){
+  const track=document.getElementById('carouselTrack');if(!track)return;
+  const cpv=getCardsPerView();const gap=14;
+  const cardW=(track.parentElement.offsetWidth-(cpv-1)*gap)/cpv;
+  track.style.transform=`translateX(-${carouselPos*(cardW+gap)}px)`;
+  const cur=Math.floor(carouselPos/cpv);
+  document.querySelectorAll('.carousel-dot').forEach((d,i)=>d.className='carousel-dot'+(i===cur?' active':Math.abs(i-cur)<=2?' nearby':''));
+}
+function carouselPrev(){if(carouselPos>0){carouselPos--;updateCarouselPos()}}
+function carouselNext(){const max=document.querySelectorAll('.adv-card').length-getCardsPerView();if(carouselPos<max){carouselPos++;updateCarouselPos()}}
+function goToPage(p){const max=document.querySelectorAll('.adv-card').length-getCardsPerView();carouselPos=Math.min(p*getCardsPerView(),Math.max(0,max));updateCarouselPos()}
+window.addEventListener('resize',()=>{carouselPos=0;updateCarouselPos()});
+(function(){const mask=document.querySelector('.carousel-mask');if(!mask)return;let startX=0,startY=0,isHoriz=null;mask.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startY=e.touches[0].clientY;isHoriz=null},{passive:true});mask.addEventListener('touchmove',e=>{const dx=e.touches[0].clientX-startX;const dy=e.touches[0].clientY-startY;if(isHoriz===null)isHoriz=Math.abs(dx)>Math.abs(dy);if(isHoriz)e.preventDefault()},{passive:false});mask.addEventListener('touchend',e=>{if(!isHoriz)return;const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>40){dx<0?carouselNext():carouselPrev()}})})();
+function filterDept(d){currentFilter.dept=currentFilter.dept===d?null:d;renderCarousel()}
+function toggleBarDrop(e){e.preventDefault();document.getElementById('barDrop').classList.toggle('open')}
+function toggleBarSubdrop(e,id){e.stopPropagation();document.getElementById(id).classList.toggle('open')}
+function openModal(id){
+  const s=sites.find(x=>x.id===id);if(!s)return;
+  document.getElementById('modal-img').innerHTML=`<img src="${s.img}" alt="${s.title}" loading="lazy">`;
+  document.getElementById('modal-type').textContent='Aventure';
+  document.getElementById('modal-title').textContent=s.title;
+  document.getElementById('modal-desc').textContent=s.desc;
+  document.getElementById('modal-meta').innerHTML=`<span class="modal-tag">${s.city}</span><span class="modal-tag">${s.dept}</span>`;
+  document.getElementById('modal-actions').innerHTML=`${s.url?`<a class="btn-fiche-primary" href="${s.url}">Commencer</a>`:`<button class="btn-fiche-primary">Commencer</button>`}${s.kids&&s.urlKids?`<a class="btn-fiche-primary modal-btn-kids" href="${s.urlKids}">Commencer <em>— kids —</em></a>`:''}<a class="btn-itinerary" href="${s.gmaps}" target="_blank">Google Maps</a>`;
+  document.getElementById('modal').classList.add('open')
+}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal()});
+function openFromMap(e,id){e.preventDefault();closeModal();openModal(id)}
+function initMap(){
+  const mapEl=document.getElementById('adventures-map');
+  if(!mapEl||typeof L==='undefined')return;
+  const map=L.map(mapEl,{scrollWheelZoom:false}).setView([48.25,-4.3],9);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
+    maxZoom:18
+  }).addTo(map);
+  const markers=[];
+  sites.forEach(s=>{
+    if(!s.lat||!s.lng)return;
+    const marker=L.marker([s.lat,s.lng]).addTo(map);
+    const linkHtml=s.url&&s.url!=='#'?`<a href="#" onclick="openFromMap(event,${s.id})">Voir l'aventure</a>`:'';
+    marker.bindPopup(`<div class="map-popup"><strong>${s.title}</strong><div class="map-popup-loc">📍 ${s.city} • ${s.dept}</div>${linkHtml}</div>`);
+    markers.push(marker);
+  });
+  if(markers.length){
+    map.fitBounds(L.featureGroup(markers).getBounds().pad(0.35));
+  }
+}
+renderCarousel();
+initMap();
+
+// Retour visuel + vibration avant l'ouverture du passeport.
+const passportButton=document.querySelector('.hero-btn-primary');
+if(passportButton){
+  passportButton.addEventListener('click',event=>{
+    // Laisse les ouvertures dans un nouvel onglet fonctionner normalement.
+    if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||event.button!==0)return;
+    event.preventDefault();
+    if(passportButton.classList.contains('is-opening'))return;
+
+    passportButton.classList.add('is-opening');
+    if(navigator.vibrate)navigator.vibrate(28);
+
+    window.setTimeout(()=>{
+      window.location.href=passportButton.href;
+    },340);
+  });
+}
 </script>
-</body></html>
+</body>
+</html>
