@@ -121,6 +121,45 @@ header .brand {
 .hero.hero-image img{display:block;width:100%;height:auto;max-width:none;object-fit:contain}
 @media(min-width:850px){.hero.hero-image{min-height:0}}
 @media(max-width:560px){.hero.hero-image{min-height:0;background:none}}
+
+/* Ajustements compacts : bandeau promotionnel et recherche. */
+.finder{margin:12px 0 15px;padding:12px 16px;border-radius:15px}
+.finder h2{font-size:clamp(21px,2.8vw,27px);margin:0 0 8px;line-height:1.14}
+.finder-search input{padding:9px 12px}
+.finder-search button{padding:8px 14px}
+.finder-tools{gap:8px;margin-top:8px}
+.nearby-button{padding:7px 11px}
+.finder-tools select{padding:6px}
+.finder-feedback{margin-top:4px;min-height:0}
+.finder-feedback:empty{display:none}
+.bottom.promo-footer{padding:5px 14px max(5px,env(safe-area-inset-bottom))}
+.promo-footer .footer-top{gap:10px}
+.promo-footer .old-price{font-size:12px}
+.promo-footer .promo-chip{font-size:11px;padding:2px 7px}
+.promo-footer .new-price{margin-top:1px;gap:7px}
+.promo-footer .new-price strong{font-size:24px}
+.promo-footer .new-price span{font-size:12px}
+.promo-footer .cart-link{flex-basis:42px;height:38px;border-radius:10px}
+.promo-footer .cart-link svg{width:23px;height:23px}
+.promo-footer .footer-legal{margin-top:5px;padding-top:4px;min-height:25px;gap:8px}
+.promo-footer .footer-legal .legal-author{font-size:17px}
+@media(max-width:560px){
+  .finder{margin:9px 0 12px;padding:10px 11px;border-radius:13px}
+  .finder h2{font-size:21px;margin-bottom:7px}
+  .finder-search{gap:6px}
+  .finder-search input{padding:9px 10px}
+  .finder-search button{padding:8px 10px}
+  .finder-tools{margin-top:7px;gap:6px}
+  .nearby-button{padding:6px 9px}
+  .finder-tools label{font-size:12px}
+  .finder-tools select{padding:5px}
+  .bottom.promo-footer{padding:4px 10px max(4px,env(safe-area-inset-bottom))}
+  .promo-footer .new-price strong{font-size:23px}
+  .promo-footer .cart-link{flex-basis:39px;height:36px}
+  .promo-footer .footer-legal{margin-top:4px;padding-top:4px;min-height:22px}
+  .promo-footer .footer-legal .legal-author{font-size:15px}
+  .promo-footer .footer-legal .how-link,.promo-footer .footer-legal .legal-center{font-size:10px}
+}
 </style></head><body><div class="site"><header><a class="brand" href="#accueil">Il était un lieu…</a><div class="head-actions"><button class="icon-btn" id="searchToggle" aria-label="Rechercher une aventure">⌕</button><button class="icon-btn" id="menuToggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button></div><nav class="menu" id="menu"><a href="#accueil">Accueil</a><a href="#carte">Carte des aventures</a><a href="#rechercher">Trouver une aventure</a><a href="passeport/index.html">Mon passeport</a></nav></header><div class="search-panel" id="searchPanel"><label for="search" class="sr-only">Rechercher une aventure</label><input id="search" placeholder="Ville ou aventure…"></div><main id="accueil"><section class="hero hero-image" aria-label="Un lieu réel, une aventure sur votre téléphone"><img src="images-site/0-pnghero.png" alt="Il était un lieu… Un lieu réel, une aventure sur votre téléphone. Rendez-vous sur les lieux, jouez sur votre téléphone et percez le mystère." fetchpriority="high"></section><div class="content"><section class="finder" id="rechercher" aria-labelledby="finderTitle"><h2 id="finderTitle">Où souhaitez-vous partir à l’aventure ?</h2><div class="finder-search"><label for="locationSearch" class="sr-only">Rechercher un lieu ou une aventure</label><input type="search" id="locationSearch" placeholder="Ville, lieu ou code postal…" autocomplete="off"><button type="button" id="finderSubmit">Chercher</button></div><div class="finder-tools"><button type="button" id="nearbyButton" class="nearby-button">⌖ Autour de moi</button><label for="radiusSelect">Dans un rayon de</label><select id="radiusSelect"><option value="10">10 km</option><option value="25" selected>25 km</option><option value="50">50 km</option><option value="100">100 km</option></select></div><div class="finder-feedback" id="finderFeedback" role="status" aria-live="polite"></div></section><section id="aventures"><div class="adv-header"><h2 class="heading">Nos aventures</h2></div><div class="result-bar"><span id="resultCount" class="result-count"></span></div><div class="vertical-shell"><div id="cards" class="vertical" aria-label="Toutes les aventures"></div></div><button class="show-more" id="showMore" type="button" hidden>Voir plus d’aventures</button></section><section id="carte"><h2 class="heading">Les aventures sur la carte</h2><div id="map" class="map" aria-label="Carte interactive des aventures"></div><p class="map-note">Touchez une épingle pour découvrir l'aventure correspondante.</p></section><section class="kids-visual" id="kids" aria-label="Aventures Kids de 7 à 12 ans"><img src="images-site/0-webpaventures-kids.webp" alt="Aventures Kids 7 à 12 ans : Billig accompagne les enfants tout au long des aventures avec des indices adaptés à leur âge" loading="lazy"></section></div></main><footer class="bottom promo-footer" aria-label="Tarifs et informations">
   <div class="footer-top">
     <div class="promo-line">
