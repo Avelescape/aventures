@@ -135,14 +135,9 @@ header .brand {
 .finder-tools select{padding:6px}
 .finder-feedback{margin-top:4px;min-height:0}
 .finder-feedback:empty{display:none}
-/* Les bords du visuel sont a 48 et 2003 px dans le WebP de 2048 px. */
-.adventure-explainer{overflow:hidden}
-.adventure-explainer img{
-  width:calc(100% * 2048 / 1955);
-  max-width:none;
-  height:auto;
-  margin-left:calc(-100% * 48 / 1955);
-}
+.adventure-explainer{color:#071B34;margin:0 0 16px}
+.adventure-explainer p{margin:0 0 8px;font-size:clamp(15px,1.8vw,17px);line-height:1.5}
+.adventure-explainer p:last-child{margin-bottom:0}
 .bottom.promo-footer{padding:5px 14px max(5px,env(safe-area-inset-bottom))}
 .promo-footer .footer-top{gap:10px}
 .promo-footer .old-price{font-size:12px}
@@ -172,7 +167,14 @@ header .brand {
   .promo-footer .footer-legal .how-link,.promo-footer .footer-legal .legal-center{font-size:10px}
 }
 </style></head><body><div class="site"><header><a class="brand" href="#accueil">Il était un lieu…</a><div class="head-actions"><button class="icon-btn" id="searchToggle" aria-label="Rechercher une aventure">⌕</button><button class="icon-btn" id="menuToggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button></div><nav class="menu" id="menu"><a href="#accueil">Accueil</a><a href="#carte">Carte des aventures</a><a href="#rechercher">Trouver une aventure</a><a href="passeport/index.html">Mon passeport</a></nav></header><div class="search-panel" id="searchPanel"><label for="search" class="sr-only">Rechercher une aventure</label><input id="search" placeholder="Ville ou aventure…"></div><main id="accueil"><section class="hero hero-image" aria-label="Un lieu réel, une aventure sur votre téléphone"><img src="images-site/0-pnghero.png" alt="Il était un lieu… Un lieu réel, une aventure sur votre téléphone. Rendez-vous sur les lieux, jouez sur votre téléphone et percez le mystère." fetchpriority="high"></section><div class="content"><section class="finder" id="rechercher" aria-labelledby="finderTitle"><h2 id="finderTitle">Trouver une aventure ?</h2><div class="finder-search"><label for="locationSearch" class="sr-only">Rechercher un lieu ou une aventure</label><input type="search" id="locationSearch" placeholder="Ville, lieu ou code postal…" autocomplete="off"><button type="button" id="finderSubmit">Chercher</button></div><div class="finder-tools"><button type="button" id="nearbyButton" class="nearby-button">⌖ Autour de moi</button><select id="radiusSelect"><option value="10">10 km</option><option value="25" selected>25 km</option><option value="50">50 km</option><option value="100">100 km</option></select></div><div class="finder-feedback" id="finderFeedback" role="status" aria-live="polite"></div></section>
-<div class="adventure-explainer"><img src="images-site/0-webpcarteexplication.webp" alt="Comment jouer à une aventure Il était un lieu…" loading="lazy"></div>
+<section class="adventure-explainer" aria-labelledby="explainerTitle">
+  <h2 class="heading" id="explainerTitle">Comment ça fonctionne</h2>
+  <p><strong>Trouvez un lieu, validez votre panier (3,99&nbsp;€/aventure).</strong></p>
+  <p><strong>Lancez le jeu sur place</strong> en ouvrant l’aventure sur votre téléphone.</p>
+  <p><strong>Vivez l’aventure.</strong><br>
+  Une histoire inspirée des faits historiques du lieu vous guide. Repérez les indices, trouvez des objets, relevez des défis…</p>
+  <p><strong>Évoluez à votre rythme,</strong> vous validerez votre passeport.</p>
+</section>
 <section id="aventures"><div class="adv-header"><h2 class="heading">Nos aventures</h2></div><div class="result-bar"><span id="resultCount" class="result-count"></span></div><div class="vertical-shell"><div id="cards" class="vertical" aria-label="Toutes les aventures"></div></div><button class="show-more" id="showMore" type="button" hidden>Voir plus d’aventures</button></section><section id="carte"><h2 class="heading">Les aventures sur la carte</h2><div id="map" class="map" aria-label="Carte interactive des aventures"></div><p class="map-note">Touchez une épingle pour découvrir l'aventure correspondante.</p></section><section class="kids-visual" id="kids" aria-label="Aventures Kids de 7 à 12 ans"><h2 class="heading">Et pour les kids?</h2><p>Toutes nos aventures existent en version 7-12 ans, avec une histoire et des indices adaptés à leur âge.</p><img src="images-site/0-pngkids.png" alt="Le Mystère du Phare de Saint-Mathieu, aventure Kids avec Billig" loading="lazy"></section></div></main><footer class="bottom promo-footer" aria-label="Tarifs et informations">
   <div class="footer-top">
     <div class="promo-line">
