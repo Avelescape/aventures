@@ -1,1 +1,205 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f8f2e9"><title>Il était un lieu… — Des aventures inoubliables</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""><style>
+:root{--ink:#102e2b;--green:#071B34;--gold:#be8731;--cream:#f8f2e9;--white:#fffaf2;--border:#e4d0ab}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#e8e5df;color:var(--ink);font-family:'DM Sans',sans-serif}button,a{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}.site{background:var(--cream);max-width:1120px;margin:auto;min-height:100vh;overflow:clip}.serif,h1,h2,h3{font-family:'Playfair Display',Georgia,serif}header{height:76px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 5%;position:sticky;top:0;z-index:1200;background:rgba(255,250,242,.94);backdrop-filter:blur(16px);border-bottom:1px solid #eee2d1}.brand{display:flex;align-items:center;gap:10px;font:italic 700 clamp(18px,3.7vw,28px) 'Playfair Display',serif;white-space:nowrap}.rose{color:var(--gold);font-size:38px;line-height:1}.head-actions{display:flex;align-items:center;gap:8px}.icon-btn{border:1px solid #e8dccb;background:#fff9f2;color:var(--ink);width:41px;height:41px;border-radius:50%;display:grid;place-items:center;font-size:20px;box-shadow:0 3px 8px #0000000d}.menu{display:none;position:absolute;right:4%;top:72px;background:#fffaf2;border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 35px #0003;padding:12px;min-width:200px}.menu.open{display:grid;gap:4px}.menu a{padding:10px;border-radius:8px}.menu a:hover{background:#f1e4d0}.hero{min-height:340px;background:linear-gradient(90deg,#f8f2e9ed 0%,#f8f2e9b0 34%,#ffffff00 69%),url('images-site/hero.webp') center center/cover;position:relative}.hero-inner{padding:42px 5% 30px;width:min(56%,520px)}.spark{font-size:24px;color:var(--gold);display:block;margin-bottom:8px}h1{font-weight:700;font-style:italic;font-size:clamp(31px,4.8vw,58px);line-height:1.1;margin:0 0 22px;letter-spacing:-1.2px}h1 span{color:var(--gold)}.pill{border:1px solid #cfac63;border-radius:999px;padding:12px 22px;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(#28639c,#0a315e);box-shadow:0 4px 12px #0002;color:white;font-weight:600}.seg{display:flex;margin-top:14px;width:max-content;background:#f9f3ed;border:1px solid #e2cdaa;border-radius:999px;overflow:hidden;box-shadow:0 2px 8px #0001}.seg button{border:0;background:transparent;padding:9px 17px;color:var(--ink)}.seg button.active{background:var(--green);color:white;border-radius:999px}.how-band{position:relative;z-index:25;margin:-180px auto -80px;padding:0 5%}.how-band img{width:100%;height:auto;display:block;border-radius:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,.15))}.content{padding:0 5%}.heading{display:flex;align-items:center;justify-content:center;gap:12px;margin:16px 0 14px;font:italic 700 clamp(23px,3.3vw,33px) 'Playfair Display',serif;text-align:center}.heading:before,.heading:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--gold))}.heading:after{transform:rotate(180deg)}.map{height:290px;width:100%;border:1px solid #ddd0ae;border-radius:19px;box-shadow:0 4px 12px #0001;z-index:1}.leaflet-popup-content-wrapper{border-radius:13px}.map-note{text-align:center;font-size:11px;color:#5c6b67;margin:7px 0 20px}.map-pop{min-width:185px}.map-pop strong{font:700 16px 'Playfair Display',serif}.map-pop button{display:block;margin-top:10px;padding:9px 12px;border:0;background:var(--green);color:white;border-radius:8px}.pin{width:36px;height:42px;position:relative;filter:drop-shadow(0 2px 2px #14233555);transition:transform .18s ease,filter .18s ease}.pin svg{display:block;width:36px;height:42px;overflow:visible}.pin.selected{transform:scale(1.14);filter:drop-shadow(0 0 4px #e4532eaa) drop-shadow(0 2px 2px #14233555)}.pin:hover{transform:scale(1.12)}.adv-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:19px}.adv-header .heading{flex:1;margin:0 0 10px}.vertical-shell{position:relative}.vertical{height:410px;overflow-y:auto;overscroll-behavior:contain;scroll-snap-type:y mandatory;scrollbar-width:thin;scrollbar-color:#cfa85e transparent;padding:2px 3px 8px;display:flex;flex-direction:column;gap:10px}.adventure-card{height:122px;min-height:122px;display:grid;grid-template-columns:42% 1fr;background:#fffaf2;border:1px solid #d7b477;border-radius:17px;overflow:hidden;box-shadow:0 3px 10px #0002;scroll-snap-align:start;position:relative}.adventure-card.active{border:2px solid #bd892b}.adventure-card img{width:100%;height:100%;object-fit:cover}.adventure-card .info{padding:12px 51px 9px 12px;min-width:0}.adventure-card h3{font-size:clamp(17px,2.9vw,23px);line-height:1.05;font-style:italic;margin:0 0 10px}.meta{display:flex;flex-wrap:wrap;gap:7px;font-size:12px}.meta span{white-space:nowrap}.meta i{font-style:normal;color:var(--gold)}.fav{position:absolute;right:12px;top:8px;background:transparent;border:0;font-size:22px;color:#7e5a36}.fav.saved{color:#b83934}.play{position:absolute;right:11px;bottom:10px;width:39px;height:39px;border:1px solid #c48f30;border-radius:50%;background:linear-gradient(#ffe5a1,#eab24e);font-size:18px;box-shadow:0 2px 5px #0002}.v-controls{display:flex;gap:8px;justify-content:center;margin:8px}.v-controls button{background:#fff8ec;border:1px solid #dfc69e;border-radius:50%;width:33px;height:33px;color:var(--green)}.v-controls small{align-self:center;color:#777;font-size:11px}.kids-banner{display:flex;align-items:center;gap:13px;background:linear-gradient(105deg,#fff9ee,#f3e8d7);border:1px solid #e5cfaa;border-radius:20px;margin:24px 0 30px;padding:13px 15px;min-height:126px}.kids-banner img{width:95px;height:101px;object-fit:contain;object-position:bottom;flex-shrink:0}.kids-banner h2{font:italic 700 23px 'Playfair Display',serif;margin:0 0 5px}.kids-banner p{font-size:12px;line-height:1.4;margin:0 0 9px}.kids-banner button{padding:8px 12px;border:1px solid #cd983c;border-radius:99px;background:#f4cd7e;color:#17332c;font-weight:600;font-size:12px}.bottom{display:flex;justify-content:space-around;position:sticky;bottom:0;z-index:1100;background:#fffaf2ee;backdrop-filter:blur(10px);border-top:1px solid #e7d9c9;padding:9px 0 max(9px,env(safe-area-inset-bottom));box-shadow:0 -5px 16px #0000000d}.bottom a{font:500 12px 'DM Sans',sans-serif;text-align:center;padding:4px 10px;border-radius:14px}.bottom span{display:block;font-size:24px;margin-bottom:3px}.bottom a[aria-current]{background:var(--green);color:white}.overlay{display:none;position:fixed;inset:0;background:#081b1bd0;z-index:3000;align-items:center;justify-content:center;padding:15px}.overlay.show{display:flex}.modal{width:min(460px,100%);background:#fffaf2;border-radius:20px;overflow:hidden;max-height:92vh;overflow-y:auto}.modal>img{width:100%;aspect-ratio:14/5;height:auto;object-fit:cover}.modal-content{padding:16px}.modal h2{font:italic 700 27px 'Playfair Display',serif;margin:4px 0}.modal p{font-size:14px;line-height:1.5}.modal-actions{display:grid;gap:8px}.modal-actions a,.modal-actions button{border:0;background:var(--green);color:white;padding:12px;border-radius:8px;text-align:center}.modal-actions .secondary{background:#edca80;color:var(--ink)}.close{float:right;border:0;background:none;font-size:22px}.hint{font-size:12px;color:#667}.search-panel{display:none;padding:10px 5%;background:#fffaf2}.search-panel.show{display:block}.search-panel input{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:16px}.empty{padding:28px;text-align:center;color:#666}.sr-only{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}
+@media(min-width:850px){.hero{min-height:370px}.hero-inner{padding-top:75px}.content{max-width:850px;margin:auto}.vertical{height:410px}.adventure-card{height:125px;min-height:125px}.kids-banner img{width:125px}.map{height:370px}.how-band{margin-top:-180px}}@media(max-width:560px){header{height:63px;padding:0 4%}.brand{font-size:20px}.rose{font-size:30px}.hero{min-height:270px;background-position:56% center}.hero-inner{padding:22px 4%;width:59%}h1{font-size:clamp(27px,7vw,40px)}.pill{padding:10px 13px;font-size:12px}.seg button{padding:7px 13px;font-size:12px}.how-band{padding:0 4%;margin:-90px auto -38px}.map{height:220px}.vertical{height:365px}.adventure-card{height:110px;min-height:110px;grid-template-columns:45% 1fr}.adventure-card .info{padding:9px 40px 8px 10px}.adventure-card h3{font-size:clamp(15px,4.5vw,19px)}.meta{font-size:10px;gap:5px}.fav{right:9px;font-size:18px}.play{height:31px;width:31px;right:7px;bottom:7px}.kids-banner img{width:78px;height:100px}.kids-banner h2{font-size:20px}.kids-banner p{font-size:11px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media(max-width:390px){.how-band{margin-top:-82px;margin-bottom:-34px;padding:0 3%}}
 
+/* Cartes panoramiques 1400 × 500 : le visuel occupe la largeur de la carte. */
+.vertical{height:600px;gap:14px;scroll-snap-type:y proximity;padding:4px 5px 10px}
+.adventure-card{display:block;flex:none;min-height:0;height:auto;aspect-ratio:14 / 5;border-radius:17px;border:1px solid #c5a36c;background:#071B34;isolation:isolate;box-shadow:0 5px 17px #071b3428;cursor:pointer}
+.adventure-card img{width:100%;height:100%;object-fit:cover;object-position:center;position:absolute;inset:0}
+.adventure-card .info{position:absolute;inset:0;padding:0;pointer-events:none}
+.adventure-card.card-pretitle .info h3{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.adventure-card.card-pretitle .meta{position:absolute;right:53px;bottom:13px;padding:6px 10px;border-radius:999px;color:#fff6e8;background:#071b34b9;backdrop-filter:blur(7px);font-size:12px;gap:10px}
+.adventure-card.card-untitled .info{background:linear-gradient(90deg,rgba(4,20,37,.85),transparent 75%);padding:25px 100px 15px 24px}
+.adventure-card.card-untitled h3{color:#fff9ef;font-size:clamp(20px,3.2vw,31px);text-shadow:0 2px 8px #0008;max-width:380px}
+.adventure-card.card-untitled .meta{color:#fff7ea;font-size:12px}
+.adventure-card .fav{top:10px;right:12px;background:#071b34b0;color:white;border-radius:50%;width:33px;height:33px;font-size:20px;display:grid;place-items:center;text-shadow:0 1px 3px #0008}
+.adventure-card .play{width:38px;height:38px;right:10px;bottom:9px;z-index:2}
+.adventure-card:hover img{transform:scale(1.025)}.adventure-card img{transition:transform .35s ease}
+@media(min-width:850px){.vertical{height:630px}.adventure-card{height:auto;min-height:0}}
+@media(max-width:560px){.vertical{height:365px;gap:10px}.adventure-card{height:auto;min-height:0;aspect-ratio:14/5;border-radius:12px}.adventure-card.card-pretitle .meta{display:none}.adventure-card.card-untitled .info{padding:10px 50px 5px 12px}.adventure-card.card-untitled h3{font-size:clamp(15px,4vw,20px);margin:0 0 5px}.adventure-card.card-untitled .meta{font-size:9px}.adventure-card .play{height:29px;width:29px;bottom:5px;right:6px;font-size:14px}.adventure-card .fav{width:26px;height:26px;font-size:16px;top:5px;right:6px}}
+@media(prefers-reduced-motion:reduce){.adventure-card img{transition:none}}
+
+/* Bouton du passeport plus sombre que les autres boutons. */
+.passport-button{background:#071B34;border-color:#071B34;box-shadow:0 5px 14px #071b3440}
+.passport-button:hover,.passport-button:focus-visible{background:#030f20}
+/* Affichage intégral des aventures, sans carrousel ni zone défilante. */
+.vertical, .vertical-shell .vertical{height:auto !important;max-height:none !important;overflow:visible !important;scroll-snap-type:none !important;display:flex;flex-direction:column;gap:16px;padding:4px 0 12px}
+.adventure-card{width:100%;flex:none;scroll-snap-align:none}
+.v-controls{display:none !important}
+/* Toute la carte, plutôt qu'un triangle, ouvre sa description. */
+.adventure-card:focus-visible{outline:3px solid #1b578f;outline-offset:3px}
+/* Bouton situé à la place de l'ancien bandeau explicatif. */
+.find-band{position:relative;z-index:25;display:flex;justify-content:center;margin:-24px auto 27px;padding:0 5%}
+.find-place{min-width:190px;padding:14px 25px;box-shadow:0 8px 23px #071b3433}
+#aventures,#carte{scroll-margin-top:90px}
+#carte{margin-top:28px}
+@media(max-width:560px){.find-band{margin:-18px auto 22px}.find-place{padding:12px 20px}.vertical,.vertical-shell .vertical{height:auto !important;gap:12px}}
+
+/* Visuel Kids panoramique à la place du bloc texte. */
+.kids-visual{margin:24px 0 30px;width:100%}
+.kids-visual img{display:block;width:100%;height:auto;object-fit:contain;border-radius:12px}
+@media(max-width:560px){.kids-visual{margin:20px 0 25px}}
+.kids-visual h2{color:#071B34;margin:0 0 8px}
+.kids-visual p{font-size:clamp(13px,1.65vw,16px);line-height:1.5;color:#344c54;text-align:center;margin:0 auto 18px;max-width:700px}
+@media(max-width:560px){.kids-visual p{margin-bottom:13px;padding:0 5px}}
+
+/* Découverte et recherche : extensible à 100 aventures. */
+.discovery{padding:22px 5% 7px}.discovery .section-title{font:italic 700 clamp(23px,3.4vw,33px) 'Playfair Display',Georgia,serif;margin:0 0 6px;text-align:center;color:#071B34}.section-sub{text-align:center;margin:0 0 16px;color:#657077;font-size:13px}.featured-track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:5px 2px 14px;scrollbar-width:thin}.featured-item{flex:0 0 min(76%,465px);scroll-snap-align:start;overflow:hidden;border-radius:16px;border:1px solid #d6bd91;background:#fffaf2;box-shadow:0 4px 15px #071b3420;text-align:left;padding:0;cursor:pointer}.featured-item img{width:100%;aspect-ratio:14/5;object-fit:cover}.featured-caption{padding:10px 14px 12px}.featured-caption strong{display:block;font:600 17px 'Playfair Display',serif;color:#071B34}.featured-caption small{color:#5d6870}.feature-tag{display:inline-block;color:#956518;text-transform:uppercase;letter-spacing:.08em;font-weight:700;font-size:10px;margin-bottom:5px}.finder{margin:19px 0 20px;background:#fffaf2;border:1px solid #e4d0ab;border-radius:19px;padding:19px;box-shadow:0 4px 14px #071b340c}.finder h2{font:italic 700 clamp(23px,3.3vw,30px) 'Playfair Display',serif;color:#071B34;margin:0 0 11px}.finder-search{display:flex;gap:9px}.finder-search input{width:100%;min-width:0;flex:1;border:1px solid #d7c9af;border-radius:11px;padding:13px 14px;font:inherit;font-size:16px;background:#fff}.finder-search button,.nearby-button{border:0;background:#071B34;color:#fff;padding:11px 16px;border-radius:11px;font-weight:600}.finder-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}.nearby-button{background:#ecf1f6;border:1px solid #bfcbd7;color:#071B34}.finder-tools label{color:#394b59;font-size:13px}.finder-tools select{border:1px solid #d7c9af;background:#fff;border-radius:9px;padding:8px;color:#071B34}.finder-feedback{font-size:12px;color:#58646c;margin-top:9px;min-height:1.2em}.result-bar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:4px 0 11px}.result-count{font-size:13px;color:#596670}.show-more{display:block;margin:14px auto 8px;border:1px solid #071B34;background:#fffaf2;color:#071B34;border-radius:99px;padding:12px 22px;font-weight:600}.show-more[hidden]{display:none}.featured-item:focus-visible,.finder button:focus-visible{outline:3px solid #28639c;outline-offset:3px}
+@media(max-width:560px){.discovery{padding:15px 4% 4px}.featured-item{flex-basis:86%}.finder{padding:14px}.finder-search button{padding:10px 12px}.featured-caption strong{font-size:15px}.finder-tools{align-items:flex-start}}
+
+/* Bandeau inférieur promotionnel (remplace intégralement l'ancienne navigation). */
+.bottom.promo-footer{display:block;position:sticky;bottom:0;z-index:1100;background:#071B34;color:#fffaf2;border:0;padding:9px 14px max(10px,env(safe-area-inset-bottom));box-shadow:0 -5px 22px #0002;backdrop-filter:none}
+.promo-footer .footer-top{max-width:1060px;margin:0 auto;display:flex;align-items:center;gap:18px;justify-content:space-between}
+.promo-footer .author-link{display:block;flex:0 1 280px;min-width:0;padding:0;border:0;border-radius:10px;line-height:0;transition:transform .2s ease,filter .2s ease}
+.promo-footer .author-link img{width:100%;height:auto;max-height:81px;object-fit:contain}
+.promo-footer .author-link:hover{transform:translateY(-1px);filter:brightness(1.10)}
+.promo-footer .promo-line{flex:1;display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+.promo-footer .old-price{display:flex;align-items:center;gap:8px;font-size:14px;white-space:nowrap}
+.promo-footer .promo-chip{color:#FF6E34;font-weight:700;background:#24314A;border-radius:13px;padding:4px 9px;font-size:13px}
+.promo-footer del{color:#fff;opacity:.85;text-decoration-thickness:1px}
+.promo-footer .new-price{display:flex;align-items:baseline;gap:9px;white-space:nowrap;margin-top:7px}
+.promo-footer .new-price strong{font-size:30px;font-weight:700;letter-spacing:-.5px}
+.promo-footer .new-price span{font-size:14px}
+.promo-footer .cart-link{display:grid;place-items:center;flex:0 0 56px;height:56px;border:1px solid #647791;border-radius:16px;color:#fff;padding:0;background:transparent}
+.promo-footer .cart-link:hover{border-color:#f8d4a4;background:#ffffff12}
+.promo-footer .footer-legal{max-width:1060px;margin:10px auto 0;border-top:1px solid #405169;padding-top:9px;display:flex;justify-content:center;align-items:center;gap:15px;font-size:14px;color:#fff}
+.promo-footer .footer-legal a{padding:3px 0;border:0;border-radius:0;font:inherit;text-decoration:underline;text-underline-offset:3px;color:inherit}
+.promo-footer .footer-legal span{color:#aebaca}
+@media(max-width:560px){.bottom.promo-footer{padding:8px 10px max(8px,env(safe-area-inset-bottom))}.promo-footer .footer-top{gap:8px;flex-wrap:wrap}.promo-footer .author-link{flex:0 0 100%;text-align:center;max-width:205px;margin:0 auto}.promo-footer .author-link img{max-height:57px}.promo-footer .promo-line{flex:0 0 100%}.promo-footer .old-price{font-size:12px}.promo-footer .promo-chip{font-size:12px;padding:3px 8px}.promo-footer .new-price{margin-top:2px;gap:8px}.promo-footer .new-price strong{font-size:27px}.promo-footer .new-price span{font-size:12px}.promo-footer .cart-link{flex-basis:48px;height:45px;border-radius:12px}.promo-footer .footer-legal{margin-top:6px;padding-top:5px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){.promo-footer .author-link{transition:none}}
+
+/* Bandeau compact : CGV/CGU centrés et lien auteur tout à droite. */
+.promo-footer .footer-legal{position:relative;justify-content:center;min-height:31px;padding-right:0}
+.promo-footer .legal-center{display:flex;align-items:center;justify-content:center;gap:15px}
+.promo-footer .footer-legal .legal-author{position:absolute;right:0;top:50%;transform:translateY(-36%);white-space:nowrap;text-decoration:none;color:#fffaf2;font-size:13px;font-weight:600}
+.promo-footer .footer-legal .legal-author:hover{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:560px){.promo-footer .footer-top{flex-wrap:nowrap}.promo-footer .promo-line{flex:1 1 auto}.promo-footer .footer-legal{padding-bottom:3px}.promo-footer .legal-center{gap:8px}.promo-footer .footer-legal .legal-author{font-size:11px}}
+@media(max-width:360px){.promo-footer .footer-legal .legal-author{font-size:10px}.promo-footer .legal-center{gap:5px}.promo-footer .footer-legal{font-size:11px}}
+
+/* Accroche contemporaine de la page d’accueil. */
+.hero-inner{width:min(66%,620px)}
+.hero h1{font-family:'DM Sans',Arial,sans-serif;font-style:normal;font-weight:700;font-size:clamp(31px,4.3vw,52px);line-height:1.12;letter-spacing:-.045em;margin:0 0 13px;color:#071B34;text-wrap:balance}
+.hero h1 span{color:#C77A21}
+.hero-subtitle{font-family:'DM Sans',Arial,sans-serif;color:#344c54;font-size:clamp(13px,1.6vw,17px);font-weight:500;line-height:1.45;margin:0 0 21px;max-width:440px}
+@media(max-width:560px){.hero-inner{width:72%;padding:23px 4%}.hero h1{font-size:clamp(23px,5.7vw,32px);letter-spacing:-.04em}.hero-subtitle{font-size:12px;line-height:1.35;margin-bottom:15px}}
+@media(max-width:390px){.hero-inner{width:75%}.hero h1{font-size:23px}}
+
+/* Signature du site : Cormorant Garamond SemiBold Italic, bleu nuit. */
+header .brand {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(24px, 3.7vw, 34px);
+  line-height: 1;
+  letter-spacing: -.015em;
+  color: #071B34;
+}
+@media (max-width: 560px) {
+  header .brand { font-size: clamp(22px, 5.6vw, 27px); }
+}
+
+/* Lien Devenez auteur : même typographie que la signature du site. */
+.promo-footer .footer-legal .legal-author{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;font-size:20px;line-height:1;color:#fffaf2}
+@media(max-width:560px){.promo-footer .footer-legal .legal-author{font-size:16px}}
+@media(max-width:360px){.promo-footer .footer-legal .legal-author{font-size:14px}}
+
+/* Trois accès distincts dans la partie basse : aide, CGV/CGU, auteur. */
+.promo-footer .footer-legal{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;min-height:35px}
+.promo-footer .footer-legal .how-link{justify-self:start;white-space:nowrap;text-decoration:none;font-size:13px;font-weight:600;color:#fffaf2}
+.promo-footer .footer-legal .how-link:hover,.promo-footer .footer-legal .how-link:focus-visible{text-decoration:underline;text-underline-offset:3px}
+.promo-footer .footer-legal .legal-center{grid-column:2;white-space:nowrap}
+.promo-footer .footer-legal .legal-author{position:static;transform:none;justify-self:end;grid-column:3}
+@media(max-width:560px){.promo-footer .footer-legal{gap:6px;padding-top:8px}.promo-footer .footer-legal .how-link{font-size:11px}.promo-footer .footer-legal .legal-author{font-size:clamp(13px,3.5vw,17px)}.promo-footer .footer-legal .legal-center{gap:6px;font-size:11px}}
+@media(max-width:380px){.promo-footer .footer-legal{grid-template-columns:1fr auto;row-gap:8px}.promo-footer .footer-legal .how-link{grid-column:1;grid-row:1}.promo-footer .footer-legal .legal-author{grid-column:2;grid-row:1}.promo-footer .footer-legal .legal-center{grid-column:1/-1;grid-row:2;justify-self:center}}
+
+/* Carte explicative en remplacement du carrousel de découvertes. */
+.explanation-card{max-width:1010px;margin:25px auto 19px;padding:0 5%}
+.explanation-card img{display:block;width:100%;height:auto;border-radius:12px}
+@media(max-width:560px){.explanation-card{margin:17px auto 13px;padding:0 4%}.explanation-card img{border-radius:8px}}
+/* Nouveau héros : image intégrale, sans texte ni bouton superposé. */
+.hero.hero-image{min-height:0;background:none;position:relative;line-height:0}
+.hero.hero-image img{display:block;width:100%;height:auto;max-width:none;object-fit:contain}
+@media(min-width:850px){.hero.hero-image{min-height:0}}
+@media(max-width:560px){.hero.hero-image{min-height:0;background:none}}
+
+/* Ajustements compacts : bandeau promotionnel et recherche. */
+.finder{margin:12px 0 15px;padding:12px 16px;border-radius:15px}
+.finder h2{font-size:clamp(21px,2.8vw,27px);margin:0 0 8px;line-height:1.14}
+.finder-search input{padding:9px 12px}
+.finder-search button{padding:8px 14px}
+.finder-tools{gap:8px;margin-top:8px}
+.nearby-button{padding:7px 11px}
+.finder-tools select{padding:6px}
+.finder-feedback{margin-top:4px;min-height:0}
+.finder-feedback:empty{display:none}
+/* Les bords du visuel sont a 48 et 2003 px dans le WebP de 2048 px. */
+.adventure-explainer{overflow:hidden}
+.adventure-explainer img{
+  width:calc(100% * 2048 / 1955);
+  max-width:none;
+  height:auto;
+  margin-left:calc(-100% * 48 / 1955);
+}
+.bottom.promo-footer{padding:5px 14px max(5px,env(safe-area-inset-bottom))}
+.promo-footer .footer-top{gap:10px}
+.promo-footer .old-price{font-size:12px}
+.promo-footer .promo-chip{font-size:11px;padding:2px 7px}
+.promo-footer .new-price{margin-top:1px;gap:7px}
+.promo-footer .new-price strong{font-size:24px}
+.promo-footer .new-price span{font-size:12px}
+.promo-footer .cart-link{flex-basis:42px;height:38px;border-radius:10px}
+.promo-footer .cart-link svg{width:23px;height:23px}
+.promo-footer .footer-legal{margin-top:5px;padding-top:4px;min-height:25px;gap:8px}
+.promo-footer .footer-legal .legal-author{font-size:17px}
+@media(max-width:560px){
+  .finder{margin:9px 0 12px;padding:10px 11px;border-radius:13px}
+  .finder h2{font-size:21px;margin-bottom:7px}
+  .finder-search{gap:6px}
+  .finder-search input{padding:9px 10px}
+  .finder-search button{padding:8px 10px}
+  .finder-tools{margin-top:7px;gap:6px}
+  .nearby-button{padding:6px 9px}
+  .finder-tools label{font-size:12px}
+  .finder-tools select{padding:5px}
+  .bottom.promo-footer{padding:4px 10px max(4px,env(safe-area-inset-bottom))}
+  .promo-footer .new-price strong{font-size:23px}
+  .promo-footer .cart-link{flex-basis:39px;height:36px}
+  .promo-footer .footer-legal{margin-top:4px;padding-top:4px;min-height:22px}
+  .promo-footer .footer-legal .legal-author{font-size:15px}
+  .promo-footer .footer-legal .how-link,.promo-footer .footer-legal .legal-center{font-size:10px}
+}
+</style></head><body><div class="site"><header><a class="brand" href="#accueil">Il était un lieu…</a><div class="head-actions"><button class="icon-btn" id="searchToggle" aria-label="Rechercher une aventure">⌕</button><button class="icon-btn" id="menuToggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button></div><nav class="menu" id="menu"><a href="#accueil">Accueil</a><a href="#carte">Carte des aventures</a><a href="#rechercher">Trouver une aventure</a><a href="passeport/index.html">Mon passeport</a></nav></header><div class="search-panel" id="searchPanel"><label for="search" class="sr-only">Rechercher une aventure</label><input id="search" placeholder="Ville ou aventure…"></div><main id="accueil"><section class="hero hero-image" aria-label="Un lieu réel, une aventure sur votre téléphone"><img src="images-site/0-pnghero.png" alt="Il était un lieu… Un lieu réel, une aventure sur votre téléphone. Rendez-vous sur les lieux, jouez sur votre téléphone et percez le mystère." fetchpriority="high"></section><div class="content"><section class="finder" id="rechercher" aria-labelledby="finderTitle"><h2 id="finderTitle">Trouver une aventure ?</h2><div class="finder-search"><label for="locationSearch" class="sr-only">Rechercher un lieu ou une aventure</label><input type="search" id="locationSearch" placeholder="Ville, lieu ou code postal…" autocomplete="off"><button type="button" id="finderSubmit">Chercher</button></div><div class="finder-tools"><button type="button" id="nearbyButton" class="nearby-button">⌖ Autour de moi</button><select id="radiusSelect"><option value="10">10 km</option><option value="25" selected>25 km</option><option value="50">50 km</option><option value="100">100 km</option></select></div><div class="finder-feedback" id="finderFeedback" role="status" aria-live="polite"></div></section>
+<div class="adventure-explainer"><img src="images-site/0-webpcarteexplication.webp" alt="Comment jouer à une aventure Il était un lieu…" loading="lazy"></div>
+<section id="aventures"><div class="adv-header"><h2 class="heading">Nos aventures</h2></div><div class="result-bar"><span id="resultCount" class="result-count"></span></div><div class="vertical-shell"><div id="cards" class="vertical" aria-label="Toutes les aventures"></div></div><button class="show-more" id="showMore" type="button" hidden>Voir plus d’aventures</button></section><section id="carte"><h2 class="heading">Les aventures sur la carte</h2><div id="map" class="map" aria-label="Carte interactive des aventures"></div><p class="map-note">Touchez une épingle pour découvrir l'aventure correspondante.</p></section><section class="kids-visual" id="kids" aria-label="Aventures Kids de 7 à 12 ans"><h2 class="heading">Et pour les kids?</h2><p>Toutes nos aventures existent en version 7-12 ans, avec une histoire et des indices adaptés à leur âge.</p><img src="images-site/0-pngkids.png" alt="Le Mystère du Phare de Saint-Mathieu, aventure Kids avec Billig" loading="lazy"></section></div></main><footer class="bottom promo-footer" aria-label="Tarifs et informations">
+  <div class="footer-top">
+    <div class="promo-line">
+      <div class="price-block"><div class="old-price"><span class="promo-chip">PROMO</span><del>3,99 €</del></div><div class="new-price"><strong>2,99 €</strong><span>par aventure</span></div></div>
+      <a class="cart-link" href="panier/index.html" aria-label="Voir mon panier"><svg width="29" height="29" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.5 13.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6L23 6H6"/></svg></a>
+    </div>
+  </div>
+</footer></div><div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal"><img id="modalImg" alt=""><div class="modal-content"><button class="close" id="modalClose" aria-label="Fermer">✕</button><h2 id="modalTitle"></h2><p id="modalDesc"></p><p id="modalPlace" class="hint"></p><div class="modal-actions" id="modalActions"></div></div></div></div><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script><script>
+// Les liens et les lieux proviennent de l'index fourni. Modifier ici pour connecter les nouvelles aventures.
+const adventures=[
+{id:1,title:'Le Mystère du phare de Saint-Mathieu',city:'Plougonvelin',duration:'1 h 30',zip:'29217',featured:true,lat:48.3327,lng:-4.7754,image:'images-site/0-webpcarte1.webp',description:"1834 — Le gardien du phare de Saint-Mathieu a disparu, mettant en danger les bateaux naviguant en mer d'Iroise.",url:'stmathieuadulte/index.html',kids:'stmathieukids/index.html'},
+{id:2,title:'Les Irrépressibles Conquetois',city:'Le Conquet',duration:'1 h 30',zip:'29217',featured:false,lat:48.3594,lng:-4.7739,image:'images-site/0-webpleconquet.webp',description:'1874 — Visitez Le Conquet à travers une aventure humoristique.',url:'leconquetadulte/index.html',kids:'leconquetkids/index.html'},
+{id:3,title:'Le Secret du Roi Gradlon',city:'Quimper',duration:'1 h 00',zip:'29000',featured:false,lat:47.999785,lng:-4.102090,image:'images-site/0-webpcarte3.webp',description:'Retrouvez les artefacts cachés dans Quimper et percez le secret du roi Gradlon.',url:'quimperadulte/index.html',kids:'quimperkids/index.html'},
+{id:4,title:"Le Canot de l’Empereur",city:'Brest',duration:'1 h 15',zip:'29200',featured:true,lat:48.38932,lng:-4.49815,image:'images-site/0-webpcarte4.webp',description:'Percez les secrets du Canot de l’Empereur aux Ateliers des Capucins.',url:'brest/index.html',kids:'brestkids/index.html'},
+ {id:5,title:'La dernière caisse',city:'Brest · Port de commerce',duration:'45 min – 1 h',zip:'29200',featured:true,lat:48.3847,lng:-4.4866,image:'images-site/0-webpcarte2.webp',description:'18 juin 1940 — Une caisse d’or a disparu dans le port de Brest. Votre mission commence.',url:null,kids:null}
+];
+// La Dernière Caisse est visible dans le carrousel ; ajouter son URL lorsque sa page est prête.
+const els={cards:document.getElementById('cards'),overlay:document.getElementById('overlay')};let isKids=false;let activeId=null;let markers=new Map();let leafletMap;
+let maxCards=6;let currentPosition=null;
+function norm(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('fr').trim()}
+function distanceKm(lat1,lon1,lat2,lon2){const R=6371,toRad=n=>n*Math.PI/180;const dLat=toRad(lat2-lat1),dLon=toRad(lon2-lon1);const h=Math.sin(dLat/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+function visible(){const q=norm(document.getElementById('locationSearch').value || document.getElementById('search').value);let items=adventures.filter(a=>norm(a.title+' '+a.city+' '+(a.zip||'')).includes(q));if(currentPosition){const max=Number(document.getElementById('radiusSelect').value);items=items.map(a=>({...a,distance:distanceKm(currentPosition.latitude,currentPosition.longitude,a.lat,a.lng)})).filter(a=>a.distance<=max).sort((a,b)=>a.distance-b.distance)}return items}
+function render(){const results=visible();els.cards.innerHTML='';document.getElementById('resultCount').textContent=results.length+' aventure'+(results.length>1?'s':'')+' disponible'+(results.length>1?'s':'');const more=document.getElementById('showMore');more.hidden=results.length<=maxCards;if(!results.length){els.cards.innerHTML='<p class="empty">Aucune aventure trouvée. Essayez une autre ville ou un rayon plus large.</p>';return}results.slice(0,maxCards).forEach(s=>{const card=document.createElement('article');card.className='adventure-card'+(s.id===activeId?' active':'')+(s.id===2?' card-untitled':' card-pretitle');card.dataset.id=s.id;card.innerHTML=`<img src="${s.image}" alt="${s.title}" loading="lazy"><div class="info"><h3>${s.title}</h3><div class="meta"><span><i>📍</i> ${s.city}</span><span><i>◷</i> ${s.duration}</span></div></div><button class="fav" aria-label="Ajouter ${s.title} aux favoris">♡</button>`;card.querySelector('.fav').addEventListener('click',e=>{e.stopPropagation();e.currentTarget.classList.toggle('saved');e.currentTarget.textContent=e.currentTarget.classList.contains('saved')?'♥':'♡'});card.setAttribute('role','button');card.setAttribute('tabindex','0');card.setAttribute('aria-label','Voir la description de '+s.title);card.addEventListener('click',()=>openAdventure(s.id));card.addEventListener('keydown',e=>{if(e.target===card&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openAdventure(s.id)}});els.cards.append(card)})}
+function focusAdventure(id,fromCard=false){activeId=id;document.querySelectorAll('.adventure-card').forEach(c=>{c.classList.toggle('active',Number(c.dataset.id)===id);if(Number(c.dataset.id)===id&&!fromCard)c.scrollIntoView({behavior:'smooth',block:'nearest'})});markers.forEach((m,key)=>{m.setIcon(makeIcon(key===id))});const s=adventures.find(a=>a.id===id);if(!fromCard&&leafletMap){leafletMap.panTo([s.lat,s.lng]);markers.get(id)?.openPopup()}}
+function openAdventure(id){const a=adventures.find(x=>x.id===id);if(!a)return;focusAdventure(id,true);document.getElementById('modalImg').src=a.image;document.getElementById('modalImg').alt=a.title;document.getElementById('modalTitle').textContent=a.title;document.getElementById('modalDesc').textContent=a.description;document.getElementById('modalPlace').textContent=a.city+' · '+a.duration;const container=document.getElementById('modalActions');container.innerHTML='';for(const [label,url,secondary] of [['Commencer l’aventure',isKids?a.kids:a.url,false],['Version '+(isKids?'Adultes':'Kids'),isKids?a.url:a.kids,true],['Itinéraire Google Maps',`https://www.google.com/maps/search/?api=1&query=${a.lat}%2C${a.lng}`,true]]){if(!url)continue;const el=document.createElement('a');el.textContent=label;el.href=url;el.className=secondary?'secondary':'';if(label.startsWith('Itinéraire')){el.target='_blank';el.rel='noopener'}container.append(el)}els.overlay.classList.add('show')}
+function makeIcon(selected){return L.divIcon({className:'',html:`<div class="pin${selected?' selected':''}" aria-hidden="true"><svg viewBox="0 0 36 42" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="pinRed" cx="30%" cy="22%" r="77%"><stop offset="0%" stop-color="#ffb18b"/><stop offset="27%" stop-color="#fa613a"/><stop offset="70%" stop-color="#df321d"/><stop offset="100%" stop-color="#a81d15"/></radialGradient><linearGradient id="pinMetal" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#66727a"/><stop offset="50%" stop-color="#f2f2ee"/><stop offset="100%" stop-color="#5f6c75"/></linearGradient></defs><path d="M19.5 21 L32 39" stroke="#38424a" stroke-opacity=".45" stroke-width="3.7" stroke-linecap="round"/><path d="M19.5 21 L32 39" stroke="url(#pinMetal)" stroke-width="2.1" stroke-linecap="round"/><circle cx="15" cy="13" r="11" fill="url(#pinRed)" stroke="#a72a1b" stroke-width=".5"/><ellipse cx="10.4" cy="8.5" rx="4.5" ry="2.5" transform="rotate(-29 10.4 8.5)" fill="#ffffff" opacity=".55"/></svg></div>`,iconSize:[36,42],iconAnchor:[32,39],popupAnchor:[-17,-32]})}
+function initMap(){if(!window.L){document.getElementById('map').innerHTML='<div class="empty">La carte nécessite une connexion Internet.</div>';return}leafletMap=L.map('map',{scrollWheelZoom:false}).setView([48.20,-4.42],9);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(leafletMap);adventures.forEach(a=>{const m=L.marker([a.lat,a.lng],{icon:makeIcon(false)}).addTo(leafletMap);const pop=document.createElement('div');pop.className='map-pop';const name=document.createElement('strong');name.textContent=a.title;const city=document.createElement('p');city.textContent=a.city+' · '+a.duration;const btn=document.createElement('button');btn.textContent='Voir cette aventure';btn.addEventListener('click',()=>openAdventure(a.id));pop.append(name,city,btn);m.bindPopup(pop);m.on('click',()=>focusAdventure(a.id));markers.set(a.id,m)});leafletMap.fitBounds(L.latLngBounds(adventures.map(x=>[x.lat,x.lng])).pad(.2));setTimeout(()=>leafletMap.invalidateSize(),250)}
+function setKids(on){isKids=on;}
+document.getElementById('modalClose').onclick=()=>els.overlay.classList.remove('show');els.overlay.onclick=e=>{if(e.target===els.overlay)els.overlay.classList.remove('show')};window.addEventListener('keydown',e=>{if(e.key==='Escape')els.overlay.classList.remove('show')});document.getElementById('searchToggle').onclick=()=>{document.getElementById('rechercher').scrollIntoView({behavior:'smooth'});document.getElementById('locationSearch').focus({preventScroll:true})};document.getElementById('search').oninput=()=>{document.getElementById('locationSearch').value=document.getElementById('search').value;currentPosition=null;maxCards=6;render()};document.getElementById('locationSearch').oninput=()=>{document.getElementById('search').value=document.getElementById('locationSearch').value;currentPosition=null;maxCards=6;document.getElementById('finderFeedback').textContent='';render()};document.getElementById('finderSubmit').onclick=()=>{document.getElementById('aventures').scrollIntoView({behavior:'smooth'})};document.getElementById('showMore').onclick=()=>{maxCards+=12;render()};document.getElementById('radiusSelect').onchange=()=>{if(currentPosition){maxCards=6;render()}};document.getElementById('nearbyButton').onclick=()=>{const msg=document.getElementById('finderFeedback');if(!navigator.geolocation){msg.textContent='La géolocalisation n’est pas disponible sur cet appareil.';return}msg.textContent='Demande de localisation…';navigator.geolocation.getCurrentPosition(position=>{currentPosition=position.coords;document.getElementById('locationSearch').value='';document.getElementById('search').value='';msg.textContent='Aventures situées à proximité, classées par distance.';maxCards=6;render();document.getElementById('aventures').scrollIntoView({behavior:'smooth'})},()=>{msg.textContent='Localisation indisponible ou refusée. Vous pouvez rechercher une ville.'},{enableHighAccuracy:false,timeout:12000,maximumAge:300000})};document.getElementById('menuToggle').onclick=()=>{const el=document.getElementById('menu');el.classList.toggle('open');document.getElementById('menuToggle').setAttribute('aria-expanded',String(el.classList.contains('open')))};document.querySelectorAll('#menu a').forEach(a=>a.onclick=()=>document.getElementById('menu').classList.remove('open'));render();initMap();
+</script></body></html>
