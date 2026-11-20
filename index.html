@@ -183,6 +183,8 @@ header .brand {
   .promo-footer .footer-legal .how-link,.promo-footer .footer-legal .legal-center{font-size:10px}
 }
 .adventure-mode{margin:0}
+.adventure-card .start-adventure{position:absolute;left:10px;bottom:8px;z-index:2;display:inline-flex;align-items:center;min-height:36px;padding:6px 12px;border:1px solid #d7b477;border-radius:8px;background:#071B34;color:#fffaf2;font-size:clamp(12px,3.2vw,14px);font-weight:700}
+.adventure-card .start-adventure:focus-visible{outline:2px solid #fffaf2;outline-offset:2px}
 .adventure-card.is-under-construction{cursor:default}
 .adventure-card.is-under-construction:hover img{transform:none}
 .construction-badge{position:absolute;left:10px;bottom:8px;max-width:calc(100% - 20px);padding:5px 10px;border-radius:6px;background:#FCF8F0;color:#071B34;font-size:clamp(11px,2.8vw,14px);font-weight:700}
@@ -214,9 +216,8 @@ const adventures=[
 {id:2,construction:{adult:true,kids:true},title:'Les Irrépressibles Conquetois',city:'Le Conquet',duration:'0 h 45',zip:'29217',featured:false,lat:48.3594,lng:-4.7739,image:'images-site/0-webpleconquet.webp',description:'1874 — Visitez Le Conquet à travers une aventure humoristique.',url:'leconquetadulte/index.html',kids:'leconquetkids/index.html'},
 {id:3,construction:{kids:true},title:'Le Secret du Roi Gradlon',city:'Quimper',duration:'1 h 00',zip:'29000',featured:false,lat:47.999785,lng:-4.102090,image:'images-site/0-webpcarte3.webp',description:'Retrouvez les artefacts cachés dans Quimper et percez le secret du roi Gradlon.',url:'quimperadulte/index.html',kids:'quimperkids/index.html'},
 {id:4,construction:{kids:true},title:"Le Canot de l’Empereur",city:'Brest',duration:'0 h 45',zip:'29200',featured:true,lat:48.38932,lng:-4.49815,image:'images-site/0-webpcarte4.webp',description:'Percez les secrets du Canot de l’Empereur aux Ateliers des Capucins.',url:'brestcanotadulte/index.html',kids:'brestkids/index.html'},
- {id:5,construction:{kids:true},title:'La dernière caisse',city:'Brest · Port de commerce',duration:'45 min – 1 h',zip:'29200',featured:true,lat:48.3847,lng:-4.4866,image:'images-site/0-webpcarte2.webp',description:'18 juin 1940 — Une caisse d’or a disparu dans le port de Brest. Votre mission commence.',url:'brestport/index.html',kids:null}
+ {id:5,showStartLink:true,construction:{kids:true},title:'La dernière caisse',city:'Brest · Port de commerce',duration:'45 min – 1 h',zip:'29200',featured:true,lat:48.3847,lng:-4.4866,image:'images-site/0-webpcarte2.webp',description:'18 juin 1940 — Une caisse d’or a disparu dans le port de Brest. Votre mission commence.',url:'brestport/index.html',kids:null}
 ];
-// La Dernière Caisse est visible dans le carrousel ; ajouter son URL lorsque sa page est prête.
 const els={cards:document.getElementById('cards'),overlay:document.getElementById('overlay')};let isKids=false;let activeId=null;let markers=new Map();let leafletMap;
 let maxCards=6;let currentPosition=null;
 function norm(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('fr').trim()}
@@ -260,6 +261,14 @@ function render() {
         favorite.textContent = favorite.classList.contains('saved') ? '♥' : '♡';
       });
       card.append(favorite);
+      if (adventure.showStartLink) {
+        const startLink = document.createElement('a');
+        startLink.className = 'start-adventure';
+        startLink.href = isKids ? adventure.kids : adventure.url;
+        startLink.textContent = 'Commencer l’aventure';
+        startLink.addEventListener('click', event => event.stopPropagation());
+        card.append(startLink);
+      }
       card.setAttribute('role', 'button');
       card.setAttribute('tabindex', '0');
       card.setAttribute('aria-label', 'Voir la description de ' + adventure.title);
