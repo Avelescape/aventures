@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#091e1d">
+  <title>La trappe de granit — La Dernière Caisse</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=EB+Garamond:wght@400;500;600&amp;family=Special+Elite&amp;display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      color-scheme: dark;
+      --kaki-fonce: #091e1d;
+      --ivoire: #f4e8d3;
+      --laiton-mat: #b99a69;
+      --largeur-scene: 600px;
+      --police-titre: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+      --police-narration: "EB Garamond", Georgia, "Times New Roman", serif;
+      --police-document: "Special Elite", "Courier New", monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: #091b1b; }
+    body {
+      margin: 0;
+      min-height: 100svh;
+      color: var(--ivoire);
+      font-family: var(--police-titre);
+      background: radial-gradient(ellipse at 50% -10%, #23413c 0%, #0a201f 44%, #071715 100%);
+      background-attachment: fixed;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .12;
+      background: repeating-linear-gradient(0deg, transparent 0 3px, #b1a07e 4px 4.4px);
+    }
+    [hidden] { display: none !important; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible { outline: 3px solid #f5d18b; outline-offset: 4px; }
+
+    .top-bar {
+      position: fixed;
+      z-index: 30;
+      inset: 0 0 auto;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      min-height: calc(65px + env(safe-area-inset-top, 0px));
+      padding: calc(9px + env(safe-area-inset-top, 0px)) max(18px, env(safe-area-inset-right, 0px))
+        9px max(18px, env(safe-area-inset-left, 0px));
+      background: linear-gradient(180deg, rgba(6, 20, 20, .98), rgba(6, 20, 20, .8) 75%, transparent);
+      backdrop-filter: blur(8px);
+    }
+    .top-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 13px;
+      color: #e9c792;
+      font: italic 500 23px/1 var(--police-titre);
+      letter-spacing: .01em;
+      text-decoration: none;
+    }
+    .top-link:hover { color: white; }
+
+    .experience {
+      position: relative;
+      width: 100%;
+      max-width: var(--largeur-scene);
+      margin: 0 auto;
+      padding: calc(76px + env(safe-area-inset-top, 0px)) 0 max(55px, env(safe-area-inset-bottom, 0px));
+    }
+    .scene-inner {
+      padding: 0 clamp(14px, 4vw, 25px) 30px;
+      text-align: center;
+      animation: sceneReveal .65s cubic-bezier(.2, .7, .2, 1) both;
+    }
+    @keyframes sceneReveal {
+      from { opacity: 0; transform: translateY(14px); filter: blur(3px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+    .scene-heading {
+      margin: 0 0 20px;
+      color: #f8ebd7;
+      font: 600 clamp(39px, 9vw, 58px)/.98 var(--police-titre);
+      letter-spacing: -.02em;
+      text-shadow: 0 2px 14px #0008;
+    }
+    .media-frame {
+      width: min(100%, 520px, 54svh);
+      max-width: 100%;
+      margin: 8px auto 0;
+      overflow: hidden;
+      border: 1px solid #c4ab8160;
+      border-radius: 16px;
+      background: #081d1c;
+      box-shadow: 0 13px 38px #0008;
+    }
+    #consigne {
+      margin: 0;
+      padding: 9px 14px;
+      background: #0c2624;
+      color: #f4e8d3;
+      font: 13px/1.3 var(--police-document);
+      letter-spacing: .03em;
+    }
+    #scene + #consigne {
+      padding: 12px 16px;
+      font: 700 clamp(20px, 4.6vw, 26px)/1.2 var(--police-titre);
+      letter-spacing: normal;
+      text-align: center;
+    }
+    #etat {
+      margin: 0;
+      padding: 11px 12px;
+      background: #0c2624;
+      color: #fff5df;
+      font: 700 clamp(20px, 5.5vw, 30px)/1.15 var(--police-titre);
+    }
+    #etat:empty { display: none; }
+
+    .scene-actions { display: flex; justify-content: center; margin: 23px auto 0; }
+    .action-button {
+      min-height: 54px;
+      min-width: 170px;
+      padding: 11px 25px;
+      border: 1px solid #c2a473;
+      border-radius: 12px;
+      background: linear-gradient(150deg, #173d34, #09231f);
+      box-shadow: 0 8px 23px #0005, inset 0 1px #ffffff15;
+      color: #fff0d8;
+      font: 600 26px/1 var(--police-titre);
+      cursor: pointer;
+      transition: transform .18s, background .18s;
+    }
+    a.action-button { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+    .action-button:hover { background: linear-gradient(150deg, #285748, #153e32); transform: translateY(-2px); }
+    .action-button:active { transform: translateY(1px); }
+
+    @media (min-width: 820px) {
+      .experience { margin-top: 12px; }
+      .scene-inner { padding-inline: 26px; }
+    }
+    @media (max-width: 420px) {
+      .scene-heading { font-size: 43px; }
+    }
+
+    .scene {
+      position: relative;
+      margin: 0 auto;
+      width: 100%;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .scene img {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      max-height: 78svh;
+      height: auto;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    #marche { width: 100%; max-height: none; }
+
+    .scene img.trappe-ouverte {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-height: none;
+      object-fit: fill;
+      opacity: 0;
+      transition: opacity .6s ease-in-out;
+    }
+
+    .scene.ouverte .trappe-ouverte { opacity: 1; }
+    .lingot-depose {
+      position: absolute;
+      z-index: 1;
+      left: 51.5%;
+      top: 58.4%;
+      width: 16.7%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    .lingot-depose::before {
+      content: "";
+      position: absolute;
+      left: 31%;
+      top: 63%;
+      width: 60%;
+      height: 19%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, #18140fc4 20%, #18140f66 50%, transparent 74%);
+    }
+
+    .scene .lingot-depose img {
+      width: 100%;
+      max-height: none;
+      transform: scaleY(.76) rotate(-14deg);
+      filter: brightness(.77) saturate(.72);
+    }
+
+    .scene.ouverte.depot-termine .lingot-depose { visibility: visible; }
+
+    #boulon {
+      position: absolute;
+      z-index: 6;
+      left: 14.87%;
+      top: 26.25%;
+      transform: translate(-50%, -50%);
+      width: clamp(3.25rem, 14%, 4.25rem);
+      aspect-ratio: 1;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      touch-action: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .scene.ouverte #boulon {
+      left: 14.87%;
+      top: 26%;
+    }
+
+    .progression {
+      position: absolute;
+      inset: 12%;
+      opacity: 0;
+      transform: rotate(-90deg);
+      pointer-events: none;
+      filter: drop-shadow(0 1px 2px #151610);
+    }
+
+    .enfonce .progression { opacity: 1; }
+    .fond { stroke: #24241d; opacity: .8; }
+    .avance { stroke: #fff0b8; stroke-linecap: round; stroke-dasharray: 0 100; }
+    .enfonce .avance { animation: remplir var(--duree-appui) linear forwards; }
+
+    @keyframes remplir {
+      to { stroke-dasharray: 100 100; }
+    }
+
+    #cachette, .scene img.sac, #lingot {
+      position: absolute;
+    }
+
+    #cachette {
+      inset: 48.8% 21.2% 36.6% 28.1%;
+      z-index: 1;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      clip-path: polygon(8% 0, 90% 0, 100% 100%, 0 100%);
+      pointer-events: none;
+    }
+
+    #cachette.disponible { cursor: pointer; pointer-events: auto; }
+    #cachette.survolee, #cachette.disponible {
+      background: #fff0b824;
+      box-shadow: inset 0 0 1rem #fff0b8b5;
+    }
+
+    .scene img.sac {
+      left: 52%;
+      top: 67%;
+      width: 37%;
+      max-height: none;
+    }
+
+    .sac-ouvert, .sac-ferme { transition: opacity .6s ease-in-out; }
+    .sac-ouvert { opacity: 0; visibility: hidden; }
+    .scene.ouverte .sac-ouvert { opacity: 1; visibility: visible; }
+    .scene.ouverte .sac-ferme { opacity: 0; }
+
+    .scene img.sac-ferme {
+      top: 67.8%;
+      z-index: 2;
+      filter: drop-shadow(0 .32rem .33rem #1713099e);
+    }
+
+    .sac-dos {
+      z-index: 2;
+      filter: drop-shadow(0 .32rem .33rem #1713099e);
+    }
+
+    .sac-devant {
+      z-index: 4;
+      clip-path: polygon(0 34%, 9% 36%, 18% 38.6%, 28% 40.7%, 38% 42.1%,
+        48% 42.8%, 58% 42.4%, 68% 41.3%, 77% 39.8%, 83% 35.5%, 100% 35%,
+        100% 100%, 0 100%);
+    }
+
+    #lingot {
+      left: var(--lingot-x, 70%);
+      top: var(--lingot-y, 75.6%);
+      z-index: 3;
+      width: 16%;
+      min-width: 44px;
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%) rotate(-26deg);
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #lingot img {
+      width: 100%;
+      max-height: none;
+      filter: drop-shadow(0 .12rem .12rem #1b150da6);
+    }
+
+    #lingot:focus-visible {
+      z-index: 5;
+      outline: 2px solid #fff0b8;
+      outline-offset: 1px;
+    }
+
+    #lingot:disabled { cursor: default; }
+
+    #lingot.en-main { z-index: 5; cursor: grabbing; }
+
+
+    @media (prefers-reduced-motion: reduce) {
+      .scene-inner { animation: none; }
+      .action-button, .scene img.trappe-ouverte, .sac-ouvert, .sac-ferme { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar" aria-label="Navigation permanente">
+    <a aria-label="Ouvrir le site Il était un lieu dans un nouvel onglet" class="top-link" href="https://avelescape.github.io/aventures/" rel="noopener noreferrer" target="_blank">Il était un lieu…</a>
+  </header>
+  <main class="experience">
+    <section class="scene-inner" aria-labelledby="titre-trappe">
+      <h1 class="scene-heading" id="titre-trappe">La trappe de granit</h1>
+      <div class="media-frame">
+        <p id="consigne">Maintenez le boulon enfoncé pendant 3 secondes.</p>
+        <div class="scene" id="scene">
+          <img id="marche" src="images/2-webtrappe1.webp" width="1086" height="1448"
+               alt="Un escalier de granit. Un sac fermé est posé sur la marche. Le boulon est à gauche, au pied de la rambarde.">
+          <img class="trappe-ouverte" src="images/2-webptrappe2.webp" width="1085" height="1450" alt="">
+          <div class="lingot-depose" aria-hidden="true">
+            <img src="images/2-webplingot.webp" width="1254" height="1254" alt="">
+          </div>
+          <button id="boulon" type="button" aria-label="Boulon au pied de la rambarde pour ouvrir la trappe"
+                  aria-describedby="consigne">
+            <svg class="progression" viewBox="0 0 48 48" aria-hidden="true">
+              <circle class="fond" cx="24" cy="24" r="20" fill="none" stroke-width="4"/>
+              <circle class="avance" cx="24" cy="24" r="20" fill="none"
+                      stroke-width="3" pathLength="100"/>
+            </svg>
+          </button>
+
+          <img class="sac sac-ferme" src="images/2-webpsacferme.webp" width="1313" height="1198" alt="">
+          <div class="sac-ouvert">
+            <button id="cachette" type="button" aria-label="Déposer le lingot dans la cachette"
+                    tabindex="-1" disabled></button>
+            <img class="sac sac-dos" src="images/2-webpsacouvert.webp" width="1310" height="1200" alt="">
+            <button id="lingot" type="button" aria-label="Saisir le lingot dans le sac"
+                    aria-describedby="consigne" disabled>
+              <img src="images/2-webplingot.webp" width="1254" height="1254" alt="" draggable="false">
+            </button>
+            <img class="sac sac-devant" src="images/2-webpsacouvert.webp" width="1310" height="1200" alt="">
+          </div>
+        </div>
+        <p id="etat" role="status"></p>
+      </div>
+      <div class="scene-actions">
+        <a id="fermer-trappe" class="action-button" href="../mecanisme-remonter-le-temps/index.html" hidden>Suite</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const dureeAppui = 3000;
+    const scene = document.querySelector('#scene');
+    const boulon = document.querySelector('#boulon');
+    const marche = document.querySelector('#marche');
+    const etat = document.querySelector('#etat');
+    const lienFermeture = document.querySelector('#fermer-trappe');
+    const consigne = document.querySelector('#consigne');
+    const cachette = document.querySelector('#cachette');
+    const lingot = document.querySelector('#lingot');
+    const consigneFermee = consigne.textContent;
+    const consigneOuverte = 'Faites glisser le lingot du sac jusque dans la cachette.';
+    const consigneFermeture = 'Maintenez le boulon enfoncé pendant 3 secondes pour refermer la trappe.';
+    const descriptionDeposee = 'La trappe est ouverte et le lingot repose au fond de la cachette.';
+
+    const descriptionFermee = marche.alt;
+    const touchesAppui = [' ', 'Enter'];
+
+    let minuteur = null;
+    let pointeurActif = null;
+    let toucheActive = null;
+    let ouverte = false;
+    let prise = null;
+    let lingotDepose = false;
+
+    boulon.style.setProperty('--duree-appui', dureeAppui + 'ms');
+
+    function arreterAppui() {
+      clearTimeout(minuteur);
+      minuteur = null;
+      const pointeur = pointeurActif;
+      pointeurActif = null;
+      toucheActive = null;
+      boulon.classList.remove('enfonce');
+
+      if (pointeur !== null && boulon.hasPointerCapture(pointeur)) {
+        boulon.releasePointerCapture(pointeur);
+      }
+    }
+
+    function afficherConsigne(texte) {
+      consigne.textContent = texte;
+      if (texte === consigneFermeture) scene.after(consigne);
+      else scene.before(consigne);
+    }
+
+    function ouvrirTrappe() {
+      ouverte = true;
+      scene.classList.add('ouverte');
+      boulon.setAttribute('aria-label', 'Boulon au pied de la rambarde pour refermer la trappe');
+      marche.alt = lingotDepose
+        ? descriptionDeposee
+        : 'La trappe est relevée. Un lingot dépasse du sac ouvert posé devant la cachette.';
+      lingot.disabled = lingotDepose;
+      afficherConsigne(lingotDepose ? consigneFermeture : consigneOuverte);
+      etat.textContent = 'La trappe est ouverte.';
+      lienFermeture.hidden = true;
+    }
+
+    function fermerTrappe() {
+      relacherLingot();
+      proposerDepot(false);
+      ouverte = false;
+      scene.classList.remove('ouverte');
+      boulon.setAttribute('aria-label', 'Boulon au pied de la rambarde pour ouvrir la trappe');
+      lingot.disabled = true;
+      afficherConsigne(consigneFermee);
+      marche.alt = descriptionFermee;
+      etat.textContent = 'La trappe est refermée.';
+      lienFermeture.hidden = !lingotDepose;
+    }
+
+    function actionnerBoulon() {
+      const appuiClavier = toucheActive !== null;
+      arreterAppui();
+      if (ouverte) {
+        fermerTrappe();
+        if (appuiClavier && lingotDepose) lienFermeture.focus({ preventScroll: true });
+      } else {
+        ouvrirTrappe();
+        if (appuiClavier && !lingotDepose) lingot.focus({ preventScroll: true });
+      }
+    }
+
+    function lancerAppui() {
+      boulon.classList.add('enfonce');
+      minuteur = setTimeout(actionnerBoulon, dureeAppui);
+    }
+
+    boulon.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0 || minuteur !== null) return;
+      pointeurActif = event.pointerId;
+      boulon.setPointerCapture(event.pointerId);
+      lancerAppui();
+    });
+
+    function arreterAppuiPointeur(event) {
+      if (event.pointerId === pointeurActif) arreterAppui();
+    }
+
+    boulon.addEventListener('pointerup', arreterAppuiPointeur);
+    boulon.addEventListener('pointercancel', arreterAppuiPointeur);
+    boulon.addEventListener('lostpointercapture', arreterAppuiPointeur);
+    boulon.addEventListener('pointermove', (event) => {
+      if (event.pointerId !== pointeurActif) return;
+      const zone = boulon.getBoundingClientRect();
+      if (event.clientX < zone.left || event.clientX > zone.right ||
+          event.clientY < zone.top || event.clientY > zone.bottom) arreterAppui();
+    });
+    boulon.addEventListener('contextmenu', (event) => event.preventDefault());
+
+    boulon.addEventListener('keydown', (event) => {
+      if (!touchesAppui.includes(event.key)) return;
+      event.preventDefault();
+      if (event.repeat || minuteur !== null) return;
+      toucheActive = event.key;
+      lancerAppui();
+    });
+
+    boulon.addEventListener('keyup', (event) => {
+      if (event.key !== toucheActive) return;
+      event.preventDefault();
+      arreterAppui();
+    });
+
+    boulon.addEventListener('blur', arreterAppui);
+    window.addEventListener('blur', arreterAppui);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) arreterAppui();
+    });
+
+    function pointDansCachette(event) {
+      const zone = cachette.getBoundingClientRect();
+      const x = (event.clientX - zone.left) / zone.width;
+      const y = (event.clientY - zone.top) / zone.height;
+      // The inside walls narrow the opening at the hinges.
+      return y >= 0 && y <= 1 && x >= .08 * (1 - y) && x <= .9 + .1 * y;
+    }
+
+    function proposerDepot(actif) {
+      cachette.disabled = !actif;
+      cachette.tabIndex = actif ? 0 : -1;
+      cachette.classList.toggle('disponible', actif);
+    }
+
+    function relacherLingot() {
+      if (prise) {
+        const { id } = prise;
+        prise = null;
+        if (lingot.hasPointerCapture(id)) lingot.releasePointerCapture(id);
+      }
+      lingot.classList.remove('en-main');
+      cachette.classList.remove('survolee');
+      lingot.style.removeProperty('--lingot-x');
+      lingot.style.removeProperty('--lingot-y');
+    }
+
+    function deposerLingot(event) {
+      if (!ouverte || lingotDepose) return;
+      relacherLingot();
+      proposerDepot(false);
+      lingotDepose = true;
+      scene.classList.add('depot-termine');
+      lingot.hidden = true;
+      lingot.disabled = true;
+      marche.alt = descriptionDeposee;
+      afficherConsigne(consigneFermeture);
+      etat.textContent = '';
+      if (!event) boulon.focus({ preventScroll: true });
+    }
+
+    lingot.addEventListener('pointerdown', (event) => {
+      if (!ouverte || lingotDepose || prise || event.button !== 0) return;
+      const centre = lingot.getBoundingClientRect();
+      prise = {
+        id: event.pointerId,
+        x: event.clientX,
+        y: event.clientY,
+        dx: centre.left + centre.width / 2 - event.clientX,
+        dy: centre.top + centre.height / 2 - event.clientY,
+        mobile: false
+      };
+      lingot.setPointerCapture(event.pointerId);
+    });
+
+    lingot.addEventListener('pointermove', (event) => {
+      if (event.pointerId !== prise?.id) return;
+      if (!prise.mobile && Math.hypot(event.clientX - prise.x, event.clientY - prise.y) < 6) return;
+      prise.mobile = true;
+      proposerDepot(false);
+      lingot.classList.add('en-main');
+      const zone = scene.getBoundingClientRect();
+      lingot.style.setProperty('--lingot-x', ((event.clientX + prise.dx - zone.left) / zone.width * 100) + '%');
+      lingot.style.setProperty('--lingot-y', ((event.clientY + prise.dy - zone.top) / zone.height * 100) + '%');
+      cachette.classList.toggle('survolee', pointDansCachette(event));
+    });
+
+    lingot.addEventListener('pointerup', (event) => {
+      if (event.pointerId !== prise?.id) return;
+      if (prise.mobile && pointDansCachette(event)) {
+        deposerLingot(event);
+        return;
+      }
+      const estUnAppui = !prise.mobile;
+      relacherLingot();
+      if (estUnAppui) proposerDepot(true);
+    });
+
+    function annulerPrise(event) {
+      if (event.pointerId === prise?.id) relacherLingot();
+    }
+
+    lingot.addEventListener('lostpointercapture', annulerPrise);
+    lingot.addEventListener('pointercancel', annulerPrise);
+    lingot.addEventListener('contextmenu', (event) => event.preventDefault());
+    window.addEventListener('blur', relacherLingot);
+
+    lingot.addEventListener('click', (event) => {
+      if (event.detail !== 0 || !ouverte || lingotDepose) return;
+      proposerDepot(true);
+      cachette.focus({ preventScroll: true });
+    });
+    cachette.addEventListener('click', () => deposerLingot());
+
+  </script>
+</body>
+</html>
