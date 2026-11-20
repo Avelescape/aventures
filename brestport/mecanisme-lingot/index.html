@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Dernière Caisse — Mettre les lingots dans le sac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ivoire: #f4e8d3;
+  --or: #d7b784;
+  --laiton: #b99a69;
+  --police-titre: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --police-narration: "EB Garamond", Georgia, "Times New Roman", serif;
+  --police-document: "Special Elite", "Courier New", monospace;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background: #091b1b; }
+body {
+  margin: 0;
+  min-height: 100svh;
+  color: var(--ivoire);
+  font-family: var(--police-titre);
+  background: radial-gradient(ellipse at 50% -10%, #23413c 0%, #0a201f 44%, #071715 100%) fixed;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .12;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, #b1a07e 4px 4.4px);
+}
+.top-bar {
+  position: fixed;
+  z-index: 30;
+  inset: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: calc(65px + env(safe-area-inset-top, 0px));
+  padding: calc(9px + env(safe-area-inset-top, 0px)) max(18px, env(safe-area-inset-right, 0px)) 9px max(18px, env(safe-area-inset-left, 0px));
+  background: linear-gradient(180deg, rgba(6, 20, 20, .98), rgba(6, 20, 20, .8) 75%, transparent);
+  backdrop-filter: blur(8px);
+}
+.top-bar a { text-decoration: none; }
+.top-bar a:focus-visible { outline: 3px solid #f5d18b; outline-offset: 4px; }
+.top-back {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(224, 197, 151, .55);
+  border-radius: 50%;
+  color: #f4debb;
+  background: rgba(4, 16, 16, .5);
+  box-shadow: inset 0 0 0 1px #f2dfc414, 0 3px 8px #0003;
+  font: 28px/1 var(--police-titre);
+}
+.top-back:hover { background: #23453b; }
+.top-link {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 13px;
+  color: #e9c792;
+  font: italic 500 23px/1 var(--police-titre);
+}
+.top-link:hover { color: white; }
+.experience {
+  position: relative;
+  max-width: 840px;
+  margin: 0 auto;
+  padding: calc(76px + env(safe-area-inset-top, 0px)) clamp(14px, 4vw, 26px) max(32px, env(safe-area-inset-bottom, 0px));
+  animation: sceneReveal .65s cubic-bezier(.2, .7, .2, 1) both;
+}
+@keyframes sceneReveal {
+  from { opacity: 0; transform: translateY(14px); filter: blur(3px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+.scene-header { text-align: center; margin-bottom: clamp(16px, 3vw, 24px); }
+.scene-kicker {
+  margin: 19px 0 7px;
+  color: var(--or);
+  font: 400 12px/1.4 var(--police-document);
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.scene-heading {
+  margin: 0 0 20px;
+  color: #f8ebd7;
+  font: 600 clamp(39px, 9vw, 58px)/.98 var(--police-titre);
+  letter-spacing: -.02em;
+  text-shadow: 0 2px 14px #0008;
+}
+.consigne {
+  max-width: 510px;
+  margin: 0 auto;
+  padding: clamp(13px, 3vw, 20px) clamp(16px, 4vw, 28px);
+  border: 1px solid #b99a71;
+  border-radius: 9px;
+  background: radial-gradient(ellipse at 90% 8%, #f5e9d1, #e6d0aa 70%, #c5a477);
+  color: #2a241d;
+  box-shadow: 0 12px 34px #0008, inset 0 0 28px #8f6b3838;
+  font: 500 clamp(19px, 4.9vw, 25px)/1.3 var(--police-narration);
+}
+.jeu {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(10px, 3vw, 24px);
+  align-items: center;
+}
+.zone { min-width: 0; }
+.scene {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #081d1c url('images/2-webpcaissevide.webp') center / 100% 100% no-repeat;
+  box-shadow: 0 13px 38px #0008;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid #c4ab8160;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.lingot{position:absolute;z-index:2;width:17.2652%;height:auto;cursor:grab;touch-action:none;user-select:none;-webkit-user-drag:none;filter:drop-shadow(5px 7px 5px #150d0673);transition:opacity .18s}
+.lingot:focus-visible{outline:3px solid #f5d18b;border-radius:5px}.lingot.en-main{opacity:.18;cursor:grabbing}.lingot.range{visibility:hidden;pointer-events:none}
+#lingot1{left:22.6519%;top:38.3978%;transform:rotate(-9deg)}#lingot2{left:35.1519%;top:37.0166%;transform:rotate(6deg)}#lingot3{left:48.2044%;top:35.3591%;transform:rotate(-4deg)}#lingot4{left:61.0497%;top:33.6096%;transform:rotate(10deg)}
+.sac-zone{position:relative;aspect-ratio:1310/1200;width:min(100%,330px);margin:auto;isolation:isolate;cursor:default;transition:filter .25s}
+.sac-zone.cible{filter:drop-shadow(0 0 17px rgba(214,181,110,.4))}
+.sac-image,.sac-devant{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
+.sac-image{z-index:1}.sac-devant{z-index:5;clip-path:inset(40% 0 0 0)}.ouverture{position:absolute;left:15%;top:17%;width:70%;height:31%;z-index:6;border-radius:40%;pointer-events:none}
+.lingot-volant{position:fixed;z-index:10000;pointer-events:none;user-select:none;object-fit:contain;filter:drop-shadow(8px 10px 5px #0008);transform-origin:center center;will-change:left,top,transform,opacity}
+.pied {
+  max-width: 510px;
+  margin: clamp(16px, 4vw, 24px) auto 0;
+  padding: 13px 18px;
+  border: 1px solid #c4ab8160;
+  border-radius: 12px;
+  background: #0c2624;
+  text-align: center;
+  box-shadow: 0 8px 23px #0005;
+}
+.compteur {
+  color: #d9c6a5;
+  font: 400 13px/1.4 var(--police-document);
+  letter-spacing: .06em;
+}
+.message { margin: 7px 0 0; color: var(--ivoire); font: 500 21px/1.3 var(--police-narration); }
+.message:empty { margin: 0; }
+.bouton-suite[hidden] { display: none; }
+.bouton-suite {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .35em;
+  width: min(100%, 350px);
+  min-height: 54px;
+  margin-top: 16px;
+  padding: 11px 25px;
+  border: 1px solid #c2a473;
+  border-radius: 12px;
+  background: linear-gradient(150deg, #173d34, #09231f);
+  box-shadow: 0 8px 23px #0005, inset 0 1px #ffffff15;
+  color: #fff0d8;
+  font: 600 26px/1 var(--police-titre);
+  text-decoration: none;
+}
+.bouton-suite::after { content: '›'; font: 400 1.1em Georgia, serif; }
+.bouton-suite:hover { background: linear-gradient(150deg, #285748, #153e32); }
+.bouton-suite:focus-visible { outline: 2px solid #f5d18b; outline-offset: 3px; }
+@media (max-width: 670px) {
+  .jeu { grid-template-columns: minmax(0, 1fr) minmax(0, .86fr); }
+  .scene { border-radius: 12px; touch-action: pan-y; }
+  .sac-zone { width: min(100%, 240px); }
+  .message { font-size: 19px; }
+}
+@media (max-width: 670px) and (orientation: landscape) {
+  .experience { max-width: 660px; }
+  .jeu { grid-template-columns: minmax(0, 1fr) minmax(0, .75fr); }
+  .sac-zone { width: min(78%, 195px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .experience { animation: none; }
+  .lingot, .sac-zone { transition: none; }
+}
+</style>
+</head>
+<body>
+<header class="top-bar" aria-label="Navigation permanente">
+<a class="top-back" href="../index.html" aria-label="Revenir à La Dernière Caisse">←</a>
+<a aria-label="Ouvrir le site Il était un lieu dans un nouvel onglet" class="top-link" href="https://avelescape.github.io/aventures/" rel="noopener noreferrer" target="_blank">Il était un lieu…</a>
+</header>
+<main class="experience">
+<header class="scene-header">
+<p class="scene-kicker">BREST · 19 JUIN 1940</p>
+<h1 class="scene-heading">Mettre l'or à l'abri</h1>
+<p class="consigne">Prenez les quatre lingots dans la caisse et glissez-les dans le sac.</p>
+</header>
+<section class="jeu" aria-label="Ranger les lingots dans le sac">
+<div class="zone"><div class="scene" id="scene" aria-label="Caisse contenant quatre lingots">
+<img id="lingot1" class="lingot" src="images/2-webplingot.webp" alt="Lingot 1" role="button" tabindex="0" draggable="false" aria-label="Mettre le lingot 1 dans le sac">
+<img id="lingot2" class="lingot" src="images/2-webplingot.webp" alt="Lingot 2" role="button" tabindex="0" draggable="false" aria-label="Mettre le lingot 2 dans le sac">
+<img id="lingot3" class="lingot" src="images/2-webplingot.webp" alt="Lingot 3" role="button" tabindex="0" draggable="false" aria-label="Mettre le lingot 3 dans le sac">
+<img id="lingot4" class="lingot" src="images/2-webplingot.webp" alt="Lingot 4" role="button" tabindex="0" draggable="false" aria-label="Mettre le lingot 4 dans le sac">
+</div></div>
+<div class="zone"><div class="sac-zone" id="sac" aria-label="Sac ouvert dans lequel déposer les lingots"><img class="sac-image" src="images/2-webpsacouvert.webp" alt="Sac de toile ouvert"><div class="ouverture" id="ouverture"></div><img class="sac-devant" src="images/2-webpsacouvert.webp" alt="" aria-hidden="true"></div></div>
+</section>
+
+<div class="pied"><div><div class="compteur" id="compteur" aria-live="polite">0 / 4 LINGOTS DANS LE SAC</div><p class="message" id="message" aria-live="polite"></p></div>
+<a class="bouton-suite" id="boutonSuite" href="../index.html?scene=cachette-anneau" hidden>Suite</a>
+</div>
+</main>
+<script>
+(()=>{
+'use strict';
+const barres=[...document.querySelectorAll('.lingot')],sac=document.getElementById('sac'),ouverture=document.getElementById('ouverture'),compteur=document.getElementById('compteur'),message=document.getElementById('message');
+const boutonSuite = document.getElementById('boutonSuite');
+const ranges=new Set();let geste=null,animationEnCours=false;
+const dans=(r,x,y)=>x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
+function destination(){const r=ouverture.getBoundingClientRect();return {x:r.left+r.width*.50,y:r.top+r.height*.52};}
+function nettoyerGeste(){if(geste?.fantome)geste.fantome.remove();if(geste?.element)geste.element.classList.remove('en-main');geste=null;sac.classList.remove('cible');}
+function poser(lingot,origine){if(ranges.has(lingot.id)||animationEnCours)return;animationEnCours=true;
+const depart=origine||lingot.getBoundingClientRect(),arrivee=destination();
+const fantome=document.createElement('img');fantome.src='images/2-webplingot.webp';fantome.className='lingot-volant';fantome.alt='';fantome.style.width=depart.width+'px';fantome.style.height=depart.height+'px';fantome.style.left=depart.left+'px';fantome.style.top=depart.top+'px';document.body.append(fantome);
+lingot.classList.add('en-main');
+const recul = () => {
+  ranges.add(lingot.id);
+  lingot.classList.remove('en-main');
+  lingot.classList.add('range');
+  fantome.remove();
+  animationEnCours = false;
+
+  const sacRempli = ranges.size === barres.length;
+  compteur.textContent = `${ranges.size} / ${barres.length} LINGOTS DANS LE SAC`;
+  message.textContent = sacRempli ? 'Les quatre lingots sont dans le sac.' : 'Le lingot est dans le sac. Continuez.';
+  boutonSuite.hidden = !sacRempli;
+};
+const largeur=depart.width,hauteur=depart.height;
+const cibleX=arrivee.x-largeur/2,cibleY=arrivee.y-hauteur/2;
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){recul();return;}
+const a=fantome.animate([{left:depart.left+'px',top:depart.top+'px',transform:'scale(1) rotate(0deg)',opacity:1,offset:0},{left:cibleX+'px',top:(cibleY-25)+'px',transform:'scale(1) rotate(-8deg)',opacity:1,offset:.72},{left:cibleX+'px',top:(cibleY+30)+'px',transform:'scale(.94) rotate(8deg)',opacity:0,offset:1}],{duration:760,easing:'cubic-bezier(.22,.65,.24,1)',fill:'forwards'});a.onfinish=recul;a.oncancel=recul;
+}
+barres.forEach(lingot=>{
+lingot.addEventListener('pointerdown',e=>{if(ranges.has(lingot.id)||animationEnCours)return;e.preventDefault();const r=lingot.getBoundingClientRect();const fantome=lingot.cloneNode(false);fantome.removeAttribute('id');fantome.removeAttribute('tabindex');fantome.removeAttribute('role');fantome.setAttribute('aria-hidden','true');fantome.className='lingot-volant';fantome.style.width=r.width+'px';fantome.style.height=r.height+'px';fantome.style.left=r.left+'px';fantome.style.top=r.top+'px';document.body.append(fantome);geste={element:lingot,pointer:e.pointerId,x:e.clientX,y:e.clientY,depart:r,fantome,deplace:false};lingot.classList.add('en-main');lingot.setPointerCapture(e.pointerId);});
+lingot.addEventListener('pointermove',e=>{if(!geste||geste.element!==lingot||geste.pointer!==e.pointerId)return;const dx=e.clientX-geste.x,dy=e.clientY-geste.y;if(Math.hypot(dx,dy)>12)geste.deplace=true;geste.fantome.style.left=(geste.depart.left+dx)+'px';geste.fantome.style.top=(geste.depart.top+dy)+'px';sac.classList.toggle('cible',dans(sac.getBoundingClientRect(),e.clientX,e.clientY));});
+lingot.addEventListener('pointerup',e=>{if(!geste||geste.element!==lingot||geste.pointer!==e.pointerId)return;const valide=dans(sac.getBoundingClientRect(),e.clientX,e.clientY)||!geste.deplace;const origine=geste.deplace?geste.fantome.getBoundingClientRect():geste.depart;nettoyerGeste();if(valide)poser(lingot,origine);});
+lingot.addEventListener('pointercancel',()=>{if(geste?.element===lingot)nettoyerGeste()});
+lingot.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();poser(lingot)}});
+});
+})();
+</script>
+</body>
+</html>
