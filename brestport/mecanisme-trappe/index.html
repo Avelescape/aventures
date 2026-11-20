@@ -242,17 +242,20 @@
 
     .progression {
       position: absolute;
-      inset: 12%;
+      z-index: 7;
+      top: clamp(.75rem, 4%, 2rem);
+      left: 50%;
+      width: clamp(2.75rem, 11%, 4rem);
       opacity: 0;
-      transform: rotate(-90deg);
+      transform: translateX(-50%) rotate(-90deg);
       pointer-events: none;
       filter: drop-shadow(0 1px 2px #151610);
     }
 
-    .enfonce .progression { opacity: 1; }
+    .scene.enfonce .progression { opacity: 1; }
     .fond { stroke: #24241d; opacity: .8; }
     .avance { stroke: #fff0b8; stroke-linecap: round; stroke-dasharray: 0 100; }
-    .enfonce .avance { animation: remplir var(--duree-appui) linear forwards; }
+    .scene.enfonce .avance { animation: remplir var(--duree-appui) linear forwards; }
 
     @keyframes remplir {
       to { stroke-dasharray: 100 100; }
@@ -366,13 +369,12 @@
             <img src="images/2-webplingot.webp" width="1254" height="1254" alt="">
           </div>
           <button id="boulon" type="button" aria-label="Boulon au pied de la rambarde pour ouvrir la trappe"
-                  aria-describedby="consigne">
-            <svg class="progression" viewBox="0 0 48 48" aria-hidden="true">
-              <circle class="fond" cx="24" cy="24" r="20" fill="none" stroke-width="4"/>
-              <circle class="avance" cx="24" cy="24" r="20" fill="none"
-                      stroke-width="3" pathLength="100"/>
-            </svg>
-          </button>
+                  aria-describedby="consigne"></button>
+          <svg class="progression" viewBox="0 0 48 48" aria-hidden="true">
+            <circle class="fond" cx="24" cy="24" r="20" fill="none" stroke-width="4"/>
+            <circle class="avance" cx="24" cy="24" r="20" fill="none"
+                    stroke-width="3" pathLength="100"/>
+          </svg>
 
           <img class="sac sac-ferme" src="images/2-webpsacferme.webp" width="1313" height="1198" alt="">
           <div class="sac-ouvert">
@@ -419,7 +421,7 @@
     let prise = null;
     let lingotDepose = false;
 
-    boulon.style.setProperty('--duree-appui', dureeAppui + 'ms');
+    scene.style.setProperty('--duree-appui', dureeAppui + 'ms');
 
     function arreterAppui() {
       clearTimeout(minuteur);
@@ -427,7 +429,7 @@
       const pointeur = pointeurActif;
       pointeurActif = null;
       toucheActive = null;
-      boulon.classList.remove('enfonce');
+      scene.classList.remove('enfonce');
 
       if (pointeur !== null && boulon.hasPointerCapture(pointeur)) {
         boulon.releasePointerCapture(pointeur);
@@ -479,7 +481,7 @@
     }
 
     function lancerAppui() {
-      boulon.classList.add('enfonce');
+      scene.classList.add('enfonce');
       minuteur = setTimeout(actionnerBoulon, dureeAppui);
     }
 
