@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dévisser l’anneau — La Dernière Caisse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&amp;family=Special+Elite&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ivoire: #f4e8d3;
+      --police-titre: "Cormorant Garamond", Georgia, serif;
+      --police-document: "Special Elite", "Courier New", monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: #091b1b; }
+    body {
+      margin: 0;
+      min-height: 100svh;
+      color: var(--ivoire);
+      background: radial-gradient(ellipse at 50% -10%, #23413c 0%, #0a201f 44%, #071715 100%) fixed;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .12;
+      background: repeating-linear-gradient(0deg, transparent 0 3px, #b1a07e 4px 4.4px);
+    }
+
+    .top-bar {
+      position: fixed;
+      z-index: 1;
+      inset: 0 0 auto;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      min-height: calc(65px + env(safe-area-inset-top, 0px));
+      padding: calc(9px + env(safe-area-inset-top, 0px)) max(18px, env(safe-area-inset-right, 0px)) 9px max(18px, env(safe-area-inset-left, 0px));
+      background: linear-gradient(180deg, rgba(6, 20, 20, .98), rgba(6, 20, 20, .8) 75%, transparent);
+      backdrop-filter: blur(8px);
+    }
+    .top-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 13px;
+      color: #e9c792;
+      font: italic 500 23px/1 var(--police-titre);
+      letter-spacing: .01em;
+      text-decoration: none;
+    }
+    .top-link:hover { color: white; }
+    .top-link:focus-visible { outline: 3px solid #f5d18b; outline-offset: 4px; }
+
+    .experience {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: calc(76px + env(safe-area-inset-top, 0px)) clamp(14px, 4vw, 25px) max(55px, env(safe-area-inset-bottom, 0px));
+    }
+    .scene { animation: sceneReveal .65s cubic-bezier(.2, .7, .2, 1) both; }
+    @keyframes sceneReveal {
+      from { opacity: 0; transform: translateY(14px); filter: blur(3px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+    .scene-heading {
+      margin: 0 0 20px;
+      color: #f8ebd7;
+      font: 600 clamp(39px, 9vw, 58px)/.98 var(--police-titre);
+      letter-spacing: -.02em;
+      text-align: center;
+      text-shadow: 0 2px 14px #0008;
+    }
+    @media (min-width: 820px) {
+      .experience { margin-top: 12px; padding-inline: 26px; }
+    }
+    @media (max-width: 420px) {
+      .scene-heading { font-size: 43px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .scene { animation: none; }
+    }
+    [hidden] { display: none !important; }
+    .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 22px auto 0; }
+    .action {
+      min-height: 50px;
+      padding: 10px 20px;
+      border: 1px solid #c2a473;
+      border-radius: 12px;
+      background: linear-gradient(150deg, #173d34, #09231f);
+      color: #fff0d8;
+      box-shadow: 0 8px 23px #0005;
+      font: 600 24px/1 var(--police-titre);
+      cursor: pointer;
+    }
+    a.action { display: inline-flex; align-items: center; text-decoration: none; }
+    .action:hover { background: #285748; }
+    .action:focus-visible, .ring-control:focus-visible { outline: 3px solid #f5d18b; outline-offset: 4px; }
+    .instructions {
+      margin: 0 auto 14px;
+      max-width: 520px;
+      text-align: center;
+      font: 400 clamp(16px, 4vw, 19px)/1.5 var(--police-document);
+    }
+    .lock-stage img { display: block; width: 100%; height: auto; }
+    .ring-control {
+      position: absolute;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+    }
+    .lock-stage {
+      position: relative;
+      max-width: 520px;
+      margin: 0 auto 18px;
+      overflow: hidden;
+      border: 1px solid #c4ab8160;
+      border-radius: 16px;
+      background: #4a443a;
+      box-shadow: 0 13px 38px #0008;
+    }
+    .lock-stage img { pointer-events: none; user-select: none; }
+    .ring-control {
+      left: 3%;
+      top: 3%;
+      width: 94%;
+      height: 94%;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+    .ring-control:active { cursor: grabbing; }
+    .lock-stage .cover {
+      --angle: 0deg;
+      --rise: 0%;
+      position: absolute;
+      left: 49.7%;
+      top: 49.4%;
+      width: 80%;
+      transform-origin: 49.3% 46.6%;
+      transform: translate(-49.3%, calc(-46.6% + var(--rise))) rotate(var(--angle));
+      filter: drop-shadow(2px 3px 3px #1b130cb0);
+    }
+    .lock-stage.is-open .cover {
+      transform: translate(-5%, -65%) rotate(calc(var(--angle) - 22deg));
+      opacity: 0;
+      transition: transform .55s ease, opacity .55s ease;
+    }
+    .meter { display: block; width: min(100%, 360px); height: 12px; margin: auto; accent-color: #b99a69; }
+    .turn-status { margin: 8px 0 0; text-align: center; font: 400 15px/1.5 var(--police-document); }
+    @media (prefers-reduced-motion: reduce) {
+      .lock-stage.is-open .cover { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar" aria-label="Navigation permanente">
+    <a class="top-link" href="https://avelescape.github.io/aventures/" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le site Il était un lieu dans un nouvel onglet">Il était un lieu…</a>
+  </header>
+  <main class="experience">
+    <section class="scene" id="intro-scene" aria-label="La cachette fermée">
+      <figure class="lock-stage">
+        <img src="images/2-webpcachettefermee.webp" alt="La cachette fermée par son anneau d’amarrage." fetchpriority="high">
+      </figure>
+      <div class="actions">
+        <button class="action" id="start-lock" type="button">Examiner l’anneau</button>
+      </div>
+    </section>
+    <section class="scene" id="lock-scene" aria-labelledby="lock-title" hidden>
+      <h1 class="scene-heading" id="lock-title" tabindex="-1">Dévisser l’anneau</h1>
+      <p class="instructions" id="lock-hint">Tournez l’anneau dans le sens inverse des aiguilles d’une montre. Trois tours ouvrent la cachette.</p>
+      <div class="lock-stage" id="lock-stage">
+        <img src="images/2-webpcachetteacier.webp" width="1254" height="1254" alt="Gros plan sur la cavité en acier encastrée dans le granit." id="closeup" aria-hidden="true" draggable="false">
+        <img class="cover" id="cover" src="images/2-webpanneautransparent.webp" width="1024" height="1536" alt="" draggable="false">
+        <button class="ring-control" id="ring-control" type="button" aria-label="Dévisser l’anneau d’un quart de tour" aria-describedby="lock-hint"></button>
+      </div>
+      <progress class="meter" id="turn-meter" max="1080" value="0" aria-label="Progression du dévissage"></progress>
+      <p class="turn-status" id="turn-status" role="status">0 / 3 tours</p>
+      <div class="actions">
+        <button class="action" id="quarter-turn" type="button">↶ Tourner d’un quart de tour</button>
+      </div>
+    </section>
+  </main>
+  <script>
+    const ring = document.getElementById('ring-control');
+    const stage = document.getElementById('lock-stage');
+    const cover = document.getElementById('cover');
+    const meter = document.getElementById('turn-meter');
+    const status = document.getElementById('turn-status');
+    const quarterTurn = document.getElementById('quarter-turn');
+    const closeup = document.getElementById('closeup');
+    const intro = document.getElementById('intro-scene');
+    const lockScene = document.getElementById('lock-scene');
+    const lockTitle = document.getElementById('lock-title');
+
+    document.getElementById('start-lock').addEventListener('click', () => {
+      intro.hidden = true;
+      lockScene.hidden = false;
+      window.scrollTo(0, 0);
+      lockTitle.focus({ preventScroll: true });
+    });
+
+    const fullTurn = 360;
+    const requiredTurns = 3;
+    const openingAngle = fullTurn * requiredTurns;
+    let rotation = 0;
+    let gesture = null;
+
+    function turn(degrees) {
+      if (rotation === openingAngle) return;
+      rotation = Math.max(0, Math.min(openingAngle, rotation + degrees));
+      meter.value = rotation;
+      cover.style.setProperty('--angle', `-${rotation}deg`);
+      cover.style.setProperty('--rise', `-${rotation / openingAngle * 1.5}%`);
+
+      if (rotation === openingAngle) {
+        stage.classList.add('is-open');
+        closeup.removeAttribute('aria-hidden');
+        ring.hidden = true;
+        quarterTurn.hidden = true;
+        meter.hidden = true;
+        document.getElementById('lock-hint').hidden = true;
+        status.textContent = 'L’anneau est dévissé.';
+        const disappearance = cover.getAnimations();
+        Promise.allSettled(disappearance.map(animation => animation.finished)).then(() => {
+          window.location.assign('../mecanisme-anneau/index.html');
+        });
+        return;
+      }
+      const progress = `${Math.floor(rotation / fullTurn)} / ${requiredTurns} tours`;
+      if (status.textContent !== progress) status.textContent = progress;
+    }
+
+    function angleAt(event) {
+      const bounds = closeup.getBoundingClientRect();
+      const x = event.clientX - bounds.left - bounds.width * .497;
+      const y = event.clientY - bounds.top - bounds.height * .494;
+      if (Math.hypot(x, y) < bounds.width * .07) return null;
+      return Math.atan2(y, x) * 180 / Math.PI;
+    }
+
+    ring.addEventListener('pointerdown', event => {
+      if (event.button !== 0 || gesture || ring.hidden) return;
+      gesture = { id: event.pointerId, angle: angleAt(event) };
+      ring.setPointerCapture(event.pointerId);
+    });
+
+    ring.addEventListener('pointermove', event => {
+      if (gesture?.id !== event.pointerId || ring.hidden) return;
+      const angle = angleAt(event);
+      if (angle !== null && gesture.angle !== null) {
+        const delta = (angle - gesture.angle + 540) % 360 - 180;
+        turn(-delta);
+      }
+      gesture.angle = angle;
+    });
+
+    function endGesture(event) {
+      if (gesture?.id === event.pointerId) gesture = null;
+    }
+    for (const eventName of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+      ring.addEventListener(eventName, endGesture);
+    }
+
+    ring.addEventListener('click', event => {
+      if (event.detail === 0) turn(90);
+    });
+    quarterTurn.addEventListener('click', () => turn(90));
+  </script>
+</body>
+</html>
