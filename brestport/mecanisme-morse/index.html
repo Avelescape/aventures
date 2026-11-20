@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#31392d" name="theme-color"/>
+<title>La Dernière Caisse — Transmission du Ville d’Oran</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Special+Elite&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{--kaki:#31392d;--paper:#e7d9b9;--ink:#29251e;--muted:#655c4c;--red:#7b2f29;--line:rgba(71,62,45,.35)}
+*{box-sizing:border-box}html{min-height:100%;background:var(--kaki)}body{margin:0;color:var(--ink);font-family:'EB Garamond',Georgia,serif;background:radial-gradient(ellipse at 50% 0%,#4a5140 0%,#30382d 70%);min-height:100vh;padding:26px 14px 50px}
+main{max-width:760px;margin:auto}.topline{display:flex;justify-content:space-between;gap:12px;color:#e4dbc4;font:11px/1.5 'Special Elite',monospace;letter-spacing:.09em;text-transform:uppercase;margin:0 4px 14px;align-items:center}.topline .mark{opacity:.7}
+.folder{position:relative;background:var(--paper);border:1px solid #bcae89;box-shadow:0 15px 45px #1118,0 1px 0 #fff6 inset;padding:clamp(21px,5vw,46px);background-image:linear-gradient(125deg,#fff5 0%,transparent 25%,#766c4712 85%),repeating-linear-gradient(0deg,transparent 0px,transparent 3px,#796c4510 4px,transparent 5px)}.folder:after{content:"";pointer-events:none;position:absolute;inset:7px;border:1px solid #50463124}.folio{display:flex;justify-content:space-between;gap:20px;align-items:start;border-bottom:1px solid var(--line);padding-bottom:14px;font:11px/1.5 'Special Elite',monospace;text-transform:uppercase;letter-spacing:.06em}.stamp{border:2px solid #813d36;color:#813d36;transform:rotate(-7deg);padding:8px 10px;font:13px 'Special Elite',monospace;text-align:center;line-height:1.3}.eyebrow{font:12px 'Special Elite',monospace;text-align:center;letter-spacing:.13em;margin:27px 0 9px}h1{font-size:clamp(32px,7vw,49px);line-height:1.06;margin:0;text-align:center;font-weight:600}h2{font-size:23px;margin:0 0 7px;font-weight:600}.sub{font-size:19px;text-align:center;margin:10px auto 25px;max-width:490px}.typed{font-family:'Special Elite','Courier New',monospace;font-size:clamp(14px,2.9vw,17px);line-height:1.9}.memo{border-top:1px solid var(--line);padding:21px 0 14px}.memo p{margin:0 0 13px}.morse-paper{background:#f0e5cd;border:1px solid #b6a783;box-shadow:2px 4px 0 #8a795d25;padding:24px 16px 18px;margin:17px 0 10px;text-align:center;transform:rotate(-.35deg)}.morse-head{font:11px 'Special Elite',monospace;color:#685b4a;letter-spacing:.08em;text-transform:uppercase}.morse{display:flex;flex-wrap:wrap;justify-content:center;gap:7px 10px;padding:22px 0 10px;font:700 clamp(20px,4.6vw,30px)/1.2 'Courier New',monospace;letter-spacing:.03em}.morse span{display:inline-block;white-space:nowrap;border-bottom:1px solid #786c512b;padding:2px 0 7px;min-width:25px}.morse .break{color:#8c7a5d;border:0}.morse-note{font:12px 'Special Elite',monospace;color:#6a5949;margin-top:8px}.task{margin:21px 0 11px;text-align:center;font-size:20px}.reference-toggle{display:block;margin:16px auto 8px;background:transparent;border:1px solid #685c48;padding:12px 16px;color:#302a22;font:13px 'Special Elite',monospace;cursor:pointer;min-height:44px}.reference{display:none;margin:12px 0 22px;padding:17px;background:#f1e7d3;border:1px solid #b5a78a}.reference.open{display:block}.reference h2{font:16px 'Special Elite',monospace;text-align:center;margin-bottom:12px}.alphabet{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px 10px}.alphabet div{display:flex;justify-content:space-between;gap:6px;border-bottom:1px dotted #9f9075;padding:3px 2px;font:13px 'Courier New',monospace}.alphabet b{font-weight:700}.alphabet code{font-size:12px}.entry{margin-top:24px;padding-top:17px;border-top:1px solid var(--line)}label{display:block;font:12px 'Special Elite',monospace;text-transform:uppercase;letter-spacing:.03em;margin-bottom:9px}.control{display:flex;gap:9px}input{min-width:0;flex:1;padding:14px 12px;background:#fcf5e5;border:1px solid #8b7e65;border-radius:0;font:18px 'Special Elite',monospace;color:#28221a;text-transform:uppercase}button.primary{padding:14px 18px;background:#383f32;border:1px solid #282e24;color:#f3e8d2;font:13px 'Special Elite',monospace;cursor:pointer;min-height:48px}button:focus-visible,input:focus-visible{outline:3px solid #af7029;outline-offset:2px}.message{min-height:29px;margin:12px 0 0;font-size:17px}.message.error{color:#8a3429}.message.success{color:#31502d}.hintrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;margin-top:12px}.hint{border:0;background:none;padding:8px 2px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;color:#6c4c3b;font:15px 'EB Garamond',serif}.hinttext{padding:10px 13px;margin:7px 0 0;border-left:2px solid #9b7654;color:#4c4336;background:#f5e9d5;font-size:17px}.successpanel{display:none;margin-top:18px;border:2px solid #536345;padding:17px;background:#e9e6cb}.successpanel.open{display:block}.successpanel strong{display:block;font:17px 'Special Elite',monospace;margin-bottom:7px}.successpanel p{font-size:19px;margin:0 0 12px}.continuation{display:inline-block;text-decoration:none;text-align:center;background:#353f32;color:#f6edda;padding:13px 18px;font:13px 'Special Elite',monospace}.foot{margin-top:27px;display:flex;justify-content:space-between;gap:10px;color:#766b57;font:11px 'Special Elite',monospace;border-top:1px solid var(--line);padding-top:12px}.screenreader{position:absolute;clip:rect(0 0 0 0);clip-path:inset(50%);height:1px;width:1px;overflow:hidden;white-space:nowrap}
+@media(max-width:530px){body{padding:14px 9px 30px}.folder{padding:24px 18px}.folio{font-size:9px}.stamp{font-size:10px}.alphabet{grid-template-columns:repeat(3,minmax(0,1fr))}.control{flex-direction:column}.control button{width:100%}.morse{gap:5px 7px}.morse span{min-width:22px}.topline{font-size:9px}}
+@media(prefers-reduced-motion:no-preference){.folder{animation:appear .45s ease-out}@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
+
+/* Table intégrée au document : jamais de fenêtre couvrant le signal. */
+.reference{display:none;position:static;margin:7px 0 10px;padding:0;background:transparent;overflow:visible}
+.reference.open{display:block}
+.reference-sheet{position:static;width:100%;max-height:none;overflow:visible;background:#f1e7d3;border:1px solid #aa9875;box-shadow:none;padding:12px 13px}
+.reference h2{padding:0;font-size:14px;margin:0 0 9px}
+.close-ref{display:none}
+.reference-toggle[aria-expanded="true"]{background:#eee0c5}
+/* Quand la table est ouverte, le message reste visible pendant son défilement. */
+.folder:has(.reference.open) .morse-paper{position:sticky;top:4px;z-index:10;transform:none;box-shadow:0 3px 12px #29251e36}
+@media(max-width:530px){
+ body{padding:8px 7px 18px}
+ .topline{font-size:9px;letter-spacing:0;margin:0 2px 7px;gap:6px}
+ .folder{padding:14px 14px 12px}
+ .folio{padding-bottom:7px;font-size:9px;line-height:1.25}
+ .stamp{font-size:9px;padding:5px 7px}
+ .memo{padding:10px 0 4px;line-height:1.42;font-size:13px}
+ .memo p{margin:0 0 7px}
+ .morse-paper{margin:8px 0 7px;padding:12px 8px 10px}
+ .morse-head{font-size:10px}
+ .morse{gap:4px 6px;padding:12px 0 4px;font-size:clamp(18px,5vw,24px)}
+ .morse span{min-width:17px;padding-bottom:3px}
+ .morse-note{font-size:10px;line-height:1.35}
+ .task{margin:8px 0 3px;font-size:17px;line-height:1.2}
+ .reference-toggle{margin:9px auto 6px;padding:9px 12px;font-size:11px;min-height:40px}
+ .entry{margin-top:11px;padding-top:10px}
+ label{font-size:10px;margin-bottom:6px}
+ .control{flex-direction:row;gap:6px}
+ input{font-size:16px;padding:10px 8px;width:0}
+ button.primary{padding:10px 12px;font-size:11px;min-height:43px}
+ .message{margin:5px 0 0;min-height:0;font-size:14px}
+ .message:empty{display:none}
+ .hintrow{margin-top:5px}
+ .hint{font-size:14px;padding:4px 2px}
+ .foot{margin-top:12px;padding-top:8px;font-size:9px}
+ .reference{padding:0}
+ .reference-sheet{padding:11px 10px}
+ .alphabet{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px 7px}
+ .alphabet div{font-size:12px}
+ .alphabet code{font-size:11px}
+}
+@media(max-width:375px){.memo{font-size:12px}.morse{font-size:18px;gap:3px 5px}.topline .mark{display:none}}
+/* Signaux séparés : chaque trait Morse est un tiret court distinct. */
+.alphabet code{font-family:'Courier New',monospace;white-space:nowrap;letter-spacing:0;font-size:clamp(11px,1.8vw,14px);font-weight:700}
+@media(max-width:530px){.alphabet code{font-size:12px;letter-spacing:0}}
+
+/* Message libre au départ ; cadres individuels uniquement après le premier indice. */
+.morse{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 16px;padding:12px 0 8px;font:700 17px/1.25 'Courier New',monospace;letter-spacing:0}
+.morse span:not(.break){display:inline-flex;justify-content:center;align-items:center;white-space:nowrap;min-width:0;min-height:34px;padding:5px 3px;border:1px solid transparent;border-radius:0;background:transparent;box-shadow:none}
+.morse .break{border:0;min-width:12px;padding:0;color:#8c7a5d}
+.morse.show-hint-boxes span:not(.break){min-width:43px;padding:5px 6px;border:1px solid #bdac8c;background:#fbf2df;box-shadow:0 1px 0 #fff8 inset}
+@media(max-width:530px){.morse{font-size:clamp(12px,3.5vw,16px);gap:4px 11px;padding:8px 0 5px}.morse span:not(.break){min-height:29px;padding:4px 2px}.morse.show-hint-boxes span:not(.break){min-width:36px;padding:4px}.morse .break{min-width:8px}}
+@media(max-width:355px){.morse{font-size:12px;gap:3px 8px}.morse.show-hint-boxes span:not(.break){min-width:33px;padding:3px}}
+
+/* Table de référence uniquement : présentation lisible et compacte. */
+.reference-sheet{padding:12px}
+.reference h2{font-size:15px;margin:0 0 6px;text-align:center}
+.reference-explain{font:14px/1.35 'EB Garamond',Georgia,serif;text-align:center;margin:0 0 10px;color:#554b39}
+.reference-group{font:12px/1.4 'Special Elite',monospace;letter-spacing:.06em;color:#544532;margin:12px 0 6px;padding-bottom:5px;border-bottom:1px solid #b5a78a}
+.alphabet{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.alphabet .reference-cell{display:flex;align-items:center;gap:7px;min-width:0;padding:5px 6px;min-height:38px;background:#fcf4e5;border:1px solid #b9a98d;border-bottom:1px solid #b9a98d}
+.alphabet .reference-cell b{flex:0 0 23px;display:grid;place-items:center;font:700 19px/1 'EB Garamond',Georgia,serif;color:#29251e;border-right:1px solid #cbbda4;padding-right:5px}
+.alphabet .reference-cell code{flex:1;white-space:nowrap;font:700 14px/1 'Courier New',monospace;letter-spacing:0;color:#29251e;text-align:center}
+@media(max-width:530px){.reference-sheet{padding:9px 8px}.alphabet{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.alphabet .reference-cell{min-height:34px;padding:4px 5px;gap:5px}.alphabet .reference-cell b{flex-basis:21px;font-size:18px}.alphabet .reference-cell code{font-size:clamp(12px,3.6vw,15px)}.reference-explain{font-size:13px;margin-bottom:7px}.reference-group{margin-top:10px}}
+</style>
+<style>
+/* IL ÉTAIT UN LIEU — DIRECTION CINÉMATOGRAPHIQUE */
+:root{--kaki:#0b211f;--paper:#e8d5b2;--ink:#28251f;--muted:#675842;--red:#963f34;--line:rgba(88,67,43,.3)}
+html{background:#071917}
+body{background:radial-gradient(ellipse at 50% 2%,#1e3934 0%,#0b2421 37%,#071916 100%);color:#e9ddc6;padding:0 14px 70px;min-height:100svh;background-attachment:fixed}
+body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.1;background:repeating-linear-gradient(100deg,transparent 0 10px,#dfc49f 11px 11.5px);z-index:0}
+main{position:relative;max-width:760px}
+.topline{height:65px;margin:0;gap:8px;align-items:center;color:#e6c997;font:500 clamp(15px,3vw,19px)/1.1 'EB Garamond',serif;letter-spacing:.02em;text-transform:none}
+.topline>span:first-child{font-style:italic;font-size:clamp(20px,4vw,27px)}
+.topline .mark{font-style:normal;font-size:12px;color:#bdac8f;opacity:.9}
+.topline>span:last-child{font:11px/1.3 'Special Elite',monospace;color:#d1bd9b;letter-spacing:.04em;text-transform:uppercase}
+.cinema-hero{position:relative;display:flex;align-items:center;isolation:isolate;overflow:hidden;border:1px solid #ac956b66;border-radius:20px 20px 0 0;box-shadow:0 20px 50px #0008;background:#102a28}
+.hero-image{position:absolute;inset:0;z-index:-2;background:url('images/2-webpcoffre1.webp') center 50% / cover no-repeat;filter:saturate(.68) sepia(.13);transform:scale(1.03)}
+.cinema-hero:after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#06191610 0%,#091e1d30 24%,#071a19c9 63%,#071a19 100%)}
+.cinema-hero:before{content:'';position:absolute;inset:11px;border:1px solid #e4c18e4a;border-radius:12px;pointer-events:none}
+.hero-content{position:relative;padding:34px clamp(23px,5vw,48px) 30px;text-align:center;width:100%}
+.hero-eyebrow{font:12px 'Special Elite',monospace;letter-spacing:.13em;color:#efd0a1}
+.hero-rule{height:1px;width:95px;background:#b89b6d;margin:14px auto 16px}
+.hero-case{font:11px 'Special Elite',monospace;color:#e1c59c;letter-spacing:.03em}
+.hero-content h1{font:600 clamp(45px,8vw,73px)/.91 'EB Garamond',Georgia,serif;color:#ffebcb;margin:18px auto 17px;text-shadow:0 3px 17px #000b;letter-spacing:-.025em}
+.hero-content h1 em{font-weight:400;color:#e2c291}
+.hero-content p{font:clamp(19px,3.4vw,23px)/1.25 'EB Garamond',Georgia,serif;color:#f0e2cd;max-width:510px;margin:0 auto 22px}
+.hero-scroll{font:12px 'Special Elite',monospace;letter-spacing:.07em;color:#e6c58c}
+.folder{background:radial-gradient(ellipse at 85% 5%,#f5e6ca,#e7d4b0 59%,#cbb18a 100%);border:1px solid #b69b72;border-top:0;border-radius:0 0 12px 12px;box-shadow:0 20px 55px #0009,inset 0 0 36px #8b663629;padding:clamp(25px,5vw,46px);color:var(--ink);margin-bottom:25px}
+.folder:after{inset:9px;border-color:#6c563d33;pointer-events:none}
+.folio{position:relative;align-items:center;font-size:11px;color:#554834;padding-bottom:17px}
+.stamp{border:2px solid #a34738;color:#a34738;font-size:12px;box-shadow:inset 0 0 0 1px #a3473844}
+.memo{border:0;padding:28px 0 4px;font-size:clamp(16px,2.4vw,19px);line-height:1.7}
+.memo p{margin-bottom:13px}
+.morse-paper{background:radial-gradient(ellipse at 25% 0%,#fff6e3,#efdfbd 75%,#dfc89f);border:1px solid #b6a07a;border-radius:5px;padding:23px 16px 20px;margin:20px 0 13px;box-shadow:0 13px 20px #5c482b2d, 0 1px #fff9 inset;transform:rotate(-.25deg)}
+.morse-head{font-size:12px;color:#604d38}
+.morse{color:#24221e;font-size:clamp(16px,3vw,21px);gap:9px 15px;padding:24px 0 16px}
+.morse span:not(.break){min-height:38px}
+.morse.show-hint-boxes span:not(.break){background:#fff9e9;border-color:#b39c76}
+.morse-note{color:#706047;font-size:12px}
+.task{font:500 clamp(21px,4vw,26px)/1.2 'EB Garamond',Georgia,serif;color:#30291f;margin:23px 0 15px}
+.reference-toggle{border:1px solid #9b8463;border-radius:8px;background:#efe2cb;color:#403322;font-size:12px;box-shadow:0 2px 6px #35271520;transition:background .2s}
+.reference-toggle:hover{background:#fff3dd}
+.reference{background:transparent;border:0}
+.reference-sheet{border:1px solid #b5a17b;border-radius:6px;background:#f2e5cf}
+.reference .reference-cell{background:#fff7e8;border-color:#c7b18d;border-radius:3px}
+.entry{margin-top:28px;padding-top:23px}
+.entry label{font-size:12px}
+input{border-radius:9px;border:1px solid #a7926f;background:#fff7e8;min-height:51px}
+button.primary,.continuation{background:linear-gradient(155deg,#184239,#0b2724);border:1px solid #a4895c;border-radius:10px;min-height:51px;color:#f7ebd7;box-shadow:0 6px 15px #0003;font-size:13px;transition:transform .15s,background .15s}
+button.primary:hover,.continuation:hover{background:linear-gradient(155deg,#2b5c4e,#164039);transform:translateY(-1px)}
+.hint{color:#75513f;text-decoration-thickness:1px}
+.hinttext{background:#f5e7cf;border-left:3px solid #9b6c4c}
+.successpanel{background:#f1e5cc;border:1px solid #788463;border-radius:8px;box-shadow:0 7px 22px #0002;padding:20px}
+.successpanel strong{color:#204537}
+.continuation{display:inline-flex;align-items:center;justify-content:center;padding:14px 21px;font:600 19px/1.2 'EB Garamond',serif}
+.foot{color:#736149}
+@media(max-width:530px){body{padding:0 10px 40px}.topline{height:56px;flex-wrap:nowrap}.topline .mark{display:none}.topline>span:last-child{font-size:9px}.cinema-hero{border-radius:15px 15px 0 0}.hero-content{padding:26px 19px 24px}.hero-content h1{font-size:clamp(44px,11.2vw,62px)}.hero-content p{font-size:19px}.hero-case{font-size:10px}.folder{padding:20px 17px 23px}.folio{font-size:9px}.stamp{font-size:9px}.memo{font-size:15px;padding:16px 0 4px}.morse-paper{margin:14px 0 13px;padding:16px 9px 13px}.morse{font-size:clamp(13px,3.7vw,17px);gap:5px 8px}.task{font-size:21px;line-height:1.22;margin:17px 0 12px}.control{flex-direction:row}.control button{width:auto}.entry{margin-top:20px}.reference-toggle{font-size:11px}}
+@media(max-width:365px){.control{flex-direction:column}.control button{width:100%}.morse{gap:4px 6px}}
+@media(prefers-reduced-motion:no-preference){.cinema-hero{animation:cinemaAppear .6s ease-out both}.hero-content{animation:cinemaAppear .8s .1s ease-out both}@keyframes cinemaAppear{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}}
+</style></head>
+<body>
+<main>
+<section aria-label="Transmission interceptée" class="cinema-hero"><div aria-hidden="true" class="hero-image"></div><div class="hero-content"><div class="hero-eyebrow">BREST · 19 JUIN 1940</div><div class="hero-rule"></div><div class="hero-case">DOSSIER CONFIDENTIEL</div><h1>Une transmission<br/><em>dans la nuit</em></h1><p>Hier soir, le navire « Ville d’Oran » a quitté le goulet de Brest en lançant des signaux lumineux.</p><div class="hero-scroll">↓   Déchiffrer le message</div></div></section>
+<article class="folder">
+<div class="folio"><div>Banque de France<br/>Service des transmissions<br/>Pièce nº 02 / B</div><div class="stamp">CONFIDENTIEL<br/>JUIN 1940</div></div>
+<div class="memo typed">
+<p>Au moment où le navire quittait Brest, un observateur a relevé une succession d’éclats lumineux provenant de son bord.</p>
+<p>Le signal a été retranscrit ci-dessous. Son contenu pourrait indiquer où la dernière caisse est tombée à l’eau.</p>
+</div>
+<div aria-label="Message en morse à déchiffrer" class="morse-paper"><div class="morse-head">Signal lumineux — transcription intégrale</div>
+<div aria-label="Message Morse à déchiffrer" class="morse"><span>– • • •</span><span>• –</span><span>• • •</span><span>• • •</span><span>• •</span><span>– •</span><span class="break">/</span><span>• • • – –</span></div>
+<div class="morse-note">• = éclat bref    — = éclat long    / = séparation des mots</div></div>
+<p class="task">Déchiffrez la transmission.</p>
+<button aria-controls="ref" aria-expanded="false" class="reference-toggle" id="toggleRef" type="button">Consulter la table du code Morse <span aria-hidden="true">＋</span></button>
+<section aria-hidden="true" aria-label="Table de déchiffrement Morse" class="reference" id="ref"><div class="reference-sheet"><h2>Table de déchiffrement — code Morse</h2><p class="reference-explain">Chaque lettre ou chiffre correspond à une suite de <b>points •</b> et de <b>traits –</b>.</p><div class="reference-group">LETTRES A–Z</div><div class="alphabet" id="alphabet"></div><div class="reference-group">CHIFFRES 0–9</div><div class="alphabet" id="digits"></div></div></section>
+<form autocomplete="off" class="entry" id="answerForm"><label for="answer">Lieu indiqué par le message</label><div class="control"><input aria-describedby="feedback" id="answer" maxlength="45" placeholder="Votre réponse…" spellcheck="false" type="text"/><button class="primary" type="submit">Valider</button></div><p aria-live="polite" class="message" id="feedback" role="status"></p></form>
+<div class="hintrow"><button class="hint" id="hintButton" type="button">Besoin d’un indice ?</button><span class="morse-note">1 transmission / 1 lieu</span></div>
+<div class="hinttext" hidden="" id="hintText"></div>
+<div class="successpanel" id="success" role="status"><strong>TRANSMISSION DÉCHIFFRÉE</strong><p><b>BASSIN N° 3.</b> Vous avez localisé le point où la caisse a disparu dans les eaux du port.</p><a class="continuation" href="../index.html?scene=maree" id="nextStep">Poursuivre la mission →</a></div>
+<div class="foot"><span>Dossier nº 1940–03</span><span>Document réservé au porteur</span></div>
+</article>
+</main>
+<script>
+(function(){
+const morse={A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',F:'..-.',G:'--.',H:'....',I:'..',J:'.---',K:'-.-',L:'.-..',M:'--',N:'-.',O:'---',P:'.--.',Q:'--.-',R:'.-.',S:'...',T:'-',U:'..-',V:'...-',W:'.--',X:'-..-',Y:'-.--',Z:'--..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.'};
+const alphabet=document.getElementById('alphabet'),digits=document.getElementById('digits');Object.entries(morse).forEach(([letter,code])=>{const d=document.createElement('div');d.className='reference-cell';const b=document.createElement('b');b.textContent=letter;const c=document.createElement('code');c.textContent=Array.from(code,signal=>signal==='.'?'•':'–').join(' ');d.append(b,c);(isNaN(Number(letter))?alphabet:digits).append(d)});
+const ref=document.getElementById('ref'),toggle=document.getElementById('toggleRef');
+function setRef(open){ref.classList.toggle('open',open);ref.setAttribute('aria-hidden',String(!open));toggle.setAttribute('aria-expanded',String(open));toggle.innerHTML=open?'Masquer la table du code Morse <span aria-hidden="true">−</span>':'Consulter la table du code Morse <span aria-hidden="true">＋</span>';}
+toggle.addEventListener('click',()=>setRef(!ref.classList.contains('open')));
+const hints=['Chaque groupe de points et de traits correspond à une lettre ou à un chiffre.','Les six premiers groupes forment le mot qui désigne l’endroit où accostent les navires.','Le dernier groupe « ...-- » correspond au chiffre 3.'];let hintIndex=0;
+const hintButton=document.getElementById('hintButton'),hintText=document.getElementById('hintText');hintButton.addEventListener('click',()=>{document.querySelector('.morse').classList.add('show-hint-boxes');hintText.hidden=false;hintText.textContent=hints[Math.min(hintIndex,hints.length-1)];hintIndex++;if(hintIndex>=hints.length)hintButton.textContent='Relire le dernier indice';else hintButton.textContent='Indice suivant';});
+const form=document.getElementById('answerForm'),answer=document.getElementById('answer'),feedback=document.getElementById('feedback'),success=document.getElementById('success');
+const norm=s=>s.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[°º#.,:;\-]/g,' ').replace(/\s+/g,' ').trim();
+form.addEventListener('submit',e=>{e.preventDefault();const value=norm(answer.value);if(value.includes('BASSIN') && value.includes('3')){feedback.className='message success';feedback.textContent='Exact. Le signal désigne le bassin nº 3.';success.classList.add('open');success.scrollIntoView({behavior:'smooth',block:'nearest'});}else{feedback.className='message error';feedback.textContent=value?'Le message ne correspond pas encore à ce lieu. Vérifiez les groupes Morse.':'Inscrivez le lieu que vous avez déchiffré.';success.classList.remove('open');}});
+// Point d’intégration : remplacer #suite par l’URL de l’étape suivante de l’aventure.
+})();
+</script>
+</body>
+</html>
