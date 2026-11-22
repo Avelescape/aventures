@@ -134,6 +134,11 @@ button.primary:hover,.continuation:hover{background:linear-gradient(155deg,#2b5c
 @media(max-width:530px){body{padding:0 10px 40px}.topline{height:56px;flex-wrap:nowrap}.topline .mark{display:none}.topline>span:last-child{font-size:9px}.cinema-hero{border-radius:15px 15px 0 0}.hero-content{padding:26px 19px 24px}.hero-content h1{font-size:clamp(44px,11.2vw,62px)}.hero-content p{font-size:19px}.hero-case{font-size:10px}.folder{padding:20px 17px 23px}.folio{font-size:9px}.stamp{font-size:9px}.memo{font-size:15px;padding:16px 0 4px}.morse-paper{margin:14px 0 13px;padding:16px 9px 13px}.morse{font-size:clamp(13px,3.7vw,17px);gap:5px 8px}.task{font-size:21px;line-height:1.22;margin:17px 0 12px}.control{flex-direction:row}.control button{width:auto}.entry{margin-top:20px}.reference-toggle{font-size:11px}}
 @media(max-width:365px){.control{flex-direction:column}.control button{width:100%}.morse{gap:4px 6px}}
 @media(prefers-reduced-motion:no-preference){.cinema-hero{animation:cinemaAppear .6s ease-out both}.hero-content{animation:cinemaAppear .8s .1s ease-out both}@keyframes cinemaAppear{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}}
+/* Morse : signes resserrés au sein d’une lettre, lettres mieux séparées. */
+.morse{column-gap:26px}
+.morse .break{margin-inline:3px}
+@media(max-width:530px){.morse{column-gap:17px}}
+@media(max-width:355px){.morse{column-gap:13px}}
 </style></head>
 <body>
 <main>
@@ -145,7 +150,7 @@ button.primary:hover,.continuation:hover{background:linear-gradient(155deg,#2b5c
 <p>Le signal a été retranscrit ci-dessous. Son contenu pourrait indiquer où la dernière caisse est tombée à l’eau.</p>
 </div>
 <div aria-label="Message en morse à déchiffrer" class="morse-paper"><div class="morse-head">Signal lumineux — transcription intégrale</div>
-<div aria-label="Message Morse à déchiffrer" class="morse"><span>– • • •</span><span>• –</span><span>• • •</span><span>• • •</span><span>• •</span><span>– •</span><span class="break">/</span><span>• • • – –</span></div>
+<div aria-label="Message Morse à déchiffrer" class="morse"><span>– • • •</span><span>• –</span><span>• • •</span><span>• • •</span><span>• •</span><span>– •</span><span class="break">/</span><span>• • • – –</span></div>
 <div class="morse-note">• = éclat bref    — = éclat long    / = séparation des mots</div></div>
 <p class="task">Déchiffrez la transmission.</p>
 <button aria-controls="ref" aria-expanded="false" class="reference-toggle" id="toggleRef" type="button">Consulter la table du code Morse <span aria-hidden="true">＋</span></button>
