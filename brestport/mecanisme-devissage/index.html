@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Dévisser l’anneau — La Dernière Caisse</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -119,6 +119,7 @@
       max-width: 520px;
       margin: 0 auto 18px;
       overflow: hidden;
+      touch-action: none;
       border: 1px solid #c4ab8160;
       border-radius: 16px;
       background: #4a443a;
@@ -181,9 +182,6 @@
       </div>
       <progress class="meter" id="turn-meter" max="1080" value="0" aria-label="Progression du dévissage"></progress>
       <p class="turn-status" id="turn-status" role="status">0 / 3 tours</p>
-      <div class="actions">
-        <button class="action" id="quarter-turn" type="button">↶ Tourner d’un quart de tour</button>
-      </div>
     </section>
   </main>
   <script>
@@ -192,7 +190,6 @@
     const cover = document.getElementById('cover');
     const meter = document.getElementById('turn-meter');
     const status = document.getElementById('turn-status');
-    const quarterTurn = document.getElementById('quarter-turn');
     const closeup = document.getElementById('closeup');
     const intro = document.getElementById('intro-scene');
     const lockScene = document.getElementById('lock-scene');
@@ -222,7 +219,6 @@
         stage.classList.add('is-open');
         closeup.removeAttribute('aria-hidden');
         ring.hidden = true;
-        quarterTurn.hidden = true;
         meter.hidden = true;
         document.getElementById('lock-hint').hidden = true;
         status.textContent = 'L’anneau est dévissé.';
@@ -270,7 +266,6 @@
     ring.addEventListener('click', event => {
       if (event.detail === 0) turn(90);
     });
-    quarterTurn.addEventListener('click', () => turn(90));
   </script>
 </body>
 </html>
