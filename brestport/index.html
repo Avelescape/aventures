@@ -329,6 +329,19 @@
       letter-spacing: 0;
       text-decoration: none;
     }
+    .mission-hommage .hommage-texte {
+      margin: 22px auto 0;
+      max-width: 460px;
+      font: 500 clamp(20px, 4.6vw, 25px)/1.38 var(--police-narration);
+    }
+    .mission-hommage .hommage-dedicace {
+      margin: 28px auto 0;
+      font: 600 clamp(20px, 4.8vw, 26px)/1.28 var(--police-titre);
+    }
+    .mission-hommage .hommage-noms {
+      margin: 16px auto 0;
+      font: 600 clamp(23px, 5vw, 29px)/1.65 var(--police-titre);
+    }
     .mission-hommage .mission-remembrance {
       margin: clamp(18px, 5vw, 26px) 0 0;
       font: 600 clamp(20px, 5vw, 28px)/1.25 var(--police-titre);
@@ -485,7 +498,15 @@
       .history-copy { font-size: 19px; }
     }
 
-  </style>
+  
+/* Bloc marées plus compact */
+#scene-maree .history-sheet { padding: 16px 20px 14px; }
+#scene-maree .history-copy { font-size: clamp(19px, 4.6vw, 23px); line-height: 1.28; }
+#scene-maree .history-copy p { margin-bottom: .55em; }
+#scene-maree .history-sheet .scene-actions { margin-top: 12px; }
+/* Indice visible dans l'ordre de mission du pilier */
+#scene-mission-pilier .pillar-hint { margin: 12px 0 16px; padding: 10px 12px; background: rgba(143,107,56,.12); border-left: 3px solid #96703d; font-size: .94em; line-height: 1.4; }
+</style>
 <style>
 /* DIRECTION ARTISTIQUE 2026 — CINÉMA & ARCHIVES */
 :root {--kaki:#102a29;--kaki-fonce:#091e1d;--kaki-profond:#0c2926;--kaki-clair:#23453b;--sepia:#c5a578;--ivoire:#f4e8d3;--papier:#f3dfbd;--laiton-mat:#b99a69;--largeur-scene:600px;--largeur-cartouche:510px}
@@ -521,13 +542,14 @@ body:before {content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;b
   inset: auto 0 0;
   padding: 12px clamp(12px, 4vw, 28px) clamp(12px, 4vw, 24px);
   text-align: center;
-  background: linear-gradient(transparent, #10111182 30%, #101111 100%);
+  background: linear-gradient(transparent 0%, rgba(8, 12, 12, .86) 24%, #080c0c 100%);
 }
 .cover-intro {
-  font: 400 clamp(14px, 4vw, 22px)/1.18 var(--police-narration);
-  max-width: 480px;
-  margin: 0 auto 8px;
-  color: #f2e5d1;
+  font: 700 clamp(18px, 4.8vw, 26px)/1.24 var(--police-narration);
+  max-width: 490px;
+  margin: 0 auto 12px;
+  color: #fff8e9;
+  text-shadow: 0 2px 5px #000, 0 0 12px rgba(0,0,0,.9);
 }
 .cover-meta {
   display: flex;
@@ -642,12 +664,12 @@ body:before {content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;b
 <article aria-label="Introduction historique" class="history-sheet">
 <div class="history-topline">BREST — JUIN 1940</div>
 <div class="history-copy texte-narratif">
-<p>La France est en pleine débâcle. Les troupes allemandes sont arrivées à Brest le 19 juin 1940.</p>
-<p>Pour empêcher que les réserves d'or du pays ne tombent aux mains de l'ennemi, la Banque de France organise leur évacuation.</p>
-<p>Depuis plusieurs semaines, des tonnes de lingots et de pièces d'or sont acheminées vers Brest. Sous haute surveillance, les précieux chargements sont embarqués à bord de navires.</p>
+<p>La France est en pleine débâcle. Les troupes allemandes sont arrivées aujourd’hui, le 19 juin 1940.</p>
+<p>Pour empêcher que les réserves d'or du pays ne tombent aux mains de l'ennemi, la Banque de France a organisé leur évacuation.</p>
+<p>Depuis plusieurs semaines, des tonnes de lingots et de pièces d'or ont été acheminées vers Brest. Sous haute surveillance, les précieux chargements ont été embarqués à bord de navires.</p>
 <p>Leur destination : <strong>l'Afrique du Nord, puis l'Afrique occidentale française</strong>, où l'or doit être mis à l'abri.</p>
-<p>Les 16, 17 et 18 juin 1940, les opérations s'accélèrent. Les bombardements se multiplient. Dans la précipitation, les dernières caisses sont embarquées.</p>
-<p>Le <strong>18 juin 1940</strong>, cinq navires quittent Brest avec près de 900 tonnes d'or. Après une escale à Casablanca, au Maroc, le convoi poursuit sa route vers <strong>Dakar, au Sénégal</strong>.</p>
+<p>Les 16, 17 et 18 juin 1940, les opérations s'accélèrent. Les bombardements se multiplient. Dans la précipitation, les dernières caisses ont été embarquées.</p>
+<p>Le <strong>18 juin 1940</strong>, cinq navires ont quitté Brest avec près de 900 tonnes d'or. Après une escale à Casablanca, au Maroc, le convoi poursuit sa route vers <strong>Dakar, au Sénégal</strong>.</p>
 <p>L'essentiel du trésor est sauvé.</p>
 <p class="history-final"><strong>Sauf la dernière caisse, qui dans la précipitation est tombée dans le port</strong></p>
 </div>
@@ -676,7 +698,7 @@ body:before {content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;b
 <h1 id="missionTitle">ORDRE DE MISSION</h1>
 <p>Une caisse appartenant au convoi de la Banque de France n'a pas rejoint le chargement prévu pour son évacuation.</p>
 <p>Les circonstances exactes de sa disparition demeurent inconnues. Selon les dernières informations, ladite caisse se trouverait encore dans l'enceinte du port de commerce de Brest.</p>
-<p>Compte tenu de l'avancée des troupes ennemies et du caractère sensible de son contenu, cette mission d'une importance capitale vous est confiée.</p>
+<p>Compte tenu de l'arrivée des troupes ennemies et du caractère sensible de son contenu, cette mission d'une importance capitale vous est confiée.</p>
 <p class="mission-warning">Le contenu de cette caisse ne devra, sous aucun prétexte, tomber aux mains de l'ennemi.</p>
 <p class="mission-warning">Votre sang-froid et votre bravoure seront seuls garants du succès de l'opération.</p>
 <p class="mission-warning">Aucune trace ne devra subsister.</p>
@@ -721,7 +743,7 @@ body:before {content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;b
 <div class="history-copy texte-narratif">
 <p>Le signal Morse a livré son secret : la dernière caisse repose dans les eaux du <strong>bassin n° 3</strong>.</p>
 <p>Vous connaissez désormais le lieu. Mais impossible de récupérer la caisse à n’importe quel moment : il vous faut profiter de la <strong>marée basse</strong>, lorsque le niveau de l’eau sera au plus bas.</p>
-<p>Consultez l’<strong>éphéméride</strong> et retrouvez l’heure de la basse mer. C’est à cet instant que vous devrez intervenir pour remonter la caisse.</p>
+<p>Consultez l’<strong>annuaire des marées</strong> et retrouvez l’heure de la basse mer. C’est à cet instant que vous devrez intervenir pour remonter la caisse.</p>
 <div class="scene-actions history-actions"><a class="action-button" href="mecanisme-annuaire/index.html" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none">Suite</a></div>
 </div>
 </article>
@@ -801,6 +823,7 @@ body:before {content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;b
 <h1 id="pillarMissionTitle" tabindex="-1">ORDRE DE MISSION</h1>
 <h2 class="mission-subtitle">Le pilier</h2>
 <p>Cherchez une bâtisse dont le balcon du dernier étage court d’un bout à l’autre de la façade. Plus bas, un petit balcon surplombe l’entrée. Depuis le trottoir, comptez les piliers de la grille, y compris ceux du portail.</p>
+<p class="pillar-hint"><strong>Indice :</strong> La couleur ocre est dominante au niveau du grand balcon.</p>
 <form class="pillar-form" id="pillarForm" novalidate>
 <label for="pillarAnswer">Nombre de piliers devant le bâtiment&nbsp;?</label>
 <div class="pillar-controls">
@@ -951,7 +974,7 @@ body:before {content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;b
 </figure>
 <article aria-labelledby="escalierMissionTitle" class="mission-paper document-1940 plan-mission-note">
 <h1 id="escalierMissionTitle">Ordre de mission</h1>
-<p>Côté EST de l’escalier, trouvez la 9<sup>e</sup> marche. Elle masque un mécanisme.</p>
+<p>Rendez-vous à l’escalier du parc à chaînes. Côté EST de l’escalier, trouvez la 9<sup>e</sup> marche : elle masque un mécanisme.</p>
 <div class="scene-actions">
 <a class="action-button" href="mecanisme-trappe/index.html" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none">Suite</a>
 </div>
@@ -961,11 +984,11 @@ body:before {content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;b
 <section aria-labelledby="blankMissionTitle" class="scene mission-scene" data-scene="mission-vierge" hidden id="scene-mission-vierge">
 <div class="scene-inner">
 <article aria-labelledby="blankMissionTitle" class="mission-hommage">
-<h1 id="blankMissionTitle" tabindex="-1">À la mémoire de mes grands-pères :<br>
-Yves -résistant-<br>
-Honoré -soldat-</h1>
-<p class="mission-remembrance"><strong><em lang="br">Dalc’homp soñj</em></strong><br>
-<span>(Souvenons-nous en breton)</span></p>
+<h1 id="blankMissionTitle" tabindex="-1">En hommage à toutes les victimes des deux guerres mondiales, civiles et militaires.</h1>
+<p class="hommage-texte">À ceux qui sont tombés, à ceux qui ont survécu, à ceux dont la vie fut à jamais bouleversée.</p>
+<p class="hommage-dedicace"><strong>Une pensée toute particulière pour mes deux grands-pères :</strong></p>
+<p class="hommage-noms"><strong>Yves — Résistant</strong><br><strong>Honoré — Soldat</strong></p>
+<p class="mission-remembrance"><em lang="br">Dalc’homp soñj</em><br><strong>Souvenons-nous.</strong></p>
 <div class="scene-actions">
 <a class="action-button" href="https://avelescape.github.io/aventures/">Kenavo</a>
 </div>
@@ -1134,7 +1157,7 @@ Honoré -soldat-</h1>
         document.body.dataset.activeScene = sceneId;
         backButton.hidden = progress.history.length === 0;
         backSpacer.hidden = !backButton.hidden;
-        document.title = ({ couverture: 'La Dernière Caisse', histoire: 'Brest, juin 1940', mission: 'Ordre de mission', morse: 'Le signal Morse', maree: 'La marée basse', remontee: 'La dernière caisse', 'coffre-ouvert': 'La caisse ouverte', 'cachette-anneau': 'Ordre de mission', 'mission-pilier': 'Ordre de mission – Le pilier', 'mission-anneau': 'Ordre de mission – L’anneau', 'mission-retour': 'Ordre de mission – 3e cachette', 'arrivee-soldats': 'Arrivée des soldats', controle: 'Contrôle d’identité', alerte: 'Alerte', 'fuite-soldats': 'Départ des soldats', 'soldats-au-loin': 'Les soldats au loin', 'plan-port': 'Plan du port du Château', 'rdv-escalier': 'Rendez-vous à l’escalier', 'mission-vierge': 'À la mémoire de mes grands-pères' }[sceneId]) + ' — Il était un lieu…';
+        document.title = ({ couverture: 'La Dernière Caisse', histoire: 'Brest, juin 1940', mission: 'Ordre de mission', morse: 'Le signal Morse', maree: 'La marée basse', remontee: 'La dernière caisse', 'coffre-ouvert': 'La caisse ouverte', 'cachette-anneau': 'Ordre de mission', 'mission-pilier': 'Ordre de mission – Le pilier', 'mission-anneau': 'Ordre de mission – L’anneau', 'mission-retour': 'Ordre de mission – 3e cachette', 'arrivee-soldats': 'Arrivée des soldats', controle: 'Contrôle d’identité', alerte: 'Alerte', 'fuite-soldats': 'Départ des soldats', 'soldats-au-loin': 'Les soldats au loin', 'plan-port': 'Plan du port du Château', 'rdv-escalier': 'Rendez-vous à l’escalier', 'mission-vierge': 'Hommage et souvenir' }[sceneId]) + ' — Il était un lieu…';
         if (save) saveProgress();
         window.scrollTo({top: 0, behavior: 'instant'});
         preloadNextScene(sceneId);
