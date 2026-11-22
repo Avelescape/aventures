@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Revisser l’anneau — La Dernière Caisse</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,9 +15,11 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; }
-    html { background: #091b1b; }
+    html { background: #091b1b; touch-action: manipulation; }
     body {
       margin: 0;
+      touch-action: manipulation;
+      -webkit-text-size-adjust: 100%;
       min-height: 100svh;
       color: var(--ivoire);
       background: radial-gradient(ellipse at 50% -10%, #23413c 0%, #0a201f 44%, #071715 100%) fixed;
@@ -176,7 +178,6 @@
       <progress class="meter" id="turn-meter" max="1080" value="0" aria-label="Progression du revissage"></progress>
       <p class="turn-status" id="turn-status" role="status" tabindex="-1">0 / 3 tours</p>
       <div class="actions">
-        <button class="action" id="quarter-turn" type="button">↻ Tourner d’un quart de tour</button>
         <a class="action suite" id="suite" href="../index.html?scene=mission-retour" hidden>Suite</a>
       </div>
     </section>
@@ -187,7 +188,6 @@
     const cover = document.getElementById('cover');
     const meter = document.getElementById('turn-meter');
     const status = document.getElementById('turn-status');
-    const quarterTurn = document.getElementById('quarter-turn');
     const suite = document.getElementById('suite');
     const closeup = document.getElementById('closeup');
     const hint = document.getElementById('lock-hint');
@@ -210,7 +210,6 @@
 
       if (rotation === closingAngle) {
         ring.hidden = true;
-        quarterTurn.hidden = true;
         meter.hidden = true;
         hint.hidden = true;
         status.textContent = 'L’anneau est revissé. La cachette est refermée.';
@@ -257,7 +256,6 @@
     ring.addEventListener('click', event => {
       if (event.detail === 0) turn(90);
     });
-    quarterTurn.addEventListener('click', () => turn(90));
   </script>
 </body>
 </html>
