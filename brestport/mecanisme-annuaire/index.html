@@ -461,13 +461,34 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opa
 .swipe-hint{display:none}
 @media(max-width:530px){.stage{padding-top:calc(70px + env(safe-area-inset-top,0px));padding-inline:9px;padding-bottom:34px}.cinema-hero{min-height:330px;height:clamp(340px,53svh,490px);border-radius:13px 13px 0 0}.hero-copy{padding:17px 19px 25px}.hero-copy h1{font-size:clamp(48px,11.5vw,66px)}.hero-copy p{font-size:19px}.archive-intro{padding:24px 15px 15px}.archive-stage{padding:10px 8px 25px}.book{width:min(440px,90vw)}.clock-section{margin-top:18px;padding:32px 12px 26px;border-radius:12px}.clock-panel{padding:17px 9px 21px}.clock-instruction{font-size:21px}.clock-controls{gap:15px}.clock-step{min-width:45px}.clock-validate{width:90%;font-size:24px}.navigation{margin-top:13px}}
 @media(prefers-reduced-motion:no-preference){.cinema-hero{animation:hero-appear .55s ease-out both}.hero-copy{animation:hero-appear .75s ease-out both}@keyframes hero-appear{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}}
+
+/* Bandeau introductif réduit au strict nécessaire, sans le grand titre */
+.cinema-hero {
+  height: auto !important;
+  min-height: 0 !important;
+  border-radius: 10px 10px 0 0 !important;
+  align-items: center !important;
+}
+.hero-copy { padding: 12px 16px !important; }
+.hero-kicker { line-height: 1.1 !important; }
+.hero-rule, .hero-file { display: none !important; }
+.hero-copy p {
+  margin: 5px auto 0 !important;
+  font-size: clamp(16px, 3.7vw, 19px) !important;
+  line-height: 1.12 !important;
+}
+.cinema-hero::before { inset: 5px !important; }
+@media (max-width: 530px) {
+  .cinema-hero { height: auto !important; min-height: 0 !important; }
+  .hero-copy { padding: 10px 12px !important; }
+}
 </style></head>
 <body>
 <header class="top-bar">
 <a aria-label="Retour à la mission" class="nav-back top-back" href="../index.html#chapitre1">←</a>
 <span class="top-label">La Dernière Caisse</span>
 </header>
-<main aria-label="Consultation de l'annuaire des marées" class="stage"><section aria-label="Préparer l'intervention" class="cinema-hero"><div aria-hidden="true" class="hero-photo"></div><div class="hero-copy"><span class="hero-kicker">BREST · 19 JUIN 1940</span><span class="hero-rule"></span><span class="hero-file">DOSSIER CONFIDENTIEL · PIÈCE 03</span><h1>À l'heure<br/><em>de la marée</em></h1><p>Ce 19 juin 1940, la caisse est au fond du bassin. Une seule fenêtre d'intervention : l'instant où la mer se retire.</p></div></section><div class="archive-intro"><div class="archive-overline">DOCUMENT DE SERVICE · PORT DE BREST</div><h2>Annuaire des marées</h2><p>Feuilletez les relevés de juin 1940 pour retrouver l'heure de basse mer du 19 juin.</p></div>
+<main aria-label="Consultation de l'annuaire des marées" class="stage"><section aria-label="Préparer l'intervention" class="cinema-hero"><div aria-hidden="true" class="hero-photo"></div><div class="hero-copy"><span class="hero-kicker">BREST · 19 JUIN 1940</span><span class="hero-rule"></span><span class="hero-file">DOSSIER CONFIDENTIEL · PIÈCE 03</span><p>Ce 19 juin 1940, la caisse est au fond du bassin. La basse-mer.</p></div></section><div class="archive-intro"><div class="archive-overline">DOCUMENT DE SERVICE · PORT DE BREST</div><h2>Annuaire des marées</h2><p>Feuilletez les relevés de juin 1940 pour retrouver l'heure de basse mer du 19 juin.</p></div>
 <!-- Les pages sont créées automatiquement à partir de la configuration ci-dessous. -->
 <div class="archive-stage"><div class="book" id="book"></div><nav aria-label="Navigation du livre" class="navigation">
 <button aria-label="Page précédente" class="nav-button" id="previous" type="button">‹</button>
